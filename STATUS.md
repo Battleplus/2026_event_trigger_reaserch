@@ -6,6 +6,6 @@ Engineering disposition: **INCOMPLETE_COLLECTION; STOP**. The repaired V2 smoke 
 
 Method disposition: **INCONCLUSIVE; TRAINING GATE FAILED**. The final run has 0 ordinary positive and 78 ordinary non-positive labels among 219 parseable rows; 101 forced-safety and 40 empty-window labels remain unknown. The registered 30-positive/30-non-positive ordinary-state gate is not met. No light model, test/OOD evaluation, world-model experiment, or PPO transfer is authorized.
 
-The earlier R1 diagnostic remains historical evidence of the initial failure and is not overwritten. See [the V2 smoke review](reviews/V2_SMOKE_REVIEW_20261017.json), [the safety classification](reports/V2_SAFETY_CLASSIFICATION.md), and [the V1/R1 diagnostic](reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md).
+The earlier R1 diagnostic remains historical evidence of the initial failure and is not overwritten. See [the final V2 smoke review](reviews/V2_SMOKE_REVIEW_20261017_R3.json), [the safety classification](reports/V2_SAFETY_CLASSIFICATION.md), and [the V1/R1 diagnostic](reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md).
 
 The interrupted outputs and [read-only audit](reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json) are retained as diagnostic evidence. Do not count the partial scenario as a completed instance or synthesize completion/resource receipts. Test and OOD data remain sealed.

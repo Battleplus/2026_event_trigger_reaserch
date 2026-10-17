@@ -4,7 +4,7 @@ This repository contains the Chapter 2 simulation implementation, frozen protoco
 
 ## Current Result
 
-The repaired V2 smoke gate passed its immutable engineering checks and authorized a formal train/validation collection review. That collection was interrupted and is retained as incomplete evidence: the final run has 52 scenario outcome records and 53 scenario files, with one scenario file lacking an outcome record; its two aggregate gzip streams lack end-of-stream markers. Across all 219 parseable final rows there are 0 ordinary positive labels and 78 ordinary non-positive labels; 101 forced-safety and 40 empty-window labels are unknown. The registered 30-positive/30-non-positive gate therefore fails and no light model is authorized. The method remains **INCONCLUSIVE**. See [STATUS.md](STATUS.md) and [the interrupted-collection audit](reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json).
+The repaired V2 smoke gate passed its immutable engineering checks and authorized a formal train/validation collection review. That collection was interrupted and is retained as incomplete evidence: the final run has 52 scenario outcome records and 53 scenario files, with one scenario file lacking an outcome record; its two aggregate gzip streams lack end-of-stream markers. Across all 219 parseable final rows there are 0 ordinary positive labels and 78 ordinary non-positive labels; 101 forced-safety and 40 empty-window labels are unknown. The registered 30-positive/30-non-positive gate therefore fails and no light model is authorized. The method remains **INCONCLUSIVE**. See [STATUS.md](STATUS.md), [the final V2 smoke review](reviews/V2_SMOKE_REVIEW_20261017_R3.json), and [the interrupted-collection audit](reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json).
 
 ## Runtime
 
@@ -25,13 +25,13 @@ The runner exposes its supported stages and options with:
 python -B package/civilian/gain_runner.py --help
 ```
 
-For a bounded collection reproduction in a fresh checkout, use a new output directory and the reviewed P1 binding-fix record:
+The archived formal collection is incomplete and must not be treated as a completed dataset. Any future reproduction must use a new run identity and the current V2 smoke review binding; do not resume by appending to the truncated aggregate files.
 
 ```powershell
-python -B package/civilian/gain_runner.py --stage collect --config configs/GAIN_GATE_CONFIG.json --output outputs/r1-reproduction-run-001 --p1-review reviews/P1_ARCHIVE_REPRODUCTION_REVIEW.json --limit-instances-per-split 12 --conditions none_or_light task_update_or_arrival platform_failure_or_capability_loss energy_anomaly communication_degradation environment_or_obstacle_change compound --splits train validation
+python -B package/civilian/gain_runner.py --stage collect --config configs/GAIN_GATE_CONFIG.json --output outputs/new-v2-collection-run --v2-smoke-review reviews/V2_SMOKE_REVIEW_20261017_R3.json --limit-instances-per-split 12 --conditions none_or_light task_update_or_arrival platform_failure_or_capability_loss energy_anomaly communication_degradation environment_or_obstacle_change compound --splits train validation
 ```
 
-This command reproduces the bounded sampling scale, not the original run identity. The runner requires a new, nonexistent output directory and preserves failed run evidence. Do not run `train-light` on the current R1 data: its registered positive-label requirement fails.
+This command is a future reproduction template, not a claim that the archived interrupted run completed. The runner requires a new, nonexistent output directory and preserves failed run evidence. Do not run `train-light` until an independent collection audit confirms at least 30 positive and 30 non-positive ordinary states.
 
 ## Contents and Provenance
 
