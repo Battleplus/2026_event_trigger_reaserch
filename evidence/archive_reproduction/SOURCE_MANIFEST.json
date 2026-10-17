@@ -1,0 +1,405 @@
+{
+  "files": [
+    {
+      "path": "BASELINE_PROVENANCE.json",
+      "sha256": "3fa1a7d67c53f0d602da673d4ba1affd7c3a2e59dc03e4e37aed52a3483da986",
+      "size_bytes": 1669
+    },
+    {
+      "path": "configs/ENVIRONMENT_SPEC.json",
+      "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0",
+      "size_bytes": 578
+    },
+    {
+      "path": "configs/EVENT_TRIGGER_CONFIG.json",
+      "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009",
+      "size_bytes": 2420
+    },
+    {
+      "path": "configs/GAIN_GATE_CONFIG.json",
+      "sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+      "size_bytes": 3186
+    },
+    {
+      "path": "EXPERIMENT_PLAN.md",
+      "sha256": "9461e6e8efb9f2322aeb7c65da3c4ae4adc6c9fbbf0683b7c541596c5f412d2d",
+      "size_bytes": 198
+    },
+    {
+      "path": "EXPERIMENT_PROTOCOL.md",
+      "sha256": "f2b6eafb4f7943133ec079c4fbe1a2fac4616105438c721064421d3d934c2303",
+      "size_bytes": 986
+    },
+    {
+      "path": "MANIFEST.md",
+      "sha256": "c58c7f6edfcc413ae95ab10346dcf36b3051ee94347e74d5cac73842b05f4ea8",
+      "size_bytes": 1082
+    },
+    {
+      "path": "package/civilian/acceptance_harness.py",
+      "sha256": "7bc54625386514a3ccb0b645fc38d63d2393d650b3bc6e056c0e0ab52aa19c1d",
+      "size_bytes": 45973
+    },
+    {
+      "path": "package/civilian/baselines.py",
+      "sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+      "size_bytes": 5740
+    },
+    {
+      "path": "package/civilian/branching.py",
+      "sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58",
+      "size_bytes": 21373
+    },
+    {
+      "path": "package/civilian/budget_ledger.py",
+      "sha256": "108b420e30c16771d3eab6fadbf17a6e9e023f8cdb0f6606e6d39e8c8038cb46",
+      "size_bytes": 18098
+    },
+    {
+      "path": "package/civilian/chapter1_adapter.py",
+      "sha256": "160d9b59571fcfef043af22005a0527327574f3829256ba37eeda5a93f1674b4",
+      "size_bytes": 8036
+    },
+    {
+      "path": "package/civilian/cost_accounting.py",
+      "sha256": "739ffd363736aa3782476b7a4c8dd56a9c33416390156eb955a0fdc05e591071",
+      "size_bytes": 11431
+    },
+    {
+      "path": "package/civilian/counterfactual_pairs.py",
+      "sha256": "ffde06cbc7f9907528711f3d83d3732b3241f9fede0fa13abeecc9004746702f",
+      "size_bytes": 50745
+    },
+    {
+      "path": "package/civilian/dataset_protocol.py",
+      "sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1",
+      "size_bytes": 12779
+    },
+    {
+      "path": "package/civilian/driver.py",
+      "sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32",
+      "size_bytes": 88322
+    },
+    {
+      "path": "package/civilian/evaluator.py",
+      "sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6",
+      "size_bytes": 22513
+    },
+    {
+      "path": "package/civilian/event_environment.py",
+      "sha256": "99d63e17e0429b16f51bc0e9def8f2e9e926b74e4fbc6070a70ec5fcb1ce729f",
+      "size_bytes": 161339
+    },
+    {
+      "path": "package/civilian/event_models.py",
+      "sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
+      "size_bytes": 64177
+    },
+    {
+      "path": "package/civilian/event_oracle.py",
+      "sha256": "0258cd524d327fae49bf7bd535fd9533b02b7429e85d078377bcdeac4d324fc6",
+      "size_bytes": 39214
+    },
+    {
+      "path": "package/civilian/event_policy.py",
+      "sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9",
+      "size_bytes": 74048
+    },
+    {
+      "path": "package/civilian/event_runner.py",
+      "sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
+      "size_bytes": 96972
+    },
+    {
+      "path": "package/civilian/event_scenarios.py",
+      "sha256": "550ecf1e3cd337267276d5c3d414d68179370eae747ca8baccf323dc43350da6",
+      "size_bytes": 13098
+    },
+    {
+      "path": "package/civilian/event_trigger.py",
+      "sha256": "d672f72ad217953389143f67614c3768d57666ef070726f8a974f5a6f4c8b62f",
+      "size_bytes": 47084
+    },
+    {
+      "path": "package/civilian/execution_gate.py",
+      "sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a",
+      "size_bytes": 27914
+    },
+    {
+      "path": "package/civilian/fixed_replanner.py",
+      "sha256": "4a30b28df2293b3f36876e4484e5db35a0e07338a5b0943c95ea7fa0e6179d32",
+      "size_bytes": 14116
+    },
+    {
+      "path": "package/civilian/gain_analysis.py",
+      "sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9",
+      "size_bytes": 8736
+    },
+    {
+      "path": "package/civilian/gain_diagnostics.py",
+      "sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326",
+      "size_bytes": 24444
+    },
+    {
+      "path": "package/civilian/gain_evaluation.py",
+      "sha256": "472ca1ace70c95355c3671087d780918fcc86d62e75adbbcc11fdbab6980b6c7",
+      "size_bytes": 54722
+    },
+    {
+      "path": "package/civilian/gain_features.py",
+      "sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
+      "size_bytes": 11701
+    },
+    {
+      "path": "package/civilian/gain_gate.py",
+      "sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd",
+      "size_bytes": 2144
+    },
+    {
+      "path": "package/civilian/gain_models.py",
+      "sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c",
+      "size_bytes": 38919
+    },
+    {
+      "path": "package/civilian/gain_oracle.py",
+      "sha256": "4f95936d95c5db87399a92397be6ce24a0dae2823844e38d2e787546614dd912",
+      "size_bytes": 33820
+    },
+    {
+      "path": "package/civilian/gain_runner.py",
+      "sha256": "014f120836b850336c56c471a1b6028ce6af90ae0af629393d1104ca0b85886e",
+      "size_bytes": 149612
+    },
+    {
+      "path": "package/civilian/gain_safety.py",
+      "sha256": "e71bbf370c0c33c0fe49b70154dcceb2c700380ce575e9ce24f34f6498479be5",
+      "size_bytes": 15164
+    },
+    {
+      "path": "package/civilian/gain_scenarios.py",
+      "sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
+      "size_bytes": 37083
+    },
+    {
+      "path": "package/civilian/gain_variance.py",
+      "sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f",
+      "size_bytes": 25040
+    },
+    {
+      "path": "package/civilian/graph_policy.py",
+      "sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d",
+      "size_bytes": 35235
+    },
+    {
+      "path": "package/civilian/independent_consequence_oracle.py",
+      "sha256": "d72fc8cb405236b19f70c17f964bc920c25a6087a7678dd5b3caa0bbb82408ba",
+      "size_bytes": 29136
+    },
+    {
+      "path": "package/civilian/infra_io.py",
+      "sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace",
+      "size_bytes": 15517
+    },
+    {
+      "path": "package/civilian/literal_graph_ops.py",
+      "sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e",
+      "size_bytes": 9265
+    },
+    {
+      "path": "package/civilian/n2_stage_pipeline.py",
+      "sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964",
+      "size_bytes": 96844
+    },
+    {
+      "path": "package/civilian/package_layout.py",
+      "sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c",
+      "size_bytes": 4982
+    },
+    {
+      "path": "package/civilian/phase_handshake.py",
+      "sha256": "018e1b1da978ad229d75282d853f72aafb8d6762b70762bc5c983dc1979d96e5",
+      "size_bytes": 33935
+    },
+    {
+      "path": "package/civilian/ppo_trainer.py",
+      "sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a",
+      "size_bytes": 27948
+    },
+    {
+      "path": "package/civilian/process_guardian.py",
+      "sha256": "83c6f0e8947c6ee83394eb9c96376434e58e843693701bffdfbd7c7082945a6e",
+      "size_bytes": 65604
+    },
+    {
+      "path": "package/civilian/protocol_contract.py",
+      "sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b",
+      "size_bytes": 946
+    },
+    {
+      "path": "package/civilian/relief_env.py",
+      "sha256": "d070e36c27b236c6a1d142681a37a1cded910f01e069ac0ef0b040c30f4ba1c3",
+      "size_bytes": 55729
+    },
+    {
+      "path": "package/civilian/resource_supervisor.py",
+      "sha256": "d84fc78b18543e4a8ceceb40a8ccaa6c73c4953c9591497e9feaf101ab9a34e3",
+      "size_bytes": 46286
+    },
+    {
+      "path": "package/civilian/scenario_matrix.py",
+      "sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34",
+      "size_bytes": 17843
+    },
+    {
+      "path": "package/civilian/scenario_schema.py",
+      "sha256": "a436b07bd269bcfa5b6e7d73e77ee989d881fcabfebe5232c618db9f1b3a61ac",
+      "size_bytes": 32764
+    },
+    {
+      "path": "package/civilian/snapshot_contract.py",
+      "sha256": "1e309550b7cc72a498d2d2773d6ff941c87f42ef7ec36df6153a96a5f1a9c90e",
+      "size_bytes": 7216
+    },
+    {
+      "path": "package/civilian/stable_identity.py",
+      "sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef",
+      "size_bytes": 1429
+    },
+    {
+      "path": "package/civilian/test_synthetic_critic_interface.py",
+      "sha256": "d4e6c5f4a1cf9cd4fbbd05d120932596fecbbf25ae9806939238307424ec8008",
+      "size_bytes": 7230
+    },
+    {
+      "path": "package/civilian/wm_prediction_cache.py",
+      "sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
+      "size_bytes": 8678
+    },
+    {
+      "path": "package/civilian/world_model.py",
+      "sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5",
+      "size_bytes": 56827
+    },
+    {
+      "path": "package/tests/test_100x100_contract.py",
+      "sha256": "54acd5998ae311f77f1888a0f52c85599fc61b81249f5243874c1d4f5917abd7",
+      "size_bytes": 19922
+    },
+    {
+      "path": "package/tests/test_driver_close_snapshot.py",
+      "sha256": "db5bad004e586d5e5301df5b6073e4daa530c44d3a2ae0e3f91c75d9a16e6eac",
+      "size_bytes": 2878
+    },
+    {
+      "path": "package/tests/test_event_environment.py",
+      "sha256": "c55543b32da72ca05b796d25a35ae20027f3e309c332eea1b6b9d56ba0045410",
+      "size_bytes": 15350
+    },
+    {
+      "path": "package/tests/test_event_models.py",
+      "sha256": "2469c4002a171d91058b27e0538bb2ceb9b35c04567fc384608c3c2c5cb0adb6",
+      "size_bytes": 9501
+    },
+    {
+      "path": "package/tests/test_event_oracle.py",
+      "sha256": "a7c86982fb62ba5a1c37c1c7fe03e24762e363327404ac87a0b10920df95dcea",
+      "size_bytes": 5061
+    },
+    {
+      "path": "package/tests/test_event_policy.py",
+      "sha256": "5e9db2e1c1772cbe0fabab56922921732f1831bd4cde495188f25e1c8a3be27f",
+      "size_bytes": 21748
+    },
+    {
+      "path": "package/tests/test_event_runner.py",
+      "sha256": "0f0377571f202b66b70776b46500561fa9e3348c64c26222ca500c772cb4f519",
+      "size_bytes": 4362
+    },
+    {
+      "path": "package/tests/test_event_runner_metrics.py",
+      "sha256": "d97801247302f0f2f5560f74ac98bd1ed9e227247e3e371891ab23a383ff45e2",
+      "size_bytes": 9438
+    },
+    {
+      "path": "package/tests/test_event_trigger.py",
+      "sha256": "4ae7789f4ecf9c6eb94ab78326cdc83a90f17584838be6c3ae530dcfccc53dce",
+      "size_bytes": 9242
+    },
+    {
+      "path": "package/tests/test_gain_counterfactual_pairs.py",
+      "sha256": "0011b410ae453c6e4e135d5f56580639c9605e224054ca2b2a20ed1f8c053542",
+      "size_bytes": 15089
+    },
+    {
+      "path": "package/tests/test_gain_diagnostics.py",
+      "sha256": "08fc49869befaccd360d3081cdf2ea701d70a1b6f7d6625e4cf73704f066bdcf",
+      "size_bytes": 6628
+    },
+    {
+      "path": "package/tests/test_gain_evaluation.py",
+      "sha256": "14bcaa8cba5f9207ebcfbcba53d0cbfcd975047c3625d6a9a656819b101b629d",
+      "size_bytes": 12934
+    },
+    {
+      "path": "package/tests/test_gain_models_analysis.py",
+      "sha256": "fffe18a8a064c872830eb151c99949698f3d465743a2610f1c20e421d851d7ea",
+      "size_bytes": 7391
+    },
+    {
+      "path": "package/tests/test_gain_runner.py",
+      "sha256": "f18b91ff0faa8db001bd3afc13a5afbb06b865a79a0d490873125685ce386df3",
+      "size_bytes": 9333
+    },
+    {
+      "path": "package/tests/test_gain_safety.py",
+      "sha256": "37f7abe20f2fdcced96dc7dd0d30f43b445586669459c487b6fb1f76f56f2136",
+      "size_bytes": 11371
+    },
+    {
+      "path": "package/tests/test_gain_variance.py",
+      "sha256": "ab9efd29eaeac980ebffd07da277311453cc82c382cc3451a082b6fbc36067ea",
+      "size_bytes": 7010
+    },
+    {
+      "path": "protocols/AMENDMENT_ATTEMPT_COOLDOWN_BASELINE_20261017.md",
+      "sha256": "4511b978a0d13a54705c6bd6c0702bcbead3b39624971c97f501b8f35e5a9735",
+      "size_bytes": 2392
+    },
+    {
+      "path": "protocols/AMENDMENT_SINGLE_TERMINAL_PENALTY_20261017T045635Z.md",
+      "sha256": "f635503ed3328a09df1cd2383531cee3b3d5a321b8a092343131722a0db5e5c3",
+      "size_bytes": 2364
+    },
+    {
+      "path": "protocols/CH2_GAIN_GATE_PLAN_20261017T040502Z.md",
+      "sha256": "6e2b108a4337483a53c6c760cbc3766107637fc2104ca94d07f98af0c340438f",
+      "size_bytes": 9943
+    },
+    {
+      "path": "protocols/EXPERIMENT_PLAN_20261017T040502Z.md",
+      "sha256": "9794fbf22b99eee396969fe1778982c48bdc4c4f053ed49f8b4ed06ade9ae122",
+      "size_bytes": 261
+    },
+    {
+      "path": "protocols/EXPERIMENT_PROTOCOL_20261017T040502Z.md",
+      "sha256": "211380419865dbcdcd3ac60deea550f700f126cbaa9124687568205445135a74",
+      "size_bytes": 815
+    },
+    {
+      "path": "REPO_AUDIT.md",
+      "sha256": "c00f0e21e179ae089a85ecb40c0166808f4109f440a5382beca89708bd7b14a0",
+      "size_bytes": 2653
+    },
+    {
+      "path": "REUSE_INVENTORY.json",
+      "sha256": "e027bde5a791ac5ff261ceb0af663cf7223d6c4434f30c56f2187546fd8402ac",
+      "size_bytes": 2904
+    },
+    {
+      "path": "STATUS.md",
+      "sha256": "1cd66a23bfe24f88a8ecfb5eea5b41a264b739cf224ceca8a4dc61368d09c53c",
+      "size_bytes": 1273
+    }
+  ],
+  "schema": "gain-gate-source-manifest/1"
+}

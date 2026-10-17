@@ -1,0 +1,34 @@
+{
+  "schema": "gain-gate-p1-review/1",
+  "decision": "PASS",
+  "reviewer_model": "Codex GPT-6 root coordinator (read-only technical audit)",
+  "reviewer_role": "primary coordinator and technical reviewer; not GPT-6.1 Sol High",
+  "review_date": "2026-10-17",
+  "smoke_run_id": "20261017T063901Z-b9f74c9505c9",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "source_manifest_sha256": "fdd037e0d6fe08a1898560518d00be8c10fa7df122aed061fa7df972ce695522",
+  "evidence_manifest_path": "outputs/p1-smoke-20261017-oracle-reset/EVIDENCE_MANIFEST.json",
+  "evidence_manifest_sha256": "2315feb7bf0a8a14f19d51b3ce2657c9a7f483c43d027f44d391486290fbf35a",
+  "scope": [
+    "source",
+    "smoke",
+    "pairing",
+    "oracle",
+    "leakage",
+    "timing"
+  ],
+  "checks": {
+    "source": "100x100 source boundary refreshed; forbidden source matches 0; inventory binding refreshed after oracle reset fix",
+    "smoke": "18 pilot instances completed; 0 engineering issues; all integrity probes true",
+    "pairing": "matched snapshots and suffixes; deterministic physical replay true",
+    "oracle": "all valid labels independently recomputed; tampered label rejected; failure-reset semantics covered by regression test",
+    "leakage": "public features invariant to hidden future data; planner/candidate generation isolated behind fixed replanner",
+    "timing": "CPU/BLAS/thread receipts and feature/planner timing recorded"
+  },
+  "limitations": [
+    "Pilot evidence only; no formal train/validation/test or scientific effectiveness claim.",
+    "Simulator time resolution remains one minute for action delay."
+  ],
+  "source_boundary_audit": "SOURCE_BOUNDARY_AUDIT.json",
+  "full_test_result": "Focused oracle/pair/safety tests 21 passed after reset fix; full 108-file test run remains valid until this source edit and must be rerun before final freeze."
+}

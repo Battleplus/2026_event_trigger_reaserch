@@ -1,0 +1,48 @@
+{
+  "schema": "gain-gate-p2-r1-review/1",
+  "review_date": "2026-10-17",
+  "reviewer_model": "Codex root coordinator; actual runtime model identifier not exposed",
+  "reviewer_role": "read-only technical review of Luna implementation; not GPT-6.1 Sol High",
+  "engineering": "REPAIR_REQUIRED",
+  "method": "INCONCLUSIVE",
+  "world_model": "NOT_RUN",
+  "decision": "STOP_DEPENDENT_EXPERIMENTS",
+  "collection_run_id": "20261017T074054Z-0c1d79d1d75a",
+  "evidence_manifest_sha256": "fdc92c9519952b76940f5929fe0d2f1162056669ed19f0852b76ee27030b19d7",
+  "verified_evidence_files": 3100,
+  "hash_mismatches": 0,
+  "revision": "R1: 3 to 12 independent instances per condition per split; DGP/cost/replanner unchanged",
+  "rows": 731,
+  "scenarios": 168,
+  "valid_ordinary": 243,
+  "positive_ordinary": 2,
+  "nonpositive_ordinary": 241,
+  "only_noop_candidates_valid": 229,
+  "forced_invalid": 381,
+  "ordinary_invalid": 107,
+  "unresolved_safety_disposition_count": 221,
+  "collection_error_counts_per_suffix": {
+    "counterfactual horizon contains no active logical obligations": 204
+  },
+  "training_started_after_r1": false,
+  "test_or_ood_read": false,
+  "cpu_seconds": 4776.9375,
+  "wall_seconds": 5738.37,
+  "peak_rss_bytes": 419475456,
+  "reasons": [
+    "Positive-label entry gate 30 not met; train has one positive and validation one positive.",
+    "All valid ordinary labels originate from Periodic-4min; trigger-conditioned signal lacks coverage.",
+    "229 of 243 valid ordinary states have only NOOP; the catalog rarely offers a meaningful alternative.",
+    "221 unresolved safety dispositions prevent an expanded engineering PASS.",
+    "107 unknown pairs are retained with masks; they must not be relabelled as negative gains."
+  ],
+  "next_steps": [
+    "Do not run event/world models, PPO migration, formal test or effectiveness claims under this version.",
+    "Archive source, protocol, pilot diagnostics and failures under a diagnostic branch with no light-model success tag.",
+    "A future version must repair safety fallback and candidate opportunity/ordinary trigger coverage under a separately frozen protocol; do not search seeds or alter costs to manufacture positive gains."
+  ],
+  "limitations": [
+    "Simulation-only pilot; no method-effectiveness inference.",
+    "Earlier P1 PASS is limited smoke evidence and does not override the failures found at expanded scale."
+  ]
+}

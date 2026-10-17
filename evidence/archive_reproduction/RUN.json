@@ -1,0 +1,102 @@
+{
+  "blas_threadpools": {
+    "available": true,
+    "limit_enforced": true,
+    "observed_pool_count": 3,
+    "pools": [
+      {
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libiomp",
+        "user_api": "openmp"
+      },
+      {
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libiomp",
+        "user_api": "openmp"
+      },
+      {
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "user_api": "blas"
+      }
+    ]
+  },
+  "config_path": "configs/GAIN_GATE_CONFIG.json",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "cpu_affinity_count": 1,
+  "created_utc": "2026-10-17T09:32:33.786066+00:00",
+  "device": "cpu",
+  "platform": "Windows-11-10.0.26100-SP0",
+  "project_git_metadata_available": true,
+  "python_version": "3.14.4",
+  "run_id": "20261017T093233Z-b1399cd6ad6d",
+  "runtime": {
+    "blas_threadpools": {
+      "available": true,
+      "limit_enforced": true,
+      "observed_pool_count": 3,
+      "pools": [
+        {
+          "internal_api": "openmp",
+          "num_threads": 1,
+          "prefix": "libiomp",
+          "user_api": "openmp"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 1,
+          "prefix": "libiomp",
+          "user_api": "openmp"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 1,
+          "prefix": "libscipy_openblas",
+          "user_api": "blas"
+        }
+      ]
+    },
+    "cpu_affinity": [
+      0
+    ],
+    "cpu_affinity_enforced": true,
+    "cpu_model": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "cuda_visible_devices": "",
+    "package_versions": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.7.0",
+      "torch": "2.13.0"
+    },
+    "peak_rss_bytes": 221245440,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python_version": "3.14.4",
+    "schema": "gain-runtime-receipt/1",
+    "stage": "smoke",
+    "torch": {
+      "available": true,
+      "cuda_available": false,
+      "cuda_is_initialized": false,
+      "cuda_visible_devices": "",
+      "threads": {
+        "interop": 1,
+        "intraop": 1
+      },
+      "version": "2.13.0+cpu"
+    }
+  },
+  "schema": "gain-gate-run/1",
+  "source_manifest_path": "SOURCE_MANIFEST.json",
+  "source_manifest_sha256": "c61cf4aaea4c2d450610707eaf34d769e4b8c235ad7b2505e2af7aafa6c31024",
+  "stage": "smoke",
+  "status": "complete",
+  "thread_settings_status": "measured",
+  "torch_threads": {
+    "interop": 1,
+    "intraop": 1
+  }
+}

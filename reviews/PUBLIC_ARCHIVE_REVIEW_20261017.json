@@ -1,0 +1,32 @@
+{
+  "schema": "gain-gate-public-archive-review/1",
+  "reviewer": "Codex root coordinator; read-only source/evidence audit",
+  "actual_reviewer_model": "runtime model identifier not exposed; not GPT-6.1 Sol High",
+  "date": "2026-10-17",
+  "archive_disposition": "APPROVED_DIAGNOSTIC_ARCHIVE",
+  "engineering": "REPAIR_REQUIRED",
+  "method": "INCONCLUSIVE",
+  "world_model": "NOT_RUN",
+  "checks": {
+    "source_and_config_match_luna_execution": true,
+    "package_tests": 110,
+    "archive_helper_tests": 4,
+    "archive_smoke": "18 instances; 11 valid labels; all probes true; zero issues",
+    "archive_review_gate_validation": "complete",
+    "r1_evidence_hashes_verified": 3100,
+    "r1_hash_mismatches": 0,
+    "no_test_or_ood_run": true,
+    "no_success_training_tag": true
+  },
+  "publication_scope": "source, protocols, historical reviews, diagnostic and explicit evidence projections; local raw runs are not published",
+  "limitations": [
+    "R1 has 221 unresolved safety dispositions and 107 masked ordinary labels; engineering is not PASS.",
+    "Only 2 positive ordinary labels; no learned-method efficacy evidence.",
+    "Public smoke evidence manifest is an explicit reduced projection; original full raw evidence hash and local verification are disclosed in its review.",
+    "No standalone release asset containing raw trajectories or checkpoints is provided for this diagnostic snapshot."
+  ],
+  "archive_transport": {
+    "attributes": "* -text",
+    "purpose": "Preserve frozen source and evidence bytes across Git checkout; no source/config changes."
+  }
+}

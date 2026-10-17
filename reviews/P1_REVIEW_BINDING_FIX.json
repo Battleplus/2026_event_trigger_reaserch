@@ -1,0 +1,30 @@
+{
+  "schema": "gain-gate-p1-review/1",
+  "decision": "PASS",
+  "reviewer_model": "Codex GPT-6 root coordinator (read-only technical audit)",
+  "reviewer_role": "primary coordinator and technical reviewer; not GPT-6.1 Sol High",
+  "review_date": "2026-10-17",
+  "smoke_run_id": "20261017T071837Z-dc950935b484",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "source_manifest_sha256": "3d89082975ea5c1d9c6b3ac9de7657608a5a2e76febf332c29800b6c4e026382",
+  "evidence_manifest_path": "outputs/p1-smoke-20261017-binding-fix/EVIDENCE_MANIFEST.json",
+  "evidence_manifest_sha256": "c53d08fbe6a8bd120b7537e0af581f968e36b9778d4ec3573dc58b15e39ef7b8",
+  "scope": ["source", "smoke", "pairing", "oracle", "leakage", "timing", "forced-label-binding"],
+  "checks": {
+    "source": "Binding-fix source manifest regenerated; smoke source hash matches this review; no forbidden source-boundary artifact was introduced",
+    "smoke": "18 pilot instances completed with 0 engineering issues",
+    "pairing": "Matched snapshot/suffix contract and deterministic physical replay remain true",
+    "oracle": "Valid labels independently recomputed and label tamper rejected; forced safety labels are explicitly non-paired",
+    "leakage": "Public features invariant to hidden future data; complete candidate generation remains inside fixed replanner",
+    "timing": "Single-CPU runtime, feature time and planner time recorded",
+    "forced_label_binding": "Forced labels may have audit suffix files but zero counterfactual pairs; regression test covers this contract"
+  },
+  "limitations": [
+    "This is pilot engineering evidence only; it makes no scientific effectiveness claim.",
+    "The formal collection and light-model signal check remain pending.",
+    "Simulator time resolution remains one minute for action delay."
+  ],
+  "source_boundary_audit": "SOURCE_BOUNDARY_AUDIT.json",
+  "focused_test_result": "18 focused runner/pair/safety tests passed after binding fix",
+  "full_test_result": "The full package test inventory must be rerun before final release freeze."
+}

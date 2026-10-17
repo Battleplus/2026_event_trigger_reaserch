@@ -1,0 +1,43 @@
+{
+  "schema": "gain-gate-p1-review/1",
+  "decision": "PASS",
+  "reviewer_model": "Codex root coordinator; actual runtime model identifier not exposed",
+  "reviewer_role": "read-only technical reviewer, not GPT-6.1 Sol High",
+  "review_date": "2026-10-17",
+  "smoke_run_id": "20261017T093233Z-b1399cd6ad6d",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "source_manifest_sha256": "c61cf4aaea4c2d450610707eaf34d769e4b8c235ad7b2505e2af7aafa6c31024",
+  "evidence_manifest_path": "evidence/archive_reproduction/EVIDENCE_MANIFEST.json",
+  "evidence_manifest_sha256": "c32eac9ba2e373e6e700d2926d6d662bd97cea22ced01bf5afe6e2e6e88ba3c0",
+  "original_full_evidence_manifest_sha256": "28e93fe5f9c5f2ffe8b0d8059127f7b6ace527439f9efcf3335101136d3ef32a",
+  "scope": [
+    "source",
+    "smoke",
+    "pairing",
+    "oracle",
+    "leakage",
+    "timing"
+  ],
+  "checks": {
+    "all_forced_dispositions_resolved": true,
+    "all_labels_independently_recomputed": true,
+    "forced_event_bypasses_predictor_and_calls_replanner": true,
+    "full_candidate_generation_only_inside_replanner": true,
+    "label_tamper_rejected_by_independent_oracle": true,
+    "ordinary_event_predictor_called_once": true,
+    "physical_replay_deterministic": true,
+    "public_features_invariant_to_hidden_future_data": true,
+    "safe_continuation_used_by_both_arms": true,
+    "suppressed_ordinary_event_has_zero_planner_calls": true
+  },
+  "tests": {
+    "package_passed": 110,
+    "package_seconds": 25.35,
+    "archive_helper_passed": 4
+  },
+  "projection_disclosure": "Reviewer verified all 79 full raw smoke evidence files locally with zero hash mismatches. Public manifest explicitly contains only 4 summary/runtime/source/resource artifacts, linked by original manifest hash; raw simulated trajectories remain local. No raw evidence was edited.",
+  "limitations": [
+    "PASS applies only to the 18-instance reproduction smoke and permits diagnostic collection under this source; it does not override P2 R1 REPAIR_REQUIRED or INCONCLUSIVE.",
+    "No light-model training, world model, PPO, test or OOD success is claimed."
+  ]
+}

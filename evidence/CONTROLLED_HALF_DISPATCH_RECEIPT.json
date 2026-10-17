@@ -1,0 +1,50 @@
+{
+  "schema": "gain-gate-controlled-half-dispatch-receipt/1",
+  "status": "COMPLETE",
+  "run_date": "2026-10-17",
+  "command": "python -B evidence/p1_foundation_probes.py",
+  "probe_script": {
+    "path": "evidence/p1_foundation_probes.py",
+    "sha256": "d8450ac68d7edf5d788f26e748add0decbc4481d69b9891fd076a9520aecd1b7",
+    "size_bytes": 6685
+  },
+  "historical_archive": {
+    "path": "../ch2_disaster_relief_n02_event_trigger_v1_100x100/evidence/n02-event-v1-7e2445a08ceb479daaaffc9eecb79ad5.tar.gz",
+    "sha256": "ad3a79e67c68d8faeefef6431353dd68b628f0383527583bfa26cf60b1e27e8e",
+    "size_bytes": 327930
+  },
+  "historical_failure_receipt": {
+    "path": "../ch2_disaster_relief_n02_event_trigger_v1_100x100/evidence/n02-event-v1-7e2445a08ceb479daaaffc9eecb79ad5-result/FIRST_FAILURE.json",
+    "sha256": "133a2cbf256ffaa44d7ea51a56ee5c4060a5b0e4006744da0ed845ecaaec8611",
+    "size_bytes": 1366,
+    "stage": "m2",
+    "type": "ValueError",
+    "message": "cooperative subworkloads must dispatch as a pair"
+  },
+  "controlled_half_dispatch_injection": true,
+  "archived_pre_fix": {
+    "status": "raised",
+    "exception": "ValueError",
+    "message": "cooperative subworkloads must dispatch as a pair",
+    "target_child": "n02-task-05::team-01-2"
+  },
+  "current_atomic_guard": {
+    "status": "returned",
+    "target_child": "n02-task-05::team-01-2",
+    "operational_dispatches": [],
+    "pair_waits": [
+      {
+        "delivery_time": 2,
+        "platform_id": "n02-uav-2",
+        "task_id": "n02-task-05::team-01-2",
+        "time": 1,
+        "type": "cooperative_pair_wait"
+      }
+    ]
+  },
+  "registry_validation_without_execution_gate": {
+    "passed": true,
+    "scenario_count": 3
+  },
+  "scope_note": "This is a controlled half-dispatch injection against the archived pre-fix implementation and the current copy. It reproduces the failure condition and verifies the atomic guard; it is not a replay of the complete original M2 trajectory and is not a scientific result."
+}

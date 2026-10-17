@@ -1,0 +1,57 @@
+{
+  "schema": "gain-gate-interim-review/1",
+  "reviewer_role": "root technical reviewer, separate from Luna implementation",
+  "reviewer_model": "Codex GPT-6; deployment alias unavailable; not Sol High",
+  "decision": "REPAIR_REQUIRED",
+  "formal_collection_authorized": false,
+  "review_type": "read_only_source_inspection_before_freeze",
+  "findings": [
+    {
+      "id": "EVAL-01",
+      "file": "package/civilian/gain_evaluation.py",
+      "finding": "In-progress monitor CPU aggregation summed lists instead of numeric totals.",
+      "required": "Correct aggregation and exercise a full episode in an integration test."
+    },
+    {
+      "id": "EVAL-02",
+      "file": "package/civilian/gain_evaluation.py",
+      "finding": "The function named recompute_episode_score still called the production cost function, so it did not provide independent arithmetic verification.",
+      "required": "Independently recompute raw trajectory cost and bind parity to production totals."
+    },
+    {
+      "id": "EVAL-03",
+      "file": "package/civilian/gain_evaluation.py",
+      "finding": "Per-method task priority collection could create different quality denominators.",
+      "required": "Use one passive observer per scenario for the shared first-public task obligation universe; explicitly reject unsupported task cancellation."
+    },
+    {
+      "id": "EVAL-04",
+      "file": "package/civilian/gain_evaluation.py",
+      "finding": "Endpoint safety was treated as requiring another decision, and all unresolved-safety episodes lost their score.",
+      "required": "Do not demand a new decision at the episode horizon; preserve costs of complete unsafe episodes with explicit failure status, without selecting only safe successes."
+    },
+    {
+      "id": "EVAL-05",
+      "file": "package/civilian/gain_evaluation.py",
+      "finding": "Wrapper action validation was repeated in evaluation and charged again.",
+      "required": "Keep inclusive planner timing and count each repair/validation operation once; retain preexecution validation semantics."
+    },
+    {
+      "id": "DATA-01",
+      "file": "package/civilian/gain_runner.py",
+      "finding": "Raw tape-content overlap across shards rejected independent scenes sharing an empty event tape.",
+      "required": "Scope tape lineage to scenario content; retain rejection of copied scenes, snapshots, state identities and generation lineage."
+    },
+    {
+      "id": "DATA-02",
+      "file": "package/civilian/gain_runner.py",
+      "finding": "The required training-only 20-state K=8 noise diagnostic was not implemented at inspection time.",
+      "required": "Select states without looking at gains, store paired raw evidence and independent recomputation, and compare K=2/K=8 variability before interpreting Oracle headroom."
+    }
+  ],
+  "limits": [
+    "This is an interim report on changing source, not a frozen-version approval.",
+    "Worker-reported focused test passes have not yet replaced the root final test run.",
+    "No genuine gain-model experiment result is established by this report."
+  ]
+}

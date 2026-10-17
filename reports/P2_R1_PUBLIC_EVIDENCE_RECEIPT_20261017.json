@@ -1,0 +1,108 @@
+{
+  "schema": "gain-gate-public-collection-receipt/1",
+  "revision": "R1-sample-scale-only",
+  "stage": "collect",
+  "status": "complete",
+  "engineering_decision": "REPAIR_REQUIRED",
+  "run_id": "20261017T074054Z-0c1d79d1d75a",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "source_manifest_sha256": "3d89082975ea5c1d9c6b3ac9de7657608a5a2e76febf332c29800b6c4e026382",
+  "replanner_version": "Public-C1-Catalog-Replanner-v1",
+  "collection": {
+    "conditions": 7,
+    "splits": ["train", "validation"],
+    "instances_per_condition_per_split": 12,
+    "scenario_instances": 168,
+    "test_labels_collected": false,
+    "full_formal_scale": false,
+    "rows": 731,
+    "valid_ordinary_labels": 243,
+    "positive_ordinary_labels": 2,
+    "nonpositive_ordinary_labels": 241,
+    "forced_nonpaired_rows": 381,
+    "ordinary_pair_failures_masked": 107,
+    "per_suffix_error_counts": {
+      "counterfactual horizon contains no active logical obligations": 204
+    },
+    "per_suffix_error_interpretation": "Suffix-level occurrences; not a pair-row count. Other suffixes may also make pair rows invalid.",
+    "unresolved_safety_dispositions": 221,
+    "single_noop_candidate_states": 229,
+    "selected_noop_actions": 238,
+    "valid_ordinary_source_counts": {
+      "Existing-ET": 0,
+      "Periodic-4min": 243,
+      "Random-Allow-Suppress": 0
+    }
+  },
+  "gain_summary": {
+    "mean": -0.03607657800420585,
+    "median": -0.05031249999999998,
+    "minimum": -0.18911981257418053,
+    "maximum": 2.2939402475288673
+  },
+  "resources": {
+    "stage_cpu_seconds": 4776.9375,
+    "stage_wall_seconds": 5738.366659200008,
+    "peak_rss_bytes": 419475456,
+    "local_payload_bytes": 221533346,
+    "project_cpu_seconds_after_stage": 7553.9375,
+    "project_cpu_budget_seconds": 86400,
+    "device": "cpu",
+    "cpu_affinity_count": 1,
+    "cuda_enabled": false
+  },
+  "artifacts": {
+    "collection_report": {
+      "path": "outputs/p2-collect-r1-12x-20261017/COLLECTION_REPORT.json",
+      "sha256": "c26633752c4ce3d3aa0d8c0c67242410ad0a07da1c153d1f73ddeed35dfcf8ab"
+    },
+    "collection_rows": {
+      "path": "outputs/p2-collect-r1-12x-20261017/COLLECTION_ROWS.jsonl.gz",
+      "sha256": "2ea96129e28e0daa4784c306ac71c37543657456bb32b207e9cd96347a1f4599",
+      "size_bytes": 802796
+    },
+    "scenario_outcomes": {
+      "path": "outputs/p2-collect-r1-12x-20261017/SCENARIO_OUTCOMES.jsonl.gz",
+      "sha256": "31e75f76a78a94df23a9f81e99ca66a1881b4ce923264825931aab1f20034878",
+      "size_bytes": 32433
+    },
+    "evidence_manifest": {
+      "path": "outputs/p2-collect-r1-12x-20261017/EVIDENCE_MANIFEST.json",
+      "sha256": "fdc92c9519952b76940f5929fe0d2f1162056669ed19f0852b76ee27030b19d7",
+      "verified_file_count": 3100,
+      "raw_payload_published": false
+    }
+  },
+  "decision": {
+    "engineering": "REPAIR_REQUIRED",
+    "engineering_reasons": [
+      "221 unresolved safety dispositions",
+      "Simulator safety-control-link fallback is unmet"
+    ],
+    "method": "INCONCLUSIVE",
+    "train_light": "NOT_RUN_ENTRY_REQUIREMENT_FAILED",
+    "world_model": "STOPPED_NOT_RUN_UNDER_V1",
+    "ppo_transfer": "STOPPED_NOT_RUN_UNDER_V1",
+    "test_ood": "NOT_RUN",
+    "next_data_revision_authorized": false,
+    "dependent_experiments_authorized": false
+  },
+  "controlling_review": {
+    "path": "reviews/P2_R1_REVIEW_20261017.json",
+    "sha256": "ffebbf70050c49f7bd2b4ce125e2a74223dfb5b69631bb3c9a2752303175dcc6",
+    "engineering": "REPAIR_REQUIRED",
+    "method": "INCONCLUSIVE",
+    "decision": "STOP_DEPENDENT_EXPERIMENTS",
+    "verified_evidence_files": 3100,
+    "hash_mismatches": 0
+  },
+  "limitations": [
+    "Only 2 positive ordinary states were observed; the registered minimum is 30.",
+    "Only Periodic-4min supplied valid ordinary labels in this pilot.",
+    "The expanded run has unresolved safety dispositions and an unmet simulator safety-control-link fallback.",
+    "Per-suffix errors do not map one-to-one to the 107 masked ordinary pair rows.",
+    "The collection is a bounded sample-scale pilot, not a formal test or OOD result.",
+    "No method-effectiveness claim is supported by this collection alone.",
+    "No additional data revision or dependent experiment is authorized under v1."
+  ]
+}

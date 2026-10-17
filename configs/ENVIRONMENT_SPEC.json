@@ -1,0 +1,23 @@
+{
+  "schema": "n02-event-cpu-environment/1",
+  "python": "3.11.16",
+  "torch": "2.7.0+cu128",
+  "numpy": "1.26.0",
+  "device": "cpu",
+  "threads": 1,
+  "cpu_affinity": [
+    0
+  ],
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "kernel_witness": {
+    "seed": 8201,
+    "operation": "8x8 float32 torch x @ x.T; finite and sha256"
+  },
+  "reuse": "Existing pinned N02 runtime; no installation, rebuild or checkpoint reuse"
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "gain-gate-source-boundary-audit/1",
+  "generated_on": "2026-10-17",
+  "inventory_path": "SOURCE_FILE_INVENTORY.json",
+  "inventory_sha256": "7a4f78620972b9d443bed7c25dce8beaf78f04af8ab1425a802e2d1a3fcf21c0",
+  "excluded_working_tree_roots": [
+    "evidence",
+    "outputs",
+    "reviews",
+    "_pytest-temp",
+    ".deps"
+  ],
+  "excluded_artifact_classes": [
+    "credentials and tokens",
+    "authorization material",
+    "private databases",
+    "runtime evidence and run directories",
+    "model checkpoints",
+    "prior resource cost artifacts",
+    "Python bytecode and caches"
+  ],
+  "source_boundary": {
+    "included_roots": [
+      "package",
+      "configs",
+      "protocols",
+      "tools",
+      "staging_tools"
+    ],
+    "root_metadata": [
+      "BASELINE_PROVENANCE.json",
+      "EXPERIMENT_PLAN.md",
+      "EXPERIMENT_PROTOCOL.md",
+      "MANIFEST.md",
+      "REPO_AUDIT.md",
+      "REUSE_INVENTORY.json",
+      "STATUS.md"
+    ],
+    "excluded_path_regex": "\\\\(__pycache__|outputs|evidence|reviews|_pytest-temp|pytest|\\\\.deps)(\\\\|$)",
+    "excluded_extensions": [
+      ".pyc",
+      ".pyo",
+      ".pt",
+      ".sqlite",
+      ".db"
+    ],
+    "inventory_file_excluded": true,
+    "boundary_audit_file_excluded": true
+  },
+  "result": {
+    "excluded_roots_present": 5,
+    "source_boundary_forbidden_matches": 0,
+    "review_basis": "zero forbidden matches and explicit excluded artifact classes",
+    "reviewed_by": "root coordinator",
+    "status": "PASS"
+  },
+  "source_tree_not_read": [
+    "credentials",
+    "tokens",
+    "authorization material",
+    "private databases"
+  ]
+}

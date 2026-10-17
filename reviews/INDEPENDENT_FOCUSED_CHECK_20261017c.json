@@ -1,0 +1,14 @@
+{
+  "schema": "gain-interim-test-check/1",
+  "reviewer_model": "Codex GPT-6 (deployment alias unavailable)",
+  "decision": "REPAIR",
+  "tests": {
+    "passed": 19,
+    "failed": 1,
+    "elapsed_seconds": 12.21
+  },
+  "failure": "test_proportional_energy_loss_never_recharges_an_already_depleted_platform: blocked before energy assertion by in-progress C1 receipt schema migration",
+  "source_frozen": false,
+  "scientific_result": false,
+  "note": "Existing known migration failure; no stage approval. Wait for owner frozen submission before next full suite."
+}

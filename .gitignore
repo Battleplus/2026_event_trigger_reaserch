@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+outputs/
+.deps/
+checkpoints/
+**/archive-helper-*/
+package/tests/_pytest*/
+package/tests/.gain-*/
+package/tests/tmp*/

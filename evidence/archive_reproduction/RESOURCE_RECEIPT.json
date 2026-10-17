@@ -1,0 +1,100 @@
+{
+  "error": null,
+  "ledger_path": "outputs\\PROJECT_CPU_LEDGER.jsonl",
+  "peak_rss_bytes": 318640128,
+  "project_cpu_budget_seconds": 86400.0,
+  "project_cpu_seconds_before": 0,
+  "project_cpu_seconds_including_stage": 67.71875,
+  "recorded_utc": "2026-10-17T09:33:56.124010+00:00",
+  "resource_contract": {
+    "cpu_affinity": [
+      0
+    ],
+    "cpu_affinity_enforced": true,
+    "cpu_model": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "cuda_visible_devices": "",
+    "package_versions": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.7.0",
+      "torch": "2.13.0"
+    },
+    "torch": {
+      "available": true,
+      "cuda_available": false,
+      "cuda_is_initialized": false,
+      "cuda_visible_devices": "",
+      "threads": {
+        "interop": 1,
+        "intraop": 1
+      },
+      "version": "2.13.0+cpu"
+    }
+  },
+  "rss_budget_bytes": 8589934592,
+  "run_id": "20261017T093233Z-b1399cd6ad6d",
+  "runtime_receipt": {
+    "blas_threadpools": {
+      "available": true,
+      "limit_enforced": true,
+      "observed_pool_count": 3,
+      "pools": [
+        {
+          "internal_api": "openmp",
+          "num_threads": 1,
+          "prefix": "libiomp",
+          "user_api": "openmp"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 1,
+          "prefix": "libiomp",
+          "user_api": "openmp"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 1,
+          "prefix": "libscipy_openblas",
+          "user_api": "blas"
+        }
+      ]
+    },
+    "cpu_affinity": [
+      0
+    ],
+    "cpu_affinity_enforced": true,
+    "cpu_model": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "cuda_visible_devices": "",
+    "package_versions": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.7.0",
+      "torch": "2.13.0"
+    },
+    "peak_rss_bytes": 221245440,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python_version": "3.14.4",
+    "schema": "gain-runtime-receipt/1",
+    "stage": "smoke",
+    "torch": {
+      "available": true,
+      "cuda_available": false,
+      "cuda_is_initialized": false,
+      "cuda_visible_devices": "",
+      "threads": {
+        "interop": 1,
+        "intraop": 1
+      },
+      "version": "2.13.0+cpu"
+    }
+  },
+  "schema": "gain-stage-resource-receipt/1",
+  "stage": "smoke",
+  "stage_process_cpu_seconds": 67.71875,
+  "stage_wall_budget_seconds": 7200.0,
+  "stage_wall_seconds": 82.49325869999302,
+  "status": "complete",
+  "verified_child_cpu_seconds": 0.0
+}

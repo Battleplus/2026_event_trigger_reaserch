@@ -1,0 +1,53 @@
+{
+  "schema": "gain-gate-reuse-inventory/1",
+  "direct_source": {
+    "kind": "local_event_trigger_working_tree",
+    "path": "development/ch2_disaster_relief_n02_event_trigger_v1_100x100",
+    "file_count": 35,
+    "canonical_sha256_prefix": "96fe97"
+  },
+  "upstream": {
+    "repository": "Battleplus/2026_GPPO_10.16",
+    "tag": "n02-minimal-closure-v1",
+    "ancestor_commit": "1ca6ddc0df21bc0c54e7ff8cb5ac7a6960229cba",
+    "relationship": "upstream ancestor; not an exact commit for the local Event V1 working tree"
+  },
+  "per_file_source_hashes": "SOURCE_FILE_INVENTORY.json (generated at the P0 foundation freeze)",
+  "copied": {
+    "civilian_python_modules": [
+      "baselines.py", "branching.py", "chapter1_adapter.py", "dataset_protocol.py",
+      "driver.py", "event_environment.py", "event_models.py", "event_oracle.py",
+      "event_policy.py", "event_runner.py", "event_scenarios.py", "event_trigger.py",
+      "execution_gate.py", "independent_consequence_oracle.py", "literal_graph_ops.py",
+      "n2_stage_pipeline.py", "package_layout.py", "phase_handshake.py", "ppo_trainer.py",
+      "protocol_contract.py", "relief_env.py", "scenario_matrix.py", "scenario_schema.py",
+      "snapshot_contract.py", "stable_identity.py", "world_model.py", "wm_prediction_cache.py"
+    ],
+    "tests": [
+      "test_100x100_contract.py", "test_driver_close_snapshot.py", "test_event_environment.py",
+      "test_event_models.py", "test_event_oracle.py", "test_event_policy.py",
+      "test_event_runner.py", "test_event_runner_metrics.py", "test_event_trigger.py"
+    ],
+    "public_data": [
+      "civilian/fixtures/*.json",
+      "civilian/registered_data/input_registry.json",
+      "civilian/registered_data/fixtures/*.json",
+      "civilian/registered_data/data/train/*.json",
+      "civilian/registered_data/data/development/*.json"
+    ],
+    "configs": ["EVENT_TRIGGER_CONFIG.json", "ENVIRONMENT_SPEC.json"]
+  },
+  "excluded": [
+    "PRIOR_RESOURCE_COST.json", "runtime authorization and remote helpers",
+    "source evidence and run directories", "model checkpoints", "tokens and credentials",
+    "private databases", "personal absolute paths"
+  ],
+  "reuse_judgment": {
+    "environment": "Reuse EventReliefEnv and ReliefEnv for the 100x100 pilot; add gain wrapper validation separately.",
+    "first_chapter": "Reuse only the public C1 initial allocation adapter; do not identify it as a private/full first-chapter solver.",
+    "event_detection": "Reuse public event detection and affected-scope code; fix periodic safety override in this copy.",
+    "candidate_generation": "Reuse the existing public feasible-candidate generator only inside Public-C1-Catalog-Replanner-v1.",
+    "legacy_world_model_and_ppo": "Retain source modules for traceability; not part of the gain MVP or evidence for gain-gate claims.",
+    "old_event_results": "Not imported as formal data or claims."
+  }
+}

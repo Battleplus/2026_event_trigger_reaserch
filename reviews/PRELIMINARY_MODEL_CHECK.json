@@ -1,0 +1,29 @@
+{
+  "schema": "gain-preliminary-review-check/1",
+  "stage": "P0-P1-in-progress",
+  "reviewer_role": "root technical coordinator",
+  "reviewer_identity": "Codex GPT-6; no Sol High review claimed",
+  "captured_utc": "2026-10-17T04:10:29.791669+00:00",
+  "source_frozen": false,
+  "test_file": "package/tests/test_gain_models_analysis.py",
+  "test_file_sha256": "07ee9582a88bbeffac26be08c1b5a9befd33a472201d6c1248eea6ea2ddc9972",
+  "command": "python -B -m pytest -q package/tests/test_gain_models_analysis.py -p no:cacheprovider --basetemp <fresh-workspace-dir>",
+  "result": {
+    "returncode": 0,
+    "passed": 7,
+    "pytest_seconds": 6.45
+  },
+  "prior_attempts": [
+    {
+      "returncode": 1,
+      "passed": 6,
+      "error": "pytest tmp_path WinError5 in Windows sandbox; test setup failure"
+    },
+    {
+      "returncode": 1,
+      "error": "pytest tmp_path and cleanup WinError5 in Windows sandbox"
+    }
+  ],
+  "resolution": "normal authorized workspace execution with require_escalated, fresh basetemp; no ACL changes",
+  "claim_limit": "preliminary interface checks only, not P1 PASS, no simulation/training efficacy claim"
+}

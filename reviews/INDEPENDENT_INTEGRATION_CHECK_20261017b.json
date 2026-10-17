@@ -1,0 +1,17 @@
+{
+  "schema": "gain-interim-test-check/1",
+  "reviewer_model": "Codex GPT-6 (deployment alias unavailable)",
+  "decision": "REPAIR",
+  "full_suite": {
+    "passed": 79,
+    "failed": 2,
+    "elapsed_seconds": 27.23
+  },
+  "failures": [
+    "test_100x100_contract.py::test_registered_inputs_and_fixtures_use_the_100x100_contract: legacy package_layout requires omitted runtime/cost binding files",
+    "test_gain_diagnostics.py::test_suffix_mean_mismatch_is_rejected: adversarial row violates both mean and variance, check order disagrees with regex"
+  ],
+  "source_frozen": false,
+  "scientific_result": false,
+  "scope": "interim integration; owners correcting; no P1 approval"
+}

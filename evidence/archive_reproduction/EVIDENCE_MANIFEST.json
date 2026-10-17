@@ -1,0 +1,34 @@
+{
+  "schema": "gain-gate-evidence-manifest/1",
+  "stage": "smoke",
+  "status": "complete",
+  "run_id": "20261017T093233Z-b1399cd6ad6d",
+  "config_sha256": "6586ed2c5fcaf2f839a5d10d09aa2b6b34a2975141488218e56b23dc1e1a695b",
+  "source_manifest_sha256": "c61cf4aaea4c2d450610707eaf34d769e4b8c235ad7b2505e2af7aafa6c31024",
+  "projection": true,
+  "projection_scope": "runtime,source,smoke-summary,resource; raw trajectories omitted",
+  "original_full_manifest_sha256": "28e93fe5f9c5f2ffe8b0d8059127f7b6ace527439f9efcf3335101136d3ef32a",
+  "original_full_manifest_file_count": 79,
+  "files": [
+    {
+      "path": "RUN.json",
+      "sha256": "5bed218377f245917af8852c693dc3b4e1614b1e8047245215a133a78ace0a93",
+      "size_bytes": 2646
+    },
+    {
+      "path": "SOURCE_MANIFEST.json",
+      "sha256": "c61cf4aaea4c2d450610707eaf34d769e4b8c235ad7b2505e2af7aafa6c31024",
+      "size_bytes": 14050
+    },
+    {
+      "path": "P1_SMOKE_REPORT.json",
+      "sha256": "e73a2b46ea9b8b2e4cfdd6d64430025c771c25d372f7d611686caf2e9471c0ad",
+      "size_bytes": 16977
+    },
+    {
+      "path": "RESOURCE_RECEIPT.json",
+      "sha256": "de3303b533ac88956bd63f9675dd9f59c9d94ad53d874b10fa59c4b0ecd4f671",
+      "size_bytes": 2625
+    }
+  ]
+}

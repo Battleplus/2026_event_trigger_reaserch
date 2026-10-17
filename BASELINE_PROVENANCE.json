@@ -1,0 +1,26 @@
+{
+  "schema": "gain-gate-baseline-provenance/1",
+  "upstream_repository": "Battleplus/2026_GPPO_10.16",
+  "upstream_tag": "n02-minimal-closure-v1",
+  "upstream_ancestor_commit": "1ca6ddc0df21bc0c54e7ff8cb5ac7a6960229cba",
+  "direct_source": {
+    "kind": "local_event_trigger_working_tree",
+    "path": "development/ch2_disaster_relief_n02_event_trigger_v1_100x100",
+    "file_count": 35,
+    "canonical_sha256_prefix": "96fe97"
+  },
+  "per_file_source_hashes": "SOURCE_FILE_INVENTORY.json (generated at the P0 foundation freeze)",
+  "source_provenance_file": "development/ch2_disaster_relief_n02_event_trigger_v1_100x100/protocols/BASELINE_PROVENANCE.json",
+  "source_manifest_file": "development/ch2_disaster_relief_n02_event_trigger_v1_100x100/SOURCE_MANIFEST.json",
+  "acquisition": "Copied from the local Event V1 working tree into a new directory. The upstream ancestor commit identifies N02 minimal closure, not the exact contents of the local Event V1 source tree. The source directory was not edited.",
+  "target_copy_identity": "SOURCE_FILE_INVENTORY.json records full current-copy SHA-256 values for the declared source boundary.",
+  "excluded_source_artifacts": [
+    "PRIOR_RESOURCE_COST.json", "operational evidence", "run directories", "checkpoints",
+    "authorization material", "runtime credentials", "private databases"
+  ],
+  "claims": [
+    "The public C1 adapter supplies initial assignments; it is not represented as the user's full Chapter 1 solver.",
+    "Public simulator extensions and their licensing/source history must be reviewed before public release.",
+    "No scientific result is inherited from the source event-trigger study."
+  ]
+}

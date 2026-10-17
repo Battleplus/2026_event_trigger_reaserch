@@ -1,0 +1,54 @@
+{
+  "schema": "gain-gate-p2-review/1",
+  "decision": "REPAIR_REQUIRED",
+  "reviewer_model": "Codex GPT-6 root coordinator (read-only technical audit)",
+  "reviewer_role": "primary coordinator and technical reviewer; not GPT-6.1 Sol High",
+  "review_date": "2026-10-17",
+  "collection_path": "outputs/p2-collect-3x-20261017-oracle-reset",
+  "collection_run_id": "20261017T064225Z-239ee377d5a6",
+  "collection_report_sha256": "4bbac51a683e98a6ad70404a3361f1e5c2eb447c47269d44959bf460179e9d2a",
+  "train_light_path": "outputs/p2-train-light-20261017-binding-fix-review",
+  "train_light_run_id": "20261017T072209Z-1c70eea18707",
+  "train_light_failure": "GAIN_MODEL_NEED_TWO_VALIDATION_GROUPS_PER_FAMILY:energy_anomaly",
+  "scope": ["collection", "label-distribution", "group-split", "light-model-entry"],
+  "observations": {
+    "rows": 190,
+    "valid_labels": 67,
+    "ordinary_valid_labels": 67,
+    "positive_ordinary": 1,
+    "nonpositive_ordinary": 66,
+    "forced_rows": 99,
+    "paired_collection_failed": 24,
+    "trajectory_sources_total": {
+      "Existing-ET": 38,
+      "Periodic-4min": 112,
+      "Random-Allow-Suppress": 40
+    },
+    "valid_trajectory_sources": {
+      "Periodic-4min": 67
+    },
+    "valid_gain_range": [-0.05492187500000012, 2.295424622528868],
+    "valid_gain_mean": -0.015192270802605585,
+    "median_feature_gate_seconds": 0.00014449999434873462,
+    "median_planner_wall_seconds": 0.037977200001478195,
+    "k8_variance_diagnostics": "completed and retained in the train-light failure evidence"
+  },
+  "checks": {
+    "collection_completed": true,
+    "oracle_and_pair_binding": true,
+    "no_test_split_read": true,
+    "light_model_fit": false,
+    "complex_model_entry": false,
+    "world_model_run": false,
+    "ppo_transfer_run": false
+  },
+  "judgment": "INSUFFICIENT_EVIDENCE_OR_SIGNAL",
+  "reason": "The pre-registered entry requirement of at least 30 positive and 30 non-positive independent ordinary states is not met. The validation group guard also fails for energy_anomaly because this pilot has fewer than two row-bearing validation scenario groups. Running a model with relaxed guards would violate the protocol.",
+  "required_action": "Perform one documented scenario/data revision, regenerate a new collection identity, rerun P1 smoke and the pilot collection, then reevaluate the same gates. If the revised pilot still fails, stop the world-model route and retain this evidence.",
+  "resource_receipt": "outputs/p2-train-light-20261017-binding-fix-review/RESOURCE_RECEIPT.json",
+  "limitations": [
+    "This is a pilot-scale engineering diagnosis, not a method-effectiveness result.",
+    "No test or OOD result is claimed.",
+    "The one positive label shows that the simulator can produce gain, but does not establish learnability."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "gain-gate-config/1",
+  "version": "gain-gate-v1-100x100",
+  "map": {
+    "rows": 100,
+    "cols": 100,
+    "grid_cells": 10000,
+    "grid_contract": "relief-grid-100x100-v1"
+  },
+  "scenario": {
+    "pilot_parents": 6,
+    "pilot_instances_per_parent": 3,
+    "uav": 4,
+    "helicopter": 2,
+    "tasks": 12,
+    "horizon_minutes": 60,
+    "formal_conditions": [
+      "none_or_light", "task_update_or_arrival", "platform_failure_or_capability_loss",
+      "energy_anomaly", "communication_degradation", "environment_or_obstacle_change",
+      "compound"
+    ],
+    "formal_instances_per_condition": {
+      "train": 40,
+      "validation": 12,
+      "test": 20
+    },
+    "ood_instances_per_setting": 20
+  },
+  "replanner": {
+    "version": "Public-C1-Catalog-Replanner-v1",
+    "max_candidates": 16,
+    "candidate_count_is_upper_bound": true,
+    "stable_tie_break": "canonical_action_key",
+    "rollout_oracle_allowed": false,
+    "max_nodes": 60,
+    "overflow": "reject"
+  },
+  "labels": {
+    "horizon_minutes": 30,
+    "sensitivity_horizons_minutes": [15, 30, 45],
+    "matched_future_suffixes": 2,
+    "variance_check_states": 20,
+    "variance_check_suffixes": 8,
+    "unknown_outcome": "masked_with_reason",
+    "continuation": "keep_resulting_queues_with_shared_safety_emergency_rule",
+    "planning_cpu_cost_weight_per_second": 0.01,
+    "cpu_cost_sensitivity_weights": [0.0, 0.001, 0.1]
+  },
+  "score_weights": {
+    "completion": 1.0,
+    "delay": 0.2,
+    "energy": 0.01,
+    "risk": 0.25,
+    "communication": 0.01,
+    "switch": 0.05,
+    "reconstruction_call": 0.05,
+    "reconstruction_size": 0.01
+  },
+  "collection": {
+    "max_states_per_trajectory": 8,
+    "trajectory_sources": ["Existing-ET", "Periodic-4min", "Random-Allow-Suppress"],
+    "source_fraction": [0.3333333333, 0.3333333333, 0.3333333334],
+    "reservoir_sampling": "deterministic",
+    "max_wall_seconds_per_server_job": 7200,
+    "max_rss_bytes": 8589934592,
+    "max_project_cpu_seconds": 86400,
+    "device": "cpu",
+    "threads": 1,
+    "cuda_visible_devices": ""
+  },
+  "models": {
+    "ridge": true,
+    "tree_depths": [3, 5],
+    "mlp_hidden": [64, 64],
+    "mlp_learning_rate": 0.001,
+    "mlp_batch_size": 32,
+    "mlp_epochs": 100,
+    "mlp_early_stop_patience": 10,
+    "seeds": [8201, 8202, 8203],
+    "complex_model_entry_min_positive_ordinary_states": 30,
+    "complex_model_entry_min_nonpositive_ordinary_states": 30,
+    "feature_gate_median_to_planner_median_max_ratio": 0.2
+  },
+  "evaluation": {
+    "periodic_interval_minutes": 4,
+    "risk_threshold": 0.5,
+    "heuristic_gain_threshold": 0.25,
+    "gate_mode": "calibrated_lower_bound",
+    "existing_et_attempt_cooldown_minutes": 4
+  },
+  "safety": {
+    "forced_event_bypasses_cooldown": true,
+    "forced_event_bypasses_gain_gate": true,
+    "require_preexecution_revalidation": true,
+    "expired_command_policy": "reject_and_record"
+  },
+  "statistics": {
+    "independent_unit": "scenario_instance",
+    "bootstrap_replicates": 10000,
+    "confidence_level": 0.95,
+    "paired_permutation": true,
+    "holm_primary_comparisons": true,
+    "completion_noninferiority_margin_percentage_points": -2.0
+  }
+}
