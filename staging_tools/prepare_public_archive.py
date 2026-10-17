@@ -58,6 +58,8 @@ EVIDENCE_FILES = (
     "reviews/PAIR_TEST_RESULTS_20261017a.txt",
     "reviews/PRECOLLECTION_COST_CLARIFICATION_20261017.md",
     "reviews/PRE_FREEZE_REVIEW_20261017.json",
+    "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
+    "reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json",
     "reviews/PRELIMINARY_MODEL_CHECK.json",
 )
 
@@ -133,7 +135,8 @@ def collect_allowlisted_files(source_root: Path) -> list[ArchiveFile]:
 
     for relative in (
         "staging_tools/prepare_public_archive.py",
-        "staging_tools/test_prepare_public_archive.py",
+    "staging_tools/test_prepare_public_archive.py",
+    "staging_tools/audit_interrupted_collection.py",
     ):
         _add_file(root, entries, relative, "source")
 

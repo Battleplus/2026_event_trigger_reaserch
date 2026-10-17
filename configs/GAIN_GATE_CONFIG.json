@@ -1,6 +1,6 @@
 {
   "schema": "gain-gate-config/1",
-  "version": "gain-gate-v1-100x100",
+  "version": "gain-gate-v2-100x100",
   "map": {
     "rows": 100,
     "cols": 100,
@@ -27,7 +27,7 @@
     "ood_instances_per_setting": 20
   },
   "replanner": {
-    "version": "Public-C1-Catalog-Replanner-v1",
+    "version": "Public-C1-Catalog-Replanner-v2",
     "max_candidates": 16,
     "candidate_count_is_upper_bound": true,
     "stable_tie_break": "canonical_action_key",
@@ -64,6 +64,11 @@
     "max_wall_seconds_per_server_job": 7200,
     "max_rss_bytes": 8589934592,
     "max_project_cpu_seconds": 86400,
+    "max_v2_stage_cpu_seconds": 78774.140625,
+    "prior_resource_review_path": "reviews/V2_PRIOR_RESOURCE_REVIEW.json",
+    "prior_resource_review_sha256": "c03fa60f6e1b8363fd81632d02d4dfdacda06d46babfe7633ff21b4245d663cc",
+    "prior_resource_cpu_seconds": 7625.859375,
+    "resource_accounting_scope": "persisted_stage_process_cpu_only_tests_and_ad_hoc_review_excluded",
     "device": "cpu",
     "threads": 1,
     "cuda_visible_devices": ""

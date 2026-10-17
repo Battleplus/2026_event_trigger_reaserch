@@ -35,6 +35,13 @@ NOOP_ACTION = {
     "action_type": "reconstruct", "scope": "NOOP", "noop": True,
     "queue_operations": [], "dispatches": [],
 }
+EMPTY_OBLIGATION_REASON = "empty_obligation_window"
+
+
+class EmptyObligationWindowError(ValueError):
+    """A valid simulator branch reached a window with no scored obligation."""
+
+    reason = EMPTY_OBLIGATION_REASON
 
 
 def _canonical(value: Any) -> bytes:
@@ -218,6 +225,12 @@ def capture_snapshot(
     public = model_public_observation(env)
     history = _public_history(env)
     state = _encode(copy.deepcopy(env.__dict__))
+    safety_transition_events = [
+        copy.deepcopy(row) for row in getattr(env, "_extension_events", [])
+        if isinstance(row, Mapping)
+        and row.get("schema") == "gain-safety-task-transition/1"
+        and int(row.get("time", -1)) == int(getattr(env, "time"))
+    ]
     tape = copy.deepcopy(scenario.get("event_tape", []))
     payload = {
         "schema": SNAPSHOT_SCHEMA,
@@ -236,6 +249,8 @@ def capture_snapshot(
         "scenario_sha256": _scenario_digest(scenario),
         "event_tape_id": str(scenario.get("event_tape_id", "")),
         "event_tape_sha256": _digest(tape),
+        "safety_transition_events": safety_transition_events,
+        "safety_transition_events_sha256": _digest(safety_transition_events),
         "task_priorities": priorities,
         "task_known_at_start": known_at_start,
         "task_status_at_start": status_at_start,
@@ -271,6 +286,10 @@ def restore_snapshot(snapshot_json: str, env_factory: Callable[..., Any] | None 
     state = _decode(payload["state"])
     if not isinstance(state, dict):
         raise ValueError("snapshot root state must be an object")
+    # V1 gain snapshots predate the V2 safety-hold map and task projection.
+    # Keep their private state and envelope digests byte-compatible while
+    # allowing the current environment to expose the additive safety fields.
+    legacy_v1 = "_safety_paused_tasks" not in state
     env = _instantiate_root(env_factory, state)
     env.__dict__.clear()
     env.__dict__.update(state)
@@ -283,12 +302,37 @@ def restore_snapshot(snapshot_json: str, env_factory: Callable[..., Any] | None 
         raise ValueError("snapshot time mismatch")
     public = model_public_observation(env)
     history = _public_history(env)
-    if public != payload.get("public_observation") or _digest(public) != payload.get("public_observation_sha256"):
+    expected_public = payload.get("public_observation")
+    if legacy_v1:
+        def strip_v2_safety_fields(value: Any) -> Any:
+            if isinstance(value, list):
+                return [strip_v2_safety_fields(item) for item in value]
+            if isinstance(value, dict):
+                return {
+                    key: strip_v2_safety_fields(item)
+                    for key, item in value.items()
+                    if key not in {"safety_paused", "safety_hold"}
+                }
+            return value
+
+        public = strip_v2_safety_fields(public)
+    if public != expected_public or _digest(public) != payload.get("public_observation_sha256"):
         raise ValueError("snapshot public observation mismatch")
     if _digest(history) != payload.get("public_history_sha256"):
         raise ValueError("snapshot public history mismatch")
     if _digest(scenario.get("event_tape", [])) != payload.get("event_tape_sha256"):
         raise ValueError("snapshot event tape mismatch")
+    transition_events = payload.get("safety_transition_events", [])
+    legacy_transition_fields_absent = (
+        legacy_v1
+        and "safety_transition_events" not in payload
+        and "safety_transition_events_sha256" not in payload
+    )
+    if not legacy_transition_fields_absent and (
+        not isinstance(transition_events, list)
+        or payload.get("safety_transition_events_sha256") != _digest(transition_events)
+    ):
+        raise ValueError("snapshot safety transition evidence mismatch")
     return env
 
 
@@ -384,7 +428,12 @@ def noop_continuation(_env: Any) -> dict[str, Any]:
 
 
 def _continuation_safety_evidence(result: Mapping[str, Any]) -> dict[str, Any]:
-    evidence: dict[str, Any] = {}
+    # Keep the legacy four-field envelope stable even when a callback only
+    # supplies a subset.  V2's live receipt is additive and remains optional
+    # for pre-V2 fixtures.
+    evidence: dict[str, Any] = {
+        "safety_report": None, "safety_disposition": None, "unknown_reason": None, "detection": None,
+    }
     for field in ("safety_report", "safety_disposition", "detection"):
         if field not in result:
             continue
@@ -392,6 +441,17 @@ def _continuation_safety_evidence(result: Mapping[str, Any]) -> dict[str, Any]:
         if not isinstance(value, Mapping):
             raise ValueError(f"continuation receipt {field} must be an object")
         evidence[field] = copy.deepcopy(dict(value))
+
+    if "safety_apply_receipt" in result:
+        receipt = result["safety_apply_receipt"]
+        if not isinstance(receipt, Mapping) or receipt.get("schema") != "gain-live-safety-disposition/1":
+            raise ValueError("continuation receipt safety_apply_receipt invalid")
+        for key in ("status", "resolved", "pre_public_sha256", "post_public_sha256"):
+            if key not in receipt:
+                raise ValueError(f"continuation receipt safety_apply_receipt missing {key}")
+        if type(receipt.get("resolved")) is not bool:
+            raise ValueError("continuation receipt safety_apply_receipt resolved must be boolean")
+        evidence["safety_apply_receipt"] = copy.deepcopy(dict(receipt))
 
     if "unknown_reason" in result:
         reason = result["unknown_reason"]
@@ -550,6 +610,9 @@ def _trace_for_branch(
         "event_tape_id": suffix_snapshot["event_tape_id"],
         "event_tape_sha256": suffix_snapshot["event_tape_sha256"],
         "suffix_seed": suffix_snapshot["suffix_seed"],
+        "initial_safety_transition_events": copy.deepcopy(
+            suffix_snapshot.get("safety_transition_events", [])
+        ),
         "start_time": int(snapshot["time"]),
         "end_time": int(env.time),
         "horizon_requested_minutes": int(horizon_minutes),
@@ -697,7 +760,9 @@ def _window_task_universe(
             raise ValueError("task universe contains an invalid priority")
         priority_map[task_id] = priority
     if not priority_map:
-        raise ValueError("counterfactual horizon contains no active logical obligations")
+        raise EmptyObligationWindowError(
+            "counterfactual horizon contains no active logical obligations"
+        )
     total = sum(priority_map.values())
     normalized = {task_id: value / total for task_id, value in priority_map.items()}
     return normalized, {
@@ -917,6 +982,9 @@ def run_paired_counterfactual(
             })
         except Exception as exc:
             error = exc
+            unknown_reason = getattr(exc, "reason", None)
+            if not isinstance(unknown_reason, str) or not unknown_reason:
+                unknown_reason = "paired_collection_failed"
             pair.update({
                 "horizon_actual_minutes": min(
                     [int(trace["horizon_actual_minutes"]) for trace in (keep_trace, replan_trace) if trace is not None]
@@ -927,7 +995,7 @@ def run_paired_counterfactual(
                 "replan": None if replan_trace is None else {"action": copy.deepcopy(dict(replan_action)), "trace": replan_trace, "cost": None},
                 "gain": None,
                 "valid_mask": False,
-                "unknown_reason": "paired_collection_failed",
+                "unknown_reason": unknown_reason,
                 "collection_error": {"error_type": type(exc).__name__, "message": str(exc)},
             })
         unresolved_reasons = [

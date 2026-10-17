@@ -19,7 +19,9 @@ LABEL_SCHEMA = "gain-counterfactual-label/2"
 PAIR_SCHEMA = "gain-counterfactual-pair/1"
 TRACE_SCHEMA = "gain-counterfactual-trace/1"
 RECEIPT_SCHEMA = "gain-continuation-receipt/1"
-SAFETY_EVIDENCE_FIELDS = ("safety_report", "safety_disposition", "unknown_reason", "detection")
+SAFETY_EVIDENCE_FIELDS = (
+    "safety_report", "safety_disposition", "safety_apply_receipt", "unknown_reason", "detection",
+)
 NOOP_ACTION = {
     "action_type": "reconstruct", "scope": "NOOP", "noop": True,
     "queue_operations": [], "dispatches": [],
@@ -58,6 +60,134 @@ def _verify_digest(envelope: Mapping[str, Any], field: str, *, omitted: str) -> 
         raise ValueError(f"GAIN_ORACLE_{omitted.upper()}_HASH_MISMATCH")
 
 
+def _live_digest(value: Any) -> str:
+    """Digest used by live event-environment safety receipts."""
+    rendered = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False)
+    return hashlib.sha256(rendered.encode("ascii")).hexdigest()
+
+
+_SAFETY_STATE_FIELDS = (
+    "status", "phase", "progress", "service_progress", "cargo_onboard",
+    "assignee", "active_platform_id", "queue_owner", "stock_commitment", "safety_paused",
+)
+
+_SAFETY_PAUSE_TYPES = {"safety_task_paused", "safety_task_capability_paused"}
+_SAFETY_RESUME_TYPES = {"safety_task_resumed", "safety_task_capability_resumed"}
+_CAPABILITY_PAUSE_REASONS = {
+    "capability_lost", "capacity_lost", "active_task_capability_lost", "active_task_capacity_lost",
+}
+_CAPABILITY_RESTORE_REASONS = {"active_task_capability_restored", "active_task_capacity_restored"}
+
+
+def _validate_safety_state(state: Any, code: str) -> dict[str, Any]:
+    if not isinstance(state, Mapping):
+        raise ValueError(code)
+    for field in _SAFETY_STATE_FIELDS:
+        if field not in state:
+            raise ValueError(code)
+    if not isinstance(state.get("status"), str) or not isinstance(state.get("phase"), str):
+        raise ValueError(code)
+    if type(state.get("safety_paused")) is not bool:
+        raise ValueError(code)
+    pause_reason = state.get("safety_pause_reason")
+    if pause_reason is not None and (not isinstance(pause_reason, str) or not pause_reason.strip()):
+        raise ValueError(code)
+    for field in ("progress", "service_progress", "cargo_onboard"):
+        _number(state.get(field), code)
+    commitment = state.get("stock_commitment")
+    if commitment is not None:
+        if not isinstance(commitment, Mapping):
+            raise ValueError(code)
+        for field in ("depot_id", "commodity", "quantity"):
+            if field not in commitment:
+                raise ValueError(code)
+        if not isinstance(commitment.get("depot_id"), str) or not isinstance(commitment.get("commodity"), str):
+            raise ValueError(code)
+        _number(commitment.get("quantity"), code)
+    return dict(state)
+
+
+def _validate_safety_transition(event: Mapping[str, Any]) -> str:
+    if event.get("schema") != "gain-safety-task-transition/1":
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_SCHEMA_INVALID")
+    event_type = event.get("type")
+    if event_type not in _SAFETY_PAUSE_TYPES | _SAFETY_RESUME_TYPES | {"safety_task_released"}:
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_TYPE_INVALID")
+    if not isinstance(event.get("task_id"), str) or not event.get("task_id"):
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_TASK_INVALID")
+    if isinstance(event.get("time"), bool) or not isinstance(event.get("time"), int) or event.get("time") < 0:
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_TIME_INVALID")
+    before = _validate_safety_state(event.get("before"), "GAIN_ORACLE_SAFETY_TRANSITION_BEFORE_INVALID")
+    after = _validate_safety_state(event.get("after"), "GAIN_ORACLE_SAFETY_TRANSITION_AFTER_INVALID")
+    event_hash = event.get("event_sha256")
+    body = {key: value for key, value in event.items() if key != "event_sha256"}
+    if not isinstance(event_hash, str) or event_hash != _live_digest(body):
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_HASH_INVALID")
+    preserved = ("phase", "progress", "service_progress", "cargo_onboard", "assignee",
+                 "active_platform_id", "queue_owner", "stock_commitment")
+    before_reason = before.get("safety_pause_reason")
+    after_reason = after.get("safety_pause_reason")
+    event_reason = event.get("reason")
+    if event_reason is not None and (not isinstance(event_reason, str) or not event_reason.strip()):
+        raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_REASON_INVALID")
+    if event_type == "safety_task_capability_paused":
+        if (after_reason is not None and after_reason not in _CAPABILITY_PAUSE_REASONS) or before_reason is not None:
+            raise ValueError("GAIN_ORACLE_SAFETY_CAPABILITY_PAUSE_REASON_INVALID")
+        if event_reason is not None and event_reason not in _CAPABILITY_PAUSE_REASONS:
+            raise ValueError("GAIN_ORACLE_SAFETY_CAPABILITY_EVENT_REASON_INVALID")
+    elif event_type == "safety_task_capability_resumed":
+        if (before_reason is not None and before_reason not in _CAPABILITY_PAUSE_REASONS) or after_reason is not None:
+            raise ValueError("GAIN_ORACLE_SAFETY_CAPABILITY_RESUME_REASON_INVALID")
+        if event_reason is not None and event_reason not in _CAPABILITY_RESTORE_REASONS:
+            raise ValueError("GAIN_ORACLE_SAFETY_CAPABILITY_RESTORE_REASON_INVALID")
+    elif event_type in {"safety_task_paused", "safety_task_resumed"}:
+        if event_type == "safety_task_paused" and after_reason in _CAPABILITY_PAUSE_REASONS:
+            raise ValueError("GAIN_ORACLE_SAFETY_PAUSE_TYPE_REASON_MISMATCH")
+        if event_type == "safety_task_resumed" and before_reason in _CAPABILITY_PAUSE_REASONS:
+            raise ValueError("GAIN_ORACLE_SAFETY_RESUME_TYPE_REASON_MISMATCH")
+    if event_type in _SAFETY_PAUSE_TYPES:
+        if before["safety_paused"] or not after["safety_paused"] or after["status"] != "paused":
+            raise ValueError("GAIN_ORACLE_SAFETY_PAUSE_STATE_INVALID")
+        if any(before[key] != after[key] for key in preserved):
+            raise ValueError("GAIN_ORACLE_SAFETY_PAUSE_MUTATED_PHYSICAL_STATE")
+    elif event_type in _SAFETY_RESUME_TYPES:
+        if not before["safety_paused"] or after["safety_paused"]:
+            raise ValueError("GAIN_ORACLE_SAFETY_RESUME_STATE_INVALID")
+        if any(before[key] != after[key] for key in preserved):
+            raise ValueError("GAIN_ORACLE_SAFETY_RESUME_MUTATED_PHYSICAL_STATE")
+    else:
+        if before["safety_paused"] or after["safety_paused"]:
+            raise ValueError("GAIN_ORACLE_SAFETY_RELEASE_STATE_INVALID")
+        if after["status"] != "pending" or after["phase"] != "released":
+            raise ValueError("GAIN_ORACLE_SAFETY_RELEASE_TARGET_STATE_INVALID")
+        if any(after[key] is not None for key in ("assignee", "active_platform_id", "queue_owner", "stock_commitment")):
+            raise ValueError("GAIN_ORACLE_SAFETY_RELEASE_OWNERSHIP_INVALID")
+        if after["cargo_onboard"] != 0.0 or after["progress"] != 0.0 or after["service_progress"] != 0.0:
+            raise ValueError("GAIN_ORACLE_SAFETY_RELEASE_PHYSICAL_STATE_INVALID")
+    return str(event_hash)
+
+
+def _validate_live_safety_receipt(receipt: Mapping[str, Any]) -> list[str]:
+    if receipt.get("schema") != "gain-live-safety-disposition/1":
+        raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_SCHEMA_INVALID")
+    if receipt.get("status") not in {"not_required", "resolved", "unresolved", "unknown"}:
+        raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_STATUS_INVALID")
+    if type(receipt.get("resolved")) is not bool:
+        raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_RESOLUTION_INVALID")
+    for field in ("pre_public_sha256", "post_public_sha256"):
+        value = receipt.get(field)
+        if value is not None and (not isinstance(value, str) or len(value) != 64):
+            raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_PUBLIC_HASH_INVALID")
+    actions = receipt.get("actions")
+    if not isinstance(actions, list):
+        raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_ACTIONS_INVALID")
+    hashes = [_validate_safety_transition(action) for action in actions]
+    actions_hash = receipt.get("actions_sha256")
+    if not isinstance(actions_hash, str) or actions_hash != _live_digest(actions):
+        raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_ACTION_HASH_INVALID")
+    return hashes
+
+
 def _validate_continuation_safety_evidence(receipt: Mapping[str, Any]) -> str | None:
     present = [field for field in SAFETY_EVIDENCE_FIELDS if field in receipt]
     digest = receipt.get("safety_evidence_sha256")
@@ -66,7 +196,7 @@ def _validate_continuation_safety_evidence(receipt: Mapping[str, Any]) -> str | 
             raise ValueError("GAIN_ORACLE_CONTINUATION_SAFETY_EVIDENCE_ORPHAN_HASH")
         return None
     for field in ("safety_report", "safety_disposition", "detection"):
-        if field in receipt and not isinstance(receipt[field], Mapping):
+        if field in receipt and receipt[field] is not None and not isinstance(receipt[field], Mapping):
             raise ValueError(f"GAIN_ORACLE_CONTINUATION_SAFETY_OBJECT_INVALID:{field}")
     reason = receipt.get("unknown_reason")
     if reason is not None and (not isinstance(reason, str) or not reason.strip()):
@@ -83,6 +213,11 @@ def _validate_continuation_safety_evidence(receipt: Mapping[str, Any]) -> str | 
             raise ValueError("GAIN_ORACLE_CONTINUATION_UNRESOLVED_SAFETY_REASON_MISSING")
         if disposition_reason and reason != disposition_reason:
             raise ValueError("GAIN_ORACLE_CONTINUATION_SAFETY_REASON_BINDING_MISMATCH")
+    live_receipt = receipt.get("safety_apply_receipt")
+    if live_receipt is not None:
+        if not isinstance(live_receipt, Mapping):
+            raise ValueError("GAIN_ORACLE_LIVE_SAFETY_RECEIPT_INVALID")
+        _validate_live_safety_receipt(live_receipt)
     evidence = {field: receipt[field] for field in SAFETY_EVIDENCE_FIELDS if field in receipt}
     if not isinstance(digest, str) or digest != _digest(evidence):
         raise ValueError("GAIN_ORACLE_CONTINUATION_SAFETY_EVIDENCE_HASH_MISMATCH")
@@ -123,6 +258,46 @@ def _trace_event_rows(trace: Mapping[str, Any]) -> list[Mapping[str, Any]]:
             raise ValueError("GAIN_ORACLE_RAW_EVENT_INVALID")
         events.extend(step["raw_events"])
     return events
+
+
+def _validate_trace_safety_events(trace: Mapping[str, Any], events: Sequence[Mapping[str, Any]]) -> None:
+    """Validate live safety transitions and their receipt/event hash binding."""
+    initial = trace.get("initial_safety_transition_events", [])
+    if initial is None:
+        initial = []
+    if not isinstance(initial, list):
+        raise ValueError("GAIN_ORACLE_INITIAL_SAFETY_TRANSITIONS_INVALID")
+    all_events = list(initial) + list(events)
+    transition_hashes: set[str] = set()
+    for event in all_events:
+        if not isinstance(event, Mapping):
+            continue
+        if event.get("schema") == "gain-safety-task-transition/1":
+            transition_hashes.add(_validate_safety_transition(event))
+        elif "safety_task_" in str(event.get("type", "")):
+            raise ValueError("GAIN_ORACLE_SAFETY_TRANSITION_SCHEMA_MISSING")
+        if event.get("type") == "cargo_lost":
+            quantity = event.get("quantity", event.get("amount", event.get("cargo_lost")))
+            _number(quantity, "GAIN_ORACLE_CARGO_LOST_QUANTITY_INVALID")
+            before = event.get("cargo_before")
+            after = event.get("cargo_after")
+            if before is not None or after is not None:
+                _number(before, "GAIN_ORACLE_CARGO_LOST_BEFORE_INVALID")
+                _number(after, "GAIN_ORACLE_CARGO_LOST_AFTER_INVALID")
+                if float(after) > float(before) + 1e-9 or not math.isclose(
+                    float(before) - float(after), float(quantity), rel_tol=1e-9, abs_tol=1e-9,
+                ):
+                    raise ValueError("GAIN_ORACLE_CARGO_LOST_PHYSICAL_MISMATCH")
+    for receipt in trace.get("continuation_policy_receipts", []):
+        if not isinstance(receipt, Mapping):
+            continue
+        live = receipt.get("safety_apply_receipt")
+        if not isinstance(live, Mapping):
+            continue
+        for action in live.get("actions", []):
+            event_hash = action.get("event_sha256") if isinstance(action, Mapping) else None
+            if event_hash not in transition_hashes:
+                raise ValueError("GAIN_ORACLE_SAFETY_RECEIPT_EVENT_HASH_UNBOUND")
 
 
 def _verify_endpoint_against_events(trace: Mapping[str, Any], events: Sequence[Mapping[str, Any]]) -> None:
@@ -274,6 +449,7 @@ def _trace_cost(
         residual += weight * max(0.0, min(1.0, 1.0 - progress))
 
     events = _trace_event_rows(trace)
+    _validate_trace_safety_events(trace, events)
     _verify_endpoint_against_events(trace, events)
     delay = sum(
         _number(row.get("minutes", 0.0), "GAIN_ORACLE_DELAY_EVENT_INVALID")

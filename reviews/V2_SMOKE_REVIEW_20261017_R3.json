@@ -1,0 +1,59 @@
+{
+  "schema": "gain-gate-v2-smoke-review/1",
+  "review_date": "2026-10-17",
+  "reviewer": "Codex root coordinator; read-only source/evidence audit",
+  "actual_reviewer_model": "runtime model identifier not exposed; not GPT-6.1 Sol High",
+  "run_id": "20261017T113110Z-8035318d2d79",
+  "config_sha256": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
+  "source_manifest_sha256": "2657ebefb1f9eba1a99333baf83c601c4b88e8928311fca5e5d7454c3277db84",
+  "evidence_manifest_sha256": "25b77385e6f11d46f11e56205051fc4b8649572dd0420b51636cb5906e51e1da",
+  "engineering": "PASS_TO_FORMAL_REVIEW",
+  "method": "NOT_DETERMINED",
+  "world_model": "NOT_AUTHORIZED",
+  "ppo": "NOT_AUTHORIZED",
+  "checks": {
+    "pilot_instances": 18,
+    "labels": 18,
+    "valid_labels": 11,
+    "positive_valid_labels": 4,
+    "candidate_counts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      9
+    ],
+    "forced_labels": 7,
+    "all_forced_dispositions_resolved": true,
+    "independent_oracle": true,
+    "leakage_probe": true,
+    "planner_isolation": true,
+    "replay": true,
+    "evidence_files": 79,
+    "evidence_hash_mismatches": 0,
+    "cpu_seconds": 104.640625,
+    "remaining_cpu_seconds": 86295.359375,
+    "historical_unresolved_replay_rows": 221,
+    "historical_replay_resolved": 221,
+    "historical_replay_unresolved": 0,
+    "historical_replay_unknown": 0,
+    "historical_replay_report_sha256": "a6e0490faae41135a0f958ba50b9068e5e4c005fe9bb8fc2e2c2450e0c95eebf",
+    "historical_replay_report_path": "reports/V2_SAFETY_CLASSIFICATION.json"
+  },
+  "decision": "PASS_TO_FORMAL_COLLECTION_REVIEW_REQUIRED",
+  "limitations": [
+    "Smoke is a pilot gate only; this approval permits formal train/validation collection after the runner binds this exact smoke review.",
+    "Smoke is pilot evidence only; 11 valid ordinary labels do not satisfy 30 positive/30 nonpositive training gate.",
+    "This review authorizes only consideration of the frozen 168-instance train/validation collection; it does not authorize model training, test/OOD access, world model or PPO.",
+    "No scientific efficacy claim."
+  ],
+  "hashes": {
+    "RUN.json": "17ed42e9b5fdcab2c35f1268887840e2eb0816ba1532e9613f3e61fdc2b7a662",
+    "RESOLVED_CONFIG.json": "7a7a77cc5760da6c22c2c21909fbe73f6fa58755a0488405d4965edf88b3de6f",
+    "SOURCE_MANIFEST.json": "2657ebefb1f9eba1a99333baf83c601c4b88e8928311fca5e5d7454c3277db84",
+    "EVIDENCE_MANIFEST.json": "25b77385e6f11d46f11e56205051fc4b8649572dd0420b51636cb5906e51e1da",
+    "STAGE_RESULT.json": "d2a086196bcc7351879f96aed42f0604e0f5503314ebb0921015cd52113bfde7",
+    "RESOURCE_RECEIPT.json": "8fa241db2733dd55107e81f9d0292f7ed5d2d3ad99d98497a9e1ef947bb66149"
+  }
+}

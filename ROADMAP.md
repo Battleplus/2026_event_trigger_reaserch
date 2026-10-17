@@ -2,17 +2,18 @@
 
 ## Current Snapshot
 
-The bounded R1 collection and its read-only review are archived for diagnosis. The review disposition is engineering **REPAIR_REQUIRED** and method **INCONCLUSIVE**. The data do not pass the registered light-model entry gate, so dependent experiments stop here.
+V2 safety and candidate repairs passed at pilot scale. Formal collection was started twice and interrupted; the final run is retained with a read-only integrity audit. The current disposition is **INCOMPLETE_COLLECTION; STOP** and method support is **INCONCLUSIVE**.
 
-## Next Version
+## Next Steps
 
-1. Repair and test the unresolved safety-disposition fallback.
-2. Review the replanner candidate opportunity and ordinary-trigger coverage under a separately frozen protocol.
-3. Run a bounded pilot with a new run identity and independent review; retain all masked and failed pairs.
-4. Reassess the registered entry gates before fitting any model.
+1. Preserve the final smoke evidence and source/config identities.
+2. Preserve both interrupted collection directories and the read-only audit; do not repair aggregate gzip files in place.
+3. Stop formal analysis because the final run has 0 ordinary positive labels and does not meet the 30-positive/30-non-positive gate.
+4. Train light models only after a separately reviewed collection reaches both registered sign counts.
+5. Preserve all failures and masked/forced/empty windows; do not manufacture a learnable signal.
 
 Do not relax sign-count or validation-group guards, search seeds for positive labels, or change cost weights to manufacture a learnable signal.
 
 ## Not Run
 
-Full-scale train/validation/test collection, light-model training, closed-loop method evaluation, event-aware world-model training, PPO transfer, test/OOD generalization, and release tagging remain unrun. They require a reviewed repair and new versioned evidence.
+Formal test/OOD collection, light-model training, closed-loop method evaluation, event-aware world-model training, PPO transfer, and release tagging remain unrun. The interrupted final run is not a 168-instance result and has no final resource accounting.

@@ -1,11 +1,11 @@
 # Status
 
-Current archive snapshot: `R1-sample-scale-only` for the Chapter 2 gain-gate study.
+Current snapshot: **V2 repair smoke passed; formal collection interrupted** for the Chapter 2 gain-gate study.
 
-Engineering disposition: **REPAIR_REQUIRED**. The read-only R1 review found the simulator safety-control-link fallback unmet, 221 unresolved safety dispositions, and 107 ordinary paired failures retained as unknown/masked outcomes. The collection completed within its resource limits, and all 3,100 entries in its evidence manifest matched their recorded hashes; hash verification does not override the engineering finding.
+Engineering disposition: **INCOMPLETE_COLLECTION; STOP**. The repaired V2 smoke run passed its immutable gate: 221/221 historical safety cases resolved, 0 unresolved, 0 unknown, candidate execution and paired replay checks passed, and all 79 evidence files matched their recorded hashes. The subsequent formal collection was interrupted: final run `20261017T113558Z-e8a3fc53b999` has 52 outcome records, 53 scenario files, one scenario without an outcome, and truncated aggregate gzip footers. The R2 interruption has 7 outcome records and 8 scenario files. No completion or final resource receipt exists. The last observed final-run CPU value, 1890.72 seconds, is a lower bound only and is not a total.
 
-Method disposition: **INCONCLUSIVE**. The R1 collection contained 2 positive and 241 non-positive ordinary paired labels, below the registered 30-positive entry requirement. The light model was not trained. No test, OOD, closed-loop effectiveness, world-model, or PPO-transfer result was produced.
+Method disposition: **INCONCLUSIVE; TRAINING GATE FAILED**. The final run has 0 ordinary positive and 78 ordinary non-positive labels among 219 parseable rows; 101 forced-safety and 40 empty-window labels remain unknown. The registered 30-positive/30-non-positive ordinary-state gate is not met. No light model, test/OOD evaluation, world-model experiment, or PPO transfer is authorized.
 
-The earlier P1 review is limited to smoke-scale pairing and integrity checks. It does not approve the expanded R1 collection or change the R1 disposition. See [the R1 review](reviews/P2_R1_REVIEW_20261017.json) and [the collection diagnostic](reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md).
+The earlier R1 diagnostic remains historical evidence of the initial failure and is not overwritten. See [the V2 smoke review](reviews/V2_SMOKE_REVIEW_20261017.json), [the safety classification](reports/V2_SAFETY_CLASSIFICATION.md), and [the V1/R1 diagnostic](reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md).
 
-This status describes the `gain-gate-p2-diagnostic-20261017` archive snapshot and the R1 evidence available at that snapshot cut. It is not a release approval.
+The interrupted outputs and [read-only audit](reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json) are retained as diagnostic evidence. Do not count the partial scenario as a completed instance or synthesize completion/resource receipts. Test and OOD data remain sealed.

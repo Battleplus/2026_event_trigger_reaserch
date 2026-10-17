@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -26,6 +27,96 @@ def _remove_temporary_directory(path: Path) -> None:
         elif child.is_dir():
             child.rmdir()
     path.rmdir()
+
+
+def _v2_review_copy(temp_dir: Path, **updates):
+    source = ROOT.parent / "reviews" / "V2_SMOKE_REVIEW_20261017_R2.json"
+    review = json.loads(source.read_text(encoding="utf-8"))
+    for key, value in updates.items():
+        review[key] = value
+    path = temp_dir / "V2_SMOKE_REVIEW.json"
+    path.write_text(json.dumps(review, indent=2) + "\n", encoding="utf-8")
+    return path
+
+
+def test_v2_smoke_review_verification_binds_frozen_artifacts() -> None:
+    review_path = ROOT.parent / "reviews" / "V2_SMOKE_REVIEW_20261017_R2.json"
+    result = gain_runner._verify_v2_smoke_review(
+        review_path, gain_runner.V2_SMOKE_CONFIG_SHA256,
+    )
+    assert result["schema"] == gain_runner.V2_SMOKE_REVIEW_VERIFICATION_SCHEMA
+    assert result["decision"] == "PASS"
+    assert result["smoke_run_id"] == gain_runner.V2_SMOKE_RUN_ID
+    assert result["evidence_file_count"] == 79
+    assert result["historical_replay_resolved"] == 221
+    assert result["historical_replay_unresolved"] == 0
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("run_id", "wrong-run", "RUN_ID_MISMATCH"),
+        ("config_sha256", "0" * 64, "CONFIG_HASH_MISMATCH"),
+        ("source_manifest_sha256", "1" * 64, "SOURCE_HASH_MISMATCH"),
+        ("evidence_manifest_sha256", "2" * 64, "EVIDENCE_HASH_MISMATCH"),
+    ],
+)
+def test_v2_smoke_review_rejects_wrong_binding(field: str, value: str, message: str) -> None:
+    temp_dir = _temporary_directory()
+    try:
+        review_path = _v2_review_copy(temp_dir, **{field: value})
+        with pytest.raises(ValueError, match=f"V2_SMOKE_REVIEW_{message}"):
+            gain_runner._verify_v2_smoke_review(review_path, gain_runner.V2_SMOKE_CONFIG_SHA256)
+    finally:
+        _remove_temporary_directory(temp_dir)
+
+
+def test_v2_smoke_review_rejects_tampered_artifact_hash() -> None:
+    temp_dir = _temporary_directory()
+    source = ROOT.parent / "reviews" / "V2_SMOKE_REVIEW_20261017_R2.json"
+    review = json.loads(source.read_text(encoding="utf-8"))
+    review["hashes"]["RUN.json"] = "0" * 64
+    try:
+        path = temp_dir / "V2_SMOKE_REVIEW.json"
+        path.write_text(json.dumps(review, indent=2) + "\n", encoding="utf-8")
+        with pytest.raises(ValueError, match="ARTIFACT_HASH_MISMATCH:RUN.json"):
+            gain_runner._verify_v2_smoke_review(path, gain_runner.V2_SMOKE_CONFIG_SHA256)
+    finally:
+        _remove_temporary_directory(temp_dir)
+
+
+def test_v2_smoke_review_rejects_unresolved_replay_and_scope_claims() -> None:
+    temp_dir = _temporary_directory()
+    source = ROOT.parent / "reviews" / "V2_SMOKE_REVIEW_20261017_R2.json"
+    review = json.loads(source.read_text(encoding="utf-8"))
+    review["checks"]["historical_replay_unresolved"] = 1
+    try:
+        path = temp_dir / "V2_SMOKE_REVIEW.json"
+        path.write_text(json.dumps(review, indent=2) + "\n", encoding="utf-8")
+        with pytest.raises(ValueError, match="CHECK_FAILED:historical_replay_unresolved"):
+            gain_runner._verify_v2_smoke_review(path, gain_runner.V2_SMOKE_CONFIG_SHA256)
+
+        review["checks"]["historical_replay_unresolved"] = 0
+        review["checks"]["test_labels_accessed"] = True
+        path.write_text(json.dumps(review, indent=2) + "\n", encoding="utf-8")
+        with pytest.raises(ValueError, match="FORBIDDEN_CLAIM"):
+            gain_runner._verify_v2_smoke_review(path, gain_runner.V2_SMOKE_CONFIG_SHA256)
+    finally:
+        _remove_temporary_directory(temp_dir)
+
+
+def test_collect_rejects_legacy_p1_review() -> None:
+    temp_dir = _temporary_directory()
+    try:
+        review_path = temp_dir / "P1_REVIEW.json"
+        review_path.write_text(json.dumps({"schema": gain_runner.REVIEW_SCHEMA, "decision": "PASS"}), encoding="utf-8")
+        args = SimpleNamespace(v2_smoke_review=None, p1_review=str(review_path))
+        with pytest.raises(ValueError, match="V2_SMOKE_REVIEW_SCHEMA_INVALID"):
+            gain_runner._dispatch(
+                "collect", temp_dir / "output", {"config_sha256": gain_runner.V2_SMOKE_CONFIG_SHA256}, {}, args,
+            )
+    finally:
+        _remove_temporary_directory(temp_dir)
 
 
 class _ActionEnv:

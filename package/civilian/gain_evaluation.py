@@ -22,7 +22,7 @@ except ImportError:
 
 
 EVALUATION_SCHEMA = "gain-closed-loop-evaluation/1"
-REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v1"
+REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v2"
 METHODS = (
     "Periodic4", "ExistingET", "ExistingETAttemptCooldown", "RiskET", "HeuristicGain", "GainTree",
     "GainMLP8201", "GainMLP8202", "GainMLP8203",
@@ -421,7 +421,7 @@ def _load_runner_helpers(runner_api: Any | None, modules: Mapping[str, Any]) -> 
         return SimpleNamespace(**dict(runner_api)) if isinstance(runner_api, Mapping) else runner_api
     helper_names = (
         "legacy_environment_scenario", "safety_receipt", "safety_scope",
-        "verify_safety_disposition", "invoke_replanner",
+        "verify_safety_disposition", "apply_live_safety_disposition", "invoke_replanner",
     )
     if all(callable(modules.get(name)) for name in helper_names):
         return SimpleNamespace(**dict(modules))
@@ -504,6 +504,14 @@ def _run_one_episode(
                 bool(safety.get("forced", safety.get("needs_forced_handling", False)))
                 or not bool(safety.get("safe_to_suppress", False))
             )
+            live_started_cpu, live_started_wall = time.process_time(), time.perf_counter()
+            current_public, safety_disposition, safety_apply_receipt = helpers.apply_live_safety_disposition(
+                modules, env, current_public, safety,
+            )
+            timing["safety"].append(max(0.0, time.process_time() - live_started_cpu))
+            timing["safety_wall_seconds"].append(max(0.0, time.perf_counter() - live_started_wall))
+            history = pairs._public_history(env)
+            scope = modules["identify_scope"](current_public, detection)
             event_candidate = bool(event_decision.get("triggered"))
             counts["event_candidates"] += int(event_candidate)
             periodic_due = int(env.time) > 0 and int(env.time) % interval == 0
@@ -530,10 +538,6 @@ def _run_one_episode(
             counts["method_candidates"] += int(method_candidate and not forced)
             pending_action = copy.deepcopy(pairs.NOOP_ACTION)
             planner_receipt: dict[str, Any] | None = None
-            safety_disposition: dict[str, Any] = {
-                "schema": "gain-safety-disposition/1", "status": "not_required", "resolved": True,
-            }
-
             if method_candidate and int(env.time) < horizon:
                 allow_replan = forced
                 if not forced and method in {"HeuristicGain", *MODEL_PATH_KEYS}:
@@ -596,11 +600,6 @@ def _run_one_episode(
                     counts["infeasible_candidates"] += int(planner_receipt.get("infeasible_count", 0))
                     if forced:
                         counts["forced_handled"] += 1
-                        safety_disposition, verify_cpu, verify_wall = _timed(
-                            timing, "safety", lambda: helpers.verify_safety_disposition(
-                                modules, env, current_public, action, safety,
-                            ),
-                        )
                         if safety.get("forced") or not safety.get("safe_to_suppress", True):
                             counts["safety_resolved"] += int(bool(safety_disposition.get("resolved")))
                             counts["safety_unresolved"] += int(not bool(safety_disposition.get("resolved")))
@@ -617,6 +616,8 @@ def _run_one_episode(
                         "score": score_info, "planner_invoked": True,
                         "planner_receipt": copy.deepcopy(planner_receipt), "action": copy.deepcopy(action),
                         "safety_disposition": copy.deepcopy(safety_disposition),
+                        "safety_apply_receipt": copy.deepcopy(safety_apply_receipt),
+                        "public_history": copy.deepcopy(history),
                         "command_issued_at": int(env.time), "command_effective_at": int(env.time),
                     }
                     previous_action_receipt = decision_record
@@ -630,6 +631,8 @@ def _run_one_episode(
                         "score": score_info, "planner_invoked": False,
                         "planner_receipt": None, "action": copy.deepcopy(pairs.NOOP_ACTION),
                         "safety_disposition": copy.deepcopy(safety_disposition),
+                        "safety_apply_receipt": copy.deepcopy(safety_apply_receipt),
+                        "public_history": copy.deepcopy(history),
                         "command_issued_at": None, "command_effective_at": None,
                     }
                 decisions.append(decision_record)
@@ -642,6 +645,8 @@ def _run_one_episode(
                     "feature_values": None, "score": None, "planner_invoked": False,
                     "planner_receipt": None, "action": copy.deepcopy(pairs.NOOP_ACTION),
                     "safety_disposition": copy.deepcopy(safety_disposition),
+                    "safety_apply_receipt": copy.deepcopy(safety_apply_receipt),
+                    "public_history": copy.deepcopy(history),
                     "command_issued_at": None, "command_effective_at": None,
                 })
             if terminated or truncated:

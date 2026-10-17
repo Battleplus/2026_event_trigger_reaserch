@@ -34,12 +34,30 @@ RUN_SCHEMA = "gain-gate-run/1"
 SOURCE_SCHEMA = "gain-gate-source-manifest/1"
 EVIDENCE_SCHEMA = "gain-gate-evidence-manifest/1"
 REVIEW_SCHEMA = "gain-gate-p1-review/1"
-REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v1"
+V2_SMOKE_REVIEW_SCHEMA = "gain-gate-v2-smoke-review/1"
+V2_SMOKE_REVIEW_VERIFICATION_SCHEMA = "gain-gate-v2-smoke-review-verification/1"
+V2_SMOKE_RUN_ID = "20261017T113110Z-8035318d2d79"
+V2_SMOKE_CONFIG_SHA256 = "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943"
+V2_SMOKE_SOURCE_MANIFEST_SHA256 = "2657ebefb1f9eba1a99333baf83c601c4b88e8928311fca5e5d7454c3277db84"
+V2_SMOKE_EVIDENCE_MANIFEST_SHA256 = "25b77385e6f11d46f11e56205051fc4b8649572dd0420b51636cb5906e51e1da"
+V2_SMOKE_EVIDENCE_FILE_COUNT = 79
+REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v2"
 COLLECTION_SCHEMA = "gain-gate-collection/1"
 COLLECTION_INPUTS_SCHEMA = "gain-gate-collection-inputs/1"
 TRAIN_COLLECTION_IDENTITY_SCHEMA = "gain-gate-train-input-identity/1"
 TRAIN_STAGE_SCHEMA = "gain-gate-train-light-stage/1"
 EVALUATION_SCHEMA = "gain-gate-test-evaluation/1"
+
+
+def _shared_replanner_version() -> str:
+    """Return the implementation version from the frozen replanner module."""
+    try:
+        from .fixed_replanner import REPLANNER_VERSION as version
+    except ImportError:
+        from fixed_replanner import REPLANNER_VERSION as version
+    if not isinstance(version, str) or not version:
+        raise ValueError("GAIN_RUN_SHARED_REPLANNER_VERSION_INVALID")
+    return version
 
 
 def _bootstrap_project_dependencies() -> None:
@@ -403,12 +421,20 @@ class _ProjectResourceAccount:
         self.lock_handle = None
         self.locked = False
         self.prior_cpu_seconds = 0.0
+        self.v2_cpu_seconds_before = 0.0
+        collection = config["collection"]
+        self.max_v2_cpu_seconds = float(collection.get("max_v2_stage_cpu_seconds", collection["max_project_cpu_seconds"]))
+        self.prior_review_path = PROJECT_ROOT / str(collection.get(
+            "prior_resource_review_path", "reviews/V2_PRIOR_RESOURCE_REVIEW.json"
+        ))
+        self.prior_review_sha256 = str(collection.get("prior_resource_review_sha256", ""))
+        self.prior_manifest_cpu_seconds = float(collection.get("prior_resource_cpu_seconds", 0.0))
         self.child_cpu_seconds = 0.0
         self.start_cpu = time.process_time()
         self.start_wall = time.perf_counter()
         self.peak_rss_bytes = int(__import__("resource_supervisor")._read_rss_bytes())
         self.max_wall_seconds = float(config["collection"]["max_wall_seconds_per_server_job"])
-        self.max_cpu_seconds = float(config["collection"]["max_project_cpu_seconds"])
+        self.max_cpu_seconds = float(collection["max_project_cpu_seconds"])
         self.max_rss_bytes = int(config["collection"]["max_rss_bytes"])
         self.runtime: dict[str, Any] | None = None
         self.finished_row: dict[str, Any] | None = None
@@ -433,7 +459,19 @@ class _ProjectResourceAccount:
             self.lock_handle = None
             raise RuntimeError("GAIN_RUN_PROJECT_RESOURCE_LEDGER_BUSY") from exc
         self.locked = True
-        self.prior_cpu_seconds = sum(float(row["cpu_seconds"]) for row in self._read_entries())
+        entries = self._read_entries()
+        self.v2_cpu_seconds_before = sum(float(row["cpu_seconds"]) for row in entries)
+        if self.prior_review_path.is_file():
+            if self.prior_review_sha256 and _sha256_file(self.prior_review_path) != self.prior_review_sha256:
+                raise ValueError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_HASH_MISMATCH")
+            review = _read_json(self.prior_review_path)
+            if review.get("schema") != "gain-v2-prior-resource-review/1":
+                raise ValueError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_SCHEMA_INVALID")
+            if not math.isclose(float(review.get("cpu_seconds", -1.0)), self.prior_manifest_cpu_seconds, rel_tol=0.0, abs_tol=1e-9):
+                raise ValueError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_CPU_MISMATCH")
+        elif self.prior_manifest_cpu_seconds > 0.0:
+            raise FileNotFoundError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_MISSING")
+        self.prior_cpu_seconds = self.prior_manifest_cpu_seconds + self.v2_cpu_seconds_before
         return self
 
     def __exit__(self, exc_type, exc, traceback_value):
@@ -488,6 +526,8 @@ class _ProjectResourceAccount:
             raise TimeoutError("GAIN_RUN_STAGE_WALL_LIMIT_EXCEEDED")
         if metrics["project_cpu_seconds_including_stage"] > self.max_cpu_seconds:
             raise TimeoutError("GAIN_RUN_PROJECT_CPU_LIMIT_EXCEEDED")
+        if metrics["v2_cpu_seconds_including_stage"] > self.max_v2_cpu_seconds:
+            raise TimeoutError("GAIN_RUN_V2_STAGE_CPU_LIMIT_EXCEEDED")
         if metrics["peak_rss_bytes"] > self.max_rss_bytes:
             raise MemoryError("GAIN_RUN_STAGE_RSS_LIMIT_EXCEEDED")
         return metrics
@@ -496,11 +536,13 @@ class _ProjectResourceAccount:
         elapsed_wall = max(0.0, time.perf_counter() - self.start_wall)
         process_cpu = max(0.0, time.process_time() - self.start_cpu)
         total_cpu = self.prior_cpu_seconds + process_cpu + self.child_cpu_seconds
+        v2_total_cpu = self.v2_cpu_seconds_before + process_cpu + self.child_cpu_seconds
         self.peak_rss_bytes = max(self.peak_rss_bytes, int(__import__("resource_supervisor")._read_rss_bytes()))
         return {
             "stage_wall_seconds": elapsed_wall, "stage_process_cpu_seconds": process_cpu,
             "verified_child_cpu_seconds": self.child_cpu_seconds,
             "project_cpu_seconds_including_stage": total_cpu,
+            "v2_cpu_seconds_including_stage": v2_total_cpu,
             "peak_rss_bytes": self.peak_rss_bytes,
         }
 
@@ -515,6 +557,8 @@ class _ProjectResourceAccount:
             violations.append("stage_wall_limit")
         if metrics["project_cpu_seconds_including_stage"] > self.max_cpu_seconds:
             violations.append("project_cpu_limit")
+        if metrics["v2_cpu_seconds_including_stage"] > self.max_v2_cpu_seconds:
+            violations.append("v2_stage_cpu_limit")
         if metrics["peak_rss_bytes"] > self.max_rss_bytes:
             violations.append("rss_limit")
         if violations:
@@ -526,6 +570,11 @@ class _ProjectResourceAccount:
             "stage": self.stage, "status": status,
             **metrics, "project_cpu_seconds_before": self.prior_cpu_seconds,
             "project_cpu_budget_seconds": self.max_cpu_seconds,
+            "prior_manifest_cpu_seconds": self.prior_manifest_cpu_seconds,
+            "prior_resource_review_path": str(self.prior_review_path.relative_to(PROJECT_ROOT)),
+            "prior_resource_review_sha256": self.prior_review_sha256,
+            "v2_cpu_seconds_before": self.v2_cpu_seconds_before,
+            "v2_stage_cpu_budget_seconds": self.max_v2_cpu_seconds,
             "stage_wall_budget_seconds": self.max_wall_seconds,
             "rss_budget_bytes": self.max_rss_bytes,
             "resource_contract": {
@@ -614,6 +663,8 @@ def _load_config(path_text: str) -> tuple[Path, dict[str, Any], str]:
 
 
 def _validate_config(config: Mapping[str, Any]) -> None:
+    if config.get("version") != "gain-gate-v2-100x100":
+        raise ValueError("GAIN_RUN_V2_CONFIG_IDENTITY_INVALID")
     map_config = config.get("map", {})
     if (map_config.get("rows"), map_config.get("cols"), map_config.get("grid_cells")) != (100, 100, 10000):
         raise ValueError("GAIN_RUN_MAP_CONTRACT_INVALID")
@@ -621,7 +672,11 @@ def _validate_config(config: Mapping[str, Any]) -> None:
     if (scenario.get("uav"), scenario.get("helicopter"), scenario.get("tasks"), scenario.get("horizon_minutes")) != (4, 2, 12, 60):
         raise ValueError("GAIN_RUN_PILOT_SHAPE_INVALID")
     replanner = config.get("replanner", {})
-    if replanner.get("version") != REPLANNER_VERSION or replanner.get("max_candidates") != 16:
+    if (
+        replanner.get("version") != REPLANNER_VERSION
+        or _shared_replanner_version() != REPLANNER_VERSION
+        or replanner.get("max_candidates") != 16
+    ):
         raise ValueError("GAIN_RUN_REPLANNER_CONTRACT_INVALID")
     if replanner.get("rollout_oracle_allowed") is not False:
         raise ValueError("GAIN_RUN_ROLLOUT_ORACLE_MUST_BE_DISABLED")
@@ -632,6 +687,17 @@ def _validate_config(config: Mapping[str, Any]) -> None:
         raise ValueError("GAIN_RUN_CONTINUATION_CONTRACT_INVALID")
     if config.get("collection", {}).get("device") != "cpu" or config.get("collection", {}).get("threads") != 1:
         raise ValueError("GAIN_RUN_RUNTIME_MUST_BE_CPU1")
+    collection = config.get("collection", {})
+    if float(collection.get("max_project_cpu_seconds", 0.0)) != 86400.0:
+        raise ValueError("GAIN_RUN_PROJECT_CPU_BUDGET_INVALID")
+    if float(collection.get("max_v2_stage_cpu_seconds", 0.0)) > 78774.140625:
+        raise ValueError("GAIN_RUN_V2_CPU_BUDGET_EXCEEDED")
+    if collection.get("prior_resource_review_path") != "reviews/V2_PRIOR_RESOURCE_REVIEW.json":
+        raise ValueError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_PATH_INVALID")
+    if collection.get("prior_resource_review_sha256") != "c03fa60f6e1b8363fd81632d02d4dfdacda06d46babfe7633ff21b4245d663cc":
+        raise ValueError("GAIN_RUN_PRIOR_RESOURCE_REVIEW_HASH_INVALID")
+    if float(collection.get("prior_resource_cpu_seconds", -1.0)) != 7625.859375:
+        raise ValueError("GAIN_RUN_PRIOR_RESOURCE_CPU_INVALID")
 
 
 def _source_file_paths() -> list[Path]:
@@ -652,6 +718,10 @@ def _source_file_paths() -> list[Path]:
         path for path in (PROJECT_ROOT / "BASELINE_PROVENANCE.json", PROJECT_ROOT / "REUSE_INVENTORY.json")
         if path.is_file()
     )
+    static_roots = (CIVILIAN_DIR / "fixtures", CIVILIAN_DIR / "registered_data")
+    for root in static_roots:
+        if root.is_dir():
+            candidates.extend(root.rglob("*.json"))
     paths = sorted({path.resolve() for path in candidates if path.is_file()})
     return paths
 
@@ -663,7 +733,17 @@ def _source_manifest() -> dict[str, Any]:
         files.append({"path": relative, "size_bytes": path.stat().st_size, "sha256": _sha256_file(path)})
     if not files:
         raise ValueError("GAIN_RUN_SOURCE_MANIFEST_EMPTY")
-    return {"schema": SOURCE_SCHEMA, "files": files}
+    static_inputs = [
+        row for row in files
+        if row["path"].startswith("package/civilian/fixtures/")
+        or row["path"].startswith("package/civilian/registered_data/")
+    ]
+    return {
+        "schema": SOURCE_SCHEMA,
+        "files": files,
+        "static_inputs": static_inputs,
+        "static_inputs_sha256": _sha256_bytes(_canonical(static_inputs)),
+    }
 
 
 def _create_run_dir(output_text: str | None) -> tuple[Path, str]:
@@ -883,11 +963,20 @@ def safety_receipt(modules: Mapping[str, Any], observation: Mapping[str, Any]) -
 def _verify_safety_disposition(
     modules: Mapping[str, Any], env: Any, observation: Mapping[str, Any],
     action: Mapping[str, Any], safety: Mapping[str, Any],
+    *, apply_receipt: Mapping[str, Any] | None = None,
+    post_observation: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    result = modules["safety"].verify_safety_disposition(
-        env, copy.deepcopy(dict(observation)), copy.deepcopy(dict(action)),
-        initial_report=copy.deepcopy(dict(safety)),
-    )
+    verifier = getattr(modules["safety"], "verify_live_safety_disposition", None)
+    if apply_receipt is not None and post_observation is not None and callable(verifier):
+        result = verifier(
+            env, copy.deepcopy(dict(observation)), copy.deepcopy(dict(safety)),
+            copy.deepcopy(dict(apply_receipt)), copy.deepcopy(dict(post_observation)),
+        )
+    else:
+        result = modules["safety"].verify_safety_disposition(
+            env, copy.deepcopy(dict(observation)), copy.deepcopy(dict(action)),
+            initial_report=copy.deepcopy(dict(safety)),
+        )
     if (
         not isinstance(result, Mapping)
         or result.get("schema") != "gain-safety-disposition/1"
@@ -897,11 +986,47 @@ def _verify_safety_disposition(
     return copy.deepcopy(dict(result))
 
 
+def _apply_live_safety_disposition(
+    modules: Mapping[str, Any], env: Any, observation: Mapping[str, Any],
+    safety: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Apply and independently verify a same-tick safety transition.
+
+    The hook is deliberately completed before any candidate generation.  The
+    returned observation is the post-mutation public state that downstream
+    scope selection and replanning must use.
+    """
+    apply_fn = getattr(modules["safety"], "apply_safety_disposition", None)
+    if not callable(apply_fn):
+        raise ValueError("GAIN_RUN_LIVE_SAFETY_HOOK_UNAVAILABLE")
+    pre = copy.deepcopy(dict(observation))
+    receipt = apply_fn(env, pre, copy.deepcopy(dict(safety)))
+    if not isinstance(receipt, Mapping) or receipt.get("schema") != "gain-live-safety-disposition/1":
+        raise ValueError("GAIN_RUN_LIVE_SAFETY_RECEIPT_INVALID")
+    post = modules["pairs"].model_public_observation(env)
+    # Keep the hook receipt in the trace while returning the refreshed public
+    # state separately for feature extraction and planner scope selection.
+    disposition = _verify_safety_disposition(
+        modules, env, pre, {}, safety,
+        apply_receipt=receipt, post_observation=post,
+    )
+    if disposition.get("schema") != "gain-safety-disposition/1":
+        raise ValueError("GAIN_RUN_SAFETY_DISPOSITION_INVALID")
+    return copy.deepcopy(post), copy.deepcopy(dict(disposition)), copy.deepcopy(dict(receipt))
+
+
 def verify_safety_disposition(
     modules: Mapping[str, Any], env: Any, observation: Mapping[str, Any],
     action: Mapping[str, Any], safety: Mapping[str, Any],
 ) -> dict[str, Any]:
     return _verify_safety_disposition(modules, env, observation, action, safety)
+
+
+def apply_live_safety_disposition(
+    modules: Mapping[str, Any], env: Any, observation: Mapping[str, Any],
+    safety: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    return _apply_live_safety_disposition(modules, env, observation, safety)
 
 
 def _invoke_replanner(
@@ -958,6 +1083,13 @@ def _make_safety_continuation(modules: Mapping[str, Any], config: Mapping[str, A
         decision = engine.decide(detection, int(observation.get("time", env.time)), mode="event")
         safety = _safety_receipt(modules, observation)
         forced = bool(detection.get("strong_event")) or _safety_forced(safety) or not safety["safe_to_suppress"]
+        observation, disposition, safety_apply_receipt = _apply_live_safety_disposition(
+            modules, env, observation, safety,
+        )
+        # Safety mutation is same-tick.  Refresh history/scope before deciding
+        # whether the fixed replanner is allowed to generate candidates.
+        history = pairs._public_history(env)
+        refreshed_scope = modules["identify_scope"](observation, detection)
         if not forced:
             elapsed = max(0.0, time.process_time() - started)
             return {
@@ -966,15 +1098,15 @@ def _make_safety_continuation(modules: Mapping[str, Any], config: Mapping[str, A
                 "planner_cpu_seconds": 0.0, "safety_monitor_cpu_seconds": elapsed,
                 "policy_version": "shared-safety-trigger-v1",
                 "safety_report": safety,
-                "safety_disposition": {"schema": "gain-safety-disposition/1", "status": "not_required", "resolved": True},
+                "safety_disposition": disposition,
+                "safety_apply_receipt": safety_apply_receipt,
                 "unknown_reason": None,
-                "detection": detection,
+                "detection": detection, "public_history": history,
             }
-        scope = _safety_scope(safety, decision.get("affected_scope"))
+        scope = _safety_scope(safety, refreshed_scope or decision.get("affected_scope"))
         action, receipt, planner_cpu, _ = _invoke_replanner(
             modules, env, scope, max_candidates=int(config["replanner"]["max_candidates"]),
         )
-        disposition = _verify_safety_disposition(modules, env, observation, action, safety)
         elapsed = max(0.0, time.process_time() - started)
         return {
             "receipt_schema": pairs.CONTINUATION_RECEIPT_SCHEMA,
@@ -983,7 +1115,9 @@ def _make_safety_continuation(modules: Mapping[str, Any], config: Mapping[str, A
             "safety_monitor_cpu_seconds": max(0.0, elapsed - planner_cpu),
             "policy_version": str(receipt.get("replanner_version", REPLANNER_VERSION)),
             "safety_report": safety, "safety_disposition": disposition,
+            "safety_apply_receipt": safety_apply_receipt,
             "unknown_reason": disposition.get("unknown_reason"), "detection": detection,
+            "public_history": history,
         }
 
     return continuation
@@ -1161,6 +1295,9 @@ def _scan_collection_trajectory(
         )
         safety = _safety_receipt(modules, current)
         forced = bool(detection.get("strong_event")) or _safety_forced(safety) or not bool(safety.get("safe_to_suppress"))
+        current, disposition, safety_apply_receipt = _apply_live_safety_disposition(
+            modules, env, current, safety,
+        )
         periodic_due = source == "Periodic-4min" and int(env.time) % max(1, periodic_interval) == 0
         is_candidate = forced or bool(event_decision.get("triggered")) or periodic_due
         scope = modules["identify_scope"](current, detection)
@@ -1176,9 +1313,6 @@ def _scan_collection_trajectory(
                 modules, env, selected_scope,
                 max_candidates=int(config["replanner"]["max_candidates"]),
             )
-            disposition = {"schema": "gain-safety-disposition/1", "status": "not_required", "resolved": True}
-            if forced:
-                disposition = _verify_safety_disposition(modules, env, current, planner_action, safety)
             state_id = f"{scenario['parent_id']}-{source.lower().replace('-', '_')}-t{int(env.time):03d}-c{candidate_count:04d}"
             snapshot = pairs.capture_snapshot(
                 env, state_id=state_id, scenario_id=str(scenario["parent_id"]),
@@ -1193,7 +1327,8 @@ def _scan_collection_trajectory(
             row = {
                 "state_id": state_id, "time": int(env.time), "event_type": str(detection.get("event_type") or "none"),
                 "forced": forced, "detection": copy.deepcopy(detection), "safety": copy.deepcopy(safety),
-                "safety_disposition": disposition, "features": features,
+                "safety_disposition": disposition, "safety_apply_receipt": safety_apply_receipt,
+                "features": features,
                 "feature_gate_seconds": feature_seconds, "snapshot_json": snapshot,
                 "replan_action": copy.deepcopy(planner_action), "planner_receipt": planner_receipt,
                 "planner_cpu_seconds": planner_cpu, "planner_wall_seconds": planner_wall,
@@ -1358,6 +1493,18 @@ def _verify_collection_manifest(
             or type(source_entry.get("size_bytes")) is not int or source_entry["size_bytes"] < 0
         ):
             raise ValueError("GAIN_RUN_COLLECTION_SOURCE_ENTRY_INVALID")
+    static_inputs = source.get("static_inputs")
+    if not isinstance(static_inputs, list) or source.get("static_inputs_sha256") != _sha256_bytes(_canonical(static_inputs)):
+        raise ValueError("GAIN_RUN_COLLECTION_STATIC_INPUT_MANIFEST_INVALID")
+    source_file_lookup = {str(entry["path"]): entry for entry in source_files}
+    for entry in static_inputs:
+        if not isinstance(entry, Mapping) or not isinstance(entry.get("path"), str):
+            raise ValueError("GAIN_RUN_COLLECTION_STATIC_INPUT_ENTRY_INVALID")
+        path = str(entry["path"])
+        if not (path.startswith("package/civilian/fixtures/") or path.startswith("package/civilian/registered_data/")):
+            raise ValueError("GAIN_RUN_COLLECTION_STATIC_INPUT_PATH_INVALID")
+        if source_file_lookup.get(path) != dict(entry):
+            raise ValueError("GAIN_RUN_COLLECTION_STATIC_INPUT_NOT_BOUND")
     file_entries = evidence.get("files")
     if not isinstance(file_entries, list):
         raise ValueError("GAIN_RUN_COLLECTION_EVIDENCE_FILES_INVALID")
@@ -2061,6 +2208,7 @@ def _evaluate_closed_loop(
         "make_safety_continuation": make_safety_continuation,
         "safety_receipt": safety_receipt, "safety_scope": safety_scope,
         "verify_safety_disposition": verify_safety_disposition,
+        "apply_live_safety_disposition": apply_live_safety_disposition,
         "invoke_replanner": invoke_replanner,
         "resource_check": lambda: _check_resource_account(args),
     }
@@ -2214,6 +2362,7 @@ def _collect_formal(
                     "time": candidate["time"], "event_type": candidate["event_type"],
                     "forced": candidate["forced"], "detection": candidate["detection"],
                     "safety": candidate["safety"], "safety_disposition": candidate["safety_disposition"],
+                    "safety_apply_receipt": candidate.get("safety_apply_receipt"),
                     "public_features": candidate["features"], "features": candidate["features"],
                     "feature_gate_seconds": candidate["feature_gate_seconds"],
                     "planner_cpu_seconds": candidate["planner_cpu_seconds"],
@@ -2359,6 +2508,10 @@ def _smoke(
         observation = modules["pairs"].model_public_observation(env)
         safety = _safety_receipt(modules, observation)
         forced = bool(detection.get("strong_event")) or _safety_forced(safety) or not safety["safe_to_suppress"]
+        observation, safety_disposition, safety_apply_receipt = _apply_live_safety_disposition(
+            modules, env, observation, safety,
+        )
+        scope = modules["identify_scope"](observation, detection)
         event_type = str(detection.get("event_type") or "none")
         event_type_counts[event_type] += 1
         features_started = time.perf_counter()
@@ -2408,6 +2561,10 @@ def _smoke(
         clone_scenario = _hidden_mutation(scenario, int(env.time))
         clone = _advance_clone_to_time(clone_scenario, int(env.time), modules)
         clone_observation = modules["pairs"].model_public_observation(clone)
+        clone_safety = _safety_receipt(modules, clone_observation)
+        clone_observation, _, _ = _apply_live_safety_disposition(
+            modules, clone, clone_observation, clone_safety,
+        )
         clone_history = modules["pairs"]._public_history(clone)
         clone_detection = modules["trigger_class"]({}, {"threshold": 0.5, "delta_min": 4}).detect(
             clone_history[-2] if len(clone_history) >= 2 else None, clone_observation,
@@ -2427,15 +2584,11 @@ def _smoke(
         planner_receipt = None
         planner_cpu = 0.0
         planner_wall = 0.0
-        safety_disposition = {"schema": "gain-safety-disposition/1", "status": "not_required", "resolved": True}
         unknown_reason = None
         if forced:
             planner_action, planner_receipt, planner_cpu, planner_wall = _invoke_replanner(
                 modules, env, _safety_scope(safety, scope),
                 max_candidates=int(config["replanner"]["max_candidates"]),
-            )
-            safety_disposition = _verify_safety_disposition(
-                modules, env, observation, planner_action, safety,
             )
             if not safety_disposition["resolved"]:
                 unresolved_forced_dispositions += 1
@@ -2518,7 +2671,8 @@ def _smoke(
             "event_tape_sha256": _sha256_bytes(_canonical(scenario.get("event_tape", []))),
             "time": int(env.time), "event_type": event_type,
             "forced": forced, "detection": detection, "safety": safety,
-            "safety_disposition": safety_disposition, "unknown_reason": unknown_reason,
+            "safety_disposition": safety_disposition, "safety_apply_receipt": safety_apply_receipt,
+            "unknown_reason": unknown_reason,
             "features": features, "feature_wall_seconds": feature_seconds,
             "replanner_version": REPLANNER_VERSION,
             "candidate_count": planner_receipt.get("actual_candidate_count") if planner_receipt else 0,
@@ -2693,6 +2847,231 @@ def _verify_p1_review(review_path: Path, config_sha256: str) -> dict[str, Any]:
     }
 
 
+def _v2_smoke_review_path(value: str | None) -> Path:
+    if value:
+        return _resolve_input(value)
+    return (PROJECT_ROOT / "reviews" / "V2_SMOKE_REVIEW_20261017_R3.json").resolve(strict=True)
+
+
+def _positive_claim(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return value != 0
+    if isinstance(value, str):
+        return value.strip().lower() not in {
+            "", "0", "false", "no", "none", "null", "never", "disabled",
+            "not_run", "not_authorized", "not_determined", "not_accessed",
+        }
+    return bool(value)
+
+
+def _reject_forbidden_smoke_claims(value: Any, location: str = "review") -> None:
+    """Reject metadata that turns the pilot gate into a test/model/OOD claim."""
+    if isinstance(value, Mapping):
+        for raw_key, child in value.items():
+            key = "".join(char for char in str(raw_key).lower() if char.isalnum())
+            forbidden = (
+                ("test" in key and "label" in key)
+                or ("ood" in key and any(token in key for token in ("access", "scenario", "label", "used")))
+                or ("model" in key and any(token in key for token in ("artifact", "train", "access", "load", "checkpoint")))
+                or ("training" in key and any(token in key for token in ("access", "started", "completed", "used")))
+            )
+            if forbidden and _positive_claim(child):
+                raise ValueError(f"GAIN_RUN_V2_SMOKE_FORBIDDEN_CLAIM:{location}.{raw_key}")
+            _reject_forbidden_smoke_claims(child, f"{location}.{raw_key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            _reject_forbidden_smoke_claims(child, f"{location}[{index}]")
+
+
+def _verify_v2_smoke_review(review_path: Path, config_sha256: str) -> dict[str, Any]:
+    """Verify the coordinator's immutable V2 pilot gate before formal collection."""
+    review_path = review_path.resolve(strict=True)
+    review = _read_json(review_path)
+    if review.get("schema") != V2_SMOKE_REVIEW_SCHEMA:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_SCHEMA_INVALID")
+    if review.get("decision") != "PASS_TO_FORMAL_COLLECTION_REVIEW_REQUIRED":
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_DECISION_INVALID")
+    if review.get("engineering") != "PASS_TO_FORMAL_REVIEW":
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_ENGINEERING_INVALID")
+    if review.get("config_sha256") != V2_SMOKE_CONFIG_SHA256 or config_sha256 != V2_SMOKE_CONFIG_SHA256:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_CONFIG_HASH_MISMATCH")
+    if review.get("run_id") != V2_SMOKE_RUN_ID:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_RUN_ID_MISMATCH")
+    if review.get("source_manifest_sha256") != V2_SMOKE_SOURCE_MANIFEST_SHA256:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_SOURCE_HASH_MISMATCH")
+    if review.get("evidence_manifest_sha256") != V2_SMOKE_EVIDENCE_MANIFEST_SHA256:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_HASH_MISMATCH")
+    if review.get("method") not in {"NOT_DETERMINED", "NOT_AUTHORIZED"}:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_METHOD_SCOPE_INVALID")
+    if review.get("world_model") != "NOT_AUTHORIZED" or review.get("ppo") != "NOT_AUTHORIZED":
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_UNAUTHORIZED_SCOPE")
+    actual_model = review.get("actual_reviewer_model")
+    if not isinstance(actual_model, str) or not actual_model.strip():
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_MODEL_NOT_RECORDED")
+    model_text = actual_model.lower()
+    if "gpt-6.1 sol high" in model_text and "not" not in model_text:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_MODEL_MISREPRESENTED")
+    _reject_forbidden_smoke_claims(review)
+
+    checks = review.get("checks")
+    if not isinstance(checks, Mapping):
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_CHECKS_MISSING")
+    required_checks = {
+        "historical_unresolved_replay_rows": 221,
+        "historical_replay_resolved": 221,
+        "historical_replay_unresolved": 0,
+        "historical_replay_unknown": 0,
+        "evidence_files": V2_SMOKE_EVIDENCE_FILE_COUNT,
+    }
+    for key, expected in required_checks.items():
+        if checks.get(key) != expected:
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_CHECK_FAILED:{key}")
+    required_true_checks = {
+        "all_forced_dispositions_resolved",
+        "independent_oracle",
+        "leakage_probe",
+        "planner_isolation",
+        "replay",
+    }
+    for key in required_true_checks:
+        if checks.get(key) is not True:
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_CHECK_FAILED:{key}")
+
+    run_dir = (PROJECT_ROOT / "outputs" / "v2-smoke-final-20261017").resolve(strict=True)
+    evidence_path = run_dir / "EVIDENCE_MANIFEST.json"
+    run_path = run_dir / "RUN.json"
+    source_path = run_dir / "SOURCE_MANIFEST.json"
+    for path in (run_path, source_path, evidence_path):
+        if not path.is_file():
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_FILE_MISSING:{path.name}")
+    run = _read_json(run_path)
+    if (
+        run.get("schema") != RUN_SCHEMA or run.get("stage") != "smoke" or run.get("status") != "complete"
+        or run.get("run_id") != V2_SMOKE_RUN_ID
+        or run.get("config_sha256") != V2_SMOKE_CONFIG_SHA256
+        or run.get("source_manifest_path") != "SOURCE_MANIFEST.json"
+        or run.get("source_manifest_sha256") != V2_SMOKE_SOURCE_MANIFEST_SHA256
+    ):
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_RUN_BINDING_INVALID")
+    source_sha = _sha256_file(source_path)
+    if source_sha != V2_SMOKE_SOURCE_MANIFEST_SHA256:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_SOURCE_FILE_HASH_MISMATCH")
+    source = _read_json(source_path)
+    source_files = source.get("files")
+    if source.get("schema") != SOURCE_SCHEMA or not isinstance(source_files, list) or not source_files:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_SOURCE_MANIFEST_INVALID")
+    for entry in source_files:
+        if (
+            not isinstance(entry, Mapping) or not isinstance(entry.get("path"), str)
+            or Path(entry["path"]).is_absolute() or ".." in Path(entry["path"]).parts
+            or not isinstance(entry.get("sha256"), str) or len(entry["sha256"]) != 64
+            or type(entry.get("size_bytes")) is not int or entry["size_bytes"] < 0
+        ):
+            raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_SOURCE_ENTRY_INVALID")
+    static_inputs = source.get("static_inputs")
+    if not isinstance(static_inputs, list) or source.get("static_inputs_sha256") != _sha256_bytes(_canonical(static_inputs)):
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_STATIC_INPUTS_INVALID")
+
+    evidence_sha = _sha256_file(evidence_path)
+    if evidence_sha != V2_SMOKE_EVIDENCE_MANIFEST_SHA256:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_FILE_HASH_MISMATCH")
+    evidence = _read_json(evidence_path)
+    entries = evidence.get("files")
+    if (
+        evidence.get("schema") != EVIDENCE_SCHEMA or evidence.get("run_id") != V2_SMOKE_RUN_ID
+        or evidence.get("stage") != "smoke" or evidence.get("status") != "complete"
+        or evidence.get("config_sha256") != V2_SMOKE_CONFIG_SHA256
+        or evidence.get("source_manifest_sha256") != V2_SMOKE_SOURCE_MANIFEST_SHA256
+        or not isinstance(entries, list) or len(entries) != V2_SMOKE_EVIDENCE_FILE_COUNT
+    ):
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_MANIFEST_INVALID")
+
+    replay_report_value = checks.get("historical_replay_report_path")
+    replay_report_sha = checks.get("historical_replay_report_sha256")
+    if not isinstance(replay_report_value, str) or not replay_report_value:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_REPLAY_REPORT_PATH_MISSING")
+    replay_report = (PROJECT_ROOT / replay_report_value).resolve()
+    project_root = PROJECT_ROOT.resolve()
+    if project_root not in replay_report.parents or not replay_report.is_file():
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_REPLAY_REPORT_PATH_INVALID")
+    if not isinstance(replay_report_sha, str) or len(replay_report_sha) != 64:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_REPLAY_REPORT_HASH_MISSING")
+    if _sha256_file(replay_report) != replay_report_sha:
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_REPLAY_REPORT_HASH_MISMATCH")
+    verified_paths: dict[str, Path] = {}
+    for entry in entries:
+        if (
+            not isinstance(entry, Mapping) or not isinstance(entry.get("path"), str)
+            or not isinstance(entry.get("sha256"), str) or len(entry["sha256"]) != 64
+            or type(entry.get("size_bytes")) is not int or entry["size_bytes"] < 0
+        ):
+            raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_ENTRY_INVALID")
+        relative = Path(entry["path"])
+        if relative.is_absolute() or ".." in relative.parts or relative.as_posix() in verified_paths:
+            raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_PATH_INVALID")
+        target = (run_dir / relative).resolve()
+        if run_dir not in target.parents or not target.is_file():
+            raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_FILE_MISSING")
+        if target.stat().st_size != entry["size_bytes"] or _sha256_file(target) != entry["sha256"]:
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_FILE_HASH_MISMATCH:{relative.as_posix()}")
+        verified_paths[relative.as_posix()] = target
+
+    required_artifacts = {
+        "RUN.json": run_path,
+        "RESOLVED_CONFIG.json": run_dir / "RESOLVED_CONFIG.json",
+        "SOURCE_MANIFEST.json": source_path,
+        "EVIDENCE_MANIFEST.json": evidence_path,
+        "STAGE_RESULT.json": run_dir / "STAGE_RESULT.json",
+        "RESOURCE_RECEIPT.json": run_dir / "RESOURCE_RECEIPT.json",
+    }
+    review_hashes = review.get("hashes")
+    if not isinstance(review_hashes, Mapping):
+        raise ValueError("GAIN_RUN_V2_SMOKE_REVIEW_HASHES_MISSING")
+    for name, target in required_artifacts.items():
+        if not target.is_file() or (name != "EVIDENCE_MANIFEST.json" and name not in verified_paths):
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_REQUIRED_ARTIFACT_MISSING:{name}")
+        actual = _sha256_file(target)
+        if review_hashes.get(name) != actual or (name != "EVIDENCE_MANIFEST.json" and verified_paths[name] != target):
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_ARTIFACT_HASH_MISMATCH:{name}")
+
+    # Read only JSON evidence metadata for scope claims; all listed files are still hash-verified above.
+    for relative, target in verified_paths.items():
+        if target.suffix.lower() != ".json":
+            continue
+        try:
+            _reject_forbidden_smoke_claims(_read_json(target), f"evidence.{relative}")
+        except json.JSONDecodeError:
+            raise ValueError(f"GAIN_RUN_V2_SMOKE_REVIEW_EVIDENCE_JSON_INVALID:{relative}")
+
+    try:
+        review_ref = review_path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        review_ref = review_path.name
+    return {
+        "schema": V2_SMOKE_REVIEW_VERIFICATION_SCHEMA,
+        "decision": "PASS",
+        "review_sha256": _sha256_file(review_path),
+        "review_path": review_ref,
+        "smoke_run_id": V2_SMOKE_RUN_ID,
+        "config_sha256": V2_SMOKE_CONFIG_SHA256,
+        "source_manifest_sha256": source_sha,
+        "evidence_manifest_sha256": evidence_sha,
+        "evidence_file_count": len(verified_paths),
+        "historical_replay_resolved": checks["historical_replay_resolved"],
+        "historical_replay_unresolved": checks["historical_replay_unresolved"],
+    }
+
+
+def _verify_smoke_review_auto(review_path: Path, config_sha256: str) -> dict[str, Any]:
+    """Dispatch review verification by schema while retaining legacy P1 validation."""
+    review = _read_json(review_path)
+    if review.get("schema") == V2_SMOKE_REVIEW_SCHEMA:
+        return _verify_v2_smoke_review(review_path, config_sha256)
+    return _verify_p1_review(review_path, config_sha256)
+
+
 def _dispatch(stage: str, output: Path, run: dict[str, Any], config: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     if stage == "audit":
         result = {"schema": "gain-gate-audit-report/1", "status": "complete", "checks": _audit_checks(config, _source_manifest())}
@@ -2702,14 +3081,16 @@ def _dispatch(stage: str, output: Path, run: dict[str, Any], config: dict[str, A
         _audit_checks(config, _source_manifest())
         return _smoke(output, run, config, getattr(args, "resource_account", None))
     if stage == "validate":
-        review_path = _review_path(args.p1_review)
-        report = _verify_p1_review(review_path, run["config_sha256"])
+        review_path = _v2_smoke_review_path(getattr(args, "v2_smoke_review", None) or getattr(args, "p1_review", None))
+        report = _verify_smoke_review_auto(review_path, run["config_sha256"])
         result = {"schema": "gain-gate-validation-report/1", "status": "complete", "review": report}
         _write_json(output / "VALIDATION_REPORT.json", result)
         return result
     if stage in {"collect", "train-light", "evaluate", "train-event", "ppo-transfer", "analyze"}:
-        review_path = _review_path(args.p1_review)
-        _verify_p1_review(review_path, run["config_sha256"])
+        review_path = _v2_smoke_review_path(getattr(args, "v2_smoke_review", None) or getattr(args, "p1_review", None))
+        # Formal collection and every dependent stage require the V2 smoke gate;
+        # a legacy P1 review must never bypass this entry check.
+        _verify_v2_smoke_review(review_path, run["config_sha256"])
         if stage == "collect":
             _audit_checks(config, _source_manifest())
             return _collect_formal(output, run, config, args)
@@ -2789,6 +3170,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", required=True)
     parser.add_argument("--output", help="New output directory; it must not already exist")
     parser.add_argument("--p1-review", help="Coordinator P1 review JSON; required for protected stages")
+    parser.add_argument("--v2-smoke-review", help="Coordinator V2 smoke review JSON; required for formal collection and dependent stages")
     parser.add_argument("--input", nargs="+", help="Collection run directories, a collection-input manifest, or evaluation inputs")
     parser.add_argument("--model-dir", help="Frozen model artifact directory for evaluate")
     parser.add_argument("--limit-instances-per-split", type=int,

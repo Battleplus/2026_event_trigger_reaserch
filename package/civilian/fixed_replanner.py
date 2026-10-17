@@ -26,7 +26,7 @@ except ImportError:
     )
 
 
-REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v1"
+REPLANNER_VERSION = "Public-C1-Catalog-Replanner-v2"
 RECEIPT_SCHEMA = "gain-fixed-replanner-receipt/1"
 MAX_CANDIDATES = 16
 _EPS = 1e-9

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import math
 from typing import Any
 
@@ -15,6 +17,29 @@ except ImportError:
 _TERMINAL_TASK_STATES = {"completed", "failed", "cancelled", "expired", "split_parent"}
 _STOCK_COMMITMENT_PHASES = {"assigned", "to_depot", "loading"}
 _LOADED_TASK_PHASES = {"in_transit", "to_delivery_site", "unloading", "delivery_confirmed"}
+
+
+def _canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+
+
+def _digest(value: Any) -> str:
+    return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+def _public_digest(observation: dict) -> str:
+    """Hash the observation body using the event environment's provenance rule."""
+    body = copy.deepcopy(observation)
+    if isinstance(body.get("provenance"), dict):
+        body.pop("provenance", None)
+    return hashlib.sha256(_canonical(body)).hexdigest()
+
+
+def _observation_digest(observation: dict) -> str:
+    provenance = observation.get("provenance")
+    if isinstance(provenance, dict) and isinstance(provenance.get("snapshot_hash"), str):
+        return str(provenance["snapshot_hash"])
+    return _public_digest(observation)
 
 
 def _active_mission(platform: dict, task: dict, depot: dict, position: list[float]) -> tuple[float, float] | None:
@@ -114,11 +139,23 @@ def assess_queue_safety(public_observation: dict) -> dict[str, Any]:
                 queued_task_owners[str(task_id)] = str(platform_id)
                 first_queue_occurrence = True
             required_capability = "inspect" if task.get("kind") == "inspection" else "deliver"
-            if required_capability not in platform.get("capabilities", []):
-                violations.append({"code": "queued_task_capability_infeasible", "platform_id": platform_id,
-                                   "task_id": task_id, "required_capability": required_capability})
             target = list(task.get("position", position))
             is_active = task.get("status") == "active" or platform.get("active_task_id") == str(task_id)
+            # A live safety disposition may hold an active task while its
+            # control link is unavailable.  The wrapper marks this state
+            # explicitly and preserves the physical assignment, so it is no
+            # longer an unresolved queue violation until the link recovers.
+            # A paused status alone is not evidence that the live safety hook
+            # applied a hold.  Require the explicit marker so stale or
+            # malformed observations cannot suppress a capability violation.
+            safety_paused = task.get("safety_paused") is True
+            # Capability loss on an active task is handled by the simulator's
+            # same-tick capability hold.  Keep the task in its queue and
+            # preserve progress/cargo/stock; only an unheld task is a forced
+            # queue violation here.  Pre-start work remains releasable.
+            if required_capability not in platform.get("capabilities", []) and not (is_active and safety_paused):
+                violations.append({"code": "queued_task_capability_infeasible", "platform_id": platform_id,
+                                   "task_id": task_id, "required_capability": required_capability})
             if task.get("kind") == "delivery":
                 depot_id = str(task.get("depot_id"))
                 depot = depots.get(depot_id, {})
@@ -177,7 +214,7 @@ def assess_queue_safety(public_observation: dict) -> dict[str, Any]:
                                    "task_id": task_id, "energy_shortfall": -energy_left})
             energy_left = max(0.0, energy_left)
             position = target
-            if task.get("status") == "active":
+            if task.get("status") == "active" and not safety_paused:
                 link = _communication_metrics(public_observation, "n02-uav-1", str(platform_id))
                 if not link.get("connected", False):
                     violations.append({"code": "active_task_control_link_lost", "platform_id": platform_id,
@@ -226,59 +263,201 @@ def assess_queue_safety(public_observation: dict) -> dict[str, Any]:
     }
 
 
+def apply_safety_disposition(
+    env: Any,
+    public_observation: dict,
+    safety_report: dict,
+) -> dict[str, Any]:
+    """Apply only a current-time, public-triggered safety disposition.
+
+    The event environment owns physical mutation (pause/release/resume).  This
+    adapter deliberately does not call ``step`` or inspect a private future
+    event tape.  A missing hook is an explicit unknown result rather than a
+    projected or inferred resolution.
+    """
+    if not isinstance(public_observation, dict) or not isinstance(safety_report, dict):
+        raise TypeError("public_observation and safety_report must be mappings")
+    if not safety_report.get("forced", False):
+        return {
+            "schema": "gain-live-safety-disposition/1", "status": "not_required",
+            "resolved": True, "actions": [],
+            "pre_public_sha256": _observation_digest(public_observation),
+            "post_public_sha256": _observation_digest(public_observation),
+            "actions_sha256": _digest([]),
+            "remaining_report": copy.deepcopy(safety_report), "unknown_reason": None,
+        }
+    hook = getattr(env, "apply_current_safety_disposition", None)
+    if not callable(hook):
+        return {
+            "schema": "gain-live-safety-disposition/1", "status": "unknown",
+            "resolved": False, "actions": [],
+            "pre_public_sha256": _observation_digest(public_observation),
+            "post_public_sha256": None, "remaining_report": None,
+            "actions_sha256": _digest([]),
+            "unknown_reason": "current_time_safety_hook_unavailable",
+        }
+    try:
+        result = hook(copy.deepcopy(public_observation), copy.deepcopy(safety_report))
+    except Exception as exc:
+        return {
+            "schema": "gain-live-safety-disposition/1", "status": "unknown",
+            "resolved": False, "actions": [],
+            "pre_public_sha256": _observation_digest(public_observation),
+            "post_public_sha256": None, "remaining_report": None,
+            "actions_sha256": _digest([]),
+            "unknown_reason": f"current_time_safety_hook_error:{type(exc).__name__}",
+        }
+    if not isinstance(result, dict):
+        return {
+            "schema": "gain-live-safety-disposition/1", "status": "unknown",
+            "resolved": False, "actions": [],
+            "pre_public_sha256": _observation_digest(public_observation),
+            "post_public_sha256": None, "remaining_report": None,
+            "actions_sha256": _digest([]),
+            "unknown_reason": "current_time_safety_hook_malformed",
+        }
+    normalized = copy.deepcopy(result)
+    actions = normalized.get("actions")
+    if isinstance(actions, list) and "actions_sha256" not in normalized:
+        normalized["actions_sha256"] = _digest(actions)
+    return normalized
+
+
+def _unknown_disposition(reason: str, before: dict, *, receipt: dict | None = None) -> dict[str, Any]:
+    result = {
+        "schema": "gain-safety-disposition/1", "status": "unknown", "resolved": False,
+        "remaining_report": None, "unknown_reason": reason,
+    }
+    if receipt is not None:
+        result["execution_receipt"] = copy.deepcopy(receipt)
+    return result
+
+
+def _legacy_projection_disposition(env: Any, public_observation: dict, action: dict, before: dict) -> dict[str, Any]:
+    """Compatibility result for pre-V2 fixtures; it never certifies resolution."""
+    projection = getattr(env, "_planned_queue_state", None)
+    if not callable(projection):
+        return _unknown_disposition("current_time_safety_receipt_missing", before)
+    try:
+        queues, projected_tasks = projection(
+            public_observation,
+            action.get("queue_operations", []),
+            action.get("dispatches", []),
+        )
+        projected = copy.deepcopy(public_observation)
+        projected["queues"] = {str(key): list(value) for key, value in queues.items()}
+        observed_tasks = {
+            str(row["id"]): copy.deepcopy(row)
+            for row in public_observation.get("tasks", [])
+            if isinstance(row, dict) and isinstance(row.get("id"), str)
+        }
+        if isinstance(projected_tasks, dict):
+            for task_id in list(observed_tasks):
+                if isinstance(projected_tasks.get(task_id), dict):
+                    observed_tasks[task_id].update(copy.deepcopy(projected_tasks[task_id]))
+            known_split_parents = {
+                str(row.get("task_id"))
+                for row in action.get("queue_operations", [])
+                if isinstance(row, dict) and row.get("op") in {"split", "cooperate"}
+                and str(row.get("task_id")) in observed_tasks
+            }
+            allowed_child_prefixes = tuple(
+                f"{parent_id}::{kind}-" for parent_id in sorted(known_split_parents)
+                for kind in ("part", "team")
+            )
+            queued_ids = {
+                str(task_id) for queue in projected.get("queues", {}).values()
+                for task_id in queue
+            }
+            for task_id in sorted(queued_ids - set(observed_tasks)):
+                if (
+                    allowed_child_prefixes
+                    and task_id.startswith(allowed_child_prefixes)
+                    and isinstance(projected_tasks.get(task_id), dict)
+                ):
+                    observed_tasks[task_id] = copy.deepcopy(projected_tasks[task_id])
+        projected["tasks"] = [observed_tasks[key] for key in sorted(observed_tasks)]
+        remaining = assess_queue_safety(projected)
+    except Exception:
+        return _unknown_disposition("legacy_queue_projection_failed", before)
+    return {
+        "schema": "gain-safety-disposition/1", "status": "unresolved", "resolved": False,
+        "remaining_report": remaining,
+        "unknown_reason": "selected_action_leaves_public_queue_infeasible",
+    }
+
+
 def verify_safety_disposition(
     env: Any,
     public_observation: dict,
-    action: dict,
+    action: dict | None = None,
     initial_report: dict | None = None,
+    *,
+    apply_receipt: dict | None = None,
+    post_public_observation: dict | None = None,
 ) -> dict[str, Any]:
-    """Check whether a public action would resolve forced queue infeasibility."""
-    if not isinstance(public_observation, dict) or not isinstance(action, dict):
-        raise TypeError("public_observation and action must be mappings")
+    """Verify an already-applied same-time disposition without stepping.
+
+    Resolution is accepted only from the live hook receipt and the actual
+    post-disposition public state.  The optional projection fallback exists for
+    old unit fixtures and is deliberately unable to return ``resolved=True``.
+    """
+    if not isinstance(public_observation, dict):
+        raise TypeError("public_observation must be a mapping")
+    if action is None:
+        action = {}
+    if not isinstance(action, dict):
+        raise TypeError("action must be a mapping")
     before = initial_report or assess_queue_safety(public_observation)
     if not before.get("forced", False):
         return {"schema": "gain-safety-disposition/1", "status": "not_required",
                 "resolved": True, "remaining_report": before}
-    projection = getattr(env, "_planned_queue_state", None)
-    if not callable(projection):
-        return {"schema": "gain-safety-disposition/1", "status": "unknown",
-                "resolved": False, "unknown_reason": "public_queue_projection_unavailable"}
-    queues, projected_tasks = projection(
-        public_observation,
-        action.get("queue_operations", []),
-        action.get("dispatches", []),
-    )
-    projected = copy.deepcopy(public_observation)
-    projected["queues"] = {str(key): list(value) for key, value in queues.items()}
-    observed_tasks = {
-        str(row["id"]): copy.deepcopy(row)
-        for row in public_observation.get("tasks", [])
-        if isinstance(row, dict) and isinstance(row.get("id"), str)
-    }
-    projected_tasks = projected_tasks if isinstance(projected_tasks, dict) else {}
-    for task_id in list(observed_tasks):
-        if isinstance(projected_tasks.get(task_id), dict):
-            observed_tasks[task_id].update(copy.deepcopy(projected_tasks[task_id]))
-    known_split_parents = {
-        str(row.get("task_id"))
-        for row in action.get("queue_operations", [])
-        if isinstance(row, dict) and row.get("op") in {"split", "cooperate"}
-        and str(row.get("task_id")) in observed_tasks
-    }
-    allowed_child_prefixes = tuple(
-        f"{parent_id}::{kind}-" for parent_id in sorted(known_split_parents) for kind in ("part", "team")
-    )
-    queued_ids = {str(task_id) for queue in projected["queues"].values() for task_id in queue}
-    for task_id in sorted(queued_ids - set(observed_tasks)):
-        if allowed_child_prefixes and task_id.startswith(allowed_child_prefixes) and isinstance(projected_tasks.get(task_id), dict):
-            observed_tasks[task_id] = copy.deepcopy(projected_tasks[task_id])
-    projected["tasks"] = [observed_tasks[key] for key in sorted(observed_tasks)]
-    remaining = assess_queue_safety(projected)
-    resolved = not bool(remaining.get("forced", False))
+
+    # New callers must pass the hook receipt and refreshed current observation.
+    if apply_receipt is None or post_public_observation is None:
+        return _legacy_projection_disposition(env, public_observation, action, before)
+    if not isinstance(apply_receipt, dict) or apply_receipt.get("schema") != "gain-live-safety-disposition/1":
+        return _unknown_disposition("current_time_safety_receipt_invalid", before, receipt=apply_receipt if isinstance(apply_receipt, dict) else None)
+    if not isinstance(post_public_observation, dict):
+        return _unknown_disposition("post_disposition_public_observation_missing", before, receipt=apply_receipt)
+    pre_hash = _observation_digest(public_observation)
+    post_hash = _observation_digest(post_public_observation)
+    if apply_receipt.get("pre_public_sha256") != pre_hash:
+        return _unknown_disposition("safety_receipt_pre_public_hash_mismatch", before, receipt=apply_receipt)
+    if apply_receipt.get("post_public_sha256") != post_hash:
+        return _unknown_disposition("safety_receipt_post_public_hash_mismatch", before, receipt=apply_receipt)
+    if apply_receipt.get("status") == "unknown":
+        return _unknown_disposition(str(apply_receipt.get("unknown_reason") or "current_time_safety_unverified"), before, receipt=apply_receipt)
+
+    remaining = assess_queue_safety(post_public_observation)
+    receipt_remaining = apply_receipt.get("remaining_report")
+    if isinstance(receipt_remaining, dict) and receipt_remaining != remaining:
+        return _unknown_disposition("safety_receipt_remaining_report_mismatch", before, receipt=apply_receipt)
+    if remaining.get("forced", False):
+        return {
+            "schema": "gain-safety-disposition/1", "status": "unresolved", "resolved": False,
+            "remaining_report": remaining,
+            "unknown_reason": "current_time_disposition_leaves_queue_infeasible",
+            "execution_receipt": copy.deepcopy(apply_receipt),
+        }
+    if apply_receipt.get("resolved") is not True or apply_receipt.get("status") not in {"resolved", "not_required"}:
+        return _unknown_disposition("safety_receipt_resolution_flag_invalid", before, receipt=apply_receipt)
     return {
-        "schema": "gain-safety-disposition/1",
-        "status": "resolved" if resolved else "unresolved",
-        "resolved": resolved,
-        "remaining_report": remaining,
-        "unknown_reason": None if resolved else "selected_action_leaves_public_queue_infeasible",
+        "schema": "gain-safety-disposition/1", "status": "resolved", "resolved": True,
+        "remaining_report": remaining, "unknown_reason": None,
+        "execution_receipt": copy.deepcopy(apply_receipt),
     }
+
+
+def verify_live_safety_disposition(
+    env: Any,
+    public_observation: dict,
+    safety_report: dict,
+    apply_receipt: dict,
+    post_public_observation: dict,
+) -> dict[str, Any]:
+    """Named V2 entry point for pure verification of the live hook result."""
+    return verify_safety_disposition(
+        env, public_observation, {}, initial_report=safety_report,
+        apply_receipt=apply_receipt, post_public_observation=post_public_observation,
+    )

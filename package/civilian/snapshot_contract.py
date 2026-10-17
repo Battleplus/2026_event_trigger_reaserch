@@ -22,7 +22,8 @@ STATE_FIELDS = (
     "_original_owner", "_step_api_active", "_terminal", "_trajectory_cache", "time",
     "events", "transitions", "_event_seq", "_policy", "_platforms", "_depots",
     "_tasks", "_cargo", "_queues", "_scheduled_reports", "_public_platforms",
-    "_public_depots", "_public_tasks", "_rewards_paid",
+    "_public_depots", "_public_tasks", "_rewards_paid", "_extension_events",
+    "_safety_paused_tasks",
 )
 
 
@@ -107,10 +108,11 @@ def capture(env: Any, *, parent_id: str, repeat: int, window_id: str, event_tape
     public_prefix = _public_prefix(env)
     catalog = _catalog(env)
     state = {}
+    optional_defaults = {"_extension_events": [], "_safety_paused_tasks": {}}
     for field in STATE_FIELDS:
-        if not hasattr(env, field):
+        if not hasattr(env, field) and field not in optional_defaults:
             raise ValueError(f"SNAPSHOT_STATE_FIELD_MISSING:{field}")
-        state[field] = _encode(copy.deepcopy(getattr(env, field)))
+        state[field] = _encode(copy.deepcopy(getattr(env, field, optional_defaults.get(field))))
     payload = {
         "schema": SCHEMA,
         "parent_id": parent_id,

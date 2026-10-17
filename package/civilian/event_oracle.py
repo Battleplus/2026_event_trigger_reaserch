@@ -66,6 +66,114 @@ def _is_sha256(value: Any) -> bool:
     )
 
 
+_SAFETY_STATE_FIELDS = (
+    "status", "phase", "progress", "service_progress", "cargo_onboard",
+    "assignee", "active_platform_id", "queue_owner", "stock_commitment", "safety_paused",
+)
+
+_SAFETY_PAUSE_TYPES = {"safety_task_paused", "safety_task_capability_paused"}
+_SAFETY_RESUME_TYPES = {"safety_task_resumed", "safety_task_capability_resumed"}
+_CAPABILITY_PAUSE_REASONS = {
+    "capability_lost", "capacity_lost", "active_task_capability_lost", "active_task_capacity_lost",
+}
+_CAPABILITY_RESTORE_REASONS = {"active_task_capability_restored", "active_task_capacity_restored"}
+
+
+def _validate_safety_transition_event(event: Mapping[str, Any]) -> str:
+    _require(event.get("schema") == "gain-safety-task-transition/1", "EVENT_ORACLE_SAFETY_TRANSITION_SCHEMA")
+    event_type = event.get("type")
+    _require(event_type in _SAFETY_PAUSE_TYPES | _SAFETY_RESUME_TYPES | {"safety_task_released"}, "EVENT_ORACLE_SAFETY_TRANSITION_TYPE")
+    _require(isinstance(event.get("task_id"), str) and bool(event.get("task_id")), "EVENT_ORACLE_SAFETY_TRANSITION_TASK")
+    _require(type(event.get("time")) is int and event.get("time") >= 0, "EVENT_ORACLE_SAFETY_TRANSITION_TIME")
+    states: list[dict[str, Any]] = []
+    for side in ("before", "after"):
+        state = event.get(side)
+        _require(isinstance(state, Mapping), f"EVENT_ORACLE_SAFETY_TRANSITION_{side.upper()}")
+        _require(all(field in state for field in _SAFETY_STATE_FIELDS), "EVENT_ORACLE_SAFETY_TRANSITION_STATE_FIELDS")
+        _require(isinstance(state.get("status"), str) and isinstance(state.get("phase"), str), "EVENT_ORACLE_SAFETY_TRANSITION_STATE_TEXT")
+        _require(type(state.get("safety_paused")) is bool, "EVENT_ORACLE_SAFETY_TRANSITION_PAUSE_FLAG")
+        pause_reason = state.get("safety_pause_reason")
+        _require(pause_reason is None or (isinstance(pause_reason, str) and bool(pause_reason.strip())), "EVENT_ORACLE_SAFETY_TRANSITION_PAUSE_REASON")
+        for field in ("progress", "service_progress", "cargo_onboard"):
+            value = _finite_number(state.get(field))
+            _require(value is not None and value >= 0.0, "EVENT_ORACLE_SAFETY_TRANSITION_STATE_NUMBER")
+        commitment = state.get("stock_commitment")
+        if commitment is not None:
+            _require(isinstance(commitment, Mapping), "EVENT_ORACLE_SAFETY_TRANSITION_STOCK")
+            _require(isinstance(commitment.get("depot_id"), str) and isinstance(commitment.get("commodity"), str), "EVENT_ORACLE_SAFETY_TRANSITION_STOCK_ID")
+            quantity = _finite_number(commitment.get("quantity"))
+            _require(quantity is not None and quantity >= 0.0, "EVENT_ORACLE_SAFETY_TRANSITION_STOCK_QUANTITY")
+        states.append(dict(state))
+    expected_hash = _digest({key: value for key, value in event.items() if key != "event_sha256"})
+    _require(event.get("event_sha256") == expected_hash, "EVENT_ORACLE_SAFETY_TRANSITION_HASH")
+    before, after = states
+    preserved = ("phase", "progress", "service_progress", "cargo_onboard", "assignee", "active_platform_id", "queue_owner", "stock_commitment")
+    before_reason = before.get("safety_pause_reason")
+    after_reason = after.get("safety_pause_reason")
+    event_reason = event.get("reason")
+    _require(event_reason is None or (isinstance(event_reason, str) and bool(event_reason.strip())), "EVENT_ORACLE_SAFETY_TRANSITION_REASON")
+    if event_type == "safety_task_capability_paused":
+        _require((after_reason is None or after_reason in _CAPABILITY_PAUSE_REASONS) and before_reason is None, "EVENT_ORACLE_SAFETY_CAPABILITY_PAUSE_REASON")
+        _require(event_reason is None or event_reason in _CAPABILITY_PAUSE_REASONS, "EVENT_ORACLE_SAFETY_CAPABILITY_EVENT_REASON")
+    elif event_type == "safety_task_capability_resumed":
+        _require((before_reason is None or before_reason in _CAPABILITY_PAUSE_REASONS) and after_reason is None, "EVENT_ORACLE_SAFETY_CAPABILITY_RESUME_REASON")
+        _require(event_reason is None or event_reason in _CAPABILITY_RESTORE_REASONS, "EVENT_ORACLE_SAFETY_CAPABILITY_RESTORE_REASON")
+    elif event_type == "safety_task_paused":
+        _require(after_reason not in _CAPABILITY_PAUSE_REASONS, "EVENT_ORACLE_SAFETY_PAUSE_TYPE_REASON")
+    elif event_type == "safety_task_resumed":
+        _require(before_reason not in _CAPABILITY_PAUSE_REASONS, "EVENT_ORACLE_SAFETY_RESUME_TYPE_REASON")
+    if event_type in _SAFETY_PAUSE_TYPES:
+        _require(not before["safety_paused"] and after["safety_paused"] and after["status"] == "paused", "EVENT_ORACLE_SAFETY_PAUSE_STATE")
+        _require(all(before[key] == after[key] for key in preserved), "EVENT_ORACLE_SAFETY_PAUSE_MUTATION")
+    elif event_type in _SAFETY_RESUME_TYPES:
+        _require(before["safety_paused"] and not after["safety_paused"], "EVENT_ORACLE_SAFETY_RESUME_STATE")
+        _require(all(before[key] == after[key] for key in preserved), "EVENT_ORACLE_SAFETY_RESUME_MUTATION")
+    else:
+        _require(not before["safety_paused"] and not after["safety_paused"], "EVENT_ORACLE_SAFETY_RELEASE_STATE")
+        _require(after["status"] == "pending" and after["phase"] == "released", "EVENT_ORACLE_SAFETY_RELEASE_TARGET")
+        _require(all(after[key] is None for key in ("assignee", "active_platform_id", "queue_owner", "stock_commitment")), "EVENT_ORACLE_SAFETY_RELEASE_OWNER")
+        _require(after["cargo_onboard"] == 0.0 and after["progress"] == 0.0 and after["service_progress"] == 0.0, "EVENT_ORACLE_SAFETY_RELEASE_PHYSICAL")
+    return str(event["event_sha256"])
+
+
+def validate_safety_transition_receipt(trajectory: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate V2 safety events without importing the simulator or producer."""
+    steps = trajectory.get("steps") if isinstance(trajectory, Mapping) else None
+    _require(isinstance(steps, list), "EVENT_ORACLE_SAFETY_TRACE_STEPS")
+    event_hashes: set[str] = set()
+    for step in steps:
+        _require(isinstance(step, Mapping) and isinstance(step.get("raw_events"), list), "EVENT_ORACLE_SAFETY_TRACE_EVENTS")
+        for event in step["raw_events"]:
+            if not isinstance(event, Mapping):
+                continue
+            if event.get("schema") == "gain-safety-task-transition/1":
+                event_hashes.add(_validate_safety_transition_event(event))
+            elif "safety_task_" in str(event.get("type", "")):
+                raise ValueError("EVENT_ORACLE_SAFETY_TRANSITION_SCHEMA_MISSING")
+            if event.get("type") == "cargo_lost":
+                quantity = _finite_number(event.get("quantity", event.get("amount", event.get("cargo_lost"))))
+                _require(quantity is not None and quantity >= 0.0, "EVENT_ORACLE_CARGO_LOST_QUANTITY")
+                before = event.get("cargo_before"); after = event.get("cargo_after")
+                if before is not None or after is not None:
+                    before_value = _finite_number(before); after_value = _finite_number(after)
+                    _require(before_value is not None and after_value is not None and after_value <= before_value + _EPSILON, "EVENT_ORACLE_CARGO_LOST_STATE")
+                    _require(math.isclose(before_value - after_value, quantity, rel_tol=1e-9, abs_tol=1e-9), "EVENT_ORACLE_CARGO_LOST_PHYSICAL")
+    receipts = trajectory.get("continuation_policy_receipts", [])
+    _require(isinstance(receipts, list), "EVENT_ORACLE_SAFETY_RECEIPTS")
+    for receipt in receipts:
+        if not isinstance(receipt, Mapping) or not isinstance(receipt.get("safety_apply_receipt"), Mapping):
+            continue
+        live = receipt["safety_apply_receipt"]
+        _require(live.get("schema") == "gain-live-safety-disposition/1", "EVENT_ORACLE_LIVE_SAFETY_SCHEMA")
+        actions = live.get("actions")
+        _require(isinstance(actions, list), "EVENT_ORACLE_LIVE_SAFETY_ACTIONS")
+        _require(live.get("actions_sha256") == _digest(actions), "EVENT_ORACLE_LIVE_SAFETY_ACTION_HASH")
+        for action in actions:
+            action_hash = _validate_safety_transition_event(action)
+            _require(action_hash in event_hashes, "EVENT_ORACLE_LIVE_SAFETY_EVENT_UNBOUND")
+    return {"transition_event_count": len(event_hashes), "transition_event_hashes": sorted(event_hashes)}
+
+
 def _finite_number(value: Any) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
@@ -506,6 +614,7 @@ def _branch_labels(branch: Mapping[str, Any], window: Mapping[str, Any]) -> dict
                 _require(reported is not None and math.isclose(reported, value, rel_tol=1e-9, abs_tol=1e-7),
                          "EVENT_ORACLE_REPORTED_REWARD_COMPONENT_MISMATCH")
 
+    safety_validation = validate_safety_transition_receipt(trajectory)
     raw_truth = trajectory.get("raw_truth")
     _require(isinstance(raw_truth, Mapping), "EVENT_ORACLE_RAW_TRUTH")
     tasks = _truth_rows(raw_truth.get("tasks"), "EVENT_ORACLE_TRUTH_TASKS")
@@ -599,6 +708,7 @@ def _branch_labels(branch: Mapping[str, Any], window: Mapping[str, Any]) -> dict
             "endpoint_energy_used_delta": endpoint_energy_delta,
             "valid": energy_valid,
         },
+        "safety_transition_validation": safety_validation,
         "unknown": {
             "unresolved_task_ids": [row["id"] for row in task_rows if not row["on_time_valid"]],
             "invalid_heads": [name for name, target in model_targets.items() if not _target_any_valid(target)],

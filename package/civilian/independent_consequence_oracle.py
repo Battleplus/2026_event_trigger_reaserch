@@ -62,6 +62,95 @@ def _mapping(value: Any, code: str) -> dict[str, Any]:
     return value
 
 
+_SAFETY_STATE_FIELDS = (
+    "status", "phase", "progress", "service_progress", "cargo_onboard",
+    "assignee", "active_platform_id", "queue_owner", "stock_commitment", "safety_paused",
+)
+
+_SAFETY_PAUSE_TYPES = {"safety_task_paused", "safety_task_capability_paused"}
+_SAFETY_RESUME_TYPES = {"safety_task_resumed", "safety_task_capability_resumed"}
+_CAPABILITY_PAUSE_REASONS = {
+    "capability_lost", "capacity_lost", "active_task_capability_lost", "active_task_capacity_lost",
+}
+_CAPABILITY_RESTORE_REASONS = {"active_task_capability_restored", "active_task_capacity_restored"}
+
+
+def _validate_safety_transition_event(event: dict[str, Any]) -> str:
+    _require(event.get("schema") == "gain-safety-task-transition/1", "N2_ORACLE_SAFETY_TRANSITION_SCHEMA")
+    event_type = event.get("type")
+    _require(event_type in _SAFETY_PAUSE_TYPES | _SAFETY_RESUME_TYPES | {"safety_task_released"}, "N2_ORACLE_SAFETY_TRANSITION_TYPE")
+    _require(isinstance(event.get("task_id"), str) and bool(event.get("task_id")), "N2_ORACLE_SAFETY_TRANSITION_TASK")
+    _require(type(event.get("time")) is int and event.get("time") >= 0, "N2_ORACLE_SAFETY_TRANSITION_TIME")
+    states: list[dict[str, Any]] = []
+    for side in ("before", "after"):
+        state = _mapping(event.get(side), "N2_ORACLE_SAFETY_TRANSITION_STATE")
+        _require(all(field in state for field in _SAFETY_STATE_FIELDS), "N2_ORACLE_SAFETY_TRANSITION_STATE_FIELDS")
+        _require(isinstance(state.get("status"), str) and isinstance(state.get("phase"), str), "N2_ORACLE_SAFETY_TRANSITION_STATE_TEXT")
+        _require(type(state.get("safety_paused")) is bool, "N2_ORACLE_SAFETY_TRANSITION_PAUSE_FLAG")
+        pause_reason = state.get("safety_pause_reason")
+        _require(pause_reason is None or (isinstance(pause_reason, str) and bool(pause_reason.strip())), "N2_ORACLE_SAFETY_TRANSITION_PAUSE_REASON")
+        for field in ("progress", "service_progress", "cargo_onboard"):
+            number = state.get(field)
+            _require(isinstance(number, (int, float)) and not isinstance(number, bool) and math.isfinite(float(number)) and float(number) >= 0.0, "N2_ORACLE_SAFETY_TRANSITION_STATE_NUMBER")
+        commitment = state.get("stock_commitment")
+        if commitment is not None:
+            commitment = _mapping(commitment, "N2_ORACLE_SAFETY_TRANSITION_STOCK")
+            _require(isinstance(commitment.get("depot_id"), str) and isinstance(commitment.get("commodity"), str), "N2_ORACLE_SAFETY_TRANSITION_STOCK_ID")
+            quantity = commitment.get("quantity")
+            _require(isinstance(quantity, (int, float)) and not isinstance(quantity, bool) and math.isfinite(float(quantity)) and float(quantity) >= 0.0, "N2_ORACLE_SAFETY_TRANSITION_STOCK_QUANTITY")
+        states.append(dict(state))
+    _require(event.get("event_sha256") == _key_digest({key: value for key, value in event.items() if key != "event_sha256"}), "N2_ORACLE_SAFETY_TRANSITION_HASH")
+    before, after = states
+    preserved = ("phase", "progress", "service_progress", "cargo_onboard", "assignee", "active_platform_id", "queue_owner", "stock_commitment")
+    before_reason = before.get("safety_pause_reason")
+    after_reason = after.get("safety_pause_reason")
+    event_reason = event.get("reason")
+    _require(event_reason is None or (isinstance(event_reason, str) and bool(event_reason.strip())), "N2_ORACLE_SAFETY_TRANSITION_REASON")
+    if event_type == "safety_task_capability_paused":
+        _require((after_reason is None or after_reason in _CAPABILITY_PAUSE_REASONS) and before_reason is None, "N2_ORACLE_SAFETY_CAPABILITY_PAUSE_REASON")
+        _require(event_reason is None or event_reason in _CAPABILITY_PAUSE_REASONS, "N2_ORACLE_SAFETY_CAPABILITY_EVENT_REASON")
+    elif event_type == "safety_task_capability_resumed":
+        _require((before_reason is None or before_reason in _CAPABILITY_PAUSE_REASONS) and after_reason is None, "N2_ORACLE_SAFETY_CAPABILITY_RESUME_REASON")
+        _require(event_reason is None or event_reason in _CAPABILITY_RESTORE_REASONS, "N2_ORACLE_SAFETY_CAPABILITY_RESTORE_REASON")
+    elif event_type == "safety_task_paused":
+        _require(after_reason not in _CAPABILITY_PAUSE_REASONS, "N2_ORACLE_SAFETY_PAUSE_TYPE_REASON")
+    elif event_type == "safety_task_resumed":
+        _require(before_reason not in _CAPABILITY_PAUSE_REASONS, "N2_ORACLE_SAFETY_RESUME_TYPE_REASON")
+    if event_type in _SAFETY_PAUSE_TYPES:
+        _require(not before["safety_paused"] and after["safety_paused"] and after["status"] == "paused", "N2_ORACLE_SAFETY_PAUSE_STATE")
+        _require(all(before[key] == after[key] for key in preserved), "N2_ORACLE_SAFETY_PAUSE_MUTATION")
+    elif event_type in _SAFETY_RESUME_TYPES:
+        _require(before["safety_paused"] and not after["safety_paused"], "N2_ORACLE_SAFETY_RESUME_STATE")
+        _require(all(before[key] == after[key] for key in preserved), "N2_ORACLE_SAFETY_RESUME_MUTATION")
+    else:
+        _require(not before["safety_paused"] and not after["safety_paused"], "N2_ORACLE_SAFETY_RELEASE_STATE")
+        _require(after["status"] == "pending" and after["phase"] == "released", "N2_ORACLE_SAFETY_RELEASE_TARGET")
+        _require(all(after[key] is None for key in ("assignee", "active_platform_id", "queue_owner", "stock_commitment")), "N2_ORACLE_SAFETY_RELEASE_OWNER")
+        _require(after["cargo_onboard"] == 0.0 and after["progress"] == 0.0 and after["service_progress"] == 0.0, "N2_ORACLE_SAFETY_RELEASE_PHYSICAL")
+    return str(event["event_sha256"])
+
+
+def validate_safety_transition_events(events: Any) -> dict[str, Any]:
+    """Check persisted same-tick safety transitions independently of labels."""
+    _require(isinstance(events, list), "N2_ORACLE_SAFETY_EVENTS")
+    hashes: list[str] = []
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        if event.get("schema") == "gain-safety-task-transition/1":
+            hashes.append(_validate_safety_transition_event(event))
+        elif "safety_task_" in str(event.get("type", "")):
+            raise ValueError("N2_ORACLE_SAFETY_TRANSITION_SCHEMA_MISSING")
+        if event.get("type") == "cargo_lost":
+            quantity = event.get("quantity", event.get("amount", event.get("cargo_lost")))
+            _require(isinstance(quantity, (int, float)) and not isinstance(quantity, bool) and math.isfinite(float(quantity)) and float(quantity) >= 0.0, "N2_ORACLE_CARGO_LOST_QUANTITY")
+            before = event.get("cargo_before"); after = event.get("cargo_after")
+            if before is not None or after is not None:
+                _require(isinstance(before, (int, float)) and isinstance(after, (int, float)) and not isinstance(before, bool) and not isinstance(after, bool), "N2_ORACLE_CARGO_LOST_STATE")
+                _require(float(after) <= float(before) + 1e-9 and math.isclose(float(before) - float(after), float(quantity), rel_tol=1e-9, abs_tol=1e-9), "N2_ORACLE_CARGO_LOST_PHYSICAL")
+    return {"transition_event_count": len(hashes), "transition_event_hashes": sorted(hashes)}
+
+
 def _task_indicator(task: dict[str, Any], name: str, now: int, horizon: int) -> tuple[float, bool, str | None]:
     deadline = task.get("deadline")
     terminal = now >= horizon
@@ -479,6 +568,9 @@ def _validate_window(
         replay_candidate_id=noop_id,
         replay_role="reference_baseline",
     )
+    safety_validation_reports: dict[str, dict[str, Any]] = {
+        noop_id: validate_safety_transition_events(noop_branch.events),
+    }
     _require(noop_record.get("candidate_return") is not None, "N2_ORACLE_NOOP_RETURN")
     _require(math.isclose(float(noop_record["candidate_return"]), noop_return, rel_tol=1e-9, abs_tol=1e-9), "N2_ORACLE_NOOP_RETURN_MISMATCH")
     _require(noop_record.get("candidate_events") == noop_branch.events, "N2_ORACLE_NOOP_EVENT_MISMATCH")
@@ -527,6 +619,7 @@ def _validate_window(
                 replay_candidate_id=candidate_id,
                 replay_role="candidate",
             )
+        safety_validation_reports[candidate_id] = validate_safety_transition_events(branch.events)
         _require(math.isclose(float(record.get("candidate_return")), branch_return, rel_tol=1e-9, abs_tol=1e-9), "N2_ORACLE_CANDIDATE_RETURN_MISMATCH")
         _require(record.get("candidate_events") == branch.events, "N2_ORACLE_CANDIDATE_EVENT_MISMATCH")
         _require(math.isclose(float(record.get("reference_return")), noop_return, rel_tol=1e-9, abs_tol=1e-9), "N2_ORACLE_REFERENCE_RETURN_MISMATCH")
@@ -575,6 +668,7 @@ def _validate_window(
         "qualifies_global_consequence_diversity": bool(global_differences),
         "global_consequence_differences": global_differences,
         "environment_step_count": replayed_environment_step_count,
+        "safety_transition_validation": safety_validation_reports,
     }
 
 

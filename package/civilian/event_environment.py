@@ -234,6 +234,10 @@ class EventReliefEnv:
         self._reported_progress_counts: dict[str, float] = {}
         self._reported_energy_used: dict[str, float] = {}
         self._pending_communications: list[dict] = []
+        # Current-time safety holds are explicit simulator state.  A held
+        # task remains an unfinished obligation with its physical assignment
+        # and progress intact; only its minute-by-minute execution is paused.
+        self._safety_paused_tasks: dict[str, dict] = {}
         self.last_candidate_rejections: list[dict] = []
         self._has_reset = False
 
@@ -282,6 +286,11 @@ class EventReliefEnv:
         """Return only current/reported state, public history hashes, and provenance."""
         if not self._has_reset:
             raise RuntimeError("call reset() before requesting public observations")
+        # Snapshots produced before the V2 safety extension may not carry the
+        # optional hold map.  Normalize that state on first read so replay of
+        # historical trajectories remains compatible.
+        if not isinstance(getattr(self, "_safety_paused_tasks", None), dict):
+            self._safety_paused_tasks = {}
         observation = {
             "schema": "event-relief-public-observation/1", "time": self.time,
             "horizon": self._base.scenario["horizon"], "map": copy.deepcopy(self._base.scenario["map"]),
@@ -308,6 +317,10 @@ class EventReliefEnv:
                 row["workload_share"] = float(spec["workload_share"])
                 if spec.get("cooperation_group"):
                     row["cooperation_group"] = str(spec["cooperation_group"])
+            hold = self._safety_paused_tasks.get(task_id)
+            row["safety_paused"] = bool(hold)
+            if hold and row.get("status") == "active":
+                row["status"] = "paused"
         for parent_id, manifest in self._split_manifests.items():
             parent = tasks.get(parent_id)
             if parent is None:
@@ -383,7 +396,41 @@ class EventReliefEnv:
                 self._reported_platforms[platform_id]["energy_used"] = self._reported_energy_used[platform_id]
         for depot in live["depots"]:
             self._reported_depots[depot["id"]] = copy.deepcopy(depot)
+        # A safety hold freezes the physical task while its control link is
+        # unavailable.  Keep the public obligation visibly paused until the
+        # current public link is restored; stale live telemetry must not erase
+        # the hold marker.
         for task_id, row in live_tasks.items():
+            hold = self._safety_paused_tasks.get(task_id)
+            if hold is not None:
+                platform_id = str(hold.get("platform_id") or row.get("active_platform_id") or row.get("assignee") or "")
+                platform = live_platforms.get(platform_id, {})
+                required_capability = "inspect" if row.get("kind") == "inspection" else "deliver"
+                capability_ready = required_capability in platform.get("capabilities", []) and not bool(platform.get("failed"))
+                link_ready = bool(platform_id) and self._connected(self._public_graph_for_refresh(), _COORDINATOR, platform_id)
+                if platform_id and link_ready and capability_ready:
+                    before = self._safety_task_state(task_id, platform_id)
+                    self._safety_paused_tasks.pop(task_id, None)
+                    self._reported_tasks[task_id] = copy.deepcopy(row)
+                    self._reported_tasks[task_id]["safety_paused"] = False
+                    self._reported_progress_counts[task_id] = float(row.get("service_progress", self._reported_progress_counts.get(task_id, 0.0)))
+                    after = self._safety_task_state(task_id, platform_id)
+                    capability_hold = str(hold.get("hold_kind", "")) == "capability"
+                    self._safety_transition_event(
+                        "safety_task_capability_resumed" if capability_hold else "safety_task_resumed",
+                        task_id, platform_id,
+                        "active_task_capability_restored" if capability_hold else "active_task_control_link_restored",
+                        before, after,
+                    )
+                else:
+                    preserved = copy.deepcopy(self._reported_tasks.get(task_id, row))
+                    preserved.update({
+                        "status": "paused", "safety_paused": True,
+                        "assignee": row.get("assignee", preserved.get("assignee")),
+                        "active_platform_id": row.get("active_platform_id", preserved.get("active_platform_id")),
+                    })
+                    self._reported_tasks[task_id] = preserved
+                continue
             owner = row.get("assignee") or row.get("active_platform_id")
             if owner is None or self._connected(self._public_graph_for_refresh(), _COORDINATOR, str(owner)):
                 self._reported_tasks[task_id] = copy.deepcopy(row)
@@ -412,6 +459,288 @@ class EventReliefEnv:
 
     def _public_graph_for_refresh(self) -> dict:
         return {"platforms": list(self._reported_platforms.values()), "communication": self._public_communication()}
+
+    @staticmethod
+    def _safety_stock_commitment(task: dict | None) -> dict | None:
+        """Return the queue reservation represented by one delivery task."""
+        if not isinstance(task, dict) or task.get("kind") != "delivery":
+            return None
+        if str(task.get("phase", "")) in {"pending", "released", "in_transit", "to_delivery_site", "unloading", "delivery_confirmed"}:
+            return None
+        return {
+            "depot_id": str(task.get("depot_id")),
+            "commodity": str(task.get("commodity")),
+            "quantity": float(task.get("quantity", 0.0)),
+        }
+
+    @staticmethod
+    def _required_task_capability(task: dict | None) -> str:
+        """Return the public capability required by a logical task."""
+        return "inspect" if isinstance(task, dict) and task.get("kind") == "inspection" else "deliver"
+
+    def _safety_task_state(self, task_id: str, platform_id: str | None = None) -> dict:
+        """Build a transition receipt from current physical/reportable state."""
+        task = self._base._tasks.get(task_id)
+        public_task = self._reported_tasks.get(task_id, {})
+        if task is None:
+            raise KeyError(task_id)
+        # Historical V1 snapshots can contain a stale private task state after
+        # the old safety fallback marked the public task active.  Transition
+        # evidence must describe the state visible to the current safety hook,
+        # while retaining private physical counters when they are available.
+        visible_task = {**task, **public_task}
+        owner = visible_task.get("assignee")
+        queue_owner = next((owner_id for owner_id, queue in self._queues.items() if task_id in queue), None)
+        total = float(self._task_specs.get(task_id, {}).get(
+            "service_minutes", self._task_specs.get(task_id, {}).get("load_minutes", 1)
+            + self._task_specs.get(task_id, {}).get("unload_minutes", 1),
+        ))
+        progress = min(1.0, max(0.0, float(visible_task.get("service_progress", 0.0)) / max(1.0, total)))
+        return {
+            "status": "paused" if task_id in self._safety_paused_tasks else str(public_task.get("status", task.get("status"))),
+            "phase": str(visible_task.get("phase", "")),
+            "progress": progress,
+            "service_progress": float(visible_task.get("service_progress", 0.0)),
+            "cargo_onboard": float(visible_task.get("cargo_onboard", 0.0)),
+            "assignee": owner,
+            "active_platform_id": visible_task.get("active_platform_id"),
+            "queue_owner": queue_owner,
+            "stock_commitment": self._safety_stock_commitment(visible_task),
+            "safety_paused": task_id in self._safety_paused_tasks,
+        }
+
+    def _safety_transition_event(
+        self, event_type: str, task_id: str, platform_id: str | None, reason: str,
+        before: dict, after: dict,
+    ) -> dict:
+        event = {
+            "schema": "gain-safety-task-transition/1", "type": event_type,
+            "time": int(self.time), "task_id": str(task_id),
+            "platform_id": platform_id, "reason": str(reason),
+            "before": copy.deepcopy(before), "after": copy.deepcopy(after),
+        }
+        event["event_sha256"] = _digest(event)
+        self._extension_events.append(copy.deepcopy(event))
+        return event
+
+    def _safety_transition_remaining(self) -> dict:
+        """Recompute only the public queue disposition after a same-time change."""
+        try:
+            from .gain_safety import assess_queue_safety
+        except ImportError:
+            from gain_safety import assess_queue_safety
+        try:
+            return assess_queue_safety(copy.deepcopy(self.public_observation()))
+        except (TypeError, ValueError, KeyError) as exc:
+            return {
+                "schema": "gain-public-queue-safety/1", "forced": True,
+                "safe_to_suppress": False, "violations": [],
+                "unknown_reason": f"post_disposition_safety_check_failed:{type(exc).__name__}",
+            }
+
+    def apply_current_safety_disposition(self, public_observation: dict, safety_report: dict) -> dict:
+        """Apply a deterministic safety hold/release at the current tick.
+
+        This hook never advances the simulator, samples the event tape, or
+        calls the planner.  It acts only on violations represented in the
+        supplied public observation and records the concrete state transition
+        in the extension event stream.
+        """
+        schema = "gain-live-safety-disposition/1"
+        if not self._has_reset:
+            return {"schema": schema, "status": "unknown", "resolved": False,
+                    "actions": [], "remaining_report": {}, "unknown_reason": "environment_not_reset"}
+        current = self.public_observation()
+        supplied_hash = (public_observation or {}).get("provenance", {}).get("snapshot_hash") if isinstance(public_observation, dict) else None
+        current_hash = current["provenance"]["snapshot_hash"]
+        base_receipt = {"schema": schema, "pre_public_sha256": supplied_hash,
+                        "post_public_sha256": current_hash, "actions": [],
+                        "actions_sha256": _digest([])}
+        if supplied_hash != current_hash:
+            return {**base_receipt, "status": "unknown", "resolved": False,
+                    "remaining_report": {}, "unknown_reason": "public_observation_stale"}
+        if not isinstance(safety_report, dict):
+            return {**base_receipt, "status": "unknown", "resolved": False,
+                    "remaining_report": {}, "unknown_reason": "safety_report_malformed"}
+        violations = safety_report.get("violations", [])
+        if not isinstance(violations, list):
+            return {**base_receipt, "status": "unknown", "resolved": False,
+                    "remaining_report": {}, "unknown_reason": "safety_report_violations_malformed"}
+        if not safety_report.get("forced", False) and not violations:
+            return {**base_receipt, "status": "not_required", "resolved": True,
+                    "remaining_report": safety_report, "unknown_reason": None}
+
+        public_tasks = {str(row.get("id")): row for row in current.get("tasks", []) if isinstance(row, dict)}
+        public_platforms = {str(row.get("id")): row for row in current.get("platforms", []) if isinstance(row, dict)}
+        actions: list[dict] = []
+        unsupported: list[str] = []
+        release_ids: set[str] = set()
+        pause_ids: list[tuple[str, str]] = []
+        capability_pause_ids: list[tuple[str, str]] = []
+        releasable_codes = {
+            "queued_task_capability_infeasible", "queued_task_capacity_infeasible",
+            "committed_queue_energy_infeasible",
+        }
+        for violation in violations:
+            if not isinstance(violation, dict):
+                unsupported.append("violation_must_be_object")
+                continue
+            code = str(violation.get("code", ""))
+            task_id = violation.get("task_id")
+            platform_id = violation.get("platform_id")
+            if code == "active_task_control_link_lost" and isinstance(task_id, str) and isinstance(platform_id, str):
+                task = public_tasks.get(task_id, {})
+                platform = public_platforms.get(platform_id, {})
+                link = self._connected(current, _COORDINATOR, platform_id)
+                if task.get("status") not in {"active", "paused"} or platform.get("active_task_id") != task_id or link:
+                    unsupported.append(f"active_pause_precondition_failed:{task_id}")
+                elif task_id not in self._safety_paused_tasks:
+                    pause_ids.append((task_id, platform_id))
+                continue
+            if code == "queued_task_capability_infeasible" and isinstance(task_id, str) and isinstance(platform_id, str):
+                task = public_tasks.get(task_id, {})
+                platform = public_platforms.get(platform_id, {})
+                required_capability = self._required_task_capability(task)
+                is_active = (
+                    task.get("status") in {"active", "paused"}
+                    or platform.get("active_task_id") == task_id
+                )
+                if is_active:
+                    if (
+                        platform.get("active_task_id") != task_id
+                        or task.get("assignee") not in {None, platform_id}
+                        or required_capability in platform.get("capabilities", [])
+                    ):
+                        unsupported.append(f"active_capability_pause_precondition_failed:{task_id}")
+                    elif task_id not in self._safety_paused_tasks and not any(
+                        queued_task_id == task_id for queued_task_id, _ in pause_ids
+                    ):
+                        capability_pause_ids.append((task_id, platform_id))
+                    continue
+            if code in releasable_codes and isinstance(task_id, str) and isinstance(platform_id, str):
+                task = public_tasks.get(task_id, {})
+                physical = self._base._tasks.get(task_id, {})
+                if task.get("status") not in {"pending", "assigned", "released"} or public_platforms.get(platform_id, {}).get("active_task_id") == task_id:
+                    unsupported.append(f"release_requires_pre_start:{task_id}")
+                elif str(physical.get("status")) == "active" or physical.get("active_platform_id") is not None:
+                    unsupported.append(f"release_active_task:{task_id}")
+                elif float(physical.get("cargo_onboard", 0.0)) > _EPS:
+                    unsupported.append(f"release_loaded_task:{task_id}")
+                else:
+                    release_ids.add(task_id)
+                continue
+            unsupported.append(f"unsupported_safety_violation:{code or 'missing_code'}")
+
+        # Never split a cooperative group while releasing one half.  A group
+        # is released only when every member is a public, pre-start, unloaded
+        # queue item covered by this same disposition.
+        for task_id in sorted(release_ids):
+            group = public_tasks.get(task_id, {}).get("cooperation_group")
+            if not group:
+                continue
+            members = sorted(task_key for task_key, row in public_tasks.items() if row.get("cooperation_group") == group)
+            if not set(members) <= release_ids:
+                unsupported.append(f"cooperation_release_would_be_partial:{task_id}")
+                release_ids.difference_update(members)
+
+        for task_id, platform_id in pause_ids:
+            before = self._safety_task_state(task_id, platform_id)
+            self._safety_paused_tasks[task_id] = {"platform_id": platform_id, "paused_at": int(self.time)}
+            self._reported_tasks.setdefault(task_id, {}).update({"status": "paused", "safety_paused": True})
+            after = self._safety_task_state(task_id, platform_id)
+            actions.append(self._safety_transition_event(
+                "safety_task_paused", task_id, platform_id, "active_task_control_link_lost", before, after,
+            ))
+
+        for task_id, platform_id in capability_pause_ids:
+            before = self._safety_task_state(task_id, platform_id)
+            self._safety_paused_tasks[task_id] = {
+                "platform_id": platform_id,
+                "paused_at": int(self.time),
+                "hold_kind": "capability",
+                "reason": "active_task_capability_lost",
+            }
+            self._reported_tasks.setdefault(task_id, {}).update({"status": "paused", "safety_paused": True})
+            after = self._safety_task_state(task_id, platform_id)
+            actions.append(self._safety_transition_event(
+                "safety_task_capability_paused", task_id, platform_id,
+                "active_task_capability_lost", before, after,
+            ))
+
+        for task_id in sorted(release_ids):
+            task = self._base._tasks.get(task_id)
+            if task is None:
+                unsupported.append(f"release_task_missing:{task_id}")
+                continue
+            platform_id = str(task.get("assignee") or next((owner for owner, queue in self._queues.items() if task_id in queue), ""))
+            before = self._safety_task_state(task_id, platform_id or None)
+            for queue in self._queues.values():
+                while task_id in queue:
+                    queue.remove(task_id)
+            task["assignee"] = None
+            task["status"] = "pending"
+            task["phase"] = "released"
+            task["active_platform_id"] = None
+            self._reported_progress_counts[task_id] = 0.0
+            if task_id in self._base._public_tasks:
+                self._base._public_tasks[task_id].update({"assignee": None, "status": "pending", "phase": "released"})
+            self._reported_tasks.setdefault(task_id, {}).update({"assignee": None, "status": "pending", "phase": "released", "safety_paused": False})
+            self._base._queues = copy.deepcopy(self._queues)
+            after = self._safety_task_state(task_id, platform_id or None)
+            actions.append(self._safety_transition_event(
+                "safety_task_released", task_id, platform_id or None,
+                "queued_public_infeasibility", before, after,
+            ))
+
+        remaining = self._safety_transition_remaining()
+        unresolved = bool(unsupported) or bool(remaining.get("forced", False))
+        post = self.public_observation()
+        return {
+            **base_receipt, "post_public_sha256": post["provenance"]["snapshot_hash"],
+            "status": "unresolved" if unresolved else "resolved", "resolved": not unresolved,
+            "actions": copy.deepcopy(actions), "actions_sha256": _digest(actions),
+            "remaining_report": remaining,
+            "unknown_reason": ";".join(sorted(set(unsupported))) if unsupported else None,
+        }
+
+    def _advance_with_safety_holds(self, start_time: int) -> None:
+        """Advance ordinary physics while leaving current safety holds frozen."""
+        end_time = start_time + 1
+        for platform_id in sorted(self._base._platforms):
+            platform = self._base._platforms[platform_id]
+            task_id = platform["active_task_id"]
+            if task_id is None or platform["failed"] or task_id in self._safety_paused_tasks:
+                continue
+            task = self._base._tasks[task_id]
+            required_capability = self._required_task_capability(task)
+            if required_capability not in platform.get("capabilities", []):
+                # Capability-loss events are held at the current physical
+                # state until the public safety disposition records the hold.
+                continue
+            phase = task["phase"]
+            if phase == "to_inspection":
+                self._base._move_toward(platform_id, task_id, task["position"], "inspection_site", end_time)
+            elif phase == "to_depot":
+                self._base._move_toward(platform_id, task_id, self._base._depots[task["depot_id"]]["position"], "depot", end_time)
+            elif phase == "to_delivery_site":
+                self._base._move_toward(platform_id, task_id, task["position"], "delivery_site", end_time)
+            elif phase == "observe":
+                if self._base._service(platform_id, task_id, "observe", end_time) and task["service_progress"] + _EPS >= float(task["service_minutes"]):
+                    self._base._complete_inspection(task, platform_id, end_time)
+            elif phase == "loading":
+                if self._base._service(platform_id, task_id, "loading", end_time) and task["service_progress"] + _EPS >= float(task["load_minutes"]):
+                    if self._base._load_cargo(task, platform_id, end_time):
+                        task["phase"] = "in_transit"
+                        self._base._tasks[task_id]["phase"] = "to_delivery_site"
+                        self._base._public_tasks[task_id]["phase"] = "to_delivery_site"
+                        if _distance(platform["position"], task["position"]) <= _EPS:
+                            self._base._arrive(platform_id, task_id, "delivery_site", end_time)
+            elif phase == "in_transit":
+                task["phase"] = "to_delivery_site"
+                self._base._public_tasks[task_id]["phase"] = "to_delivery_site"
+            elif phase == "unloading":
+                if self._base._service(platform_id, task_id, "unloading", end_time) and task["service_progress"] + _EPS >= float(task["unload_minutes"]):
+                    self._base._confirm_delivery(task, platform_id, end_time)
 
     def candidate_dispatches(self) -> list[dict]:
         """Return all publicly feasible dispatches, including global cross-owner moves."""
@@ -623,6 +952,8 @@ class EventReliefEnv:
             if task is None:
                 reasons.append("task_not_public")
                 continue
+            if task.get("safety_paused") or task_id in self._safety_paused_tasks:
+                reasons.append("task_safety_paused")
             if task.get("status") in {"active", "completed", "failed", "expired", "cancelled"}:
                 reasons.append("task_not_reassignable")
             expected_owner = source if kind != "swap" or index == 0 else target
@@ -1426,7 +1757,16 @@ class EventReliefEnv:
                         task = self._base._tasks[active_task_id]
                         required = "inspect" if task["kind"] == "inspection" else "deliver"
                         if required not in platform["capabilities"]:
-                            self._base._fail_task(task, platform_id, "capability_lost", time, releasable=True)
+                            # Leave an already-started mission physically intact
+                            # until the same-tick public safety hook applies a
+                            # capability hold.  Failing here would erase
+                            # progress/cargo before the disposition can choose
+                            # pause or an explicitly accounted terminal loss.
+                            task.setdefault("safety_event_markers", []).append({
+                                "reason": "active_task_capability_lost",
+                                "time": int(time),
+                                "required_capability": required,
+                            })
                 else:
                     new_capacity = float(row["capacity_kg"])
                     platform["capacity_kg"] = new_capacity
@@ -1801,9 +2141,14 @@ class EventReliefEnv:
         self._base._compatible = lambda platform, task: self._public_compatible(platform, task)
         self._base.candidates = lambda: copy.deepcopy(selected_rows) + [{"id": "NOOP", "type": "noop"}]
         action_ids = [row["id"] for row in selected_rows] or ["NOOP"]
+        old_advance = self._base._advance
+        # The wrapper owns safety holds, while the base environment still
+        # performs its normal minute-step physics for every other platform.
+        self._base._advance = self._advance_with_safety_holds
         try:
             _, _, terminated, truncated, _ = self._base.step(action_ids)
         finally:
+            self._base._advance = old_advance
             self._base._policy = old_policy
             self._base._compatible = old_compatible
             self._base.candidates = old_candidates
@@ -1852,6 +2197,8 @@ class EventReliefEnv:
         return next_observation, float(reward), bool(terminated), bool(truncated), info
 
     def _raw_truth(self) -> dict:
+        if not isinstance(getattr(self, "_safety_paused_tasks", None), dict):
+            self._safety_paused_tasks = {}
         tasks = []
         for task_id in sorted(self._original_task_specs):
             task = self._base._tasks[task_id]
@@ -1869,11 +2216,20 @@ class EventReliefEnv:
                 failure_reason = task.get("failure_reason")
                 cargo = float(task.get("cargo_onboard", 0.0))
                 assignees = [] if task.get("assignee") is None else [str(task["assignee"])]
+                safety_paused = task_id in self._safety_paused_tasks
+                safety_hold = copy.deepcopy(self._safety_paused_tasks.get(task_id))
+                if safety_paused and status not in {"completed", "failed", "cancelled", "expired"}:
+                    status = "paused"
             else:
                 children = [self._base._tasks[child_id] for child_id in manifest["child_ids"]]
                 complete = all(child.get("status") == "completed" for child in children)
                 failed = any(child.get("status") == "failed" for child in children)
-                status = "completed" if complete else ("failed" if failed else "pending")
+                safety_paused = any(child_id in self._safety_paused_tasks for child_id in manifest["child_ids"])
+                safety_hold = {
+                    child_id: copy.deepcopy(self._safety_paused_tasks[child_id])
+                    for child_id in manifest["child_ids"] if child_id in self._safety_paused_tasks
+                }
+                status = "completed" if complete else ("failed" if failed else ("paused" if safety_paused else "pending"))
                 service_total = float(spec.get("service_minutes", spec.get("load_minutes", 1) + spec.get("unload_minutes", 1)))
                 workload_progress = sum(float(child.get("service_progress", 0.0)) for child in children)
                 progress = sum(float(self._task_specs[child["id"]]["workload_share"]) * min(
@@ -1908,6 +2264,7 @@ class EventReliefEnv:
                 ),
                 "cargo_onboard": float(cargo), "split_mode": manifest["mode"] if manifest else None,
                 "subtask_ids": list(manifest["child_ids"]) if manifest else [],
+                "safety_paused": bool(safety_paused), "safety_hold": safety_hold,
             })
         subtasks = []
         for parent_id, manifest in sorted(self._split_manifests.items()):
@@ -1927,6 +2284,8 @@ class EventReliefEnv:
                     "started_at": child.get("started_at"), "completed_at": child.get("completed_at"),
                     "delivered": bool(child.get("delivered")), "on_time": child.get("on_time"),
                     "failure_reason": child.get("failure_reason"),
+                    "safety_paused": child_id in self._safety_paused_tasks,
+                    "safety_hold": copy.deepcopy(self._safety_paused_tasks.get(child_id)),
                 })
         platforms = []
         for platform_id in sorted(self._base._platforms):
@@ -2476,6 +2835,22 @@ def generate_reconstruction_candidates(env: EventReliefEnv, scope: Any = None,
     workload_alternatives: list[dict] = []
     paired_dispatch_alternatives: list[dict] = []
     queues = observation["queues"]
+
+    def add_queue_alternative(action: dict, bucket: list[dict]) -> None:
+        """Keep only complete, public-legal queue mutations.
+
+        Queue mutations are deliberately independent of the dispatch catalog:
+        a target platform may be busy with its current task while accepting a
+        legal future queue item.  The final action check remains the source of
+        truth for schedule, stock, communication, and cooperative constraints.
+        """
+        if scope_name == "LOCAL_REPAIR" and not _action_within_local_domain(env, action, scope):
+            return
+        normalized, reasons = env._check_action(action)
+        if reasons or normalized != action:
+            return
+        bucket.append(action)
+
     ranked_pairs = sorted(allowed, key=lambda pair: _dispatch_rank_key(observation, allowed[pair]))
     for pair in ranked_pairs:
         platform_id, task_id = pair
@@ -2487,21 +2862,66 @@ def generate_reconstruction_candidates(env: EventReliefEnv, scope: Any = None,
         if owner == platform_id:
             queue = queues.get(platform_id, [])
             if task_id in queue and queue.index(task_id) > 0:
+                active_id = platform_by_id.get(platform_id, {}).get("active_task_id")
+                anchors = [item for item in queue if item != active_id and item != task_id]
+                if not anchors:
+                    continue
                 action = _new_action(scope_name, queue_operations=[{
                     "op": "insert", "task_id": task_id, "from_platform": platform_id,
-                    "to_platform": platform_id, "before_task_id": queue[0],
-                }], dispatches=[{"platform_id": platform_id, "task_id": task_id}])
+                    "to_platform": platform_id, "before_task_id": anchors[0],
+                }])
             else:
-                action = _new_action(scope_name, dispatches=[{"platform_id": platform_id, "task_id": task_id}])
-            if scope_name != "LOCAL_REPAIR" or _action_within_local_domain(env, action, scope):
-                (local_alternatives if owner == platform_id else cross_alternatives).append(action)
+                continue
+            add_queue_alternative(action, local_alternatives)
         else:
             action = _new_action(scope_name, queue_operations=[{
                 "op": "transfer" if owner is not None else "insert", "task_id": task_id,
                 "from_platform": owner, "to_platform": platform_id,
-            }], dispatches=[{"platform_id": platform_id, "task_id": task_id}])
-            if scope_name != "LOCAL_REPAIR" or _action_within_local_domain(env, action, scope):
-                (local_alternatives if owner == platform_id else cross_alternatives).append(action)
+            }])
+            add_queue_alternative(action, cross_alternatives)
+
+    # Extend queue alternatives to busy targets and unassigned tasks.  These
+    # rows never become immediate dispatches and therefore cannot interrupt an
+    # active task; they only change the committed future queue.
+    for task_id, task in sorted(tasks.items()):
+        if task.get("status") not in {"pending", "assigned", "released"} or task.get("safety_paused"):
+            continue
+        source = task.get("assignee")
+        if source is not None and (source not in queues or task_id not in queues.get(source, [])):
+            continue
+        for target, platform in sorted(platform_by_id.items()):
+            if platform.get("failed") or not env._public_compatible(platform, task):
+                continue
+            source_node = str(source) if isinstance(source, str) else _COORDINATOR
+            if source is not None and not env._connected(observation, source_node, target):
+                continue
+            if source == target:
+                queue = queues.get(target, [])
+                if task_id not in queue:
+                    continue
+                active_id = platform.get("active_task_id")
+                ordered = [item for item in queue if item != active_id]
+                if task_id not in ordered or ordered.index(task_id) == 0:
+                    continue
+                anchor = ordered[0]
+                operation = {
+                    "op": "insert", "task_id": task_id, "from_platform": target,
+                    "to_platform": target, "before_task_id": anchor,
+                }
+                action = _new_action(scope_name, queue_operations=[operation])
+                add_queue_alternative(action, local_alternatives if task.get("local") else cross_alternatives)
+                continue
+            if (target, task_id) in allowed:
+                # The ranked dispatch pair above already generated this
+                # transfer; only synthesize pairs omitted because the target
+                # was busy in candidate_dispatches().
+                continue
+            operation = {
+                "op": "transfer" if source is not None else "insert", "task_id": task_id,
+                "from_platform": source, "to_platform": target,
+            }
+            action = _new_action(scope_name, queue_operations=[operation])
+            add_queue_alternative(action, local_alternatives if task.get("local") else cross_alternatives)
 
     # A pair of executable task transfers is a real swap, not just a label.
     by_owner: dict[str, list[str]] = {}
@@ -2514,20 +2934,12 @@ def generate_reconstruction_candidates(env: EventReliefEnv, scope: Any = None,
         for right_owner in owners[index + 1:]:
             for left_task in sorted(by_owner[left_owner]):
                 for right_task in sorted(by_owner[right_owner]):
-                    left_pair, right_pair = (right_owner, left_task), (left_owner, right_task)
-                    if left_pair not in allowed or right_pair not in allowed:
-                        continue
-                    left_dispatch, right_dispatch = allowed[left_pair], allowed[right_pair]
-                    if env._dispatch_legality(observation, left_dispatch, allowed) or env._dispatch_legality(observation, right_dispatch, allowed):
-                        continue
                     left_scope = tasks[left_task]["local"]
                     action = _new_action(scope_name, queue_operations=[{
                         "op": "swap", "task_id": left_task, "other_task_id": right_task,
                         "from_platform": left_owner, "to_platform": right_owner,
-                    }], dispatches=[{"platform_id": right_owner, "task_id": left_task},
-                                    {"platform_id": left_owner, "task_id": right_task}])
-                    if scope_name != "LOCAL_REPAIR" or _action_within_local_domain(env, action, scope):
-                        (local_alternatives if left_scope else cross_alternatives).append(action)
+                    }])
+                    add_queue_alternative(action, local_alternatives if left_scope else cross_alternatives)
                     # Keep enumerating; ranking and quotas are applied after
                     # every publicly feasible alternative is known.
 

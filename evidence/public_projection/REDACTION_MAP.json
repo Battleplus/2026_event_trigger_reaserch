@@ -1,116 +1,18 @@
 {
   "files": [
     {
-      "public_path": "evidence/CONTROLLED_HALF_DISPATCH_RECEIPT.json",
-      "public_sha256": "9504e7337b2084739cf36937b9ebe959cdc10192120322e22450b76885456052",
+      "public_path": "reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json",
+      "public_sha256": "790530e662a44daaa904819345446486c7b7c0dd3ea9a7b4020ac70fc1ed9080",
       "redactions": {},
-      "source_path": "evidence/CONTROLLED_HALF_DISPATCH_RECEIPT.json",
-      "source_sha256": "9504e7337b2084739cf36937b9ebe959cdc10192120322e22450b76885456052"
+      "source_path": "reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json",
+      "source_sha256": "790530e662a44daaa904819345446486c7b7c0dd3ea9a7b4020ac70fc1ed9080"
     },
     {
-      "public_path": "evidence/P1_FOUNDATION_CHECKS_20261017.md",
-      "public_sha256": "bbb9b3e0daa41e436d1e61e95af0b439e0d31456013ad5343113b247dd953052",
+      "public_path": "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
+      "public_sha256": "e0c01bddcf592667d48a0c7c4d585937e402d344584bc40bc1738fed18429b98",
       "redactions": {},
-      "source_path": "evidence/P1_FOUNDATION_CHECKS_20261017.md",
-      "source_sha256": "bbb9b3e0daa41e436d1e61e95af0b439e0d31456013ad5343113b247dd953052"
-    },
-    {
-      "public_path": "evidence/p1_foundation_probes.py",
-      "public_sha256": "d8450ac68d7edf5d788f26e748add0decbc4481d69b9891fd076a9520aecd1b7",
-      "redactions": {},
-      "source_path": "evidence/p1_foundation_probes.py",
-      "source_sha256": "d8450ac68d7edf5d788f26e748add0decbc4481d69b9891fd076a9520aecd1b7"
-    },
-    {
-      "public_path": "reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md",
-      "public_sha256": "69543be54a19748792d53fdd330910d1010a836e5b12b38f5cde0c9473fec325",
-      "redactions": {},
-      "source_path": "reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md",
-      "source_sha256": "69543be54a19748792d53fdd330910d1010a836e5b12b38f5cde0c9473fec325"
-    },
-    {
-      "public_path": "reports/P2_R1_PUBLIC_EVIDENCE_RECEIPT_20261017.json",
-      "public_sha256": "37311f30ab9f5bfa3753e4768c92141676c43a1c03c1b97f7e8848289d6c6e23",
-      "redactions": {},
-      "source_path": "reports/P2_R1_PUBLIC_EVIDENCE_RECEIPT_20261017.json",
-      "source_sha256": "37311f30ab9f5bfa3753e4768c92141676c43a1c03c1b97f7e8848289d6c6e23"
-    },
-    {
-      "public_path": "reviews/INDEPENDENT_FOCUSED_CHECK_20261017c.json",
-      "public_sha256": "2aded3172fd068cc29fa3f2432b04cf27e6512db5889cc67d3eb31c6026e9c38",
-      "redactions": {},
-      "source_path": "reviews/INDEPENDENT_FOCUSED_CHECK_20261017c.json",
-      "source_sha256": "2aded3172fd068cc29fa3f2432b04cf27e6512db5889cc67d3eb31c6026e9c38"
-    },
-    {
-      "public_path": "reviews/INDEPENDENT_INTEGRATION_CHECK_20261017b.json",
-      "public_sha256": "f85b588d125462df8e3d4a42e11ebe65b84852d9efe98a74934bb08fc3671a90",
-      "redactions": {},
-      "source_path": "reviews/INDEPENDENT_INTEGRATION_CHECK_20261017b.json",
-      "source_sha256": "f85b588d125462df8e3d4a42e11ebe65b84852d9efe98a74934bb08fc3671a90"
-    },
-    {
-      "public_path": "reviews/P0_P1_PRELIMINARY_REPAIR_20261017.md",
-      "public_sha256": "7214a3af17b86d6ee7595c34ba518fce6fb4263a5ba69687d705b741dab0260e",
-      "redactions": {},
-      "source_path": "reviews/P0_P1_PRELIMINARY_REPAIR_20261017.md",
-      "source_sha256": "7214a3af17b86d6ee7595c34ba518fce6fb4263a5ba69687d705b741dab0260e"
-    },
-    {
-      "public_path": "reviews/P1_REVIEW.json",
-      "public_sha256": "63d2b9e49fbb4ef6ad8d4c33a09312f8110e99fc41dcbc13a861b232b1249839",
-      "redactions": {},
-      "source_path": "reviews/P1_REVIEW.json",
-      "source_sha256": "63d2b9e49fbb4ef6ad8d4c33a09312f8110e99fc41dcbc13a861b232b1249839"
-    },
-    {
-      "public_path": "reviews/P1_REVIEW_BINDING_FIX.json",
-      "public_sha256": "50c228ae8ed72c877bd111c41cfbac9ea828492a03542d67f581adf4d602f744",
-      "redactions": {},
-      "source_path": "reviews/P1_REVIEW_BINDING_FIX.json",
-      "source_sha256": "50c228ae8ed72c877bd111c41cfbac9ea828492a03542d67f581adf4d602f744"
-    },
-    {
-      "public_path": "reviews/P2_R1_REVIEW_20261017.json",
-      "public_sha256": "ffebbf70050c49f7bd2b4ce125e2a74223dfb5b69631bb3c9a2752303175dcc6",
-      "redactions": {},
-      "source_path": "reviews/P2_R1_REVIEW_20261017.json",
-      "source_sha256": "ffebbf70050c49f7bd2b4ce125e2a74223dfb5b69631bb3c9a2752303175dcc6"
-    },
-    {
-      "public_path": "reviews/P2_REVIEW_20261017.json",
-      "public_sha256": "ab4b5b83ab44be4d5426cc0e0d1e86d3005c8f7f978d537327e04d5c75406c87",
-      "redactions": {},
-      "source_path": "reviews/P2_REVIEW_20261017.json",
-      "source_sha256": "ab4b5b83ab44be4d5426cc0e0d1e86d3005c8f7f978d537327e04d5c75406c87"
-    },
-    {
-      "public_path": "reviews/PAIR_TEST_RESULTS_20261017a.txt",
-      "public_sha256": "05c04c24b7ec68c40c32013c9e94a4cbfa50d97b2b85aa2829c2a21c302dad8a",
-      "redactions": {},
-      "source_path": "reviews/PAIR_TEST_RESULTS_20261017a.txt",
-      "source_sha256": "05c04c24b7ec68c40c32013c9e94a4cbfa50d97b2b85aa2829c2a21c302dad8a"
-    },
-    {
-      "public_path": "reviews/PRECOLLECTION_COST_CLARIFICATION_20261017.md",
-      "public_sha256": "314a90e8c8b72d72dd99ead7afb353b68d17e92b7fb358722c5712590c416b86",
-      "redactions": {},
-      "source_path": "reviews/PRECOLLECTION_COST_CLARIFICATION_20261017.md",
-      "source_sha256": "314a90e8c8b72d72dd99ead7afb353b68d17e92b7fb358722c5712590c416b86"
-    },
-    {
-      "public_path": "reviews/PRELIMINARY_MODEL_CHECK.json",
-      "public_sha256": "2b671e88425805d7d740bbbcbf9fc114df7e47e76156991258052a9b5b658521",
-      "redactions": {},
-      "source_path": "reviews/PRELIMINARY_MODEL_CHECK.json",
-      "source_sha256": "2b671e88425805d7d740bbbcbf9fc114df7e47e76156991258052a9b5b658521"
-    },
-    {
-      "public_path": "reviews/PRE_FREEZE_REVIEW_20261017.json",
-      "public_sha256": "828ec9a60ef670f9eb23378313a0bbb6596cbf3bdc2a590c3b4e426551fcb177",
-      "redactions": {},
-      "source_path": "reviews/PRE_FREEZE_REVIEW_20261017.json",
-      "source_sha256": "828ec9a60ef670f9eb23378313a0bbb6596cbf3bdc2a590c3b4e426551fcb177"
+      "source_path": "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
+      "source_sha256": "e0c01bddcf592667d48a0c7c4d585937e402d344584bc40bc1738fed18429b98"
     }
   ],
   "schema": "public-evidence-redaction-map/1",

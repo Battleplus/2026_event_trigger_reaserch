@@ -1,0 +1,190 @@
+{
+  "audit_scope": "read_only_input; no collection, completion receipts, or resource totals synthesized",
+  "expected_instance_count_basis": "operator-supplied registered collection target; run metadata does not persist CLI limits",
+  "runs": [
+    {
+      "audit_disposition": "interrupted_incomplete",
+      "collection_rows": {
+        "gzip_error": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "gzip_footer_valid": false,
+        "parse_errors": [],
+        "parseable_complete_json_rows": 219
+      },
+      "completed_scenario_outcome_count": 52,
+      "config_declared_formal_instance_count_across_all_splits": 504,
+      "config_identity_matches_run": true,
+      "config_self_sha256": "7a7a77cc5760da6c22c2c21909fbe73f6fa58755a0488405d4965edf88b3de6f",
+      "config_sha256_recorded": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
+      "config_source_sha256": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
+      "duplicate_outcome_ids": [],
+      "duplicate_state_ids": [],
+      "expected_instance_count_operator_supplied": 168,
+      "integrity": {
+        "all_outcome_scenarios_verified": true,
+        "all_parseable_row_artifacts_verified": true,
+        "linked_artifact_errors": [],
+        "outcome_scenario_errors": []
+      },
+      "labels_all_parseable_rows": {
+        "empty_obligation_window": 40,
+        "forced": 101,
+        "nonpositive": 78,
+        "ordinary_nonpositive": 78,
+        "ordinary_positive": 0,
+        "paired_variance_valid": 78,
+        "positive": 0,
+        "unknown": 141,
+        "unknown_reasons": {
+          "empty_obligation_window": 40,
+          "forced_safety_state": 101
+        }
+      },
+      "labels_isolated_to_scenario_without_outcome": {
+        "unknown": 1
+      },
+      "labels_linked_to_completed_outcomes": {
+        "nonpositive": 78,
+        "unknown": 140
+      },
+      "light_model_training_authorized": false,
+      "outcome_ids_without_scenario_file": [],
+      "recorded_status": "running",
+      "resource_accounting": {
+        "cpu_seconds_total": null,
+        "cpu_seconds_total_status": "unknown_incomplete_run",
+        "last_observation_cpu_seconds_lower_bound": 1890.72,
+        "lower_bound_source": "coordinator_last_observation",
+        "rss_peak_final": null
+      },
+      "rows_grouped_by_scenario_id": {
+        "gain-train-communication_degradation-0001": 8,
+        "gain-train-communication_degradation-0002": 8,
+        "gain-train-communication_degradation-0003": 8,
+        "gain-train-communication_degradation-0004": 1,
+        "gain-train-communication_degradation-0005": 1,
+        "gain-train-energy_anomaly-0002": 8,
+        "gain-train-energy_anomaly-0005": 8,
+        "gain-train-energy_anomaly-0008": 8,
+        "gain-train-energy_anomaly-0011": 8,
+        "gain-train-none_or_light-0002": 8,
+        "gain-train-none_or_light-0005": 8,
+        "gain-train-none_or_light-0008": 8,
+        "gain-train-none_or_light-0011": 8,
+        "gain-train-none_or_light-0012": 8,
+        "gain-train-platform_failure_or_capability_loss-0001": 2,
+        "gain-train-platform_failure_or_capability_loss-0002": 8,
+        "gain-train-platform_failure_or_capability_loss-0003": 8,
+        "gain-train-platform_failure_or_capability_loss-0004": 8,
+        "gain-train-platform_failure_or_capability_loss-0005": 8,
+        "gain-train-platform_failure_or_capability_loss-0006": 8,
+        "gain-train-platform_failure_or_capability_loss-0007": 8,
+        "gain-train-platform_failure_or_capability_loss-0008": 8,
+        "gain-train-platform_failure_or_capability_loss-0009": 2,
+        "gain-train-platform_failure_or_capability_loss-0010": 1,
+        "gain-train-platform_failure_or_capability_loss-0011": 8,
+        "gain-train-platform_failure_or_capability_loss-0012": 1,
+        "gain-train-task_update_or_arrival-0001": 4,
+        "gain-train-task_update_or_arrival-0002": 8,
+        "gain-train-task_update_or_arrival-0003": 1,
+        "gain-train-task_update_or_arrival-0004": 3,
+        "gain-train-task_update_or_arrival-0005": 8,
+        "gain-train-task_update_or_arrival-0006": 2,
+        "gain-train-task_update_or_arrival-0007": 3,
+        "gain-train-task_update_or_arrival-0008": 8,
+        "gain-train-task_update_or_arrival-0009": 1,
+        "gain-train-task_update_or_arrival-0010": 3,
+        "gain-train-task_update_or_arrival-0011": 8,
+        "gain-train-task_update_or_arrival-0012": 2
+      },
+      "run_id": "20261017T113558Z-e8a3fc53b999",
+      "scenario_file_count": 53,
+      "scenario_ids_without_outcome": [
+        "gain-train-communication_degradation-0005"
+      ],
+      "scenario_outcomes": {
+        "gzip_error": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "gzip_footer_valid": false,
+        "parse_errors": [],
+        "parseable_complete_json_rows": 52
+      },
+      "source_identity_matches_run": true,
+      "source_manifest_self_sha256": "7ce16590ecbe12464bd21fdc30491ddd033783a40276759534329112ff8bd62a",
+      "source_manifest_sha256": "7ce16590ecbe12464bd21fdc30491ddd033783a40276759534329112ff8bd62a",
+      "stage": "collect",
+      "training_gate_met": false
+    },
+    {
+      "audit_disposition": "interrupted_incomplete",
+      "collection_rows": {
+        "gzip_error": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "gzip_footer_valid": false,
+        "parse_errors": [],
+        "parseable_complete_json_rows": 16
+      },
+      "completed_scenario_outcome_count": 7,
+      "config_declared_formal_instance_count_across_all_splits": 504,
+      "config_identity_matches_run": true,
+      "config_self_sha256": "7a7a77cc5760da6c22c2c21909fbe73f6fa58755a0488405d4965edf88b3de6f",
+      "config_sha256_recorded": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
+      "config_source_sha256": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
+      "duplicate_outcome_ids": [],
+      "duplicate_state_ids": [],
+      "expected_instance_count_operator_supplied": 168,
+      "integrity": {
+        "all_outcome_scenarios_verified": true,
+        "all_parseable_row_artifacts_verified": true,
+        "linked_artifact_errors": [],
+        "outcome_scenario_errors": []
+      },
+      "labels_all_parseable_rows": {
+        "empty_obligation_window": 4,
+        "forced": 0,
+        "nonpositive": 12,
+        "ordinary_nonpositive": 12,
+        "ordinary_positive": 0,
+        "paired_variance_valid": 12,
+        "positive": 0,
+        "unknown": 4,
+        "unknown_reasons": {
+          "empty_obligation_window": 4
+        }
+      },
+      "labels_isolated_to_scenario_without_outcome": {},
+      "labels_linked_to_completed_outcomes": {
+        "nonpositive": 12,
+        "unknown": 4
+      },
+      "light_model_training_authorized": false,
+      "outcome_ids_without_scenario_file": [],
+      "recorded_status": "running",
+      "resource_accounting": {
+        "cpu_seconds_total": null,
+        "cpu_seconds_total_status": "unknown_incomplete_run",
+        "last_observation_cpu_seconds_lower_bound": null,
+        "lower_bound_source": null,
+        "rss_peak_final": null
+      },
+      "rows_grouped_by_scenario_id": {
+        "gain-train-none_or_light-0002": 8,
+        "gain-train-none_or_light-0005": 8
+      },
+      "run_id": "20261017T111447Z-3b69d49d534c",
+      "scenario_file_count": 8,
+      "scenario_ids_without_outcome": [
+        "gain-train-none_or_light-0008"
+      ],
+      "scenario_outcomes": {
+        "gzip_error": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "gzip_footer_valid": false,
+        "parse_errors": [],
+        "parseable_complete_json_rows": 7
+      },
+      "source_identity_matches_run": true,
+      "source_manifest_self_sha256": "4256a5922be258f8cb317408f38f3d15e55db409f06b4fab36d4bf87b4c5c7d0",
+      "source_manifest_sha256": "4256a5922be258f8cb317408f38f3d15e55db409f06b4fab36d4bf87b4c5c7d0",
+      "stage": "collect",
+      "training_gate_met": false
+    }
+  ],
+  "schema": "gain-interrupted-collection-audit/1"
+}
