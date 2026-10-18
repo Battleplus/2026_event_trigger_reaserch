@@ -1,0 +1,21 @@
+{
+  "schema": "v3-region-contract-readonly-probe/1",
+  "date": "2026-10-18",
+  "reviewer": "root coordinator",
+  "scope": "helper semantics only; not environment acceptance",
+  "source_sha256": "04d957ace1fe14c83776f11c37811d4493b4d278a50ae3f18fb7d97f01a5b567",
+  "grid_cell_count": 10000,
+  "region_cell_counts": {
+    "r00": 1089,
+    "r10": 1089,
+    "r20": 1122,
+    "r01": 1089,
+    "r11": 1089,
+    "r21": 1122,
+    "r02": 1122,
+    "r12": 1122,
+    "r22": 1156
+  },
+  "boundary_and_support_checks": "PASS",
+  "v3_smoke_approved": false
+}

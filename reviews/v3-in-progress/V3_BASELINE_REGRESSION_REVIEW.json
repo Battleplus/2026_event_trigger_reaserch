@@ -1,0 +1,26 @@
+{
+  "schema": "v3-source-baseline-review/1",
+  "date": "2026-10-18",
+  "reviewer": "root coordinator",
+  "scope": "read-only V2 source regression using local .venv; does not validate V3",
+  "command": "python -B -m pytest -q -p no:cacheprovider package/tests",
+  "runtime": {
+    "python": "3.13.13",
+    "numpy": "2.5.1",
+    "torch": "2.13.0+cpu",
+    "pytest": "9.1.1",
+    "sklearn": "missing",
+    "cuda_initialized": false
+  },
+  "result": {
+    "passed": 124,
+    "failed": 9,
+    "elapsed_wall_seconds_reported_by_pytest": 49.84
+  },
+  "failures": {
+    "missing_sklearn": 4,
+    "v2_review_R2_fixture_R3_code_identity_mismatch": 5
+  },
+  "decision": "Inherited failures must be disclosed; no claim that the current baseline is 133/133 passing. V3 binding tests must use fresh artifact fixtures.",
+  "source_mutated_by_reviewer": false
+}

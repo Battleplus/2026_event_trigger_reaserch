@@ -1,0 +1,21 @@
+{
+  "schema": "v3-coordinator-execution-probe/1",
+  "date": "2026-10-18",
+  "reviewer_role": "coordinator",
+  "status": "REPAIR_REQUIRED",
+  "scope": "draft_source_build_and_full_noop_attempt",
+  "scenario": {"split": "train", "condition": "none_or_light", "seed_variant": 900001, "instance_index": 0},
+  "build_result": "success",
+  "parent_id": "v3-train-none_or_light-000-00900001",
+  "simulation_result": "failed_before_reset",
+  "completed_ticks": 0,
+  "first_error": {
+    "type": "ValueError",
+    "message": "gain scenario fields do not match gain contract",
+    "path": "EventReliefEnv.__init__ -> validate_supported_event_scenario -> validate_gain_scenario"
+  },
+  "interpretation": "The regional builder currently constructs a scenario, but the environment dispatches it to the legacy gain validator. This attempt does not establish V3 runtime validity.",
+  "follow_up": "Luna must repair explicit V3 validator dispatch while retaining legacy validation, then run a new probe with source hashes.",
+  "formal_collection_authorized": false,
+  "model_training_authorized": false
+}

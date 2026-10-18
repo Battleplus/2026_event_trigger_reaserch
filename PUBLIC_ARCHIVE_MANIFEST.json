@@ -1,7 +1,7 @@
 {
   "schema": "public-archive-manifest/2",
-  "milestone": "v3-protocol-baseline",
-  "claim_scope": "protocol only; no V3 implementation or results claimed",
+  "milestone": "v3-implementation-progress",
+  "claim_scope": "protocol and scoped diagnostic evidence; V3 smoke not passed",
   "files": [
     {
       "public_path": ".gitattributes",
@@ -43,7 +43,7 @@
       "public_path": "README.md",
       "public_sha256": "c454c172e24743585448796d41e4ed6f091dbbc283f5b8a178626aefc9d72a75",
       "bytes": 1268,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "REPO_AUDIT.md",
@@ -77,9 +77,9 @@
     },
     {
       "public_path": "STATUS.md",
-      "public_sha256": "e050d3b04e4ac0b551738495ed00a6233796fd5c2dff8a1891d781848d0e3461",
-      "bytes": 850,
-      "scope": "v3_protocol_baseline"
+      "public_sha256": "b167d13846ba7249b8fd8890218d31d8d13d9937bd01442a01914f6b6b62b66d",
+      "bytes": 1263,
+      "scope": "v3_protocol"
     },
     {
       "public_path": "configs/ENVIRONMENT_SPEC.json",
@@ -667,37 +667,37 @@
       "public_path": "protocols/v3-baseline/BASELINE_PROVENANCE.json",
       "public_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
       "bytes": 1169,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "protocols/v3-baseline/PROTOCOL_RECEIPT.json",
       "public_sha256": "f50e872133ac9f07be8d84641781c9c485261d1cc89d3b9482caf9169b6c15ed",
       "bytes": 1113,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "protocols/v3-baseline/README.md",
       "public_sha256": "ec41e62afd42a6c0509a2ad24c1d1f26a5bb1c842aa18d87a066651940a5090e",
       "bytes": 812,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "protocols/v3-baseline/STATUS.md",
       "public_sha256": "d3698784a96080876251a89d866076e3290b5650549a8b7fd0f4df694c94978e",
       "bytes": 1975,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "protocols/v3-baseline/configs__GAIN_GATE_CONFIG.json",
       "public_sha256": "dc2a7a936e88400fb031f294675de4e47b19eb21adee46b2813312260ff23e27",
       "bytes": 5770,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "protocols/v3-baseline/protocols__V3_PROTOCOL.md",
       "public_sha256": "23063bb93808d4dd7ff7f604f21eb9c1fbfaf32cfa59b1e2ac17b1b639aed4e9",
       "bytes": 8105,
-      "scope": "v3_protocol_baseline"
+      "scope": "v3_protocol"
     },
     {
       "public_path": "reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md",
@@ -808,6 +808,24 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "reviews/v3-in-progress/V3_BASELINE_REGRESSION_REVIEW.json",
+      "public_sha256": "9f42cbe2d63351b0c6118d89f6dfdb3f07f349bd53e73877f8efe29fdfed527e",
+      "bytes": 872,
+      "scope": "v3_progress_evidence"
+    },
+    {
+      "public_path": "reviews/v3-in-progress/V3_FIRST_EXECUTION_PROBE.json",
+      "public_sha256": "4d51665c0828875b3f872e166fe3d897983bc435fdd7fbc67e5ec47c6736ff08",
+      "bytes": 1089,
+      "scope": "v3_progress_evidence"
+    },
+    {
+      "public_path": "reviews/v3-in-progress/V3_REGION_CONTRACT_PROBE.json",
+      "public_sha256": "8814154dd77df75f22078322e214e0aa75e51d743f5740164ed1e3d96c2805af",
+      "bytes": 566,
+      "scope": "v3_progress_evidence"
+    },
+    {
       "public_path": "staging_tools/audit_interrupted_collection.py",
       "public_sha256": "4546d4add0af8ce40c799d8301b00bf966d7bf736e133a9bcc7f11248a261205",
       "bytes": 16850,
@@ -826,7 +844,7 @@
       "scope": "historical_v2"
     }
   ],
-  "self_hash_exclusions": [
+  "exclusions": [
     "PUBLIC_ARCHIVE_MANIFEST.json",
     "SHA256SUMS.txt"
   ]
