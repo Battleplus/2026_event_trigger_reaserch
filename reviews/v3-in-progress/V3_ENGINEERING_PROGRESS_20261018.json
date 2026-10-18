@@ -1,0 +1,51 @@
+{
+  "schema": "v3-coordinator-progress/2",
+  "date": "2026-10-18",
+  "claim_scope": "scoped engineering evidence; smoke not frozen or approved",
+  "status": "REPAIR_REQUIRED",
+  "engineering": {
+    "build_reset_noop": "PASS_SCOPED",
+    "steps": 90,
+    "platforms": 30,
+    "logical_tasks": 54,
+    "regions": 9,
+    "completed_noop": 36,
+    "raw_events": 805,
+    "safety_coordinator_probe": "PASS_SCOPED",
+    "five_tick_no_forced": true,
+    "live_disconnect_pause_verified": true,
+    "regional_constructed_probe": "PASS_SCOPED",
+    "neighbor_uav": true,
+    "far_uav_rejected": true,
+    "cross_region_helicopter": true,
+    "cooperation": "PASS_SCOPED_BUT_CONSTRUCTED_PHYSICAL_COUNT_56",
+    "replanner_probe": "PASS_SCOPED",
+    "replanner_version": "Public-C1-Catalog-Replanner-v3",
+    "elapsed_seconds": 10.5088,
+    "candidate_count": 16,
+    "noop_count": 1,
+    "alternative_count": 15,
+    "distinct_physical_outcomes": 16,
+    "infeasible": 0,
+    "duplicates": 0,
+    "registry_validation": "PASS_SCOPED",
+    "instances": 168,
+    "train_validation_content_overlap": false,
+    "targeted_regression": "36_passed",
+    "shard_tests": "10_passed",
+    "trigger_regression": "one_known_test_failure_in_synthetic_observation_fixture"
+  },
+  "blocking_issues": [
+    "full smoke not run or reviewed",
+    "full replan is approximately 10.5 seconds in one 30-platform state; real-time cost is not yet established",
+    "one coordinator safety unit fixture fails to detect disconnected link while live probe passes; fixture/path must be repaired",
+    "cooperative constructed probe temporarily adds physical task rows and cannot count as fixed 54-task acceptance",
+    "candidate DGP/suffix and smoke family binding require final review",
+    "formal collection, 30/30 gate, light models, world model and PPO not run"
+  ],
+  "authorization": {
+    "formal_collection": false,
+    "model_training": false,
+    "success_tag": false
+  }
+}

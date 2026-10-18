@@ -1,6 +1,6 @@
 {
   "schema": "public-archive-manifest/2",
-  "milestone": "v3-implementation-progress",
+  "milestone": "v3-implementation-progress-2",
   "claim_scope": "protocol and scoped diagnostic evidence; V3 smoke not passed",
   "files": [
     {
@@ -811,6 +811,12 @@
       "public_path": "reviews/v3-in-progress/V3_BASELINE_REGRESSION_REVIEW.json",
       "public_sha256": "9f42cbe2d63351b0c6118d89f6dfdb3f07f349bd53e73877f8efe29fdfed527e",
       "bytes": 872,
+      "scope": "v3_progress_evidence"
+    },
+    {
+      "public_path": "reviews/v3-in-progress/V3_ENGINEERING_PROGRESS_20261018.json",
+      "public_sha256": "0cbd2d1333576041f5442b3dae17b20139bcf448de82a0b61453a6709a882358",
+      "bytes": 2002,
       "scope": "v3_progress_evidence"
     },
     {
