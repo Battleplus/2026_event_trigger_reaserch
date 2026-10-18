@@ -41,11 +41,23 @@
     "one coordinator safety unit fixture fails to detect disconnected link while live probe passes; fixture/path must be repaired",
     "cooperative constructed probe temporarily adds physical task rows and cannot count as fixed 54-task acceptance",
     "candidate DGP/suffix and smoke family binding require final review",
-    "formal collection, 30/30 gate, light models, world model and PPO not run"
+    "formal collection, 30/30 gate, light models, world model and PPO not run",
+    "18-instance smoke stopped after 13 committed shards because outer guardian failed to enforce the configured 1800 CPU-second cap; no SMOKE_MANIFEST complete and no freeze approval"
   ],
   "authorization": {
     "formal_collection": false,
     "model_training": false,
     "success_tag": false
+  },
+  "smoke_attempt": {
+    "status": "INTERRUPTED_BUDGET_GUARD_FAILURE",
+    "run_id": "v3-smoke-freeze-20261018-a",
+    "committed_shards": 13,
+    "required_instances": 18,
+    "observed_process_cpu_seconds": 1945.72,
+    "configured_cpu_seconds": 1800,
+    "rss_bytes": 695054336,
+    "formal_collection_authorized": false,
+    "training_authorized": false
   }
 }
