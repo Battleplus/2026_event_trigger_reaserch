@@ -1,0 +1,34 @@
+{
+  "schema": "v3-protocol-baseline-receipt/1",
+  "date": "2026-10-18",
+  "status": "IMPLEMENTATION_IN_PROGRESS",
+  "smoke_passed": false,
+  "formal_collection_authorized": false,
+  "files": [
+    {
+      "path": "protocols/v3-baseline/README.md",
+      "sha256": "ec41e62afd42a6c0509a2ad24c1d1f26a5bb1c842aa18d87a066651940a5090e",
+      "bytes": 812
+    },
+    {
+      "path": "protocols/v3-baseline/STATUS.md",
+      "sha256": "d3698784a96080876251a89d866076e3290b5650549a8b7fd0f4df694c94978e",
+      "bytes": 1975
+    },
+    {
+      "path": "protocols/v3-baseline/protocols__V3_PROTOCOL.md",
+      "sha256": "23063bb93808d4dd7ff7f604f21eb9c1fbfaf32cfa59b1e2ac17b1b639aed4e9",
+      "bytes": 8105
+    },
+    {
+      "path": "protocols/v3-baseline/configs__GAIN_GATE_CONFIG.json",
+      "sha256": "dc2a7a936e88400fb031f294675de4e47b19eb21adee46b2813312260ff23e27",
+      "bytes": 5770
+    },
+    {
+      "path": "protocols/v3-baseline/BASELINE_PROVENANCE.json",
+      "sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+      "bytes": 1169
+    }
+  ]
+}

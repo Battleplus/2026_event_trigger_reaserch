@@ -1,11 +1,14 @@
-# Status
+# V3 Archive Status
 
-Current snapshot: **V2 repair smoke passed; formal collection interrupted** for the Chapter 2 gain-gate study.
+Date: 2026-10-18 (Asia/Shanghai).
 
-Engineering disposition: **INCOMPLETE_COLLECTION; STOP**. The repaired V2 smoke run passed its immutable gate: 221/221 historical safety cases resolved, 0 unresolved, 0 unknown, candidate execution and paired replay checks passed, and all 79 evidence files matched their recorded hashes. The subsequent formal collection was interrupted: final run `20261017T113558Z-e8a3fc53b999` has 52 outcome records, 53 scenario files, one scenario without an outcome, and truncated aggregate gzip footers. The R2 interruption has 7 outcome records and 8 scenario files. No completion or final resource receipt exists. The last observed final-run CPU value, 1890.72 seconds, is a lower bound only and is not a total.
+- Milestone: protocol baseline, implementation in progress.
+- V3 engineering smoke: NOT RUN / NOT REVIEWED.
+- V3 formal data: NOT RUN.
+- V3 30/30 training gate: NOT EVALUATED.
+- Light model / world model / PPO: NOT RUN.
+- Method: INCONCLUSIVE.
 
-Method disposition: **INCONCLUSIVE; TRAINING GATE FAILED**. The final run has 0 ordinary positive and 78 ordinary non-positive labels among 219 parseable rows; 101 forced-safety and 40 empty-window labels remain unknown. The registered 30-positive/30-non-positive ordinary-state gate is not met. No light model, test/OOD evaluation, world-model experiment, or PPO transfer is authorized.
+Only `protocols/v3-baseline/` and these status documents describe V3 in this commit. Other existing tracked source and evidence are historical V2 artifacts, retained without a V3 success claim. Event-generator details remain provisional until sampler implementation and config-hash review.
 
-The earlier R1 diagnostic remains historical evidence of the initial failure and is not overwritten. See [the final V2 smoke review](reviews/V2_SMOKE_REVIEW_20261017_R3.json), [the safety classification](reports/V2_SAFETY_CLASSIFICATION.md), and [the V1/R1 diagnostic](reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md).
-
-The interrupted outputs and [read-only audit](reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json) are retained as diagnostic evidence. Do not count the partial scenario as a completed instance or synthesize completion/resource receipts. Test and OOD data remain sealed.
+The V2 interrupted CPU total remains unknown; 1890.72 seconds was a lower bound. No complete historical resource settlement is fabricated. V3 will use separate measured receipts and cannot claim that the original project budget has been reset.

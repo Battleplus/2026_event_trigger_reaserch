@@ -1,972 +1,833 @@
 {
-  "excluded_artifacts": [
-    "checkpoints",
-    "raw run outputs",
-    "credentials",
-    "private databases"
-  ],
-  "excluded_roots": [
-    ".deps",
-    "outputs",
-    "_pytest-temp",
-    "__pycache__"
-  ],
+  "schema": "public-archive-manifest/2",
+  "milestone": "v3-protocol-baseline",
+  "claim_scope": "protocol only; no V3 implementation or results claimed",
   "files": [
     {
-      "category": "source",
+      "public_path": ".gitattributes",
+      "public_sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": ".gitignore",
       "public_sha256": "293460cc95a156765052873a5f17fdcccb3165c4608d86d2b7562b4bdb009eff",
-      "redactions": {},
-      "size_bytes": 155,
-      "source_path": ".gitignore",
-      "source_sha256": "293460cc95a156765052873a5f17fdcccb3165c4608d86d2b7562b4bdb009eff"
+      "bytes": 155,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "BASELINE_PROVENANCE.json",
       "public_sha256": "3fa1a7d67c53f0d602da673d4ba1affd7c3a2e59dc03e4e37aed52a3483da986",
-      "redactions": {},
-      "size_bytes": 1669,
-      "source_path": "BASELINE_PROVENANCE.json",
-      "source_sha256": "3fa1a7d67c53f0d602da673d4ba1affd7c3a2e59dc03e4e37aed52a3483da986"
+      "bytes": 1669,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "EXPERIMENT_PLAN.md",
       "public_sha256": "9461e6e8efb9f2322aeb7c65da3c4ae4adc6c9fbbf0683b7c541596c5f412d2d",
-      "redactions": {},
-      "size_bytes": 198,
-      "source_path": "EXPERIMENT_PLAN.md",
-      "source_sha256": "9461e6e8efb9f2322aeb7c65da3c4ae4adc6c9fbbf0683b7c541596c5f412d2d"
+      "bytes": 198,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "EXPERIMENT_PROTOCOL.md",
       "public_sha256": "f2b6eafb4f7943133ec079c4fbe1a2fac4616105438c721064421d3d934c2303",
-      "redactions": {},
-      "size_bytes": 986,
-      "source_path": "EXPERIMENT_PROTOCOL.md",
-      "source_sha256": "f2b6eafb4f7943133ec079c4fbe1a2fac4616105438c721064421d3d934c2303"
+      "bytes": 986,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "MANIFEST.md",
       "public_sha256": "c58c7f6edfcc413ae95ab10346dcf36b3051ee94347e74d5cac73842b05f4ea8",
-      "redactions": {},
-      "size_bytes": 1082,
-      "source_path": "MANIFEST.md",
-      "source_sha256": "c58c7f6edfcc413ae95ab10346dcf36b3051ee94347e74d5cac73842b05f4ea8"
+      "bytes": 1082,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "README.md",
-      "public_sha256": "6e755216fad8ad3558b09571cc5c2ca6f3193e7ce292dff1786a2005a7ad04d0",
-      "redactions": {},
-      "size_bytes": 4585,
-      "source_path": "README.md",
-      "source_sha256": "6e755216fad8ad3558b09571cc5c2ca6f3193e7ce292dff1786a2005a7ad04d0"
+      "public_sha256": "c454c172e24743585448796d41e4ed6f091dbbc283f5b8a178626aefc9d72a75",
+      "bytes": 1268,
+      "scope": "v3_protocol_baseline"
     },
     {
-      "category": "source",
       "public_path": "REPO_AUDIT.md",
       "public_sha256": "c00f0e21e179ae089a85ecb40c0166808f4109f440a5382beca89708bd7b14a0",
-      "redactions": {},
-      "size_bytes": 2653,
-      "source_path": "REPO_AUDIT.md",
-      "source_sha256": "c00f0e21e179ae089a85ecb40c0166808f4109f440a5382beca89708bd7b14a0"
+      "bytes": 2653,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "REUSE_INVENTORY.json",
       "public_sha256": "e027bde5a791ac5ff261ceb0af663cf7223d6c4434f30c56f2187546fd8402ac",
-      "redactions": {},
-      "size_bytes": 2904,
-      "source_path": "REUSE_INVENTORY.json",
-      "source_sha256": "e027bde5a791ac5ff261ceb0af663cf7223d6c4434f30c56f2187546fd8402ac"
+      "bytes": 2904,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "ROADMAP.md",
       "public_sha256": "589de4ccfcb961db788c03fc76f92eb23bc7471bb5a6aca1a9b0a940f7b87db6",
-      "redactions": {},
-      "size_bytes": 1251,
-      "source_path": "ROADMAP.md",
-      "source_sha256": "589de4ccfcb961db788c03fc76f92eb23bc7471bb5a6aca1a9b0a940f7b87db6"
+      "bytes": 1251,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "SOURCE_BOUNDARY_AUDIT.json",
       "public_sha256": "f541271373616e6393854bdd7db6042d5f771d89adf450276ce04e2ddd719832",
-      "redactions": {},
-      "size_bytes": 1688,
-      "source_path": "SOURCE_BOUNDARY_AUDIT.json",
-      "source_sha256": "f541271373616e6393854bdd7db6042d5f771d89adf450276ce04e2ddd719832"
+      "bytes": 1688,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "SOURCE_FILE_INVENTORY.json",
       "public_sha256": "7a4f78620972b9d443bed7c25dce8beaf78f04af8ab1425a802e2d1a3fcf21c0",
-      "redactions": {},
-      "size_bytes": 50445,
-      "source_path": "SOURCE_FILE_INVENTORY.json",
-      "source_sha256": "7a4f78620972b9d443bed7c25dce8beaf78f04af8ab1425a802e2d1a3fcf21c0"
+      "bytes": 50445,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "STATUS.md",
-      "public_sha256": "cecabb0365eb97bf3edecbef57f7da10159c11fb636f693a2d426e37e94b3f62",
-      "redactions": {},
-      "size_bytes": 1800,
-      "source_path": "STATUS.md",
-      "source_sha256": "cecabb0365eb97bf3edecbef57f7da10159c11fb636f693a2d426e37e94b3f62"
+      "public_sha256": "e050d3b04e4ac0b551738495ed00a6233796fd5c2dff8a1891d781848d0e3461",
+      "bytes": 850,
+      "scope": "v3_protocol_baseline"
     },
     {
-      "category": "source",
       "public_path": "configs/ENVIRONMENT_SPEC.json",
       "public_sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0",
-      "redactions": {},
-      "size_bytes": 578,
-      "source_path": "configs/ENVIRONMENT_SPEC.json",
-      "source_sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      "bytes": 578,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "configs/EVENT_TRIGGER_CONFIG.json",
       "public_sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009",
-      "redactions": {},
-      "size_bytes": 2420,
-      "source_path": "configs/EVENT_TRIGGER_CONFIG.json",
-      "source_sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+      "bytes": 2420,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "configs/GAIN_GATE_CONFIG.json",
       "public_sha256": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943",
-      "redactions": {},
-      "size_bytes": 3560,
-      "source_path": "configs/GAIN_GATE_CONFIG.json",
-      "source_sha256": "c49d94c3158f89faf34b97b33bd1bc58a6816fd8d6b7282ebe4c928b34e0f943"
+      "bytes": 3560,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
+      "public_path": "evidence/CONTROLLED_HALF_DISPATCH_RECEIPT.json",
+      "public_sha256": "9504e7337b2084739cf36937b9ebe959cdc10192120322e22450b76885456052",
+      "bytes": 2000,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/P1_FOUNDATION_CHECKS_20261017.md",
+      "public_sha256": "bbb9b3e0daa41e436d1e61e95af0b439e0d31456013ad5343113b247dd953052",
+      "bytes": 1800,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/archive_reproduction/EVIDENCE_MANIFEST.json",
+      "public_sha256": "c32eac9ba2e373e6e700d2926d6d662bd97cea22ced01bf5afe6e2e6e88ba3c0",
+      "bytes": 1225,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/archive_reproduction/P1_SMOKE_REPORT.json",
+      "public_sha256": "e73a2b46ea9b8b2e4cfdd6d64430025c771c25d372f7d611686caf2e9471c0ad",
+      "bytes": 16977,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/archive_reproduction/RESOURCE_RECEIPT.json",
+      "public_sha256": "de3303b533ac88956bd63f9675dd9f59c9d94ad53d874b10fa59c4b0ecd4f671",
+      "bytes": 2625,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/archive_reproduction/RUN.json",
+      "public_sha256": "5bed218377f245917af8852c693dc3b4e1614b1e8047245215a133a78ace0a93",
+      "bytes": 2646,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/archive_reproduction/SOURCE_MANIFEST.json",
+      "public_sha256": "c61cf4aaea4c2d450610707eaf34d769e4b8c235ad7b2505e2af7aafa6c31024",
+      "bytes": 14050,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/p1_foundation_probes.py",
+      "public_sha256": "d8450ac68d7edf5d788f26e748add0decbc4481d69b9891fd076a9520aecd1b7",
+      "bytes": 6685,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/public_projection/REDACTION_MAP.json",
+      "public_sha256": "d91b20d15ded5e9e3cd2957c9cac51d97011a07e3abcb6348f5cc021dd12f0fd",
+      "bytes": 823,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "package/civilian/acceptance_harness.py",
       "public_sha256": "7bc54625386514a3ccb0b645fc38d63d2393d650b3bc6e056c0e0ab52aa19c1d",
-      "redactions": {},
-      "size_bytes": 45973,
-      "source_path": "package/civilian/acceptance_harness.py",
-      "source_sha256": "7bc54625386514a3ccb0b645fc38d63d2393d650b3bc6e056c0e0ab52aa19c1d"
+      "bytes": 45973,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/baselines.py",
       "public_sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
-      "redactions": {},
-      "size_bytes": 5740,
-      "source_path": "package/civilian/baselines.py",
-      "source_sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a"
+      "bytes": 5740,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/branching.py",
       "public_sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58",
-      "redactions": {},
-      "size_bytes": 21373,
-      "source_path": "package/civilian/branching.py",
-      "source_sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58"
+      "bytes": 21373,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/budget_ledger.py",
       "public_sha256": "108b420e30c16771d3eab6fadbf17a6e9e023f8cdb0f6606e6d39e8c8038cb46",
-      "redactions": {},
-      "size_bytes": 18098,
-      "source_path": "package/civilian/budget_ledger.py",
-      "source_sha256": "108b420e30c16771d3eab6fadbf17a6e9e023f8cdb0f6606e6d39e8c8038cb46"
+      "bytes": 18098,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/chapter1_adapter.py",
       "public_sha256": "160d9b59571fcfef043af22005a0527327574f3829256ba37eeda5a93f1674b4",
-      "redactions": {},
-      "size_bytes": 8036,
-      "source_path": "package/civilian/chapter1_adapter.py",
-      "source_sha256": "160d9b59571fcfef043af22005a0527327574f3829256ba37eeda5a93f1674b4"
+      "bytes": 8036,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/cost_accounting.py",
       "public_sha256": "739ffd363736aa3782476b7a4c8dd56a9c33416390156eb955a0fdc05e591071",
-      "redactions": {},
-      "size_bytes": 11431,
-      "source_path": "package/civilian/cost_accounting.py",
-      "source_sha256": "739ffd363736aa3782476b7a4c8dd56a9c33416390156eb955a0fdc05e591071"
+      "bytes": 11431,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/counterfactual_pairs.py",
       "public_sha256": "364395e694eb70c25d886c288a488bc41972b1b908201a318650edfee8340d32",
-      "redactions": {},
-      "size_bytes": 54083,
-      "source_path": "package/civilian/counterfactual_pairs.py",
-      "source_sha256": "364395e694eb70c25d886c288a488bc41972b1b908201a318650edfee8340d32"
+      "bytes": 54083,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/dataset_protocol.py",
       "public_sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1",
-      "redactions": {},
-      "size_bytes": 12779,
-      "source_path": "package/civilian/dataset_protocol.py",
-      "source_sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1"
+      "bytes": 12779,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/driver.py",
       "public_sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32",
-      "redactions": {},
-      "size_bytes": 88322,
-      "source_path": "package/civilian/driver.py",
-      "source_sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32"
+      "bytes": 88322,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/evaluator.py",
       "public_sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6",
-      "redactions": {},
-      "size_bytes": 22513,
-      "source_path": "package/civilian/evaluator.py",
-      "source_sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6"
+      "bytes": 22513,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_environment.py",
       "public_sha256": "4ee058b1a2cbc2b07a8b7884a9eb7050a1deeed338b2ca6dfe20be96b6e59b6a",
-      "redactions": {},
-      "size_bytes": 185528,
-      "source_path": "package/civilian/event_environment.py",
-      "source_sha256": "4ee058b1a2cbc2b07a8b7884a9eb7050a1deeed338b2ca6dfe20be96b6e59b6a"
+      "bytes": 185528,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_models.py",
       "public_sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
-      "redactions": {},
-      "size_bytes": 64177,
-      "source_path": "package/civilian/event_models.py",
-      "source_sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58"
+      "bytes": 64177,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_oracle.py",
       "public_sha256": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
-      "redactions": {},
-      "size_bytes": 47562,
-      "source_path": "package/civilian/event_oracle.py",
-      "source_sha256": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89"
+      "bytes": 47562,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_policy.py",
       "public_sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9",
-      "redactions": {},
-      "size_bytes": 74048,
-      "source_path": "package/civilian/event_policy.py",
-      "source_sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9"
+      "bytes": 74048,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_runner.py",
       "public_sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
-      "redactions": {},
-      "size_bytes": 96972,
-      "source_path": "package/civilian/event_runner.py",
-      "source_sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4"
+      "bytes": 96972,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_scenarios.py",
       "public_sha256": "550ecf1e3cd337267276d5c3d414d68179370eae747ca8baccf323dc43350da6",
-      "redactions": {},
-      "size_bytes": 13098,
-      "source_path": "package/civilian/event_scenarios.py",
-      "source_sha256": "550ecf1e3cd337267276d5c3d414d68179370eae747ca8baccf323dc43350da6"
+      "bytes": 13098,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/event_trigger.py",
       "public_sha256": "d672f72ad217953389143f67614c3768d57666ef070726f8a974f5a6f4c8b62f",
-      "redactions": {},
-      "size_bytes": 47084,
-      "source_path": "package/civilian/event_trigger.py",
-      "source_sha256": "d672f72ad217953389143f67614c3768d57666ef070726f8a974f5a6f4c8b62f"
+      "bytes": 47084,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/execution_gate.py",
       "public_sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a",
-      "redactions": {},
-      "size_bytes": 27914,
-      "source_path": "package/civilian/execution_gate.py",
-      "source_sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a"
+      "bytes": 27914,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixed_replanner.py",
       "public_sha256": "42337b08cd297a2f667c6e0e16c47efa3352d4452967204348549a7989b3c497",
-      "redactions": {},
-      "size_bytes": 14116,
-      "source_path": "package/civilian/fixed_replanner.py",
-      "source_sha256": "42337b08cd297a2f667c6e0e16c47efa3352d4452967204348549a7989b3c497"
+      "bytes": 14116,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/combined.json",
       "public_sha256": "ad507f15039998cc80a608cc097f58b88e2ccfdcc100518e252a5c4f26b4d4c6",
-      "redactions": {},
-      "size_bytes": 5300,
-      "source_path": "package/civilian/fixtures/combined.json",
-      "source_sha256": "ad507f15039998cc80a608cc097f58b88e2ccfdcc100518e252a5c4f26b4d4c6"
+      "bytes": 5300,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/control.json",
       "public_sha256": "4bcbc5c4bbd7ffbfb3e850aaf23a06e95bd68817ceb36b21b2345ddc2957370a",
-      "redactions": {},
-      "size_bytes": 4849,
-      "source_path": "package/civilian/fixtures/control.json",
-      "source_sha256": "4bcbc5c4bbd7ffbfb3e850aaf23a06e95bd68817ceb36b21b2345ddc2957370a"
+      "bytes": 4849,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/energy_change.json",
       "public_sha256": "17b473f8cb6f006b5d89f182b4c6f4ba617286c1d60517e1738bb173c54b6df5",
-      "redactions": {},
-      "size_bytes": 5002,
-      "source_path": "package/civilian/fixtures/energy_change.json",
-      "source_sha256": "17b473f8cb6f006b5d89f182b4c6f4ba617286c1d60517e1738bb173c54b6df5"
+      "bytes": 5002,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/external_commitment.json",
       "public_sha256": "f2d5e830695fa0fd84e876ed66807e3102a559c7f361dffc2886a768e2673ae9",
-      "redactions": {},
-      "size_bytes": 5323,
-      "source_path": "package/civilian/fixtures/external_commitment.json",
-      "source_sha256": "f2d5e830695fa0fd84e876ed66807e3102a559c7f361dffc2886a768e2673ae9"
+      "bytes": 5323,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/failure.json",
       "public_sha256": "e8775eced309e04d8f454315fd6e76c2661967adf1c583ce223f10b1aa9a35af",
-      "redactions": {},
-      "size_bytes": 4971,
-      "source_path": "package/civilian/fixtures/failure.json",
-      "source_sha256": "e8775eced309e04d8f454315fd6e76c2661967adf1c583ce223f10b1aa9a35af"
+      "bytes": 4971,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/report_delay.json",
       "public_sha256": "d384e89dbb6c81fec0569aa63dc37cea1280f966d60eee84bc03e8dd33fdb0a7",
-      "redactions": {},
-      "size_bytes": 4854,
-      "source_path": "package/civilian/fixtures/report_delay.json",
-      "source_sha256": "d384e89dbb6c81fec0569aa63dc37cea1280f966d60eee84bc03e8dd33fdb0a7"
+      "bytes": 4854,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/fixtures/stock_loss.json",
       "public_sha256": "0ad22b5f9eba894daefdc0726b4b5a9563987ae3186514243d08bdf754e941a8",
-      "redactions": {},
-      "size_bytes": 5030,
-      "source_path": "package/civilian/fixtures/stock_loss.json",
-      "source_sha256": "0ad22b5f9eba894daefdc0726b4b5a9563987ae3186514243d08bdf754e941a8"
+      "bytes": 5030,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_analysis.py",
       "public_sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9",
-      "redactions": {},
-      "size_bytes": 8736,
-      "source_path": "package/civilian/gain_analysis.py",
-      "source_sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9"
+      "bytes": 8736,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_diagnostics.py",
       "public_sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326",
-      "redactions": {},
-      "size_bytes": 24444,
-      "source_path": "package/civilian/gain_diagnostics.py",
-      "source_sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326"
+      "bytes": 24444,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_evaluation.py",
       "public_sha256": "64082c56f868851ed562e4ba56f96f636ac86d10a8b667efc12fe66777abb753",
-      "redactions": {},
-      "size_bytes": 55310,
-      "source_path": "package/civilian/gain_evaluation.py",
-      "source_sha256": "64082c56f868851ed562e4ba56f96f636ac86d10a8b667efc12fe66777abb753"
+      "bytes": 55310,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_features.py",
       "public_sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
-      "redactions": {},
-      "size_bytes": 11701,
-      "source_path": "package/civilian/gain_features.py",
-      "source_sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99"
+      "bytes": 11701,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_gate.py",
       "public_sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd",
-      "redactions": {},
-      "size_bytes": 2144,
-      "source_path": "package/civilian/gain_gate.py",
-      "source_sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd"
+      "bytes": 2144,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_models.py",
       "public_sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c",
-      "redactions": {},
-      "size_bytes": 38919,
-      "source_path": "package/civilian/gain_models.py",
-      "source_sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c"
+      "bytes": 38919,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_oracle.py",
       "public_sha256": "2ac6f3bac015db2070c49f6f22830964d88fbe5fc02ceb40d8d89650a5d509f1",
-      "redactions": {},
-      "size_bytes": 44053,
-      "source_path": "package/civilian/gain_oracle.py",
-      "source_sha256": "2ac6f3bac015db2070c49f6f22830964d88fbe5fc02ceb40d8d89650a5d509f1"
+      "bytes": 44053,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_runner.py",
       "public_sha256": "41c359c972d086dca8d7552706b5a03a3dbc509d33fcc9befd8f0e5d8f794d8a",
-      "redactions": {},
-      "size_bytes": 170869,
-      "source_path": "package/civilian/gain_runner.py",
-      "source_sha256": "41c359c972d086dca8d7552706b5a03a3dbc509d33fcc9befd8f0e5d8f794d8a"
+      "bytes": 170869,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_safety.py",
       "public_sha256": "3565478e1146142d70e232ac6c9a942338de9569dff03e2194888c5ae2e02ab1",
-      "redactions": {},
-      "size_bytes": 23889,
-      "source_path": "package/civilian/gain_safety.py",
-      "source_sha256": "3565478e1146142d70e232ac6c9a942338de9569dff03e2194888c5ae2e02ab1"
+      "bytes": 23889,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_scenarios.py",
       "public_sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
-      "redactions": {},
-      "size_bytes": 37083,
-      "source_path": "package/civilian/gain_scenarios.py",
-      "source_sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe"
+      "bytes": 37083,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/gain_variance.py",
       "public_sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f",
-      "redactions": {},
-      "size_bytes": 25040,
-      "source_path": "package/civilian/gain_variance.py",
-      "source_sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f"
+      "bytes": 25040,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/graph_policy.py",
       "public_sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d",
-      "redactions": {},
-      "size_bytes": 35235,
-      "source_path": "package/civilian/graph_policy.py",
-      "source_sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d"
+      "bytes": 35235,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/independent_consequence_oracle.py",
       "public_sha256": "2a3c1ab481f76baf4ab022c27caeae3744fb3ab27e1ce0796ae0b62a420c98ba",
-      "redactions": {},
-      "size_bytes": 36474,
-      "source_path": "package/civilian/independent_consequence_oracle.py",
-      "source_sha256": "2a3c1ab481f76baf4ab022c27caeae3744fb3ab27e1ce0796ae0b62a420c98ba"
+      "bytes": 36474,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/infra_io.py",
       "public_sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace",
-      "redactions": {},
-      "size_bytes": 15517,
-      "source_path": "package/civilian/infra_io.py",
-      "source_sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace"
+      "bytes": 15517,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/literal_graph_ops.py",
       "public_sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e",
-      "redactions": {},
-      "size_bytes": 9265,
-      "source_path": "package/civilian/literal_graph_ops.py",
-      "source_sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e"
+      "bytes": 9265,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/n2_stage_pipeline.py",
       "public_sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964",
-      "redactions": {},
-      "size_bytes": 96844,
-      "source_path": "package/civilian/n2_stage_pipeline.py",
-      "source_sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964"
+      "bytes": 96844,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/package_layout.py",
       "public_sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c",
-      "redactions": {},
-      "size_bytes": 4982,
-      "source_path": "package/civilian/package_layout.py",
-      "source_sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c"
+      "bytes": 4982,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/phase_handshake.py",
       "public_sha256": "018e1b1da978ad229d75282d853f72aafb8d6762b70762bc5c983dc1979d96e5",
-      "redactions": {},
-      "size_bytes": 33935,
-      "source_path": "package/civilian/phase_handshake.py",
-      "source_sha256": "018e1b1da978ad229d75282d853f72aafb8d6762b70762bc5c983dc1979d96e5"
+      "bytes": 33935,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/ppo_trainer.py",
       "public_sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a",
-      "redactions": {},
-      "size_bytes": 27948,
-      "source_path": "package/civilian/ppo_trainer.py",
-      "source_sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a"
+      "bytes": 27948,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/process_guardian.py",
       "public_sha256": "83c6f0e8947c6ee83394eb9c96376434e58e843693701bffdfbd7c7082945a6e",
-      "redactions": {},
-      "size_bytes": 65604,
-      "source_path": "package/civilian/process_guardian.py",
-      "source_sha256": "83c6f0e8947c6ee83394eb9c96376434e58e843693701bffdfbd7c7082945a6e"
+      "bytes": 65604,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/protocol_contract.py",
       "public_sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b",
-      "redactions": {},
-      "size_bytes": 946,
-      "source_path": "package/civilian/protocol_contract.py",
-      "source_sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b"
+      "bytes": 946,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/registered_data/data/development/n02-development-carrier_competition-00-e73e3aa2e7c48b9b.json",
       "public_sha256": "7fa112d167370b8fdfbe77e388d61b28355dda5251cdac21b67742ae08924f76",
-      "redactions": {},
-      "size_bytes": 9610,
-      "source_path": "package/civilian/registered_data/data/development/n02-development-carrier_competition-00-e73e3aa2e7c48b9b.json",
-      "source_sha256": "7fa112d167370b8fdfbe77e388d61b28355dda5251cdac21b67742ae08924f76"
+      "bytes": 9610,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/registered_data/data/train/n02-train-base-00-c85321165ea17af3.json",
       "public_sha256": "9c8189a22fbc0ded031f400406cce83251030eee0a29fa9763268e5a90052919",
-      "redactions": {},
-      "size_bytes": 9598,
-      "source_path": "package/civilian/registered_data/data/train/n02-train-base-00-c85321165ea17af3.json",
-      "source_sha256": "9c8189a22fbc0ded031f400406cce83251030eee0a29fa9763268e5a90052919"
+      "bytes": 9598,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/registered_data/data/train/n02-train-carrier_competition-01-c602805a4f19d6ed.json",
       "public_sha256": "29b212d80d03d91825f4de3497461d991b144779d9d80b2d2e9d2227bb668a6c",
-      "redactions": {},
-      "size_bytes": 9605,
-      "source_path": "package/civilian/registered_data/data/train/n02-train-carrier_competition-01-c602805a4f19d6ed.json",
-      "source_sha256": "29b212d80d03d91825f4de3497461d991b144779d9d80b2d2e9d2227bb668a6c"
+      "bytes": 9605,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/registered_data/fixtures/causal_allocation_case.json",
       "public_sha256": "51d1435a44ebcc55dc781c9d6e4bc978ea00807a39e006a34b6996ecb98a2bda",
-      "redactions": {},
-      "size_bytes": 4254,
-      "source_path": "package/civilian/registered_data/fixtures/causal_allocation_case.json",
-      "source_sha256": "51d1435a44ebcc55dc781c9d6e4bc978ea00807a39e006a34b6996ecb98a2bda"
+      "bytes": 4254,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/registered_data/input_registry.json",
       "public_sha256": "6547ff78911ed7ccf10d66c9fb012c210e58ff7e25842cd4de258821aa8fe308",
-      "redactions": {},
-      "size_bytes": 3355,
-      "source_path": "package/civilian/registered_data/input_registry.json",
-      "source_sha256": "6547ff78911ed7ccf10d66c9fb012c210e58ff7e25842cd4de258821aa8fe308"
+      "bytes": 3355,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/relief_env.py",
       "public_sha256": "d070e36c27b236c6a1d142681a37a1cded910f01e069ac0ef0b040c30f4ba1c3",
-      "redactions": {},
-      "size_bytes": 55729,
-      "source_path": "package/civilian/relief_env.py",
-      "source_sha256": "d070e36c27b236c6a1d142681a37a1cded910f01e069ac0ef0b040c30f4ba1c3"
+      "bytes": 55729,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/resource_supervisor.py",
       "public_sha256": "d84fc78b18543e4a8ceceb40a8ccaa6c73c4953c9591497e9feaf101ab9a34e3",
-      "redactions": {},
-      "size_bytes": 46286,
-      "source_path": "package/civilian/resource_supervisor.py",
-      "source_sha256": "d84fc78b18543e4a8ceceb40a8ccaa6c73c4953c9591497e9feaf101ab9a34e3"
+      "bytes": 46286,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/scenario_matrix.py",
       "public_sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34",
-      "redactions": {},
-      "size_bytes": 17843,
-      "source_path": "package/civilian/scenario_matrix.py",
-      "source_sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34"
+      "bytes": 17843,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/scenario_schema.py",
       "public_sha256": "a436b07bd269bcfa5b6e7d73e77ee989d881fcabfebe5232c618db9f1b3a61ac",
-      "redactions": {},
-      "size_bytes": 32764,
-      "source_path": "package/civilian/scenario_schema.py",
-      "source_sha256": "a436b07bd269bcfa5b6e7d73e77ee989d881fcabfebe5232c618db9f1b3a61ac"
+      "bytes": 32764,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/snapshot_contract.py",
       "public_sha256": "ef760e5ed7b0377fac441c2a261dd25af28764516c119438f1d80b779fdb1839",
-      "redactions": {},
-      "size_bytes": 7408,
-      "source_path": "package/civilian/snapshot_contract.py",
-      "source_sha256": "ef760e5ed7b0377fac441c2a261dd25af28764516c119438f1d80b779fdb1839"
+      "bytes": 7408,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/stable_identity.py",
       "public_sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef",
-      "redactions": {},
-      "size_bytes": 1429,
-      "source_path": "package/civilian/stable_identity.py",
-      "source_sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef"
+      "bytes": 1429,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/test_synthetic_critic_interface.py",
       "public_sha256": "d4e6c5f4a1cf9cd4fbbd05d120932596fecbbf25ae9806939238307424ec8008",
-      "redactions": {},
-      "size_bytes": 7230,
-      "source_path": "package/civilian/test_synthetic_critic_interface.py",
-      "source_sha256": "d4e6c5f4a1cf9cd4fbbd05d120932596fecbbf25ae9806939238307424ec8008"
+      "bytes": 7230,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/wm_prediction_cache.py",
       "public_sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
-      "redactions": {},
-      "size_bytes": 8678,
-      "source_path": "package/civilian/wm_prediction_cache.py",
-      "source_sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e"
+      "bytes": 8678,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/civilian/world_model.py",
       "public_sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5",
-      "redactions": {},
-      "size_bytes": 56827,
-      "source_path": "package/civilian/world_model.py",
-      "source_sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5"
+      "bytes": 56827,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_100x100_contract.py",
       "public_sha256": "54acd5998ae311f77f1888a0f52c85599fc61b81249f5243874c1d4f5917abd7",
-      "redactions": {},
-      "size_bytes": 19922,
-      "source_path": "package/tests/test_100x100_contract.py",
-      "source_sha256": "54acd5998ae311f77f1888a0f52c85599fc61b81249f5243874c1d4f5917abd7"
+      "bytes": 19922,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_driver_close_snapshot.py",
       "public_sha256": "db5bad004e586d5e5301df5b6073e4daa530c44d3a2ae0e3f91c75d9a16e6eac",
-      "redactions": {},
-      "size_bytes": 2878,
-      "source_path": "package/tests/test_driver_close_snapshot.py",
-      "source_sha256": "db5bad004e586d5e5301df5b6073e4daa530c44d3a2ae0e3f91c75d9a16e6eac"
+      "bytes": 2878,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_environment.py",
       "public_sha256": "c55543b32da72ca05b796d25a35ae20027f3e309c332eea1b6b9d56ba0045410",
-      "redactions": {},
-      "size_bytes": 15350,
-      "source_path": "package/tests/test_event_environment.py",
-      "source_sha256": "c55543b32da72ca05b796d25a35ae20027f3e309c332eea1b6b9d56ba0045410"
+      "bytes": 15350,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_models.py",
       "public_sha256": "2469c4002a171d91058b27e0538bb2ceb9b35c04567fc384608c3c2c5cb0adb6",
-      "redactions": {},
-      "size_bytes": 9501,
-      "source_path": "package/tests/test_event_models.py",
-      "source_sha256": "2469c4002a171d91058b27e0538bb2ceb9b35c04567fc384608c3c2c5cb0adb6"
+      "bytes": 9501,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_oracle.py",
       "public_sha256": "a7c86982fb62ba5a1c37c1c7fe03e24762e363327404ac87a0b10920df95dcea",
-      "redactions": {},
-      "size_bytes": 5061,
-      "source_path": "package/tests/test_event_oracle.py",
-      "source_sha256": "a7c86982fb62ba5a1c37c1c7fe03e24762e363327404ac87a0b10920df95dcea"
+      "bytes": 5061,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_policy.py",
       "public_sha256": "5e9db2e1c1772cbe0fabab56922921732f1831bd4cde495188f25e1c8a3be27f",
-      "redactions": {},
-      "size_bytes": 21748,
-      "source_path": "package/tests/test_event_policy.py",
-      "source_sha256": "5e9db2e1c1772cbe0fabab56922921732f1831bd4cde495188f25e1c8a3be27f"
+      "bytes": 21748,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_runner.py",
       "public_sha256": "0f0377571f202b66b70776b46500561fa9e3348c64c26222ca500c772cb4f519",
-      "redactions": {},
-      "size_bytes": 4362,
-      "source_path": "package/tests/test_event_runner.py",
-      "source_sha256": "0f0377571f202b66b70776b46500561fa9e3348c64c26222ca500c772cb4f519"
+      "bytes": 4362,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_runner_metrics.py",
       "public_sha256": "d97801247302f0f2f5560f74ac98bd1ed9e227247e3e371891ab23a383ff45e2",
-      "redactions": {},
-      "size_bytes": 9438,
-      "source_path": "package/tests/test_event_runner_metrics.py",
-      "source_sha256": "d97801247302f0f2f5560f74ac98bd1ed9e227247e3e371891ab23a383ff45e2"
+      "bytes": 9438,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_event_trigger.py",
       "public_sha256": "4ae7789f4ecf9c6eb94ab78326cdc83a90f17584838be6c3ae530dcfccc53dce",
-      "redactions": {},
-      "size_bytes": 9242,
-      "source_path": "package/tests/test_event_trigger.py",
-      "source_sha256": "4ae7789f4ecf9c6eb94ab78326cdc83a90f17584838be6c3ae530dcfccc53dce"
+      "bytes": 9242,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_candidate_cases_v2.py",
       "public_sha256": "08a5930a9cd995d3ce1387edafb608cd55d285c10c0122628d6c09ab81e23d25",
-      "redactions": {},
-      "size_bytes": 7211,
-      "source_path": "package/tests/test_gain_candidate_cases_v2.py",
-      "source_sha256": "08a5930a9cd995d3ce1387edafb608cd55d285c10c0122628d6c09ab81e23d25"
+      "bytes": 7211,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_capability_oracle_transitions.py",
       "public_sha256": "f5b0f2d4d4c8019449f8e5dd7e8fc45ccb622b024e87a1a6618b438b272f42e4",
-      "redactions": {},
-      "size_bytes": 3921,
-      "source_path": "package/tests/test_gain_capability_oracle_transitions.py",
-      "source_sha256": "f5b0f2d4d4c8019449f8e5dd7e8fc45ccb622b024e87a1a6618b438b272f42e4"
+      "bytes": 3921,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_counterfactual_pairs.py",
       "public_sha256": "0011b410ae453c6e4e135d5f56580639c9605e224054ca2b2a20ed1f8c053542",
-      "redactions": {},
-      "size_bytes": 15089,
-      "source_path": "package/tests/test_gain_counterfactual_pairs.py",
-      "source_sha256": "0011b410ae453c6e4e135d5f56580639c9605e224054ca2b2a20ed1f8c053542"
+      "bytes": 15089,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_diagnostics.py",
       "public_sha256": "08fc49869befaccd360d3081cdf2ea701d70a1b6f7d6625e4cf73704f066bdcf",
-      "redactions": {},
-      "size_bytes": 6628,
-      "source_path": "package/tests/test_gain_diagnostics.py",
-      "source_sha256": "08fc49869befaccd360d3081cdf2ea701d70a1b6f7d6625e4cf73704f066bdcf"
+      "bytes": 6628,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_evaluation.py",
       "public_sha256": "14bcaa8cba5f9207ebcfbcba53d0cbfcd975047c3625d6a9a656819b101b629d",
-      "redactions": {},
-      "size_bytes": 12934,
-      "source_path": "package/tests/test_gain_evaluation.py",
-      "source_sha256": "14bcaa8cba5f9207ebcfbcba53d0cbfcd975047c3625d6a9a656819b101b629d"
+      "bytes": 12934,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_models_analysis.py",
       "public_sha256": "fffe18a8a064c872830eb151c99949698f3d465743a2610f1c20e421d851d7ea",
-      "redactions": {},
-      "size_bytes": 7391,
-      "source_path": "package/tests/test_gain_models_analysis.py",
-      "source_sha256": "fffe18a8a064c872830eb151c99949698f3d465743a2610f1c20e421d851d7ea"
+      "bytes": 7391,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_runner.py",
       "public_sha256": "3596b4a9390c4452fa31c097dea8ca750f92196ff89f6089e18b8c5f0fee0cdf",
-      "redactions": {},
-      "size_bytes": 13458,
-      "source_path": "package/tests/test_gain_runner.py",
-      "source_sha256": "3596b4a9390c4452fa31c097dea8ca750f92196ff89f6089e18b8c5f0fee0cdf"
+      "bytes": 13458,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_safety.py",
       "public_sha256": "37f7abe20f2fdcced96dc7dd0d30f43b445586669459c487b6fb1f76f56f2136",
-      "redactions": {},
-      "size_bytes": 11371,
-      "source_path": "package/tests/test_gain_safety.py",
-      "source_sha256": "37f7abe20f2fdcced96dc7dd0d30f43b445586669459c487b6fb1f76f56f2136"
+      "bytes": 11371,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_safety_v2.py",
       "public_sha256": "92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5",
-      "redactions": {},
-      "size_bytes": 6890,
-      "source_path": "package/tests/test_gain_safety_v2.py",
-      "source_sha256": "92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5"
+      "bytes": 6890,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "package/tests/test_gain_variance.py",
       "public_sha256": "ab9efd29eaeac980ebffd07da277311453cc82c382cc3451a082b6fbc36067ea",
-      "redactions": {},
-      "size_bytes": 7010,
-      "source_path": "package/tests/test_gain_variance.py",
-      "source_sha256": "ab9efd29eaeac980ebffd07da277311453cc82c382cc3451a082b6fbc36067ea"
+      "bytes": 7010,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "protocols/AMENDMENT_ATTEMPT_COOLDOWN_BASELINE_20261017.md",
       "public_sha256": "4511b978a0d13a54705c6bd6c0702bcbead3b39624971c97f501b8f35e5a9735",
-      "redactions": {},
-      "size_bytes": 2392,
-      "source_path": "protocols/AMENDMENT_ATTEMPT_COOLDOWN_BASELINE_20261017.md",
-      "source_sha256": "4511b978a0d13a54705c6bd6c0702bcbead3b39624971c97f501b8f35e5a9735"
+      "bytes": 2392,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "protocols/AMENDMENT_SINGLE_TERMINAL_PENALTY_20261017T045635Z.md",
       "public_sha256": "f635503ed3328a09df1cd2383531cee3b3d5a321b8a092343131722a0db5e5c3",
-      "redactions": {},
-      "size_bytes": 2364,
-      "source_path": "protocols/AMENDMENT_SINGLE_TERMINAL_PENALTY_20261017T045635Z.md",
-      "source_sha256": "f635503ed3328a09df1cd2383531cee3b3d5a321b8a092343131722a0db5e5c3"
+      "bytes": 2364,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "protocols/CH2_GAIN_GATE_PLAN_20261017T040502Z.md",
       "public_sha256": "6e2b108a4337483a53c6c760cbc3766107637fc2104ca94d07f98af0c340438f",
-      "redactions": {},
-      "size_bytes": 9943,
-      "source_path": "protocols/CH2_GAIN_GATE_PLAN_20261017T040502Z.md",
-      "source_sha256": "6e2b108a4337483a53c6c760cbc3766107637fc2104ca94d07f98af0c340438f"
+      "bytes": 9943,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "protocols/EXPERIMENT_PLAN_20261017T040502Z.md",
       "public_sha256": "9794fbf22b99eee396969fe1778982c48bdc4c4f053ed49f8b4ed06ade9ae122",
-      "redactions": {},
-      "size_bytes": 261,
-      "source_path": "protocols/EXPERIMENT_PLAN_20261017T040502Z.md",
-      "source_sha256": "9794fbf22b99eee396969fe1778982c48bdc4c4f053ed49f8b4ed06ade9ae122"
+      "bytes": 261,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "protocols/EXPERIMENT_PROTOCOL_20261017T040502Z.md",
       "public_sha256": "211380419865dbcdcd3ac60deea550f700f126cbaa9124687568205445135a74",
-      "redactions": {},
-      "size_bytes": 815,
-      "source_path": "protocols/EXPERIMENT_PROTOCOL_20261017T040502Z.md",
-      "source_sha256": "211380419865dbcdcd3ac60deea550f700f126cbaa9124687568205445135a74"
+      "bytes": 815,
+      "scope": "historical_v2"
     },
     {
-      "category": "evidence",
+      "public_path": "protocols/v3-baseline/BASELINE_PROVENANCE.json",
+      "public_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+      "bytes": 1169,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "protocols/v3-baseline/PROTOCOL_RECEIPT.json",
+      "public_sha256": "f50e872133ac9f07be8d84641781c9c485261d1cc89d3b9482caf9169b6c15ed",
+      "bytes": 1113,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "protocols/v3-baseline/README.md",
+      "public_sha256": "ec41e62afd42a6c0509a2ad24c1d1f26a5bb1c842aa18d87a066651940a5090e",
+      "bytes": 812,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "protocols/v3-baseline/STATUS.md",
+      "public_sha256": "d3698784a96080876251a89d866076e3290b5650549a8b7fd0f4df694c94978e",
+      "bytes": 1975,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "protocols/v3-baseline/configs__GAIN_GATE_CONFIG.json",
+      "public_sha256": "dc2a7a936e88400fb031f294675de4e47b19eb21adee46b2813312260ff23e27",
+      "bytes": 5770,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "protocols/v3-baseline/protocols__V3_PROTOCOL.md",
+      "public_sha256": "23063bb93808d4dd7ff7f604f21eb9c1fbfaf32cfa59b1e2ac17b1b639aed4e9",
+      "bytes": 8105,
+      "scope": "v3_protocol_baseline"
+    },
+    {
+      "public_path": "reports/P2_R1_COLLECTION_DIAGNOSTIC_20261017.md",
+      "public_sha256": "69543be54a19748792d53fdd330910d1010a836e5b12b38f5cde0c9473fec325",
+      "bytes": 6685,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reports/P2_R1_PUBLIC_EVIDENCE_RECEIPT_20261017.json",
+      "public_sha256": "37311f30ab9f5bfa3753e4768c92141676c43a1c03c1b97f7e8848289d6c6e23",
+      "bytes": 4281,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json",
       "public_sha256": "790530e662a44daaa904819345446486c7b7c0dd3ea9a7b4020ac70fc1ed9080",
-      "redactions": {},
-      "size_bytes": 8360,
-      "source_path": "reports/V2_INTERRUPTED_COLLECTION_AUDIT_20261017.json",
-      "source_sha256": "790530e662a44daaa904819345446486c7b7c0dd3ea9a7b4020ac70fc1ed9080"
+      "bytes": 8360,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "requirements.txt",
       "public_sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130",
-      "redactions": {},
-      "size_bytes": 96,
-      "source_path": "requirements.txt",
-      "source_sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130"
+      "bytes": 96,
+      "scope": "historical_v2"
     },
     {
-      "category": "evidence",
+      "public_path": "reviews/INDEPENDENT_FOCUSED_CHECK_20261017c.json",
+      "public_sha256": "2aded3172fd068cc29fa3f2432b04cf27e6512db5889cc67d3eb31c6026e9c38",
+      "bytes": 576,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/INDEPENDENT_INTEGRATION_CHECK_20261017b.json",
+      "public_sha256": "f85b588d125462df8e3d4a42e11ebe65b84852d9efe98a74934bb08fc3671a90",
+      "bytes": 698,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P0_P1_PRELIMINARY_REPAIR_20261017.md",
+      "public_sha256": "7214a3af17b86d6ee7595c34ba518fce6fb4263a5ba69687d705b741dab0260e",
+      "bytes": 2887,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P1_ARCHIVE_REPRODUCTION_REVIEW.json",
+      "public_sha256": "d630dd5b24e795990f4da36fab7bf19b8ef69965e638a7c518f007bd9e5f6722",
+      "bytes": 2187,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P1_REVIEW.json",
+      "public_sha256": "63d2b9e49fbb4ef6ad8d4c33a09312f8110e99fc41dcbc13a861b232b1249839",
+      "bytes": 1920,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P1_REVIEW_BINDING_FIX.json",
+      "public_sha256": "50c228ae8ed72c877bd111c41cfbac9ea828492a03542d67f581adf4d602f744",
+      "bytes": 2097,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P2_R1_REVIEW_20261017.json",
+      "public_sha256": "ffebbf70050c49f7bd2b4ce125e2a74223dfb5b69631bb3c9a2752303175dcc6",
+      "bytes": 2450,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/P2_REVIEW_20261017.json",
+      "public_sha256": "ab4b5b83ab44be4d5426cc0e0d1e86d3005c8f7f978d537327e04d5c75406c87",
+      "bytes": 2795,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/PAIR_TEST_RESULTS_20261017a.txt",
+      "public_sha256": "05c04c24b7ec68c40c32013c9e94a4cbfa50d97b2b85aa2829c2a21c302dad8a",
+      "bytes": 100,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/PRECOLLECTION_COST_CLARIFICATION_20261017.md",
+      "public_sha256": "314a90e8c8b72d72dd99ead7afb353b68d17e92b7fb358722c5712590c416b86",
+      "bytes": 1258,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/PRELIMINARY_MODEL_CHECK.json",
+      "public_sha256": "2b671e88425805d7d740bbbcbf9fc114df7e47e76156991258052a9b5b658521",
+      "bytes": 1165,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/PRE_FREEZE_REVIEW_20261017.json",
+      "public_sha256": "828ec9a60ef670f9eb23378313a0bbb6596cbf3bdc2a590c3b4e426551fcb177",
+      "bytes": 3079,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/PUBLIC_ARCHIVE_REVIEW_20261017.json",
+      "public_sha256": "c5947a8fb4c80a0a325ef4e10e63c4b6178361ba30c9eaa9858ab01587467116",
+      "bytes": 1578,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
       "public_sha256": "e0c01bddcf592667d48a0c7c4d585937e402d344584bc40bc1738fed18429b98",
-      "redactions": {},
-      "size_bytes": 2763,
-      "source_path": "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
-      "source_sha256": "e0c01bddcf592667d48a0c7c4d585937e402d344584bc40bc1738fed18429b98"
+      "bytes": 2763,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "staging_tools/audit_interrupted_collection.py",
       "public_sha256": "4546d4add0af8ce40c799d8301b00bf966d7bf736e133a9bcc7f11248a261205",
-      "redactions": {},
-      "size_bytes": 16850,
-      "source_path": "staging_tools/audit_interrupted_collection.py",
-      "source_sha256": "4546d4add0af8ce40c799d8301b00bf966d7bf736e133a9bcc7f11248a261205"
+      "bytes": 16850,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "staging_tools/prepare_public_archive.py",
       "public_sha256": "b75db445ab7548cd1f130780bd59fef99aaa2cbef4a41323aed885d641f31d3f",
-      "redactions": {},
-      "size_bytes": 14667,
-      "source_path": "staging_tools/prepare_public_archive.py",
-      "source_sha256": "b75db445ab7548cd1f130780bd59fef99aaa2cbef4a41323aed885d641f31d3f"
+      "bytes": 14667,
+      "scope": "historical_v2"
     },
     {
-      "category": "source",
       "public_path": "staging_tools/test_prepare_public_archive.py",
       "public_sha256": "b931b34992e710614c7648ecf9c1e1572452ba3e90bced4bdb236c6119a19def",
-      "redactions": {},
-      "size_bytes": 2856,
-      "source_path": "staging_tools/test_prepare_public_archive.py",
-      "source_sha256": "b931b34992e710614c7648ecf9c1e1572452ba3e90bced4bdb236c6119a19def"
+      "bytes": 2856,
+      "scope": "historical_v2"
     }
   ],
-  "schema": "public-archive-manifest/1",
-  "source_root_label": "development/ch2_disaster_relief_n02_gain_gate_v1_100x100"
+  "self_hash_exclusions": [
+    "PUBLIC_ARCHIVE_MANIFEST.json",
+    "SHA256SUMS.txt"
+  ]
 }
