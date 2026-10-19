@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "record_kind": "sanitized_execution_receipt",
+  "run_id": "isaac-roi-a1-v2-attempt002-20261019",
+  "phase": "representative",
+  "execution_status": "complete",
+  "actual_isaac_run": true,
+  "simulated_seconds": 5400,
+  "trajectory_rows": 194400,
+  "aircraft_count": 36,
+  "config_sha256": "c31ea21d012eca7e4fec27737f48049e867b80b8f8469f28b09f705ef44f6ba0",
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "independent_audit": {
+    "status": "pass_within_consistency_scope",
+    "failure_count": 0,
+    "scope_limit": "field, event, and row consistency only; task geometry and discovery authenticity not verified"
+  },
+  "resource_summary_ref": "resource_summary.json",
+  "source_receipt_sha256": "d951e120655945756c03202e20da335edaf30340e0a1a3bacb3fc5da1d3b7392"
+}

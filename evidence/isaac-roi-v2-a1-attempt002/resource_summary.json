@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "record_kind": "sanitized_resource_summary",
+  "source": "attempt002 coordinator-reviewed resource measurements; command lines omitted",
+  "representative": {
+    "user_cpu_seconds": 279.11,
+    "system_cpu_seconds": 75.47,
+    "reported_cpu_percent": 352,
+    "wall_clock_seconds": 100.71,
+    "maximum_resident_set_size_kib": 4386588,
+    "exit_status": 0
+  },
+  "pair": {
+    "user_cpu_seconds": 278.06,
+    "system_cpu_seconds": 70.41,
+    "reported_cpu_percent": 362,
+    "wall_clock_seconds": 96.22,
+    "maximum_resident_set_size_kib": 4459176,
+    "exit_status": 0
+  },
+  "cpu_interpretation": "reported utilization above 100 percent indicates multi-core CPU use; these are not single-CPU measurements"
+}

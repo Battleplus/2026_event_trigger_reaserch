@@ -1,0 +1,7 @@
+# A1 Attempt002: Evidence Summary
+
+The actual Isaac representative phase completed 5400 simulated seconds and 194400 rows. The paired phase completed a 1200-second common prefix plus 1800 seconds each for keep and replan, writing 172800 rows. Both audit reports have zero listed failures for field, event, and row consistency checks. This does not validate task geometry, route completion, or discovery authenticity.
+
+The pair restore had identical state digests and zero position error. `NOOP` was selected with estimated gain 0; keep and replan task outcomes were identical, while planner calls differed (0 versus 1). This is no positive task gain. The coordinator's scalar remains `NOT_COMPUTED`; the auditor marks production scalar `NOT_VERIFIED`.
+
+The coordinator decision is `REPAIR_REQUIRED`. A follow-up review found the candidate-energy calculation treats 240 Wh/km as W and candidate ETA omits support approach and queue-connection distances, so candidate legality/gain remains unacceptable. Branch completion values are window additions but were compared against the full 81-task denominator: 36 prefix completions plus 43 additions imply 2 terminal unfinished tasks, not 38. Preserve incremental and cumulative counts separately. During communication outage, new commands are blocked but active commands continue; no safety pause is established. Resource measurements were 100.71 s representative and 96.22 s pair, with reported CPU utilization 352% and 362%, respectively; these indicate multi-core use. Pilot, formal collection, and training were not run.

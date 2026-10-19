@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "source_files": {
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/audit_trajectory.py": "c5c7ceefa29d7773da22e7d12f19e1e88240765a188eee6786a709ab3b8e7745",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/isaac_backend.py": "90f88d9f0a7bf55a7146a58ad69c0f41a4892c212a2db68f13ee72383b69f97c",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/mission.py": "06cc10803c37dbedb522b0617d9840baff414b8eacc515e62123a0c32f7afa2f",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/README.md": "5ed9fda1ddf4fea0c8a2a977f645821632b5d89836a6fa34428858932c606317",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/run_a1.py": "3b3da2616ae0b29b849548d08a08c644c03aa791f292f37770b135d0c5260100",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/test_mission.py": "cd3837e7aafbd63f472d991c3897fd4de1aa15467d3729081cb180250dbd9bb8",
+    "releases/isaac-roi-simplified-v2-a1-attempt002/source/configs/a1_representative.json": "c31ea21d012eca7e4fec27737f48049e867b80b8f8469f28b09f705ef44f6ba0"
+  },
+  "evidence_files": {
+    "evidence/isaac-roi-v2-a1-attempt002/COORDINATOR_A1_REVIEW.json": "48827e3c37519aae05955034d39c0896e17a5ea1d1ca25ca58ba8324a5ed132b",
+    "evidence/isaac-roi-v2-a1-attempt002/representative_audit_report.json": "5408ee2c23b1ff292cb34bea29371281c6ebf27c21f734e89c02001c365e3c0b",
+    "evidence/isaac-roi-v2-a1-attempt002/pair_audit_report.json": "4a289a1529a43759068eebc55c1b4ad7f9fc55c2b70409f6060f165943b8dbbe",
+    "evidence/isaac-roi-v2-a1-attempt002/REVIEW_FOLLOWUP.md": "440fda27ffa236c55e754849ad8db5f489e4bd8d85b56731cedeae432580c15d",
+    "evidence/isaac-roi-v2-a1-attempt002/A1_ATTEMPT_SUMMARY.md": "3a2e5d94498b949b7d5479b419385f2f40577c784ff4c870bb6e67d0f85c2a71",
+    "evidence/isaac-roi-v2-a1-attempt002/run_receipt_representative.json": "462ef092af849580433fc39d2283d12398fb1671761312490fc83344f21f6c93",
+    "evidence/isaac-roi-v2-a1-attempt002/run_receipt_pair.json": "2c4427176c76ad6a7025debb46e7cbd1076840030c5f6e97112bce8284c3de12",
+    "evidence/isaac-roi-v2-a1-attempt002/manifest_representative.json": "8e4aea7480769f2eff6a76f2e603e9409e3c55e7656e666136d20be19d52faea",
+    "evidence/isaac-roi-v2-a1-attempt002/manifest_pair.json": "ed9e6956d42e88c333b20b4f004e0c128d93ceaa3d5d22b6c81924c10d0f54eb",
+    "evidence/isaac-roi-v2-a1-attempt002/resource_summary.json": "2e42b0848b4f25ea2643656de61f14b2c53b9d55b37833d8dad6b9f2dc4ed654",
+    "evidence/isaac-roi-v2-a1-attempt002/OUTPUT_SHA256SUMS.txt": "aae1d307506a18899ea77fea667726d5b0e9d5fc82640376338f01e3e4b28d3d"
+  }
+}

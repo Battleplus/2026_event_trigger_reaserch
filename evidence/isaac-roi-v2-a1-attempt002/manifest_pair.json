@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "record_kind": "sanitized_run_manifest",
+  "run_id": "isaac-roi-a1-v2-attempt002-20261019",
+  "phase": "pair",
+  "config_sha256": "c31ea21d012eca7e4fec27737f48049e867b80b8f8469f28b09f705ef44f6ba0",
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "source_hashes": {
+    "scenes/air_combat_scene.py": "e0c3dd33adcd2a97312d39f8c48c6689136e387f10d49d401a9446cc126e8dee",
+    "scenes/air_combat_specs.py": "4e34d8d6eb3f4f4a64dbbc8dedb7afb98e54595c990d70b1c83e3fdb9724645a",
+    "scenes/aircraft_motion.py": "91cb096fe708842a7f2b4bcee76ddffeb6040f7fd548ee349e1f2c059c80cd6f",
+    "sensors/air_combat_specs.py": "20fedbb95fd280f65ad30d29609ed566c72d75eddc7402537d808460bc777628",
+    "sensors/air_combat_obstacles.py": "6a961ac51bf9e10324a9e8f18fd79e2513f6bf8929edc15140d8a0d3ec5dae38",
+    "weapons/air_combat_specs.py": "0f2efe5f65f22ebf0ab96fb03a267464ac0996c5edb0140e7b64ca918bf9c829"
+  },
+  "runtime_request": {
+    "headless": true,
+    "renderer": "HydraStorm",
+    "vulkan_ordinal": 1,
+    "cuda_physics_ordinal": 0,
+    "multi_gpu": false,
+    "device_uuid": "omitted"
+  },
+  "raw_trajectory_included": false,
+  "source_manifest_sha256": "071359df8676d251ed183227697fcc45e1b465db066874c5666b2a2d480f67ad"
+}

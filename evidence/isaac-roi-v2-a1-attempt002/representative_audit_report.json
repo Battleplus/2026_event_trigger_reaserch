@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "audit": "independent_raw_trajectory_audit",
+  "status": "pass",
+  "run_id": "isaac-roi-a1-v2-attempt002-20261019",
+  "trajectory_rows": 194400,
+  "event_rows": 7285,
+  "checks": {
+    "receipt_has_public_task_manifest": true,
+    "receipt_has_actor_manifest": true,
+    "receipt_has_initial_positions_m": true,
+    "public_task_keyset_is_81_cells": true,
+    "task_manifest_is_public_only": true,
+    "actor_manifest_has_36_platforms": true,
+    "task_manifest_zone_and_type_rules": true,
+    "actor_manifest_has_valid_types_and_zones": true,
+    "trajectory_has_audit_fields": true,
+    "trajectory_nonempty": true,
+    "receipt_status_complete": true,
+    "manifest_run_id_matches_receipt": true,
+    "representative_time_coverage": true,
+    "representative_actor_time_keyset": true,
+    "all_public_task_keys_audited": true,
+    "search_completion_events_deduplicated": true,
+    "target_discoveries_deduplicated": true,
+    "completion_labels_match_events": true,
+    "discovery_labels_match_events": true,
+    "fault_labels_match_events": true,
+    "declared_holds_are_stationary": true,
+    "donor_support_respects_type_and_zone_lock": true,
+    "all_validation_failures_absent": true
+  },
+  "failures": [],
+  "speed_validation": {
+    "status": "verified",
+    "reason": null
+  },
+  "branch_metrics": {
+    "representative": {
+      "public_task_denominator": 81,
+      "completed_public_tasks": 81,
+      "remaining_public_tasks": 0,
+      "unfinished_public_task_ids": [],
+      "discovered_target_count": 27,
+      "serviced_target_count": 0,
+      "analytical_energy_kwh_recomputed": 1766.715957020196,
+      "command_attempts": 7128,
+      "switches": 46,
+      "planner_calls": 0,
+      "violations": 0,
+      "faulted_aircraft_count": 1,
+      "row_count": 194400,
+      "actor_count": 36
+    }
+  },
+  "pair_gain_keep_minus_replan": null,
+  "production_scalar": {
+    "status": "NOT_VERIFIED",
+    "reason": "pilot scalar formula is not frozen"
+  },
+  "energy_recalculation": {
+    "model": "USD position displacement in meters * configured Wh/km / 1000",
+    "per_actor_wh": {
+      "uav-0-0": 12813.63077789435,
+      "uav-0-1": 33706.55455524042,
+      "heli-0-0": 87485.76337163833,
+      "heli-0-1": 39803.712153591325,
+      "uav-1-0": 49616.36343334364,
+      "uav-1-1": 50059.396687567096,
+      "heli-1-0": 87485.76337163828,
+      "heli-1-1": 39803.712153591376,
+      "uav-2-0": 34138.407135940346,
+      "uav-2-1": 33706.55455524097,
+      "heli-2-0": 87485.76337163817,
+      "heli-2-1": 39803.712153591376,
+      "uav-3-0": 34138.407135939975,
+      "uav-3-1": 33706.55455524046,
+      "heli-3-0": 87485.76337163831,
+      "heli-3-1": 39803.71215359137,
+      "uav-4-0": 34138.4071359402,
+      "uav-4-1": 33706.55455524068,
+      "heli-4-0": 87485.76337163821,
+      "heli-4-1": 39803.712153591405,
+      "uav-5-0": 34138.40713594031,
+      "uav-5-1": 33706.55455524094,
+      "heli-5-0": 87485.76337163817,
+      "heli-5-1": 39803.712153591405,
+      "uav-6-0": 34138.40713593997,
+      "uav-6-1": 33706.55455524046,
+      "heli-6-0": 87485.7633716385,
+      "heli-6-1": 39803.71215359151,
+      "uav-7-0": 34138.40713594017,
+      "uav-7-1": 33706.55455524064,
+      "heli-7-0": 87485.76337163833,
+      "heli-7-1": 39803.71215359158,
+      "uav-8-0": 34138.40713594025,
+      "uav-8-1": 33706.55455524091,
+      "heli-8-0": 87485.76337163839,
+      "heli-8-1": 39803.71215359155
+    },
+    "per_branch_wh": {
+      "representative": 1766715.957020196
+    }
+  },
+  "limitations": [
+    "energy is an analytical estimate, not an Isaac physical measurement",
+    "the run uses 20 km trajectory altitude with 2D analytical target discovery, not physical sensing",
+    "platform motion uses source kinematic models; no turn-rate realism claim"
+  ]
+}

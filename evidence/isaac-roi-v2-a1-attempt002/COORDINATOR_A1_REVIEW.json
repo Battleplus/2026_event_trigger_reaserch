@@ -1,0 +1,42 @@
+{
+  "decision": "REPAIR_REQUIRED",
+  "scope": "Actual representative and keep/replan execution; field/event consistency audited, geometric mission semantics not yet verified",
+  "actual_isaac_run": true,
+  "representative_seconds": 5400,
+  "representative_rows": 194400,
+  "pair_rows": 172800,
+  "pair_restore_position_error_m": 0.0,
+  "pair_restore_full_state_match": true,
+  "selected_candidate": {
+    "kind": "noop",
+    "estimated_gain_s": 0.0,
+    "reason": "retain current allocation"
+  },
+  "observed_pair_effect": "NOOP selected; keep/replan execution outcomes identical, planner invocation differs",
+  "raw_representative_metrics": {
+    "representative": {
+      "public_task_denominator": 81,
+      "completed_public_tasks": 81,
+      "remaining_public_tasks": 0,
+      "discovered_target_count": 27,
+      "serviced_target_count": 0,
+      "analytical_energy_kwh": 1766.715957021562,
+      "command_attempts": 7128,
+      "switches": 46,
+      "planner_calls": 0,
+      "violations": 0,
+      "faulted_aircraft_count": 1,
+      "row_count": 194400,
+      "actor_count": 36
+    }
+  },
+  "scalar_gain_status": "NOT_COMPUTED",
+  "audit_scope_gaps": [
+    "Completion currently row/event consistency, not waypoint geometry",
+    "Discovery radius requires evaluator-only truth",
+    "Helicopter lock currently task identity, not actual position",
+    "Communication outage does not currently implement hold"
+  ],
+  "next_action": "Add minimal geometric evidence and offline independent replay; rerun affected A1 checks before pilot",
+  "reviewer": "Primary coordinator; implementation by GPT-6 Luna"
+}

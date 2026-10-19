@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "record_kind": "sanitized_execution_receipt",
+  "run_id": "isaac-roi-a1-v2-attempt002-20261019",
+  "phase": "pair",
+  "execution_status": "complete",
+  "actual_isaac_run": true,
+  "simulated_seconds_by_branch": {
+    "common_prefix": 1200,
+    "keep": 1800,
+    "replan": 1800
+  },
+  "trajectory_rows": 172800,
+  "aircraft_count": 36,
+  "config_sha256": "c31ea21d012eca7e4fec27737f48049e867b80b8f8469f28b09f705ef44f6ba0",
+  "pair_restore": {
+    "full_state_match": true,
+    "max_position_error_m": 0.0,
+    "state_sha256": "4adf6e68f01cdb927f1f87e359c065f5fe8d501ff1b24dd27ab1ca0e6c80d779",
+    "restored_state_sha256": "4adf6e68f01cdb927f1f87e359c065f5fe8d501ff1b24dd27ab1ca0e6c80d779"
+  },
+  "selected_candidate": {
+    "kind": "noop",
+    "estimated_gain_s": 0.0
+  },
+  "observed_pair_effect": {
+    "keep_replan_task_outcomes_identical": true,
+    "planner_calls_keep": 0,
+    "planner_calls_replan": 1,
+    "positive_task_gain_established": false
+  },
+  "independent_audit": {
+    "status": "pass_within_consistency_scope",
+    "failure_count": 0,
+    "scope_limit": "field, event, and row consistency only; task geometry and discovery authenticity not verified"
+  },
+  "scalar_status": {
+    "coordinator": "NOT_COMPUTED",
+    "auditor": "NOT_VERIFIED",
+    "reason": "scalar formula not frozen and planner CPU time not instrumented"
+  },
+  "coordinator_decision": "REPAIR_REQUIRED",
+  "resource_summary_ref": "resource_summary.json",
+  "source_receipt_sha256": "a9c0a517f1fa6f530c6da96d04deaf4c59238772fe92b500cfa492add9a2621f"
+}

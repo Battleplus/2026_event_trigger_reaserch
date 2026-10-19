@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "run_id": "isaac-roi-a1-v2-attempt002-20261019",
+  "seed": 20261019,
+  "mode": "search",
+  "targets_per_zone": 3,
+  "roi_width_km": 50.0,
+  "map_size_km": 300.0,
+  "meters_per_unit": 100.0,
+  "representative_duration_s": 5400,
+  "sensor_radius_km": 0.5,
+  "sweep_lane_spacing_km": 0.8,
+  "waypoint_tolerance_km": 0.12,
+  "target_offset_km": 0.8,
+  "abstract_strike_service_radius_km": 0.3,
+  "abstract_strike_service_duration_s": 20,
+  "communication": {
+    "delay_s": 2,
+    "dropout_probability": 0.03
+  },
+  "energy_capacity_wh": {
+    "uav": 180000,
+    "helicopter": 300000
+  },
+  "energy_reserve_fraction": 0.1,
+  "energy_wh_per_km": {
+    "uav": 240.0,
+    "helicopter": 900.0
+  },
+  "representative_events": {
+    "uav_fault_time_s": 900,
+    "comm_outage_time_s": 1800,
+    "comm_outage_duration_s": 120
+  },
+  "pair_snapshot_time_s": 1200,
+  "pair_duration_s": 1800,
+  "replan_catalog_limit": 12,
+  "scene": {
+    "terrain_grid": 128,
+    "forest_tree_count": 140,
+    "aircraft_visual_scale": 180.0,
+    "aircraft_model": "source_kinematic"
+  },
+  "runtime": {
+    "headless": true,
+    "renderer": "HydraStorm",
+    "expected_gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "vulkan_ordinal": 1,
+    "cuda_physics_ordinal": 0,
+    "multi_gpu": false
+  },
+  "study_schedule": {
+    "a1_first": "90-minute representative Isaac run",
+    "pilot": "36 runs: 2 modes x 3 hidden-target loads x 6 disturbances",
+    "formal": "168 runs after pilot review",
+    "training": "30/30 only after formal trajectory audit"
+  }
+}
