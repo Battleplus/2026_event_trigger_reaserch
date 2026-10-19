@@ -1,0 +1,69 @@
+{
+  "binding": {
+    "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+    "config_files": [
+      {
+        "path": "ENVIRONMENT_SPEC.json",
+        "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      },
+      {
+        "path": "EVENT_TRIGGER_CONFIG.json",
+        "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+      },
+      {
+        "path": "GAIN_GATE_CONFIG.json",
+        "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+      }
+    ],
+    "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+    "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+    "source_manifest_sha256": "cf6cb75f1bb588cc7b17caf8bb239428bc0c7f63d01d3ee759ccc419bb523d48"
+  },
+  "compressed_sha256": "dcd8c35824e2e684182ef41eb0aa07370e3d12f223ca04fb91ed37e88e06e810",
+  "condition": "task_update_or_arrival",
+  "decompressed_jsonl_sha256": "eec4ca6f82a8a41bce77204b1454f8582d179843ed97eb564995606209561d6c",
+  "marker_sha256": "2f36dc0c42f4959aeeecd3b86e2117b57b759e6d55af105bb829a82a24ed446e",
+  "row_count": 13,
+  "run_id": "v3-1-smoke-20261019",
+  "runtime_receipt": {
+    "cpu_affinity": [
+      0
+    ],
+    "exit_state": "complete",
+    "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+    "limits": {
+      "cpu_seconds": 1800,
+      "cpu_threads": 1,
+      "cuda": "disabled",
+      "rss_bytes": 8589934592,
+      "wall_seconds": 7200
+    },
+    "packages": {
+      "numpy": "2.5.1",
+      "psutil": "7.2.2",
+      "threadpoolctl": "3.6.0",
+      "torch": "2.13.0"
+    },
+    "peak_rss_bytes": 1659056128,
+    "process_cpu_seconds": 412.6875,
+    "python": "3.13.13",
+    "rss_measurement": "maximum observed by runner sampling and stage settlement",
+    "schema": "gain-gate-v3-resource-receipt/1",
+    "stage": "smoke",
+    "torch": {
+      "cuda_available": false,
+      "cuda_initialized": false,
+      "cuda_visible_devices": "",
+      "threads": 1,
+      "version": "2.13.0+cpu"
+    },
+    "wall_seconds": 436.2514054000003,
+    "within_limits": true
+  },
+  "scenario_content_sha256": "4675445d6137a2861e5c3ae204314a5325e84fbc22ca1d47bafbb00ab62d114c",
+  "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+  "schema": "gain-gate-v3-scenario-commit/1",
+  "shard_file": "v3-train-task_update_or_arrival-001-00900002.jsonl.gz",
+  "split": "train",
+  "wall_seconds": 0.9164356000001135
+}

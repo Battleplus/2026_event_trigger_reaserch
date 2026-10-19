@@ -1,0 +1,11 @@
+{
+  "historical_diagnostic_only": true,
+  "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+  "source_shard_sha256": "dcd8c35824e2e684182ef41eb0aa07370e3d12f223ca04fb91ed37e88e06e810",
+  "scenario_content_sha256": "4675445d6137a2861e5c3ae204314a5325e84fbc22ca1d47bafbb00ab62d114c",
+  "ticks": 90,
+  "actions_sha256": "eda7fd2c01d8790af1c8a5d4cc923c2b8f21bafc40a5ff3e89fa01921cd4d789",
+  "physical_trajectory_sha256": "6b4e595bf83eb3c8ea7e64c162cfbca5631b4c399638ecb1a7d033e71960f4d8",
+  "prior_process_cpu_seconds": 412.6875,
+  "trajectory_source": "Periodic-4min"
+}
