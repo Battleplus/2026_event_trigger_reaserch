@@ -1,0 +1,75 @@
+{
+  "schema": "coordinator-readonly-shard-audit/1",
+  "binding": {
+    "source_manifest_sha256": "76502b196545428d3e6bb39b72fedc7c707112aa8dd69ad52d535a42cb4a2c0d",
+    "config_sha256": "9c0c6a5e6de687e0085791e03a43b0a0b62f34b8718bc47300372000e01fea41",
+    "config_files": [
+      {
+        "path": "ENVIRONMENT_SPEC.json",
+        "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      },
+      {
+        "path": "EVENT_TRIGGER_CONFIG.json",
+        "sha256": "672a4a0e4724dec6668a9145b206a986765ddd863748b271dcd07780f1cf0a50"
+      },
+      {
+        "path": "GAIN_GATE_CONFIG.json",
+        "sha256": "5cff976accd45a15c2f700a6b8c1ce7e2289801b3bd774954c9c447b8c4e83a0"
+      }
+    ],
+    "evidence_sha256": "96cf197b8bfac26428758a69111fbc7e8a686526a1449497ee2d015e3303d955",
+    "baseline_provenance_sha256": "4841aaa149f28817e1e23a7388544660d575edbe6de5687658a483908268b9e0"
+  },
+  "completed_shards": 4,
+  "states": 27,
+  "counts": {
+    "forced": 19,
+    "nonpositive": 8
+  },
+  "split_counts": {
+    "train": {
+      "forced": 19,
+      "nonpositive": 8
+    }
+  },
+  "unknown_reasons": {},
+  "safety_dispositions": {
+    "not_required": 360
+  },
+  "errors": [],
+  "shards": [
+    {
+      "scenario_id": "v3-train-platform_failure_or_capability_loss-000-00900101",
+      "scale_ok": true,
+      "trajectory_ticks": 90,
+      "active_platform_count": 30,
+      "label_count": 6,
+      "marker_sha256": "c9a961bc0bd5576ed918bb55b946f66187386aec0ae02508d2ba4f15463bcbb5"
+    },
+    {
+      "scenario_id": "v3-train-task_update_or_arrival-000-00900001",
+      "scale_ok": true,
+      "trajectory_ticks": 90,
+      "active_platform_count": 30,
+      "label_count": 4,
+      "marker_sha256": "4ad6fea0495b7227405b4ecb249d7dffd2e2053725576f284def6b939394878f"
+    },
+    {
+      "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+      "scale_ok": true,
+      "trajectory_ticks": 90,
+      "active_platform_count": 30,
+      "label_count": 12,
+      "marker_sha256": "a6a595cdaa4e748f2cebdf58fa27e0e5d5dabb1324615a17bc430edaa70d253f"
+    },
+    {
+      "scenario_id": "v3-train-task_update_or_arrival-002-00900003",
+      "scale_ok": true,
+      "trajectory_ticks": 90,
+      "active_platform_count": 30,
+      "label_count": 5,
+      "marker_sha256": "c7d904d6a29d05598115bd0c9ca81f983cedb6a97a3d2122a7fa8194b70206e9"
+    }
+  ],
+  "scope": "Committed shards only; partial smoke is not acceptance or training eligibility."
+}

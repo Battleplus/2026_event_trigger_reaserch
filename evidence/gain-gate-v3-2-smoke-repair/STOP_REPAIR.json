@@ -1,0 +1,35 @@
+{
+  "schema": "gain-gate-v3-stop-repair/1",
+  "run_id": "v3-2-smoke-20261019",
+  "stage": "smoke",
+  "status": "REPAIR",
+  "completed_instances": 4,
+  "requested_instances": 18,
+  "stop_reason": "confirmed local candidate fallback defect: Periodic t16 local scope produced only NOOP while the same public state had 15 legal non-NOOP global candidates; full smoke stopped before formal collection",
+  "first_error_diagnostic": {
+    "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+    "time": 16,
+    "local_actual_candidate_count": 1,
+    "local_legal_non_noop": 0,
+    "global_actual_candidate_count": 16,
+    "global_legal_non_noop": 15,
+    "selected_actions_differ": false,
+    "diagnostic_scope": "read-only replay of committed shard"
+  },
+  "resource_observed": {
+    "shards": [
+      {"completed": 1, "wall_seconds": 41.4, "process_cpu_seconds": 39.0, "peak_rss_bytes": 576360448},
+      {"completed": 2, "wall_seconds": 724.7, "process_cpu_seconds": 683.3, "peak_rss_bytes": 1730072576},
+      {"completed": 3, "wall_seconds": 53.3, "process_cpu_seconds": 49.4, "peak_rss_bytes": 1730072576},
+      {"completed": 4, "wall_seconds": 71.6, "process_cpu_seconds": 67.2, "peak_rss_bytes": 1730072576}
+    ],
+    "time_limits": null,
+    "rss_limit_bytes": 8589934592,
+    "rss_measurement": "peak sampled sum of resident working sets for worker process and descendants"
+  },
+  "binding": {
+    "source_manifest_sha256": "76502b196545428d3e6bb39b72fedc7c707112aa8dd69ad52d535a42cb4a2c0d",
+    "config_sha256": "9c0c6a5e6de687e0085791e03a43b0a0b62f34b8718bc47300372000e01fea41"
+  },
+  "preserved_evidence": "Four committed shards and their markers remain in this run directory; no old V3.1/V3.2 failure evidence was overwritten."
+}
