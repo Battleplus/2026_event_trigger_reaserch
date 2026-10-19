@@ -1,4 +1,22 @@
-# V3 Archive Status
+# V3.2 Full World-Model Study Status
+
+Date: 2026-10-19 (Asia/Shanghai).
+
+- Protocol: `protocols/FULL_WORLD_MODEL_V3_2.md`. Fixed CPU/GPU time caps removed by user instruction; memory and actual fault handling remain.
+- New source snapshot: `releases/gain-gate-v3-2-full-world-model/`, with per-file hashes. This snapshot is not an acceptance or a training result.
+- V3.2 smoke: RUNNING, not yet accepted. Eighteen new instances are required; old partial smoke instances do not count.
+- Two pairing defects repaired: stale derived scenario hash after future-suffix substitution; ambiguous continuation receipt/action envelope.
+- Necessary local checks: 20 passed, 6 temporary-directory fixture cases deselected due to host permissions; separate real shard commit/readback succeeded.
+- Server GPU1: real small CUDA forward/backward probe passed. No new model training or checkpoint exists yet.
+- Formal 168-instance collection: NOT RUN. Data gate: NOT EVALUATED. Models/PPO: NOT RUN. Scientific conclusions: INCONCLUSIVE.
+- Execution-delay semantics are being developed separately; current minute-clock smoke is engineering evidence only and cannot establish subminute decision latency benefits.
+- New archive commits are local until remote push and readback succeed; previous publication remains unchanged.
+
+Historical status below is preserved verbatim and is not the current execution status.
+
+---
+
+# Historical V3 Archive Status
 
 Date: 2026-10-18 (Asia/Shanghai).
 

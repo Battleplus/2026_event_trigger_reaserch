@@ -1,0 +1,31 @@
+{
+  "schema": "gain-gate-v3-baseline-provenance/1",
+  "new_version": "gain-gate-v3-2-full-world-model",
+  "source_root": "development/ch2_disaster_relief_n02_gain_gate_v2_100x100",
+  "source_identity_rule": "For each copied source file, record source-relative path, destination-relative path, and source/destination SHA-256; source and destination hashes must match at initial copy.",
+  "excluded": [
+    "outputs/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "checkpoint files",
+    "V2 labels and trajectories",
+    "tokens, credentials, private keys, authorization bindings"
+  ],
+  "historical_resource_boundary": {
+    "v2_interrupted_collection_status": "incomplete",
+    "cpu_seconds_known": false,
+    "observed_cpu_seconds_lower_bound": 1890.72,
+    "interpretation": "Lower bound only; do not reset or represent historical project CPU use as zero.",
+    "v3_accounting": "separate measured ledger; historical unknown remains separately disclosed"
+  },
+  "compute_policy": {
+    "device": "cpu",
+    "threads": 1,
+    "cuda_visible_devices": "",
+    "max_wall_seconds_per_job": null,
+    "max_cpu_seconds_per_job": null,
+    "time_limits": "none; CPU and wall time recorded only",
+    "max_rss_bytes_per_job": 8589934592,
+    "paid_compute": false
+  }
+}
