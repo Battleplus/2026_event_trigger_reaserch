@@ -1,0 +1,344 @@
+{
+  "actions_sha256": "eda7fd2c01d8790af1c8a5d4cc923c2b8f21bafc40a5ff3e89fa01921cd4d789",
+  "cpu_seconds": 1028.84375,
+  "elapsed_ticks": 90,
+  "failure": null,
+  "interpretation": {
+    "historical_invalid_labels_not_training_data": true,
+    "oracle_valid_does_not_imply_trainable_label": true,
+    "profile_overhead_included": true,
+    "timings_are_nested_not_additive": true
+  },
+  "label_cpu_cost_sum": 0.0,
+  "labels_sha256": "04dd6ded7c9d36c3c02733b84b874c71e7d1d7fc37ef49363b45e761bf4b537b",
+  "mode": "baseline",
+  "oracle_invalid_count": 0,
+  "oracle_valid_count": 12,
+  "ordinary_candidate_count": 21,
+  "physical_trajectory_sha256": "6b4e595bf83eb3c8ea7e64c162cfbca5631b4c399638ecb1a7d033e71960f4d8",
+  "pid": 39908,
+  "planner_cpu_seconds": 27.71875,
+  "profile_path": "local diagnostic baseline.pstats (not published; embeds machine paths)",
+  "profile_top_cumulative": [
+    {
+      "calls": 1,
+      "cumulative_seconds": 1171.3262713000001,
+      "function": "v3_runner.py:230:_scenario_and_row",
+      "primitive_calls": 1,
+      "total_seconds": 1.4282368
+    },
+    {
+      "calls": 179,
+      "cumulative_seconds": 881.5288393000001,
+      "function": "perf_profile_instance.py:40:measured",
+      "primitive_calls": 155,
+      "total_seconds": 0.1803757
+    },
+    {
+      "calls": 12,
+      "cumulative_seconds": 809.0243829000001,
+      "function": "counterfactual_pairs.py:1079:collect_paired_label",
+      "primitive_calls": 12,
+      "total_seconds": 2.3840234000000002
+    },
+    {
+      "calls": 50,
+      "cumulative_seconds": 600.2271408,
+      "function": "counterfactual_pairs.py:283:restore_snapshot",
+      "primitive_calls": 50,
+      "total_seconds": 3.0336633
+    },
+    {
+      "calls": 206351845,
+      "cumulative_seconds": 434.45721940000004,
+      "function": "copy.py:119:deepcopy",
+      "primitive_calls": 889759,
+      "total_seconds": 213.85492050000002
+    },
+    {
+      "calls": 7363535,
+      "cumulative_seconds": 432.1113601,
+      "function": "copy.py:218:_deepcopy_dict",
+      "primitive_calls": 841404,
+      "total_seconds": 64.7233306
+    },
+    {
+      "calls": 111804048,
+      "cumulative_seconds": 403.42496270000004,
+      "function": "counterfactual_pairs.py:55:_encode",
+      "primitive_calls": 99,
+      "total_seconds": 144.4314364
+    },
+    {
+      "calls": 6,
+      "cumulative_seconds": 385.46535980000004,
+      "function": "counterfactual_pairs.py:874:run_paired_counterfactual",
+      "primitive_calls": 6,
+      "total_seconds": 0.24147010000000002
+    },
+    {
+      "calls": 11544594,
+      "cumulative_seconds": 375.4407851,
+      "function": "copy.py:192:_deepcopy_list",
+      "primitive_calls": 2029891,
+      "total_seconds": 21.6585949
+    },
+    {
+      "calls": 24,
+      "cumulative_seconds": 365.6995625,
+      "function": "counterfactual_pairs.py:777:_run_arm",
+      "primitive_calls": 24,
+      "total_seconds": 1.0309358
+    },
+    {
+      "calls": 14,
+      "cumulative_seconds": 309.054596,
+      "function": "counterfactual_pairs.py:355:prepare_suffix_snapshot",
+      "primitive_calls": 14,
+      "total_seconds": 0.7986077
+    },
+    {
+      "calls": 50462023,
+      "cumulative_seconds": 295.4420182,
+      "function": "counterfactual_pairs.py:47:_canonical",
+      "primitive_calls": 50462023,
+      "total_seconds": 41.0855638
+    },
+    {
+      "calls": 50467296,
+      "cumulative_seconds": 289.8178459,
+      "function": "__init__.py:185:dumps",
+      "primitive_calls": 50467296,
+      "total_seconds": 61.55548280000001
+    },
+    {
+      "calls": 37,
+      "cumulative_seconds": 243.43550000000002,
+      "function": "counterfactual_pairs.py:189:capture_snapshot",
+      "primitive_calls": 37,
+      "total_seconds": 0.3819268
+    },
+    {
+      "calls": 50467296,
+      "cumulative_seconds": 216.87666030000003,
+      "function": "encoder.py:185:encode",
+      "primitive_calls": 50467296,
+      "total_seconds": 22.3765144
+    },
+    {
+      "calls": 4060265,
+      "cumulative_seconds": 193.5608618,
+      "function": "~:0:<method 'sort' of 'list' objects>",
+      "primitive_calls": 4060265,
+      "total_seconds": 16.543929900000002
+    },
+    {
+      "calls": 13147,
+      "cumulative_seconds": 177.74414670000002,
+      "function": "encoder.py:207:iterencode",
+      "primitive_calls": 13147,
+      "total_seconds": 177.74414670000002
+    },
+    {
+      "calls": 50454986,
+      "cumulative_seconds": 176.6678482,
+      "function": "counterfactual_pairs.py:71:<lambda>",
+      "primitive_calls": 50454986,
+      "total_seconds": 16.5209674
+    },
+    {
+      "calls": 1084,
+      "cumulative_seconds": 140.3957973,
+      "function": "counterfactual_pairs.py:51:_digest",
+      "primitive_calls": 1084,
+      "total_seconds": 0.41967540000000003
+    },
+    {
+      "calls": 130,
+      "cumulative_seconds": 131.1874497,
+      "function": "counterfactual_pairs.py:158:_snapshot_payload",
+      "primitive_calls": 130,
+      "total_seconds": 0.0048997
+    },
+    {
+      "calls": 62117400,
+      "cumulative_seconds": 118.65670920000001,
+      "function": "counterfactual_pairs.py:104:_decode",
+      "primitive_calls": 50,
+      "total_seconds": 104.7335159
+    },
+    {
+      "calls": 8289,
+      "cumulative_seconds": 78.3135841,
+      "function": "counterfactual_pairs.py:129:_model_public_view",
+      "primitive_calls": 8289,
+      "total_seconds": 0.1749057
+    },
+    {
+      "calls": 123,
+      "cumulative_seconds": 75.0321263,
+      "function": "counterfactual_pairs.py:144:_public_history",
+      "primitive_calls": 123,
+      "total_seconds": 0.0146455
+    },
+    {
+      "calls": 422684868,
+      "cumulative_seconds": 70.9121604,
+      "function": "~:0:<method 'get' of 'dict' objects>",
+      "primitive_calls": 422684868,
+      "total_seconds": 70.9121604
+    },
+    {
+      "calls": 246,
+      "cumulative_seconds": 48.642756500000004,
+      "function": "__init__.py:304:loads",
+      "primitive_calls": 246,
+      "total_seconds": 0.00099
+    },
+    {
+      "calls": 246,
+      "cumulative_seconds": 48.6415664,
+      "function": "decoder.py:340:decode",
+      "primitive_calls": 246,
+      "total_seconds": 0.0019490000000000002
+    },
+    {
+      "calls": 246,
+      "cumulative_seconds": 48.637224,
+      "function": "decoder.py:351:raw_decode",
+      "primitive_calls": 246,
+      "total_seconds": 48.637224
+    },
+    {
+      "calls": 619,
+      "cumulative_seconds": 48.0553442,
+      "function": "copy.py:248:_reconstruct",
+      "primitive_calls": 421,
+      "total_seconds": 0.011004600000000002
+    },
+    {
+      "calls": 1048,
+      "cumulative_seconds": 47.3791443,
+      "function": "event_environment.py:390:public_observation",
+      "primitive_calls": 1048,
+      "total_seconds": 0.5470597
+    },
+    {
+      "calls": 25,
+      "cumulative_seconds": 46.7458332,
+      "function": "v3_runner.py:212:_online_plan",
+      "primitive_calls": 25,
+      "total_seconds": 0.00013580000000000002
+    },
+    {
+      "calls": 25,
+      "cumulative_seconds": 46.7455475,
+      "function": "v3_runner.py:318:<lambda>",
+      "primitive_calls": 25,
+      "total_seconds": 0.00011990000000000001
+    },
+    {
+      "calls": 25,
+      "cumulative_seconds": 46.744859000000005,
+      "function": "fixed_replanner.py:251:replan",
+      "primitive_calls": 25,
+      "total_seconds": 0.016695
+    },
+    {
+      "calls": 2690,
+      "cumulative_seconds": 38.6091064,
+      "function": "event_environment.py:60:_digest",
+      "primitive_calls": 2690,
+      "total_seconds": 0.1367566
+    },
+    {
+      "calls": 2690,
+      "cumulative_seconds": 36.7492466,
+      "function": "event_environment.py:56:_canonical",
+      "primitive_calls": 2690,
+      "total_seconds": 0.1644621
+    },
+    {
+      "calls": 49,
+      "cumulative_seconds": 35.9880331,
+      "function": "counterfactual_pairs.py:182:_make_snapshot_json",
+      "primitive_calls": 49,
+      "total_seconds": 0.2306777
+    },
+    {
+      "calls": 114,
+      "cumulative_seconds": 31.5525805,
+      "function": "event_environment.py:2085:step",
+      "primitive_calls": 114,
+      "total_seconds": 0.0373784
+    },
+    {
+      "calls": 245024522,
+      "cumulative_seconds": 29.646099800000002,
+      "function": "~:0:<built-in method builtins.id>",
+      "primitive_calls": 245024522,
+      "total_seconds": 29.646099800000002
+    },
+    {
+      "calls": 715,
+      "cumulative_seconds": 28.369643500000002,
+      "function": "event_environment.py:1475:_check_action",
+      "primitive_calls": 715,
+      "total_seconds": 0.0289091
+    },
+    {
+      "calls": 212979668,
+      "cumulative_seconds": 25.9763097,
+      "function": "~:0:<built-in method builtins.isinstance>",
+      "primitive_calls": 212964898,
+      "total_seconds": 25.9613723
+    },
+    {
+      "calls": 37,
+      "cumulative_seconds": 22.4342438,
+      "function": "event_environment.py:850:candidate_dispatches",
+      "primitive_calls": 37,
+      "total_seconds": 0.064806
+    }
+  ],
+  "scenario_build_cpu_seconds": 0.046875,
+  "scenario_build_wall_seconds": 0.03465620000497438,
+  "scenario_content_sha256": "4675445d6137a2861e5c3ae204314a5325e84fbc22ca1d47bafbb00ab62d114c",
+  "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+  "selected_state_count": 12,
+  "source": "Periodic-4min",
+  "timings": {
+    "environment_step": {
+      "calls": 114,
+      "cpu_seconds": 27.953125,
+      "wall_seconds": 31.567437899990182
+    },
+    "oracle_validation": {
+      "calls": 12,
+      "cpu_seconds": 0.140625,
+      "wall_seconds": 0.1716791999861016
+    },
+    "paired_label": {
+      "calls": 12,
+      "cpu_seconds": 708.4375,
+      "wall_seconds": 809.1891449000032
+    },
+    "replanner": {
+      "calls": 25,
+      "cpu_seconds": 41.359375,
+      "wall_seconds": 46.745243100012885
+    },
+    "suffix_sampling": {
+      "calls": 16,
+      "cpu_seconds": 0.65625,
+      "wall_seconds": 0.7767564999958267
+    }
+  },
+  "unknown_reasons": {
+    "forced_safety_state": 4,
+    "paired_collection_failed": 6,
+    "suffix_preparation_failed": 2
+  },
+  "valid_mask_count": 0,
+  "wall_seconds": 1171.3803023
+}
