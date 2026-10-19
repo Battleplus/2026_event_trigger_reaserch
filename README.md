@@ -1,3 +1,7 @@
+# Isaac ROI Simplified v2 protocol
+
+See the [execution protocol, experiment matrix, migration contract, status, and review repairs](protocols/isaac-roi-simplified-v2/EXECUTION_PROTOCOL.md). No A1 mission, pilot, formal collection, or training result is claimed.
+
 # V3: Nine Regions, Thirty Platforms, Fifty-Four Tasks
 
 Status: **PROTOCOL BASELINE / IMPLEMENTATION IN PROGRESS**. No V3 smoke or data result is claimed.

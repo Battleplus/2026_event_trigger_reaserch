@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "protocol_id": "isaac-roi-v2",
+  "status": "protocol_specification_not_executed",
+  "source_basis": {
+    "v1_audit_date": "2026-10-19",
+    "v1_artifacts": [
+      "development/ch2_isaac_world_model_v1/ISAAC_REUSE_AUDIT.md",
+      "development/ch2_isaac_world_model_v1/PILOT_IMPLEMENTATION_REPORT.md",
+      "development/ch2_isaac_world_model_v1/runs/loading-validation-20261019/LOADING_VALIDATION_REPORT.md",
+      "development/ch2_isaac_world_model_v1/runs/loading-validation-20261019/COORDINATOR_LOADING_REVIEW.json"
+    ],
+    "interpretation": "Historical loading evidence only; no v2 mission, trajectory, model, or policy result is established."
+  },
+  "scenario": {
+    "background_km": [300, 300],
+    "roi_km": [50, 50],
+    "roi_placement": "random_valid_placement_per_episode",
+    "regions": 9,
+    "platforms_per_region": {"uav": 2, "helicopter": 2},
+    "platform_total": 36,
+    "mobility": {"uav": "may_cross_regions", "helicopter": "assigned_region_only"},
+    "task_eligibility": "platform_type_specific",
+    "targets_per_region_options": [1, 3, 5],
+    "targets_per_episode": [9, 27, 45],
+    "task_modes": ["search_only", "search_plus_abstract_strike"],
+    "strike_semantics": "abstract selection/assignment only; no weapon control, projectile, ballistics, or physical damage simulation"
+  },
+  "outcome_labels": {
+    "decision_class": {
+      "values": ["forced", "ordinary"],
+      "forced_definition": "safety-critical decision that must bypass the learned gate",
+      "ordinary_definition": "normal decision subject to the learned gate",
+      "scripted_perturbation_or_task_state_change_implies_forced": false
+    },
+    "separate_fields": {
+      "label_status": ["known", "unknown"],
+      "window_status": ["nonempty", "empty"],
+      "event_cause": "record independently; do not encode as decision_class"
+    },
+    "unknown_or_empty_supervised_example": false,
+    "unknown_or_empty_handling": "exclude from supervised label counts and report separately"
+  },
+  "stages": [
+    {
+      "id": "A1",
+      "name": "full_mission_and_fair_pair",
+      "planned_units": {"full_isaac_mission_minutes": 90, "fair_paired_comparison_minutes": 30},
+      "pairing_requirements": ["same complete saved state", "same exogenous draws", "same remaining time budget", "only predeclared decision differs"],
+      "status": "planned"
+    },
+    {
+      "id": "A2",
+      "name": "pilot_signal_and_workload",
+      "factors": {"task_modes": 2, "targets_per_region": [1, 3, 5], "independent_scenarios_per_cell": 6},
+      "episode_count": 36,
+      "selection_rule": "assess decision signal and feasible/nontrivial workload; do not choose winners or favorable scenarios",
+      "status": "planned"
+    },
+    {
+      "id": "A3",
+      "name": "trajectory_generation",
+      "task_classes": 7,
+      "trajectories_per_class": {"train": 12, "validation": 12},
+      "trajectory_count": 168,
+      "trajectory_structure": {
+        "max_ordinary_decision_states": 8,
+        "future_suffixes_per_state": 2,
+        "branches_per_suffix": ["keep", "replan"],
+        "suffixes_are_decision_states": false
+      },
+      "minimum_before_learned_training": {"positive_examples": 30, "non_positive_examples": 30},
+      "minimum_counting_unit": "unique state_id after deduplication; represent coverage across seven task classes and scenario groups",
+      "cap_action_if_threshold_unmet": "stop learned-model comparison as unavailable; do not exceed 168 trajectories or move validation data into training",
+      "status": "planned"
+    },
+    {
+      "id": "A4",
+      "name": "fit_and_evaluate",
+      "cpu_baselines": ["constant", "Ridge", "shallow_tree"],
+      "gpu_models": ["MLP_64x64", "graph_GRU_one_step_world_model"],
+      "gpu_training_seeds": [8201, 8202, 8203],
+      "policy_variants": ["G", "GWM"],
+      "world_model_semantics": {
+        "G": "graph PPO policy with ordinary critic",
+        "GWM": "graph PPO policy with frozen WM and auxiliary critic; not a gate condition",
+        "wm_training": "train separately on paired suffix gain labels using declared supervised loss, then freeze before policy evaluation",
+        "auxiliary_gradient": "WM outputs are stop-gradient inputs; auxiliary loss updates auxiliary critic, not actor directly or frozen WM; trigger rule is unchanged",
+        "gate_independence": "ET, light, WM-gate, and 4-minute are trigger/gate conditions orthogonal to G versus GWM critic choice",
+        "inference": "frozen WM output is available to the auxiliary critic; any gate behavior is determined only by the assigned condition"
+      },
+      "test_groups": [
+        {"id": "A", "condition": "ET", "policy": "G", "episodes": 42},
+        {"id": "B", "condition": "light", "policy": "G", "episodes": 42},
+        {"id": "C", "condition": "ET", "policy": "GWM", "episodes": 42},
+        {"id": "D", "condition": "light", "policy": "GWM", "episodes": 42},
+        {"id": "E", "condition": "WM-gate", "policy": "GWM", "episodes": 42},
+        {"id": "F", "condition": "4-minute", "policy": "GWM", "episodes": 42}
+      ],
+      "test_design": {
+        "independent_scenes": 42,
+        "scenes_per_class": 6,
+        "methods_per_scene": 6,
+        "seeds_per_method_scene": [8201, 8202, 8203],
+        "paired_method_seed_runs": 756,
+        "episodes_per_method": 42
+      },
+      "post_freeze_recollection": "recollect/resample only relevant reconstructor train/validation gain labels using fixed split membership",
+      "test_sealing": "do not construct or resample test labels; unseal only after methods and checkpoints are frozen",
+      "status": "planned"
+    }
+  ],
+  "measurement": {
+    "scope": "all_ROI_regions_targets_and_platforms",
+    "minimum_outcomes": ["ordinary_completion", "target_coverage_or_selection", "missed_or_unresolved_tasks", "forced_safety_decision_count", "unknown_label_count", "empty_window_count", "platform_availability", "failures"],
+    "online_decision_latency_includes": ["observation_assembly", "feature_extraction", "model_inference", "graph_construction", "planning_or_optimization", "communication_delay", "action_validation_or_repair", "until_validated_command_effective"],
+    "simulator_application_stepping_wall_clock": "measure separately as experiment infrastructure/runtime cost; exclude from online decision latency and task/mission cost",
+    "task_mission_cost": "report separately; include consequences of delayed command effectiveness",
+    "latency_outputs": ["decision_wall_clock", "decision_simulated_time", "p50", "p95", "timeouts", "failures"],
+    "leakage_controls": ["split_whole_episodes_before_fit", "no_episode_frames_cross_splits", "exclude_episode_scene_actor_task_target_ids_from_neural_features", "physically_separate_public_observation_and_hidden_state_objects", "pass_only_public_object_to_models", "fit_normalization_on_train_only", "fit_graph_vocabularies_on_train_only", "validation_for_selection_only", "open_test_once_after_freeze"]
+  },
+  "resources": {"cpu_budget": null, "paid_compute_authorized": false, "record_actual_allocation": true},
+  "status_vocabulary": ["planned", "running", "complete_unreviewed", "invalid", "reviewed"]
+}

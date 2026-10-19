@@ -1,3 +1,9 @@
+# Isaac ROI Simplified v2: Current Status
+
+Date: 2026-10-19. Protocol/archive implementation is in progress. A1 mission: NOT_RUN. Pilot: NOT_RUN. Formal collection: NOT_RUN. Training: NOT_RUN. The only prior Isaac loading evidence is the v1 diagnostic with 2 and 30 quadrotors, 300 frames per stage; it is not the 36-platform 18-UAV/18-helicopter task or a study result. See [the v2 protocol](protocols/isaac-roi-simplified-v2/EXECUTION_PROTOCOL.md) and [its status](protocols/isaac-roi-simplified-v2/STATUS.md).
+
+---
+
 # Isaac 20w world-model study: scope update
 
 Date: 2026-10-19 (Asia/Shanghai).
