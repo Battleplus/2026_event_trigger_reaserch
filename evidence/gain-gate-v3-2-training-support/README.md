@@ -1,6 +1,6 @@
 # N02 External Training Support
 
-This directory is an external adapter. It is not imported by, copied into, or included in the source binding for either N02 project. The default legacy API source is the read-only v3.9 project.
+This directory is an external adapter. It is not imported by, copied into, or included in the source binding for either N02 project. An explicit --legacy-source binding is required; this adapter is pending integration review.
 
 Training reads only committed gzip JSONL shards. Gain rows must be wrapper objects with `training_row`; the adapter uses only `training_row.public_features` as model input, and reads the target from a valid oracle receipt cross-checked against the nested label. Forced, invalid, and non-oracle rows are excluded. The gate uses `v3_shards.summarize_gain_states` to deduplicate ordinary `state_id`s and requires at least 30 positive and 30 non-positive states across train/validation, with both classes represented in each split. A failed gate writes `TRAINING_STATUS.json` with `status: not_run`, then raises. No CPU fallback is attempted for a neural run.
 
@@ -9,11 +9,11 @@ The two gain entry points have separate dependency paths:
 ```powershell
 python training_support.py train-cpu `
   --shard-root E:\path\to\committed-run `
-  --output-dir E:\Z博士\development\n02_full_wm_training_support_20261019\runs\gain-cpu
+  --output-dir outputs\gain-cpu
 
 python training_support.py train-neural `
   --shard-root E:\path\to\committed-run `
-  --output-dir E:\Z博士\development\n02_full_wm_training_support_20261019\runs\gain-cuda
+  --output-dir outputs\gain-cuda
 ```
 
 `train-cpu` fits constant and Ridge baselines, and attempts the existing gradient-boosting baseline only when scikit-learn is installed. `train-neural` imports no scikit-learn; it requires visible CUDA device 0 and runs three 64x64 MLP seeds (8201/8202/8203), Adam at 0.001, batch 32, Huber plus the legacy positive-gain auxiliary loss, at most 100 epochs, and patience 10. Each checkpoint stores model and optimizer state. Each bundle is loaded and predicted in a fresh Python process using the legacy runtime restore check.
@@ -23,10 +23,10 @@ python training_support.py train-neural `
 ```powershell
 python training_support.py train-event-wm `
   --shard-root E:\path\to\committed-run `
-  --output-dir E:\Z博士\development\n02_full_wm_training_support_20261019\runs\event-wm-cuda
+  --output-dir outputs\event-wm-cuda
 ```
 
-The WM entry point first applies the gain-state 30/30 gate, then requires at least 30 gain and action examples in train and validation-model partitions, plus at least 30 gain examples for calibration. Action calibration examples are counted and hashed but are optional because calibration currently applies to the gain lower-bound head. Fresh-process checks compare predictions and verify optimizer tensors were restored onto CUDA.
+The WM entry point first applies the gain-state 30/30 gate, then requires nonempty model-fitting, selection and calibration subsets; the 30/30 requirement applies to unique ordinary states globally, not separately to every subset. The executable adapter remains pending review. Action calibration examples are counted and hashed but are optional because calibration currently applies to the gain lower-bound head. Fresh-process checks compare predictions and verify optimizer tensors were restored onto CUDA.
 
 `train_four_variants` in the frozen `event_policy` has a separate input contract: it requires exactly six parent scenario objects split into four `train` and two `development`, with frozen seed/config expectations. The V3 84/84 training and validation rows are not directly consumable by that API. An integration adapter would need to construct the six scenario objects with the required parent/event-tape fields and explicitly map its splits; the WM training rows alone do not supply that interface. The source was inspected read-only; no PPO training was run.
 

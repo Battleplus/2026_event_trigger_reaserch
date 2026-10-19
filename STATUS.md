@@ -11,7 +11,7 @@ Date: 2026-10-19 (Asia/Shanghai).
 - Formal 168-instance collection: NOT RUN. Data gate: NOT EVALUATED. Models/PPO: NOT RUN. Scientific conclusions: INCONCLUSIVE.
 - Required repair before a new smoke: local-to-global candidate fallback, canonical fractional command-delay integration, and a new source binding. V3.2 is not eligible for formal collection.
 - Execution-delay semantics are being developed separately; current minute-clock smoke is engineering evidence only and cannot establish subminute decision latency benefits.
-- New archive commits are local until remote push and readback succeed; previous publication remains unchanged.
+- Archive push and remote ref readback succeeded: f3ac0913d95fa338a82d858c9498c4c5143b99c8 on archive/gain-gate-v3-2-full-world-model. These artifacts document a repair, not study acceptance.
 
 Historical status below is preserved verbatim and is not the current execution status.
 
