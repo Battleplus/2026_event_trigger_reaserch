@@ -1,3 +1,18 @@
+# Isaac 20w world-model study: scope update
+
+Date: 2026-10-19 (Asia/Shanghai).
+
+- User requires the existing 20w Isaac Sim scene and actual Isaac-origin world-model data; formation geometry is not fixed.
+- Protocol amendment: protocols/ISAAC_20W_SCOPE_AMENDMENT.md.
+- Scene archive and entry points have been identified. Isaac runtime and task/telemetry interfaces are under inspection.
+- Pure-Python N02 V3.3 collection is paused. Prior shards are diagnostic history, not Isaac data.
+- New Isaac episodes, training and six-arm results: NOT RUN. Scientific conclusions: INCONCLUSIVE.
+- This milestone archives the revised protocol only; no scene acceptance or trained model is claimed.
+
+---
+
+Historical status follows.
+
 # V3.2 Full World-Model Study Status
 
 Date: 2026-10-19 (Asia/Shanghai).
