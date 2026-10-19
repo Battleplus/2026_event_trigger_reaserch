@@ -8,3 +8,7 @@ checkpoints/
 package/tests/_pytest*/
 package/tests/.gain-*/
 package/tests/tmp*/
+
+evidence/v32-smoke/shards/
+
+evidence/v32-performance/noop-acceptance/*.gz

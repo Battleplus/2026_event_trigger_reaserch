@@ -1,0 +1,74 @@
+{
+  "binding": {
+    "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+    "config_files": [
+      {
+        "path": "ENVIRONMENT_SPEC.json",
+        "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      },
+      {
+        "path": "EVENT_TRIGGER_CONFIG.json",
+        "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+      },
+      {
+        "path": "GAIN_GATE_CONFIG.json",
+        "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+      }
+    ],
+    "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+    "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+    "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+  },
+  "completed_task_ids": [
+    "v3-task-00",
+    "v3-task-01",
+    "v3-task-02",
+    "v3-task-03",
+    "v3-task-06",
+    "v3-task-07",
+    "v3-task-08",
+    "v3-task-09",
+    "v3-task-12",
+    "v3-task-13",
+    "v3-task-14",
+    "v3-task-15",
+    "v3-task-18",
+    "v3-task-19",
+    "v3-task-20",
+    "v3-task-21",
+    "v3-task-24",
+    "v3-task-25",
+    "v3-task-26",
+    "v3-task-27",
+    "v3-task-30",
+    "v3-task-31",
+    "v3-task-32",
+    "v3-task-33",
+    "v3-task-36",
+    "v3-task-37",
+    "v3-task-38",
+    "v3-task-39",
+    "v3-task-42",
+    "v3-task-43",
+    "v3-task-44",
+    "v3-task-45",
+    "v3-task-48",
+    "v3-task-49",
+    "v3-task-50",
+    "v3-task-51"
+  ],
+  "cpu_seconds": 8.015625,
+  "execution_timing": "supplemented during the single smoke run; not completed beforehand",
+  "executor": "coordinator acceptance probe; production implementation by GPT-6 Luna",
+  "final_time": 90,
+  "initial_queue_count": 36,
+  "logical_task_count": 54,
+  "passed": true,
+  "peak_rss_bytes": 249987072,
+  "platform_count": 30,
+  "purpose": "required NOOP acceptance, not training data",
+  "scenario_id": "v3-train-none_or_light-000-00990001",
+  "ticks": 90,
+  "trace_sha256": "54128d1b402578ebc9e7cd5fcd412488076966db9cf6789761177e13e6de119b",
+  "wall_seconds": 14.868644700000004
+}

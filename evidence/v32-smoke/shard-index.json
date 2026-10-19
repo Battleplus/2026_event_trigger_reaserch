@@ -1,0 +1,262 @@
+{
+  "completed_instances": 4,
+  "scope": "public summaries and hashes; raw simulation traces retained locally, not uploaded",
+  "shards": [
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "e6ba0ce675210296696a731fc78398fb16d28671c0f9c059fde6b30b091d1e84",
+      "condition": "platform_failure_or_capability_loss",
+      "decompressed_jsonl_sha256": "3f965067d305e54e0d956dfce5900e34d422b96f10e84b2b260efaf79d952594",
+      "raw_data_public": false,
+      "row_count": 7,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 59.265625,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 63.66738699999405,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-platform_failure_or_capability_loss-000-00900101",
+      "split": "train"
+    },
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "a873fec1d294512cfe27d578e4db097116eacd3c8cc802a045fca83a120264ef",
+      "condition": "task_update_or_arrival",
+      "decompressed_jsonl_sha256": "bf4176245bc2fe48a7a7b0c8973fbcc922e55a8658dfed78ca9d2342c0b40c27",
+      "raw_data_public": false,
+      "row_count": 5,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 558915584,
+        "process_cpu_seconds": 34.4375,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 36.8587927999979,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-task_update_or_arrival-000-00900001",
+      "split": "train"
+    },
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "47285765cb9416d2624bd36fa70b07454a05f878e554caeb0bb93bfe252d46cb",
+      "condition": "task_update_or_arrival",
+      "decompressed_jsonl_sha256": "bc093d559a3db3aec3f48705ee467cffc28e9bee73469a1b156f3431abf7b4f4",
+      "raw_data_public": false,
+      "row_count": 13,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 618.171875,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 682.5103869999948,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-task_update_or_arrival-001-00900002",
+      "split": "train"
+    },
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "7825f6704b9836d80afb089971843954ecfd0c11e670eaf926260051d484167b",
+      "condition": "task_update_or_arrival",
+      "decompressed_jsonl_sha256": "80057eb1a5793aaf42c68d59f33e08d32958ef554735986bb482820271c3f6ee",
+      "raw_data_public": false,
+      "row_count": 6,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 41.390625,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 44.67172710000159,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-task_update_or_arrival-002-00900003",
+      "split": "train"
+    }
+  ]
+}
