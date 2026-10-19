@@ -49,3 +49,8 @@ Only `protocols/v3-baseline/` and these status documents describe V3 in this com
 The V2 interrupted CPU total remains unknown; 1890.72 seconds was a lower bound. No complete historical resource settlement is fabricated. V3 will use separate measured receipts and cannot claim that the original project budget has been reset.
 
 Coordinator probes are archived in `reviews/v3-in-progress/`. Region helper checks passed only in their stated scope. Current baseline regression rerun: 124 passed / 9 failed (four missing-dependency failures, five legacy review-fixture failures). No complete V3 runtime or scientific outcome is claimed.
+
+
+## Isaac pilot implementation review (2026-10-19)
+
+Two-platform kinematic collection adapter and config frozen; syntax/config checks passed. Coordinator decision: READY_FOR_RUNTIME_VERIFICATION, not experiment acceptance. Isaac Sim 4.5 package metadata verified; no scene started or actual data collected. Specific server transfer awaits explicit approval after automatic review rejection. Full 30-platform mission, fair mission pairing, training and conclusions remain pending.

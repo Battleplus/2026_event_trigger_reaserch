@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "run_id": "isaac-civil-waypoint-pilot-20261019-v1",
+  "seed": 20261019,
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "pilot_diagnostic_differences": [
+    "weather clouds, local zones, and rain are disabled to reduce headless render clutter; this pilot does not study weather effects"
+  ],
+  "runtime": {
+    "gpu_index": 1,
+    "headless": true,
+    "renderer": "HydraStorm",
+    "multi_gpu": false
+  },
+  "scene_config": {
+    "map": {
+      "real_size_km": 300.0,
+      "meters_per_unit": 100.0,
+      "mountain_height_m": 1500.0,
+      "terrain_vertical_exaggeration": 10.0,
+      "terrain_source": "procedural_grid",
+      "terrain_usd": null,
+      "grid": 128,
+      "grid_spacing_km": 25.0
+    },
+    "visual": {
+      "aircraft_scale": 180.0,
+      "show_sensor_rings": false,
+      "show_sensor_cones": false,
+      "show_route_lines": false,
+      "show_terrain_grid": false,
+      "show_terrain_wireframe": false,
+      "show_contours": false,
+      "show_collision_body": false
+    },
+    "weather": {
+      "clouds": false,
+      "local_zones": false,
+      "rain": false
+    },
+    "bases": {"enabled": false},
+    "simulation": {"time_scale": 1.0, "aircraft_model": "kinematic"},
+    "aircraft": {"terrain_clearance_m": 120.0},
+    "targets": {
+      "radar_sites": 0,
+      "command_posts": 0,
+      "armored_vehicles": 0,
+      "forward_bases": false
+    },
+    "obstacles": {
+      "enabled": true,
+      "mountains": true,
+      "forests": true,
+      "rock_fields": true,
+      "forest_tree_count": 140,
+      "forest_tree_visual_scale": 220.0,
+      "max_contacts_per_platform": 12
+    }
+  },
+  "participants": [
+    {
+      "id": "uav_0",
+      "scene_entity_id": "Blue_Quad_Recon_1",
+      "waypoints_km": {
+        "keep": [[0.25, 0.10, 0.0], [1.5, 0.3, 0.0]],
+        "replan": [[0.25, 0.10, 0.0], [0.2, 1.5, 0.0]]
+      }
+    },
+    {
+      "id": "uav_1",
+      "scene_entity_id": "Blue_Quad_Recon_2",
+      "waypoints_km": {
+        "keep": [[-0.20, 0.28, 0.0], [-1.2, 1.0, 0.0]],
+        "replan": [[-0.20, 0.28, 0.0], [1.1, 1.2, 0.0]]
+      }
+    }
+  ],
+  "pilot": {
+    "dt_s": 0.5,
+    "steps_per_waypoint": 80,
+    "seconds_per_waypoint": 40.0,
+    "branches": ["keep", "replay_keep", "replan"]
+  },
+  "validation": {
+    "usd_pose_tolerance_units": 0.00001,
+    "min_displacement_m": 10.0,
+    "max_replay_error_units": 0.00001,
+    "min_action_delta_m": 10.0
+  }
+}

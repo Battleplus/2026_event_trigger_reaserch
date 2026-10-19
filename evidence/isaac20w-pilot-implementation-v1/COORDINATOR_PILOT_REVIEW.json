@@ -1,0 +1,29 @@
+{
+  "review_date": "2026-10-19",
+  "reviewer_role": "primary coordinator, read-only review of Luna implementation",
+  "decision": "READY_FOR_RUNTIME_VERIFICATION",
+  "scientific_acceptance": false,
+  "actual_isaac_data_collected": false,
+  "scope": "two-platform kinematic waypoint pilot only; not formal mission pairs",
+  "verified": [
+    "missing UsdGeom import repaired",
+    "startup exception receipt added",
+    "140-tree source setting retained",
+    "weather simplification declared pilot-only",
+    "per-step replay position, velocity and USD comparison",
+    "energy and communications explicitly not modeled"
+  ],
+  "pending": [
+    "actual SimulationApp startup and GPU placement",
+    "480 scene-step execution and USD readback",
+    "independent recomputation from real JSONL",
+    "full 30-platform mission and fair mission snapshot not implemented"
+  ],
+  "deployment_status": "blocked_by_auto_review; precise user approval pending",
+  "files": {
+    "adapter/collect_isaac_pilot.py": "17ba3b5711af3d2eb37c816198dd2542e54dedaa0a1f7ee67050eb2d1c81cb82",
+    "configs/isaac_civil_pilot_v1.json": "7379ee7ff796908f46da4672b287119497686bb12c7c47e16260b63b8c769ab6",
+    "adapter/README.md": "fdbb8adb0fc50aee0d66b35e4128e7bb23adbc9bc98f681f3ab4d6b5fc4bc52b",
+    "PILOT_IMPLEMENTATION_REPORT.md": "62cc71a4ccc3c308ac705a0c128282b41dab3780e4ffb0dc31a4d24be273c3c5"
+  }
+}

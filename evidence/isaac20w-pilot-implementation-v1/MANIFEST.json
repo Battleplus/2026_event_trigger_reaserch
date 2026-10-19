@@ -1,0 +1,11 @@
+{
+  "status": "implementation_only_not_runtime_accepted",
+  "upstream_source_included": false,
+  "files_sha256": {
+    "adapter/collect_isaac_pilot.py": "15e96005b406948cd08911467b8b3bfe318f426e10d352034179cebb27b41944",
+    "configs/isaac_civil_pilot_v1.json": "82dd534b8018fbb0b062cccb175fd2bbf08e7130fc9efcda0f27fbcabe9853cb",
+    "adapter/README.md": "f555bb0a3d1c4bde467a91159e9ce58be6d0c44a53111ed1050553650b29d32e",
+    "COORDINATOR_PILOT_REVIEW.json": "75f019ae8ca80944de8b78206ba3ed3d97cc60abfc7916cc7bd6790767b4c3b8",
+    "PILOT_IMPLEMENTATION_REPORT.md": "6bf7c35a1135a7d19e6dac07f7add0fc85aa044d17cd25a728ee6fec909e8799"
+  }
+}
