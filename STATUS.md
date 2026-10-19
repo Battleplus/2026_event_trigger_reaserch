@@ -4,11 +4,12 @@ Date: 2026-10-19 (Asia/Shanghai).
 
 - Protocol: `protocols/FULL_WORLD_MODEL_V3_2.md`. Fixed CPU/GPU time caps removed by user instruction; memory and actual fault handling remain.
 - New source snapshot: `releases/gain-gate-v3-2-full-world-model/`, with per-file hashes. This snapshot is not an acceptance or a training result.
-- V3.2 smoke: RUNNING, not yet accepted. Eighteen new instances are required; old partial smoke instances do not count.
+- V3.2 smoke: STOPPED FOR REPAIR after 4/18 committed instances. Independent replay showed the periodic/local scope filtered every non-NOOP alternative although the same public state had 15 legal global alternatives. This is an implementation defect; these four shards remain diagnostic only and do not count toward smoke acceptance.
 - Two pairing defects repaired: stale derived scenario hash after future-suffix substitution; ambiguous continuation receipt/action envelope.
 - Necessary local checks: 20 passed, 6 temporary-directory fixture cases deselected due to host permissions; separate real shard commit/readback succeeded.
 - Server GPU1: real small CUDA forward/backward probe passed. No new model training or checkpoint exists yet.
 - Formal 168-instance collection: NOT RUN. Data gate: NOT EVALUATED. Models/PPO: NOT RUN. Scientific conclusions: INCONCLUSIVE.
+- Required repair before a new smoke: local-to-global candidate fallback, canonical fractional command-delay integration, and a new source binding. V3.2 is not eligible for formal collection.
 - Execution-delay semantics are being developed separately; current minute-clock smoke is engineering evidence only and cannot establish subminute decision latency benefits.
 - New archive commits are local until remote push and readback succeed; previous publication remains unchanged.
 
