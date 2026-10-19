@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-19",
+  "decision": "30_PLATFORM_KINEMATIC_LOAD_PASS",
+  "reviewer_role": "primary coordinator read-only review of Luna implementation and actual receipts",
+  "model_identity_claim": "No GPT-6.1 Sol High review claimed",
+  "run_id": "isaac-loading-validation-20261019-masked-v3",
+  "exit_code": 0,
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "validated": [
+    "Native 300km map and 100m/USD-unit contract",
+    "140 trees counted from USD trunk prims",
+    "2 and 30 unique source-backed AirPlatform entities",
+    "300 Kit events and app updates per platform-count stage",
+    "Positive displacement independently recomputed from initial and USD final position",
+    "USD final pose agrees with motion state",
+    "Executed source/config hashes match local frozen files"
+  ],
+  "limits": [
+    "30-platform capacity uses QUAD_RECON_UAV spec, not 24UAV+6helicopters",
+    "No 54-task mission, formal fair pairs, world model or PPO acceptance",
+    "Kinematic scene execution, not motor/battery/PhysX aircraft validation",
+    "GPU0 sampled 9MiB vs baseline6MiB with 0% utilization; tiny enumeration allocation means not strictly zero GPU0 footprint",
+    "Requested HydraStorm; actual GPU kernel time not instrumented",
+    "Optional asset browser missing requests and material/CUDA-enumeration warnings retained; no software installed"
+  ],
+  "attempts": [
+    {
+      "id": "startup",
+      "result": "empty scene startup and one Kit event passed"
+    },
+    {
+      "id": "full-v1-unmasked",
+      "result": "terminated by coordinator after own process allocated188MiB on GPU0; no success claim"
+    },
+    {
+      "id": "masked-v2",
+      "result": "process ended but final report missing due persistence-after-app.close; not accepted"
+    },
+    {
+      "id": "masked-v3",
+      "result": "all stages persisted, exit0, independently reviewed"
+    }
+  ],
+  "files_sha256": {
+    "masked_v3_receipt.json": "3a4560cdb95b6cf529d7205f2dbe6b1df219dc76c89efa547bccac64db0b2d33",
+    "masked_v3.log": "18393f414c48e632adf6c6c0627c2e49aa87073c47131bcbccf5789c2e9d2a93",
+    "masked_v3_config.json": "9414af964e21bd76b8445c8a067d655d99b8ff9a830e3cc6a21e87e2c68bfe0f",
+    "run_isaac_loading_validation.py": "d17e6671b3a24f9caf285eebfddf6429a56fe7ade91e0165ac28a2246894c64c",
+    "usd_compat.py": "853b4b5d792395ef13b1b565b8cca3f76844c4920f49115a07bf1989f03a9a58"
+  }
+}

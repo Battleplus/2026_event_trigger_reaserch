@@ -1,0 +1,78 @@
+{
+  "run_id": "isaac-loading-validation-20261019-masked-v2",
+  "status": "terrain_initialization",
+  "started_unix_s": 1792401716.1303623,
+  "actual_isaac_run": true,
+  "requested_devices": {
+    "headless": true,
+    "renderer": "HydraStorm",
+    "renderer_active_gpu": 1,
+    "physics_cuda_device": 0,
+    "expected_gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "expected_gpu_pci_bus_id": "00000000:2D:00.0",
+    "multi_gpu": false,
+    "width": 640,
+    "height": 480
+  },
+  "stages": [
+    {
+      "name": "empty_headless_startup",
+      "app_update_calls": 1,
+      "kit_update_events": 1,
+      "app_update_wall_s": 0.00840452907141298,
+      "process_rss_mib": 4196.046875,
+      "gpu_snapshot": [
+        {
+          "index": 0,
+          "uuid": "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030",
+          "pci_bus_id": "00000000:23:00.0",
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_used_mib": 9,
+          "utilization_percent": 0
+        },
+        {
+          "index": 1,
+          "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+          "pci_bus_id": "00000000:2D:00.0",
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_used_mib": 1755,
+          "utilization_percent": 5
+        }
+      ],
+      "gpu_frame_time_ms": null,
+      "gpu_frame_time_status": "not directly exposed by the HydraStorm/Kit update API"
+    }
+  ],
+  "first_error": null,
+  "gpu_at_startup": [
+    {
+      "index": 0,
+      "uuid": "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030",
+      "pci_bus_id": "00000000:23:00.0",
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_used_mib": 9,
+      "utilization_percent": 0
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+      "pci_bus_id": "00000000:2D:00.0",
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_used_mib": 1755,
+      "utilization_percent": 5
+    }
+  ],
+  "cuda_visible_devices": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+  "kit_gpu_settings": {
+    "renderer_active_gpu": 1,
+    "physics_cuda_device": 0
+  },
+  "selected_gpu_startup": {
+    "index": 1,
+    "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "pci_bus_id": "00000000:2D:00.0",
+    "name": "NVIDIA GeForce RTX 2080 Ti",
+    "memory_used_mib": 1755,
+    "utilization_percent": 5
+  }
+}

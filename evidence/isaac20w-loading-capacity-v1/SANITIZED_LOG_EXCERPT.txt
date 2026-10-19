@@ -1,0 +1,13 @@
+2026-10-19 09:26:46 [342ms] [Warning] [carb.cudainterop.plugin] CUDA_VISIBLE_DEVICES environment variable is set.
+2026-10-19 09:26:46 [342ms] [Warning] [carb.cudainterop.plugin] Setting CUDA_VISIBLE_DEVICES can lead to undesired behavior or crashes.
+2026-10-19 09:26:47 [445ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA GeForce RTX 2080 Ti
+2026-10-19 09:26:47 [446ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA GeForce RTX 2080 Ti
+| Driver Version: 535.161.08    | Graphics API: Vulkan
+| 0   | NVIDIA GeForce RTX 2080 Ti       |        |     | 11510   MB | 10de      | 0          |
+| 1   | NVIDIA GeForce RTX 2080 Ti       | Yes: 0 |     | 11510   MB | 10de      | 0          |
+2026-10-19 09:26:50 [3,791ms] [Error] [omni.ext._impl.custom_importer] Failed to import python module isaacsim.asset.browser. Error: No module named 'requests'. Traceback:
+ModuleNotFoundError: No module named 'requests'
+[7.632s] Simulation App Startup Complete
+[QL] Air-combat forest ready: zones=4, trees=140
+[QL] Air combat scene ready: 300 km x 300 km, terrain peak reference 1500 m, visual terrain x10.0, platforms=8, targets=0, obstacles=148, version=2026-06-04.obstacle-sensing
+[46.135s] Simulation App Shutting Down

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "isaac-loading-validation-20261019-masked-v3",
+  "runtime": {
+    "headless": true,
+    "renderer": "HydraStorm",
+    "renderer_active_gpu": 1,
+    "physics_cuda_device": 0,
+    "expected_gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "expected_gpu_pci_bus_id": "00000000:2D:00.0",
+    "multi_gpu": false,
+    "width": 640,
+    "height": 480
+  },
+  "scene": {
+    "map_size_km": 300.0,
+    "meters_per_unit": 100.0,
+    "mountain_height_m": 1500.0,
+    "terrain_vertical_exaggeration": 10.0,
+    "terrain_grid": 128,
+    "forest_tree_count": 140,
+    "forest_tree_visual_scale": 220.0,
+    "aircraft_visual_scale": 180.0,
+    "seed": 73
+  },
+  "platform_stages": {
+    "counts": [
+      2,
+      30
+    ],
+    "frames_each": 300,
+    "dt_s": 0.016666666666666666,
+    "platform_spec": "QUAD_RECON_UAV"
+  }
+}

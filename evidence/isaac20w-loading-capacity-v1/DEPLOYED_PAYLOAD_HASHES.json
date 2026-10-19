@@ -1,0 +1,11 @@
+{
+  "adapter/run_isaac_loading_validation.py": "d89ad50af4b89d6dece74f141791587d85ee354f894fbe936883f5119fad983d",
+  "adapter/usd_compat.py": "853b4b5d792395ef13b1b565b8cca3f76844c4920f49115a07bf1989f03a9a58",
+  "configs/isaac_loading_validation_v1.json": "d6d1a8ce87840aa0804a5a7fff3fb1d82c0f3a2464097290c428ebf56ded439b",
+  "source/54_20-master/scenes/air_combat_scene.py": "e0c3dd33adcd2a97312d39f8c48c6689136e387f10d49d401a9446cc126e8dee",
+  "source/54_20-master/scenes/air_combat_specs.py": "4e34d8d6eb3f4f4a64dbbc8dedb7afb98e54595c990d70b1c83e3fdb9724645a",
+  "source/54_20-master/scenes/aircraft_motion.py": "91cb096fe708842a7f2b4bcee76ddffeb6040f7fd548ee349e1f2c059c80cd6f",
+  "source/54_20-master/sensors/air_combat_specs.py": "20fedbb95fd280f65ad30d29609ed566c72d75eddc7402537d808460bc777628",
+  "source/54_20-master/sensors/air_combat_obstacles.py": "6a961ac51bf9e10324a9e8f18fd79e2513f6bf8929edc15140d8a0d3ec5dae38",
+  "source/54_20-master/weapons/air_combat_specs.py": "0f2efe5f65f22ebf0ab96fb03a267464ac0996c5edb0140e7b64ca918bf9c829"
+}

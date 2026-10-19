@@ -54,3 +54,8 @@ Coordinator probes are archived in `reviews/v3-in-progress/`. Region helper chec
 ## Isaac pilot implementation review (2026-10-19)
 
 Two-platform kinematic collection adapter and config frozen; syntax/config checks passed. Coordinator decision: READY_FOR_RUNTIME_VERIFICATION, not experiment acceptance. Isaac Sim 4.5 package metadata verified; no scene started or actual data collected. Specific server transfer awaits explicit approval after automatic review rejection. Full 30-platform mission, fair mission pairing, training and conclusions remain pending.
+
+
+## Actual Isaac loading verification (2026-10-19)
+
+Native20w terrain and140trees loaded. Two and30 source-backed quadrotor entities each completed300Kit/app updates with positive USD displacement; exit0. Coordinator independently checked final poses, entity uniqueness, counts and deployed hashes. GPU1 sampled peak1839MiB;GPU0 had3MiB enumeration overhead,0% sampled utilization.30-platform mean scene+app time93.89ms: load capacity passed, real-time performance not established. No90-minute mission,54-task execution, training or scientific effectiveness claim. See evidence/isaac20w-loading-capacity-v1.

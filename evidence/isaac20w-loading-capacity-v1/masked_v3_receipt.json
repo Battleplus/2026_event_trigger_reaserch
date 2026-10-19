@@ -1,0 +1,857 @@
+{
+  "run_id": "isaac-loading-validation-20261019-masked-v3",
+  "status": "complete",
+  "started_unix_s": 1792402006.5528123,
+  "actual_isaac_run": true,
+  "requested_devices": {
+    "headless": true,
+    "renderer": "HydraStorm",
+    "renderer_active_gpu": 1,
+    "physics_cuda_device": 0,
+    "expected_gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "expected_gpu_pci_bus_id": "00000000:2D:00.0",
+    "multi_gpu": false,
+    "width": 640,
+    "height": 480
+  },
+  "stages": [
+    {
+      "name": "empty_headless_startup",
+      "app_update_calls": 1,
+      "kit_update_events": 1,
+      "app_update_wall_s": 0.008404453052207828,
+      "process_rss_mib": 4203.94140625,
+      "gpu_snapshot": [
+        {
+          "index": 0,
+          "uuid": "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030",
+          "pci_bus_id": "00000000:23:00.0",
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_used_mib": 9,
+          "utilization_percent": 0
+        },
+        {
+          "index": 1,
+          "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+          "pci_bus_id": "00000000:2D:00.0",
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_used_mib": 1755,
+          "utilization_percent": 2
+        }
+      ],
+      "gpu_frame_time_ms": null,
+      "gpu_frame_time_status": "not directly exposed by the HydraStorm/Kit update API"
+    },
+    {
+      "name": "20w_terrain_140_trees_no_combat",
+      "map_size_km": 300.0,
+      "meters_per_unit": 100.0,
+      "terrain_mesh_count": 1,
+      "tree_count_from_usd_trunk_prims": 140,
+      "combat_platform_count": 0,
+      "factory_platforms_pruned": 8,
+      "combat_target_count": 0,
+      "stage_prim_count": 650,
+      "stage_creation_wall_s": 1.5191068280255422
+    },
+    {
+      "name": "2_platforms",
+      "platform_count": 2,
+      "independent_kinematic_states": 2,
+      "actual_platform_prims": 2,
+      "frames_requested": 300,
+      "kit_update_events": 300,
+      "app_update_calls": 300,
+      "frame_time_measurement": "app.update wall time only; excludes scene.update and GPU sampling",
+      "app_update_wall_ms_mean": 9.087611297921589,
+      "app_update_wall_ms_max": 214.2827028874308,
+      "scene_update_wall_ms_mean": 6.032956299216797,
+      "scene_update_wall_ms_max": 8.16701608709991,
+      "stage_wall_s_including_scene_app_updates_and_sampling": 5.305428629973903,
+      "max_usd_pose_error_units_across_frames": 0.0,
+      "gpu_frame_time_ms": null,
+      "gpu_frame_time_status": "not exposed by this HydraStorm/Kit instrumentation",
+      "process_rss_peak_mib": 4254.40234375,
+      "gpu_peaks_sampled": {
+        "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030": {
+          "memory_used_mib": 9,
+          "utilization_percent": 0
+        },
+        "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e": {
+          "memory_used_mib": 1839,
+          "utilization_percent": 25
+        }
+      },
+      "platform_positions_usd_world": [
+        {
+          "entity_id": "Blue_Quad_Recon_1",
+          "prim_path": "/World/AirCombat/Platforms/Blue_Quad_Recon_1",
+          "initial_position_scene_units": [
+            -1420.0,
+            280.0,
+            46.81577787485022
+          ],
+          "final_usd_world_position_scene_units": [
+            -1418.6805555555748,
+            280.0,
+            46.81577787485022
+          ],
+          "displacement_scene_units": 1.319444444425244,
+          "displacement_m": 131.9444444425244,
+          "motion_model_position_scene_units": [
+            -1418.6805555555748,
+            280.0,
+            46.81577787485022
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Blue_Quad_Recon_2",
+          "prim_path": "/World/AirCombat/Platforms/Blue_Quad_Recon_2",
+          "initial_position_scene_units": [
+            -1420.0,
+            -240.0,
+            29.833017987628345
+          ],
+          "final_usd_world_position_scene_units": [
+            -1418.6805555555748,
+            -240.0,
+            29.833017987628345
+          ],
+          "displacement_scene_units": 1.319444444425244,
+          "displacement_m": 131.9444444425244,
+          "motion_model_position_scene_units": [
+            -1418.6805555555748,
+            -240.0,
+            29.833017987628345
+          ],
+          "final_pose_error_units": 0.0
+        }
+      ]
+    },
+    {
+      "name": "30_platforms",
+      "platform_count": 30,
+      "independent_kinematic_states": 30,
+      "actual_platform_prims": 30,
+      "frames_requested": 300,
+      "kit_update_events": 300,
+      "app_update_calls": 300,
+      "frame_time_measurement": "app.update wall time only; excludes scene.update and GPU sampling",
+      "app_update_wall_ms_mean": 9.030138714782273,
+      "app_update_wall_ms_max": 176.20248103048652,
+      "scene_update_wall_ms_mean": 84.86361034214497,
+      "scene_update_wall_ms_max": 90.82439099438488,
+      "stage_wall_s_including_scene_app_updates_and_sampling": 30.44699436298106,
+      "max_usd_pose_error_units_across_frames": 0.0,
+      "gpu_frame_time_ms": null,
+      "gpu_frame_time_status": "not exposed by this HydraStorm/Kit instrumentation",
+      "process_rss_peak_mib": 4277.0390625,
+      "gpu_peaks_sampled": {
+        "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030": {
+          "memory_used_mib": 9,
+          "utilization_percent": 0
+        },
+        "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e": {
+          "memory_used_mib": 1839,
+          "utilization_percent": 38
+        }
+      },
+      "platform_positions_usd_world": [
+        {
+          "entity_id": "Capacity_Quad_00",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_00",
+          "initial_position_scene_units": [
+            -900.0,
+            -840.0000000000001,
+            25.893203263781587
+          ],
+          "final_usd_world_position_scene_units": [
+            -898.6805555555406,
+            -840.0000000000001,
+            25.893203263781587
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -898.6805555555406,
+            -840.0000000000001,
+            25.893203263781587
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_01",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_01",
+          "initial_position_scene_units": [
+            -840.0,
+            -795.0000000000001,
+            35.190478057081236
+          ],
+          "final_usd_world_position_scene_units": [
+            -838.6805555555406,
+            -795.0000000000001,
+            35.190478057081236
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -838.6805555555406,
+            -795.0000000000001,
+            35.190478057081236
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_02",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_02",
+          "initial_position_scene_units": [
+            -780.0,
+            -750.0000000000001,
+            38.30641123671522
+          ],
+          "final_usd_world_position_scene_units": [
+            -778.6805555555406,
+            -750.0000000000001,
+            38.30641123671522
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -778.6805555555406,
+            -750.0000000000001,
+            38.30641123671522
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_03",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_03",
+          "initial_position_scene_units": [
+            -720.0,
+            -705.0000000000001,
+            34.89322743802722
+          ],
+          "final_usd_world_position_scene_units": [
+            -718.6805555555406,
+            -705.0000000000001,
+            34.89322743802722
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -718.6805555555406,
+            -705.0000000000001,
+            34.89322743802722
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_04",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_04",
+          "initial_position_scene_units": [
+            -660.0,
+            -660.0000000000001,
+            34.93017122767768
+          ],
+          "final_usd_world_position_scene_units": [
+            -658.6805555555406,
+            -660.0000000000001,
+            34.93017122767768
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -658.6805555555406,
+            -660.0000000000001,
+            34.93017122767768
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_05",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_05",
+          "initial_position_scene_units": [
+            -600.0,
+            -840.0000000000001,
+            65.2864323464043
+          ],
+          "final_usd_world_position_scene_units": [
+            -598.6805555555406,
+            -840.0000000000001,
+            65.2864323464043
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -598.6805555555406,
+            -840.0000000000001,
+            65.2864323464043
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_06",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_06",
+          "initial_position_scene_units": [
+            -540.0,
+            -795.0000000000001,
+            90.05568834132367
+          ],
+          "final_usd_world_position_scene_units": [
+            -538.6805555555406,
+            -795.0000000000001,
+            90.05568834132367
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            -538.6805555555406,
+            -795.0000000000001,
+            90.05568834132367
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_07",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_07",
+          "initial_position_scene_units": [
+            -480.0,
+            -750.0000000000001,
+            85.17763624830286
+          ],
+          "final_usd_world_position_scene_units": [
+            -478.6805555555577,
+            -750.0000000000001,
+            85.17763624830286
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -478.6805555555577,
+            -750.0000000000001,
+            85.17763624830286
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_08",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_08",
+          "initial_position_scene_units": [
+            -420.0,
+            -705.0000000000001,
+            69.70583710332923
+          ],
+          "final_usd_world_position_scene_units": [
+            -418.6805555555577,
+            -705.0000000000001,
+            69.70583710332923
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -418.6805555555577,
+            -705.0000000000001,
+            69.70583710332923
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_09",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_09",
+          "initial_position_scene_units": [
+            -360.0,
+            -660.0000000000001,
+            87.5124810115935
+          ],
+          "final_usd_world_position_scene_units": [
+            -358.6805555555577,
+            -660.0000000000001,
+            87.5124810115935
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -358.6805555555577,
+            -660.0000000000001,
+            87.5124810115935
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_10",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_10",
+          "initial_position_scene_units": [
+            -300.0,
+            -840.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            -298.6805555555577,
+            -840.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -298.6805555555577,
+            -840.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_11",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_11",
+          "initial_position_scene_units": [
+            -240.0,
+            -795.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            -238.6805555555577,
+            -795.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -238.6805555555577,
+            -795.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_12",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_12",
+          "initial_position_scene_units": [
+            -180.0,
+            -750.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            -178.6805555555577,
+            -750.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            -178.6805555555577,
+            -750.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_13",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_13",
+          "initial_position_scene_units": [
+            -120.0,
+            -705.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            -118.68055555555344,
+            -705.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.3194444444465603,
+          "displacement_m": 131.94444444465603,
+          "motion_model_position_scene_units": [
+            -118.68055555555344,
+            -705.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_14",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_14",
+          "initial_position_scene_units": [
+            -60.0,
+            -660.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            -58.68055555555557,
+            -660.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.3194444444444287,
+          "displacement_m": 131.94444444444287,
+          "motion_model_position_scene_units": [
+            -58.68055555555557,
+            -660.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_15",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_15",
+          "initial_position_scene_units": [
+            0.0,
+            -840.0000000000001,
+            46.58315091651725
+          ],
+          "final_usd_world_position_scene_units": [
+            1.3194444444444349,
+            -840.0000000000001,
+            46.58315091651725
+          ],
+          "displacement_scene_units": 1.3194444444444349,
+          "displacement_m": 131.9444444444435,
+          "motion_model_position_scene_units": [
+            1.3194444444444349,
+            -840.0000000000001,
+            46.58315091651725
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_16",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_16",
+          "initial_position_scene_units": [
+            60.0,
+            -795.0000000000001,
+            58.19048598769757
+          ],
+          "final_usd_world_position_scene_units": [
+            61.31944444444443,
+            -795.0000000000001,
+            58.19048598769757
+          ],
+          "displacement_scene_units": 1.3194444444444287,
+          "displacement_m": 131.94444444444287,
+          "motion_model_position_scene_units": [
+            61.31944444444443,
+            -795.0000000000001,
+            58.19048598769757
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_17",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_17",
+          "initial_position_scene_units": [
+            120.0,
+            -750.0000000000001,
+            132.24219642179852
+          ],
+          "final_usd_world_position_scene_units": [
+            121.31944444444656,
+            -750.0000000000001,
+            132.24219642179852
+          ],
+          "displacement_scene_units": 1.3194444444465603,
+          "displacement_m": 131.94444444465603,
+          "motion_model_position_scene_units": [
+            121.31944444444656,
+            -750.0000000000001,
+            132.24219642179852
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_18",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_18",
+          "initial_position_scene_units": [
+            180.0,
+            -705.0000000000001,
+            124.33048874612241
+          ],
+          "final_usd_world_position_scene_units": [
+            181.3194444444423,
+            -705.0000000000001,
+            124.33048874612241
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            181.3194444444423,
+            -705.0000000000001,
+            124.33048874612241
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_19",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_19",
+          "initial_position_scene_units": [
+            240.0,
+            -660.0000000000001,
+            139.79061918697766
+          ],
+          "final_usd_world_position_scene_units": [
+            241.3194444444423,
+            -660.0000000000001,
+            139.79061918697766
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            241.3194444444423,
+            -660.0000000000001,
+            139.79061918697766
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_20",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_20",
+          "initial_position_scene_units": [
+            300.0,
+            -840.0000000000001,
+            116.07660300069841
+          ],
+          "final_usd_world_position_scene_units": [
+            301.3194444444423,
+            -840.0000000000001,
+            116.07660300069841
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            301.3194444444423,
+            -840.0000000000001,
+            116.07660300069841
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_21",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_21",
+          "initial_position_scene_units": [
+            360.0,
+            -795.0000000000001,
+            88.89248447377778
+          ],
+          "final_usd_world_position_scene_units": [
+            361.3194444444423,
+            -795.0000000000001,
+            88.89248447377778
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            361.3194444444423,
+            -795.0000000000001,
+            88.89248447377778
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_22",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_22",
+          "initial_position_scene_units": [
+            420.0,
+            -750.0000000000001,
+            67.9882683495197
+          ],
+          "final_usd_world_position_scene_units": [
+            421.3194444444423,
+            -750.0000000000001,
+            67.9882683495197
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            421.3194444444423,
+            -750.0000000000001,
+            67.9882683495197
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_23",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_23",
+          "initial_position_scene_units": [
+            480.0,
+            -705.0000000000001,
+            21.490105178340137
+          ],
+          "final_usd_world_position_scene_units": [
+            481.3194444444423,
+            -705.0000000000001,
+            21.490105178340137
+          ],
+          "displacement_scene_units": 1.319444444442297,
+          "displacement_m": 131.9444444442297,
+          "motion_model_position_scene_units": [
+            481.3194444444423,
+            -705.0000000000001,
+            21.490105178340137
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_24",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_24",
+          "initial_position_scene_units": [
+            540.0,
+            -660.0000000000001,
+            12.0
+          ],
+          "final_usd_world_position_scene_units": [
+            541.3194444444594,
+            -660.0000000000001,
+            12.0
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            541.3194444444594,
+            -660.0000000000001,
+            12.0
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_25",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_25",
+          "initial_position_scene_units": [
+            600.0,
+            -840.0000000000001,
+            87.79440812995122
+          ],
+          "final_usd_world_position_scene_units": [
+            601.3194444444594,
+            -840.0000000000001,
+            87.79440812995122
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            601.3194444444594,
+            -840.0000000000001,
+            87.79440812995122
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_26",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_26",
+          "initial_position_scene_units": [
+            660.0,
+            -795.0000000000001,
+            88.79759009649743
+          ],
+          "final_usd_world_position_scene_units": [
+            661.3194444444594,
+            -795.0000000000001,
+            88.79759009649743
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            661.3194444444594,
+            -795.0000000000001,
+            88.79759009649743
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_27",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_27",
+          "initial_position_scene_units": [
+            720.0,
+            -750.0000000000001,
+            103.0974061755542
+          ],
+          "final_usd_world_position_scene_units": [
+            721.3194444444594,
+            -750.0000000000001,
+            103.0974061755542
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            721.3194444444594,
+            -750.0000000000001,
+            103.0974061755542
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_28",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_28",
+          "initial_position_scene_units": [
+            780.0,
+            -705.0000000000001,
+            100.63391954455035
+          ],
+          "final_usd_world_position_scene_units": [
+            781.3194444444594,
+            -705.0000000000001,
+            100.63391954455035
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            781.3194444444594,
+            -705.0000000000001,
+            100.63391954455035
+          ],
+          "final_pose_error_units": 0.0
+        },
+        {
+          "entity_id": "Capacity_Quad_29",
+          "prim_path": "/World/AirCombat/Platforms/Capacity_Quad_29",
+          "initial_position_scene_units": [
+            840.0,
+            -660.0000000000001,
+            80.59184786886776
+          ],
+          "final_usd_world_position_scene_units": [
+            841.3194444444594,
+            -660.0000000000001,
+            80.59184786886776
+          ],
+          "displacement_scene_units": 1.31944444445935,
+          "displacement_m": 131.944444445935,
+          "motion_model_position_scene_units": [
+            841.3194444444594,
+            -660.0000000000001,
+            80.59184786886776
+          ],
+          "final_pose_error_units": 0.0
+        }
+      ]
+    }
+  ],
+  "first_error": null,
+  "gpu_at_startup": [
+    {
+      "index": 0,
+      "uuid": "GPU-cd03c61b-a80e-2539-8a8a-88b3b53c2030",
+      "pci_bus_id": "00000000:23:00.0",
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_used_mib": 9,
+      "utilization_percent": 0
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+      "pci_bus_id": "00000000:2D:00.0",
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_used_mib": 1755,
+      "utilization_percent": 2
+    }
+  ],
+  "cuda_visible_devices": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+  "kit_gpu_settings": {
+    "renderer_active_gpu": 1,
+    "physics_cuda_device": 0
+  },
+  "selected_gpu_startup": {
+    "index": 1,
+    "uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "pci_bus_id": "00000000:2D:00.0",
+    "name": "NVIDIA GeForce RTX 2080 Ti",
+    "memory_used_mib": 1755,
+    "utilization_percent": 2
+  },
+  "ended_unix_s": 1792402051.5796328
+}

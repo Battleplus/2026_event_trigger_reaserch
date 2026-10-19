@@ -1,0 +1,15 @@
+{
+  "status": "short_load_capacity_pass_only",
+  "files_sha256": {
+    "COORDINATOR_LOADING_REVIEW.json": "aaf81ea75cbc71c642bdcb3fb5ed1812e60419925a21705a300a4c955d832a92",
+    "DEPLOYED_PAYLOAD_HASHES.json": "4318577fc74b8df43cfb0f83e82ac18fc1f0064d5ebb882855ef0972d4b3d1b5",
+    "LOADING_VALIDATION_REPORT.md": "f651afe50a346bc1a4049800b0a7bd16b4c7722c888da4cc7e90cb8af14c2c04",
+    "masked_v2_receipt.json": "82d9880798b5b7c7ddd0618578728156ae2d46f914af698701e7001d0ee94082",
+    "masked_v3_config.json": "9414af964e21bd76b8445c8a067d655d99b8ff9a830e3cc6a21e87e2c68bfe0f",
+    "masked_v3_exit_status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "masked_v3_receipt.json": "3a4560cdb95b6cf529d7205f2dbe6b1df219dc76c89efa547bccac64db0b2d33",
+    "SANITIZED_LOG_EXCERPT.txt": "29911a0ef71181e8d2750fac5f1ae8123aebf3ee685723c43fe34e49be5cb667",
+    "adapter/run_isaac_loading_validation.py": "d17e6671b3a24f9caf285eebfddf6429a56fe7ade91e0165ac28a2246894c64c",
+    "adapter/usd_compat.py": "853b4b5d792395ef13b1b565b8cca3f76844c4920f49115a07bf1989f03a9a58"
+  }
+}
