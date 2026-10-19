@@ -403,11 +403,12 @@ def prepare_suffix_snapshot(
             from event_environment import validate_supported_event_scenario
         env.scenario["event_tape"] = tape
         env.scenario["event_tape_id"] = event_digest(tape)
-        try:
-            from .gain_scenarios import scenario_content_sha256
-        except ImportError:
-            from gain_scenarios import scenario_content_sha256
-        env.scenario["scenario_content_sha256"] = scenario_content_sha256(env.scenario)
+        if "scenario_content_sha256" in env.scenario:
+            try:
+                from .gain_scenarios import scenario_content_sha256
+            except ImportError:
+                from gain_scenarios import scenario_content_sha256
+            env.scenario["scenario_content_sha256"] = scenario_content_sha256(env.scenario)
         validate_supported_event_scenario(env.scenario)
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError(f"sampled suffix violates the frozen event scenario contract: {exc}") from exc

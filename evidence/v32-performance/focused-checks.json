@@ -1,0 +1,25 @@
+{
+  "formal_collection": "NOT_RUN",
+  "repair_record": {
+    "cause": "scenario_content_sha256 was added to legacy exact-key scenarios",
+    "fix": "recompute scenario_content_sha256 only when the V3 scenario already carries that field; keep event_tape_id update on all paths",
+    "initial_pair_result": "8 failed, 3 passed",
+    "post_fix_result": "11 passed"
+  },
+  "schema": "gain-gate-v3.2-focused-checks/1",
+  "slow_instance": {
+    "action_sha256": "eda7fd2c01d8790af1c8a5d4cc923c2b8f21bafc40a5ff3e89fa01921cd4d789",
+    "forced_excluded": 4,
+    "ordinary_valid_mask": "8/8",
+    "physical_sha256": "6b4e595bf83eb3c8ea7e64c162cfbca5631b4c399638ecb1a7d033e71960f4d8",
+    "raw_pair_evidence": "not persisted in diagnostic; smoke shards must be independently recomputed"
+  },
+  "smoke": "NOT_RUN",
+  "source": "repaired isolated V3.2 working copy",
+  "tests": {
+    "command": "python -B -m pytest package/tests/test_gain_counterfactual_pairs.py package/tests/test_v3_regional_execution.py package/tests/test_gain_safety_v2.py -q",
+    "counterfactual_pairs": "11 passed",
+    "regional_and_safety": "6 passed",
+    "result": "17 passed"
+  }
+}
