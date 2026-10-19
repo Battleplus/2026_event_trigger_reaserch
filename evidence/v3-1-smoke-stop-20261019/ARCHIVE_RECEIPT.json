@@ -1,0 +1,20 @@
+{
+  "source_files": [
+    {
+      "path": "package/civilian/v3_runner_v31.py",
+      "sha256": "5C9281EED84310AE54CDF311A716D3B432A15CA381F8A77F08BF87DADD6FD902"
+    },
+    {
+      "path": "package/tests/test_v3_shards_v31.py",
+      "sha256": "E169C9C98A891C4A61E2F3B7865CC25187CABC234FEA31A3593ADCE76CE123C7"
+    }
+  ],
+  "schema": "gain-gate-v3.1-archive/1",
+  "status": "ENGINEERING_STOP",
+  "formal_collection": "NOT_RUN",
+  "generated_utc": "2026-10-19T03:32:04.8164323Z",
+  "failure_file": "evidence/v3-1-smoke-stop-20261019/FAILURE.json",
+  "reason": "18-instance smoke exceeded 1800 CPU-second guardian budget; no completion manifest",
+  "gpu_training": "NOT_RUN",
+  "run_id": "v3-1-smoke-20261019"
+}
