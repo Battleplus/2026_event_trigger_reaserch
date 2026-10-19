@@ -1,0 +1,15 @@
+{
+  "stage": "read_only_preflight",
+  "date": "2026-10-19",
+  "ssh_connection": "reachable; existing user-specified server",
+  "gpu_count": 2,
+  "gpu_name": "NVIDIA GeForce RTX 2080 Ti",
+  "memory_mib_per_gpu": 11264,
+  "driver_version": "535.161.08",
+  "default_python": "3.10",
+  "torch_import": "FAILED",
+  "error": "libcusparse.so.12: undefined symbol __nvJitLinkGetErrorLog_12_6, version libnvJitLink.so.12",
+  "gpu_training": "NOT_RUN",
+  "environment_modified": false,
+  "next_if_data_gate_passes": "Use an existing compatible environment or minimally repair dependency resolution; verify a real CUDA update and new-process restore. No CPU fallback."
+}
