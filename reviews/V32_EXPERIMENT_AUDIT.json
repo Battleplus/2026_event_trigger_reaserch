@@ -1,0 +1,50 @@
+{
+  "acceptance_status": "provisional",
+  "agent_id": "/root/v32_integrity_review",
+  "audit_skill": "experiment-audit",
+  "audited_input_hashes": {
+    "evidence/v32-performance/smoke-final-recomputation.json": "a6d4d3b211d1e498023b4aa60e5c251818076248314fccabbe592d526c60906d",
+    "evidence/v32-smoke/FAILURE.json": "7f9dbf822ad78411434ff96a3bcd7b3c8bbfc1ec788e45d661ec73bd28504d54",
+    "releases/gain-gate-v3-2-performance-light/package/civilian/counterfactual_pairs.py": "1cdc69cc463d41295fc793317eab52fdd6f5e89ab01b30a0205a9f5d3953f172",
+    "releases/gain-gate-v3-2-performance-light/package/civilian/v3_runner.py": "2d46e85bec2f083fec3ef9c883cc4ca7efe0398d6189742e871b825cd79ef3e9"
+  },
+  "checks": {
+    "A_ground_truth": "PASS_WITH_METRIC_WARN",
+    "B_normalization": "PASS_WITH_INTERPRETATION_WARN",
+    "C_claims": "PARTIAL_SCOPE_PASS_SMOKE_FAIL",
+    "D_reachability": "PASS_WITH_SMOKE_FLAG_WARN",
+    "E_scope_fairness": "WARN",
+    "F_classification": "simulation_only"
+  },
+  "classification": "simulation_only",
+  "coordinator_raw_recomputation_scope": {
+    "empty_masked": 2,
+    "forced_excluded": 36,
+    "rows": 52,
+    "shards": 7,
+    "valid_ordinary": 14
+  },
+  "date": "2026-10-19",
+  "engineering": "STOP",
+  "formal_data_gate": "NOT_EVALUATED",
+  "fresh_raw_arithmetic_scope": {
+    "arms": 32,
+    "pairs": 16,
+    "rows": 27,
+    "shards": 4
+  },
+  "gpu_training": "NOT_RUN",
+  "method": "INCONCLUSIVE",
+  "overall_verdict": "WARN",
+  "ppo": "NOT_RUN",
+  "reason_code": "smoke_budget_stop_and_metric_semantics",
+  "report": "reviews/V32_EXPERIMENT_AUDIT.md",
+  "review_independence": "same-family",
+  "reviewer_family": "openai",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "ultra",
+  "smoke_acceptance": "FAIL",
+  "summary": "7/18 smoke instances; simulation arithmetic reproducible in inspected scope, completed-delivery residual semantics unresolved; no training or method claim.",
+  "verdict": "WARN",
+  "world_model": "NOT_RUN"
+}

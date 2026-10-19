@@ -1,0 +1,11 @@
+{
+  "run_id": "v3-2-smoke-20261019",
+  "observation_status": "live lower bound, not final settlement",
+  "worker_pid": 42204,
+  "worker_cpu_seconds_lower_bound": 1508.984375,
+  "guardian_pid": 14908,
+  "guardian_cpu_seconds_lower_bound": 707.328125,
+  "note": "Guardian overhead is separate from worker-tree experiment cap; do not add scenario subtotals again to worker CPU. Final counters may be higher.",
+  "worker_tree_cpu_cap": 1800,
+  "committed_instances_observed": 7
+}

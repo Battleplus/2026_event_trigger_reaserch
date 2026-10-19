@@ -1,13 +1,25 @@
-# V3.2 performance/light experiment status
+# V3.2 final status
 
 Date: 2026-10-19 (Asia/Shanghai).
 
-- Current stage: focused regression checks passed; smoke gate review pending.
-- Production changes: snapshot duplication/key serialization, two proven label-interface repairs, actual worker-tree RSS measurement. No scenario, candidate, safety or scoring-weight change.
-- Slow-instance regression: 90 ticks; action and physical hashes match the independent V3.1 reference; 8/8 ordinary labels valid, 4 forced states excluded. CPU 643.96875 seconds. Not a comparable speedup against previously failing branches.
-- Focused checks: 17 passed (paired counterfactual 11, regional/safety 6) after the conditional V3 scenario-hash compatibility fix. The earlier 8/11 failure is retained as a repair record.
-- Snapshot/source: releases/gain-gate-v3-2-performance-light; one manifest/hash set. Acceptance pending.
-- New smoke: NOT_RUN. Formal 168-instance collection: NOT_RUN. Data gate: NOT_EVALUATED.
-- CPU/GPU training, world model and PPO: NOT_RUN. Method: INCONCLUSIVE.
-- GPU preflight: 2 RTX 2080 Ti reachable; default PyTorch import fails on CUDA library dependency resolution. No environment changes.
-- This branch follows protocols/V32_PERFORMANCE_LIGHT.md and does not change the separate Isaac/full-world-model study.
+| Item | Result |
+|---|---|
+| Engineering | STOP: smoke completed 7/18; fixed CPU budget exceeded |
+| Formal 30/30 data gate | NOT_EVALUATED: formal168 collection NOT_RUN |
+| Method | INCONCLUSIVE |
+| CPU baselines / GPU training | NOT_RUN |
+| World model / PPO | NOT_RUN |
+
+Single new run: v3-2-smoke-20261019. Worker-tree CPU1800.046875 seconds, wall1967.2744005 seconds, working-set metric1,637,158,912 bytes (sum of per-process peak working sets, not simultaneous RSS). No budget increase or repeat smoke.
+
+Focused regressions:17 passed. One90-minute NOOP completed36 initially queued tasks; this missing acceptance was supplemented during smoke and explicitly documented. Original slow-instance action/physical hashes match the90-tick historical reference; no controlled speedup is claimed because the corrected run executes previously failing branches.
+
+All7 committed raw smoke shards were independently recomputed by the coordinator:52 rows,36 forced excluded,2 masked empty windows,14 valid ordinary states,0 positive/14 nonpositive. They remain smoke diagnostics, not formal training data. The fresh GPT-6 Astra read-only review independently checked full arithmetic for the earlier4-shard snapshot, with final stop receipt and7-marker count verified. Its integrity verdict is WARN; smoke acceptance FAIL.
+
+Open scientific issue: completed deliveries can retain positive remaining-work penalty. Arithmetic agreement does not validate that semantics. The inherited smoke flag also accepts structurally valid masked labels; external raw recomputation is required.
+
+GPU preflight found2 RTX2080Ti, but default PyTorch import fails on CUDA dependency resolution. No training/environment modification occurred.
+
+Exact runnable source: releases/gain-gate-v3-2-performance-light. Final93 source-file hashes and7 shard bindings match executed source. Public source/configuration, hashes, safe summaries, resource and review reports are archived; raw large traces are retained locally and excluded from public push.
+
+See reviews/V32_COORDINATOR_DECISION.md and reviews/V32_EXPERIMENT_AUDIT.md. This branch does not change the unrelated Isaac/full-world-model research. No successful stage tag is created.

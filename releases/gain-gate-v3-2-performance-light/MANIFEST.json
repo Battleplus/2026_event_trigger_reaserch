@@ -19,6 +19,128 @@
     "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
     "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
   },
+  "evidence_files": [
+    {
+      "bytes": 10424,
+      "path": "evidence/v32-performance/baseline-profile.json",
+      "sha256": "6d4137e4fda912c7878a2d71ad4566adfebf7c6d76e49df647a278d658996351"
+    },
+    {
+      "bytes": 433,
+      "path": "evidence/v32-performance/final-source-verification.json",
+      "sha256": "c69f9f1a03a75b4c227c2a37db3c431598f8eec85ff8d565114536798edf2f44"
+    },
+    {
+      "bytes": 1175,
+      "path": "evidence/v32-performance/focused-checks.json",
+      "sha256": "699eb073ab9b87693c4d3d5de514124e049a482c46129a3e372a5f7b292ebc53"
+    },
+    {
+      "bytes": 675,
+      "path": "evidence/v32-performance/gpu-preflight.json",
+      "sha256": "f9c5351912b586632122750927ed3189d96b65cddbbb41d1e60301eb252df271"
+    },
+    {
+      "bytes": 2226,
+      "path": "evidence/v32-performance/noop-acceptance/noop-90min.json",
+      "sha256": "093cbdfe180044a8f6aab8a53a98adb01da7b93669bdbc0a8165c269ae8959ff"
+    },
+    {
+      "bytes": 591,
+      "path": "evidence/v32-performance/old-slow-instance-reference.json",
+      "sha256": "fba695819e45a9b6176ef3b98974e6a1a52b77cdbd3bb4ad97a8abb18cc8fb15"
+    },
+    {
+      "bytes": 62175,
+      "path": "evidence/v32-performance/optimized-slow-instance.json",
+      "sha256": "0e1a0f17431cb9f28b11c9bbeae4ddeb0c36c1f0adf2c6b749c084e4b041fb0a"
+    },
+    {
+      "bytes": 1024,
+      "path": "evidence/v32-performance/resource-settlement.json",
+      "sha256": "4cd32edcd8bf9ebef469ad149d4f1fa612ec878cfb41480b3ed18ddfa582f352"
+    },
+    {
+      "bytes": 33327,
+      "path": "evidence/v32-performance/smoke-final-recomputation.json",
+      "sha256": "a6d4d3b211d1e498023b4aa60e5c251818076248314fccabbe592d526c60906d"
+    },
+    {
+      "bytes": 17521,
+      "path": "evidence/v32-performance/smoke-progress-review.json",
+      "sha256": "bf205ee23982d7dfc6bfff012612f40ce7dc1c3b60a6f1c2a6595b7f3ba403bc"
+    },
+    {
+      "bytes": 487,
+      "path": "evidence/v32-performance/smoke-resource-observation.json",
+      "sha256": "6170a2d6f12bbfc8a08082e84de9cf19b03f380652e3a86befff0322963b1680"
+    },
+    {
+      "bytes": 2525,
+      "path": "evidence/v32-performance/v3-train-task_update_or_arrival-001-00900002.commit.json",
+      "sha256": "b3bdb339e9da12dd1838a2c9c2e5e471e5390f32f55396e95133bf2c744d8037"
+    },
+    {
+      "bytes": 637,
+      "path": "evidence/v32-smoke/FAILURE.json",
+      "sha256": "7f9dbf822ad78411434ff96a3bcd7b3c8bbfc1ec788e45d661ec73bd28504d54"
+    },
+    {
+      "bytes": 17749,
+      "path": "evidence/v32-smoke/shard-index.json",
+      "sha256": "ffe58efd355808a29100a76c151e8c72ba7f5c9e5e7e3ba28bae6bad5b9f0a04"
+    },
+    {
+      "bytes": 2457,
+      "path": "protocols/V32_PERFORMANCE_LIGHT.md",
+      "sha256": "a8e29f9a0da2a8d802a957768b0195aa6f92dd9189e3732435df1bcf5e7fb479"
+    },
+    {
+      "bytes": 2723,
+      "path": "README.md",
+      "sha256": "9488dd8d2607b04dd3352cd404127ad4973c5ad8fec102fb723edbae9f5243ed"
+    },
+    {
+      "bytes": 1139,
+      "path": "reports/V31_LABEL_DIAGNOSIS.md",
+      "sha256": "fbd12c92729039d4834bfee7cd0edbcce95be67a367bca7528120bdde4b6463e"
+    },
+    {
+      "bytes": 2362,
+      "path": "reports/V32_PERFORMANCE_DIAGNOSIS.md",
+      "sha256": "6ea82e264b0b95c0e0c7ee36a3f4e71314783ad2cc3d30ee4b448a44acbd163a"
+    },
+    {
+      "bytes": 2566,
+      "path": "reviews/check_noop_v32.py",
+      "sha256": "49ae7c85da5d226478857f178dad2934897a29fe113b9d8f1de0b9236492aafa"
+    },
+    {
+      "bytes": 2810,
+      "path": "reviews/recompute_v32_shards.py",
+      "sha256": "b71d0a8e5d03a4ae02b6f31216163ce2957abeaf7b41f4e9c30183bf55cedd5c"
+    },
+    {
+      "bytes": 3064,
+      "path": "reviews/V32_COORDINATOR_DECISION.md",
+      "sha256": "f8f5e998d612147591516143097d0845c62ad6fa16703c9147f704bf06ae7c12"
+    },
+    {
+      "bytes": 2032,
+      "path": "reviews/V32_EXPERIMENT_AUDIT.json",
+      "sha256": "281c70f7222fdc10ffee3bc9bb242b0f909c61a8b8e509e8342548088fd57f95"
+    },
+    {
+      "bytes": 6700,
+      "path": "reviews/V32_EXPERIMENT_AUDIT.md",
+      "sha256": "e36e0fd4eb4937af695cb70ae716f97b31e1fb3a977f579fec3f7c3a89d2308e"
+    },
+    {
+      "bytes": 2287,
+      "path": "STATUS.md",
+      "sha256": "356ab0e68fe905ea1194f5cbd98770e09b8e99a6fa1f964b5338a1096ebcaa8a"
+    }
+  ],
   "files": [
     {
       "bytes": 1169,
@@ -487,6 +609,6 @@
     }
   ],
   "source_origin": "isolated V3.1 development source; historical archive 0c69f60",
-  "status": "focused checks passed; new smoke acceptance pending",
+  "status": "STOP: 7/18 smoke; budget exceeded; formal data and models NOT_RUN",
   "version": "gain-gate-v3.2-performance-light"
 }

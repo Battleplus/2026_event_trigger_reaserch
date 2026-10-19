@@ -1,21 +1,21 @@
-# V3.2 性能与收益门控实验
+# V3.2: nine-region performance and gain-gate study
 
-执行：GPT-6 Luna；技术审核：主协调者只读审核，不冒称其他审核模型。
+**Final outcome: STOP.** The single18-instance smoke completed7 scenarios before the fixed1800 CPU-second limit. Formal168-scenario collection, CPU/GPU training, world model and PPO were not started. Method evidence remains inconclusive.
 
-本分支执行 [V3.2协议](protocols/V32_PERFORMANCE_LIGHT.md)，与其他分支的 Isaac／完整世界模型研究分开。当前只完成性能诊断、两处配对接口修复及慢实例回归，完整 smoke 尚未通过；正式数据、模型、世界模型和 PPO 均未开始。
+The executed scene is100×100,9 regions,24 UAVs+6 helicopters,54 logical tasks,90 minutes, up to16 candidates and30-minute paired labels with2 suffixes. Implementation: GPT-6 Luna; coordinator technical checks plus a fresh same-family GPT-6 Astra read-only audit. See [final decision](reviews/V32_COORDINATOR_DECISION.md), [fresh audit](reviews/V32_EXPERIMENT_AUDIT.md), [protocol](protocols/V32_PERFORMANCE_LIGHT.md) and [status](STATUS.md).
 
-本次实际源码在 [独立发布目录](releases/gain-gate-v3-2-performance-light/)，包含准确的源码、测试、配置、来源和哈希。仓库根目录旧 `package/` 保留历史，不作为本次运行入口。固定场景为100×100、9区域、30平台、54任务、90分钟，候选上限16、标签窗口30分钟、每普通状态2个后缀。
+Runnable source is in [the isolated release directory](releases/gain-gate-v3-2-performance-light/). Root package/history files belong to earlier versions. The release contains93 exact files, source/configuration bindings, one manifest/hash set and focused tests. Actual measured dependencies are in the resource receipts; a fresh environment install has not been independently verified.
 
-诊断发现快照复制与序列化为主要热点；旧V3.1普通标签全部被两个接口错误屏蔽，不能用于训练。修复后的原seed慢实例完成90分钟，动作和物理轨迹哈希保持一致，8个普通状态获得有效标签。该诊断只保存了摘要，原始分支成本需从后续smoke完整分片再次独立复算；不把摘要当成原始数据。
+Performance diagnosis identified snapshot copying/encoding, not candidate enumeration, as the dominant hotspot. The corrected slow-instance action/physical hashes match the original90-step reference, but its previously failing branches now run, so runtime ratios do not measure a controlled speedup. [Diagnostics](reports/V32_PERFORMANCE_DIAGNOSIS.md).
 
-运行入口（先进入发布目录）：
+All7 committed smoke shards passed coordinator raw recomputation:14 valid ordinary states, all nonpositive;2 empty windows masked;36 forced states excluded. These are smoke diagnostics, not formal30/30 evidence. A completed-delivery residual-cost defect remains and must be corrected in a future version before scientific use. No positive result is asserted.
+
+[Final smoke receipts and hashes](evidence/v32-smoke/) and [safe recomputation summaries](evidence/v32-performance/smoke-final-recomputation.json) are public. Raw large trajectories remain local and are excluded from Git after automatic approval rejected their public upload. Reproduction scripts can recompute user-held raw shards with the independent oracle.
+
+For reproducibility only, from the release directory:
 
 ```powershell
-python -B package/civilian/v3_runner.py smoke --output-dir evidence/smoke-runs --run-id <new-run-id>
+python -B package/civilian/v3_runner.py smoke --output-dir <output> --run-id <new-id>
 ```
 
-批次上限1800 CPU秒、8GiB，必须18/18完成并经审核才进入168场景采集。再次超限则停止本版本。正式数据达到30正／30非正独立普通状态后，才允许CPU基线和GPU MLP训练。
-
-服务器GPU硬件可达，但默认PyTorch环境存在CUDA动态库冲突；训练尚未启动。依赖文件沿用源版本，真实执行环境以运行收据为准，未宣称在全新环境完成安装验证。
-
-查看 [状态](STATUS.md)、[性能诊断](reports/V32_PERFORMANCE_DIAGNOSIS.md) 和 [旧标签诊断](reports/V31_LABEL_DIAGNOSIS.md)。历史失败保留，不创建未通过阶段的成功标签。
+The approved V3.2 run is already stopped; no automatic retry is scheduled and no successful milestone tag is created. The fixed command retains18 instances and1800 CPU seconds. Historical failures stay intact. GPU hardware was reachable, but its default PyTorch environment failed a read-only CUDA import check; GPU training remains NOT_RUN.

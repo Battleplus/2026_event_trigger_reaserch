@@ -1,7 +1,72 @@
 {
-  "completed_instances": 4,
-  "scope": "public summaries and hashes; raw simulation traces retained locally, not uploaded",
+  "completed_instances": 7,
+  "planned_instances": 18,
+  "scope": "final committed smoke summaries and hashes; raw traces retained locally, not uploaded",
   "shards": [
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "de9e6c10c45686a7a61995de6ea75e6ee76ca14f4f83416a6fcafea0972f2a01",
+      "condition": "energy_anomaly",
+      "decompressed_jsonl_sha256": "460364ab4dfec6f3a480583b0aa82628cb5340c418c0a39c0cd2953465525899",
+      "raw_data_public": false,
+      "row_count": 6,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 42.890625,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 46.1159697999974,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-energy_anomaly-000-00900201",
+      "split": "train"
+    },
     {
       "binding": {
         "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
@@ -64,6 +129,134 @@
         "within_limits": true
       },
       "scenario_id": "v3-train-platform_failure_or_capability_loss-000-00900101",
+      "split": "train"
+    },
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "943a5e13590ceff995b37ce077dcbad8b835e6eb37fb1293f130c32bace4c61f",
+      "condition": "platform_failure_or_capability_loss",
+      "decompressed_jsonl_sha256": "633c641c32547941a9b2f44b947ce1778223b598a25f2cf6946d4f10aec85466",
+      "raw_data_public": false,
+      "row_count": 15,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 578.09375,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 625.8588337999972,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-platform_failure_or_capability_loss-001-00900102",
+      "split": "train"
+    },
+    {
+      "binding": {
+        "baseline_provenance_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+        "config_files": [
+          {
+            "path": "ENVIRONMENT_SPEC.json",
+            "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+          },
+          {
+            "path": "EVENT_TRIGGER_CONFIG.json",
+            "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+          },
+          {
+            "path": "GAIN_GATE_CONFIG.json",
+            "sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9"
+          }
+        ],
+        "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+        "evidence_sha256": "c6dfd8ee9f4f992df16f6f8db4a7e3fa2660ff45f4c8ca1adcaf90471f0845e7",
+        "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118"
+      },
+      "compressed_sha256": "98574c89b684e8b662a06411339e2805d9d6db576d3e92af2842ad85f06dc9ba",
+      "condition": "platform_failure_or_capability_loss",
+      "decompressed_jsonl_sha256": "ae024cd6c51b64f40ff3974b8e8feea95218030e7fce1663c8771c62a366c775",
+      "raw_data_public": false,
+      "row_count": 7,
+      "runtime_receipt": {
+        "cpu_affinity": [
+          0
+        ],
+        "exit_state": "complete",
+        "historical_v2_cpu_total": "unknown; not reset or charged to this V3 receipt",
+        "limits": {
+          "cpu_seconds": 1800,
+          "cpu_threads": 1,
+          "cuda": "disabled",
+          "rss_bytes": 8589934592,
+          "wall_seconds": 7200
+        },
+        "packages": {
+          "numpy": "2.5.1",
+          "psutil": "7.2.2",
+          "threadpoolctl": "3.6.0",
+          "torch": "2.13.0"
+        },
+        "peak_rss_bytes": 1631879168,
+        "process_cpu_seconds": 60.296875,
+        "python": "3.13.13",
+        "rss_measurement": "maximum observed by runner sampling and stage settlement",
+        "schema": "gain-gate-v3-resource-receipt/1",
+        "stage": "smoke",
+        "torch": {
+          "cuda_available": false,
+          "cuda_initialized": false,
+          "cuda_visible_devices": "",
+          "threads": 1,
+          "version": "2.13.0+cpu"
+        },
+        "wall_seconds": 65.5263438999973,
+        "within_limits": true
+      },
+      "scenario_id": "v3-train-platform_failure_or_capability_loss-002-00900103",
       "split": "train"
     },
     {
@@ -258,5 +451,6 @@
       "scenario_id": "v3-train-task_update_or_arrival-002-00900003",
       "split": "train"
     }
-  ]
+  ],
+  "status": "STOP"
 }

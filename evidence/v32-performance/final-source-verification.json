@@ -1,0 +1,9 @@
+{
+  "all_completed_shard_bindings_match_release": true,
+  "check": "deterministic coordinator read-only verification after smoke stop",
+  "completed_shards": 7,
+  "config_sha256": "bdb54839886308c13198ec54b5a01c1a4bb616a04c20bf41bb900850fb69c23f",
+  "source_files_checked": 93,
+  "source_manifest_sha256": "efba3c81dd854ab926479e6555e1b681e5aa9617cdbd9b10d9cb0dfd90007118",
+  "source_release_matches_execution_copy": true
+}

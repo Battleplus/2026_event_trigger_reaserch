@@ -1,0 +1,20 @@
+{
+  "accounting": "Known V3.2 stage CPU values only; historical/project total remains uncertain; no hidden reset to zero",
+  "completed_profile_cpu_seconds": 1028.84375,
+  "corrected_slow_instance_cpu_seconds": 643.96875,
+  "gpu_training": "NOT_RUN",
+  "known_stage_cpu_subtotal_seconds": 3480.875,
+  "new_paid_resources": false,
+  "no_double_counting": "Scenario CPU subtotals are contained in smoke worker total; stage timers overlap; do not sum nested timers. Guardian overhead is separate and lower-bound only.",
+  "noop_probe_cpu_seconds": 8.015625,
+  "other_costs": {
+    "aborted_early_optimized_diagnostic_cpu_seconds": null,
+    "failed_import_restore_diagnostic_cpu_lower_bound_seconds": 208,
+    "focused_tests_cpu_seconds": null,
+    "historical_v2_interrupted_cpu_total": "unknown",
+    "prior_v31_smoke_worker_cpu_seconds": 1800.015625
+  },
+  "smoke_guardian_cpu_seconds_lower_bound": 707.328125,
+  "smoke_guardian_final_cpu_seconds": null,
+  "smoke_worker_tree_cpu_seconds": 1800.046875
+}

@@ -1,0 +1,21 @@
+{
+  "completion_receipt_written": false,
+  "error": "cpu_limit_exceeded",
+  "error_type": "OuterResourceGuardian",
+  "resource_receipt": {
+    "child_process_cpu_seconds": 1800.046875,
+    "cpu_measurement": "guarded_process_tree_user_plus_system",
+    "exit_state": "killed",
+    "limits": {
+      "cpu_seconds": 1800,
+      "rss_bytes": 8589934592,
+      "wall_seconds": 7200
+    },
+    "peak_rss_bytes": 1637158912,
+    "rss_measurement": "sum_of_process_tree_per_process_peak_working_sets",
+    "wall_seconds": 1967.2744004999986
+  },
+  "run_id": "v3-2-smoke-20261019",
+  "schema": "gain-gate-v3-run-failure/1",
+  "stage": "smoke"
+}
