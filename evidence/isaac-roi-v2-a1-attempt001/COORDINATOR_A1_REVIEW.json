@@ -1,0 +1,69 @@
+{
+  "reviewer_role": "primary coordinator; source implementation by GPT-6 Luna",
+  "decision": "REPAIR_REQUIRED",
+  "scope": "actual 90-minute simplified Isaac representative episode only; not full A1 or scientific acceptance",
+  "runtime_exit": 0,
+  "simulated_seconds": {
+    "representative": 5400
+  },
+  "trajectory_rows": 194400,
+  "actual_isaac_run": true,
+  "aircraft_count": 36,
+  "source_hash_checks": {
+    "scenes/air_combat_scene.py": true,
+    "scenes/air_combat_specs.py": true,
+    "scenes/aircraft_motion.py": true,
+    "sensors/air_combat_specs.py": true,
+    "sensors/air_combat_obstacles.py": true,
+    "weapons/air_combat_specs.py": true
+  },
+  "downloaded_trajectory_uncompressed_hash_matches": true,
+  "resource": {
+    "User time (seconds)": "277.37",
+    "System time (seconds)": "72.17",
+    "Percent of CPU": "343%",
+    "Elapsed (wall clock)": "1:41.61",
+    "Maximum resident set size": "4391696",
+    "Exit status": "0"
+  },
+  "raw_event_summary_unaccepted": {
+    "representative": {
+      "public_task_denominator": 81,
+      "completed_public_tasks": 81,
+      "remaining_public_tasks": 0,
+      "unfinished_public_task_ids": [],
+      "discovered_target_count": 27,
+      "serviced_target_count": 0,
+      "command_attempts": 7128,
+      "switches": 0,
+      "planner_calls": 0,
+      "violations": 0,
+      "faulted_aircraft_count": 1,
+      "row_count": 194400,
+      "actor_count": 36
+    }
+  },
+  "audit_status": "fail",
+  "audit_failure_count": 506037,
+  "audit_first_errors": [
+    "actor_manifest_has_valid_types_and_speed: invalid actor kind, zone, or speed",
+    "representative/uav-0-0/1: aircraft_type mismatch",
+    "representative/uav-0-0/1:  assigned incompatible uav task z0-cell0",
+    "representative/uav-0-1/1: aircraft_type mismatch",
+    "representative/uav-0-1/1:  assigned incompatible uav task z0-cell1",
+    "representative/heli-0-0/1: aircraft_type mismatch",
+    "representative/heli-0-0/1:  assigned incompatible helicopter task z0-cell2",
+    "representative/heli-0-1/1: aircraft_type mismatch",
+    "representative/heli-0-1/1:  assigned incompatible helicopter task z0-cell5",
+    "representative/uav-1-0/1: aircraft_type mismatch"
+  ],
+  "production_scalar_status": "NOT_VERIFIED",
+  "frozen_code_hashes": {
+    "package/isaac_backend.py": "90f88d9f0a7bf55a7146a58ad69c0f41a4892c212a2db68f13ee72383b69f97c",
+    "package/mission.py": "d38e5011d015a5c76f0de859d55574956b13a8e9f864e103e8fcd3ca278ae337",
+    "package/run_a1.py": "72d026487c25a865adf1903d825345482a7065b4934f22fa357bc3ca9fc25dc1",
+    "package/test_mission.py": "c0d022c947fd5b1bba88ceec228ccd98807f4b414ca1e1ac528d9d7dd953b38c",
+    "package/configs/a1_representative.json": "8178a7042638bd7236c33426eb60a5d99789cd8a6c9bde0ab1f2b3c69f251ace"
+  },
+  "next_action": "repair producer/auditor actor manifest type/speed schema; rerun independent audit and fair pair; no formal data or training yet"
+}

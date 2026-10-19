@@ -1,6 +1,8 @@
 # Isaac ROI Simplified v2: Current Status
 
-Date: 2026-10-19. Protocol/archive implementation is in progress. A1 mission: NOT_RUN. Pilot: NOT_RUN. Formal collection: NOT_RUN. Training: NOT_RUN. The only prior Isaac loading evidence is the v1 diagnostic with 2 and 30 quadrotors, 300 frames per stage; it is not the 36-platform 18-UAV/18-helicopter task or a study result. See [the v2 protocol](protocols/isaac-roi-simplified-v2/EXECUTION_PROTOCOL.md) and [its status](protocols/isaac-roi-simplified-v2/STATUS.md).
+Date: 2026-10-19. Implementation is in progress. A 90-minute representative run completed in actual Isaac: 5400 simulation steps, 194400 trajectory rows, exit 0, 101.61 seconds wall time, and 4391696 KiB maximum RSS. All six source dependency hashes and the downloaded trajectory hash matched. The independent audit failed with 506037 findings, including actor type/kind/speed schema mismatch and non-finite energy values. Coordinator decision: `REPAIR_REQUIRED`; this is not an accepted method result or a success label. A1 paired comparison: NOT_RUN. Pilot: NOT_RUN. Formal 168-episode collection: NOT_RUN. Training: NOT_RUN. See [the v2 protocol](protocols/isaac-roi-simplified-v2/EXECUTION_PROTOCOL.md), [attempt summary](evidence/isaac-roi-v2-a1-attempt001/A1_ATTEMPT_SUMMARY.md), and [sanitized evidence](evidence/isaac-roi-v2-a1-attempt001/).
+
+Attempt002: representative run completed. The independent auditor passed consistency checks only; this does not validate task geometry or discovery authenticity. Geometric recomputation is still required by the coordinator. No task/method success is accepted.
 
 ---
 

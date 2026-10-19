@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "source_files": {
+    "releases/isaac-roi-simplified-v2-a1-attempt001/source/isaac_backend.py": "90f88d9f0a7bf55a7146a58ad69c0f41a4892c212a2db68f13ee72383b69f97c",
+    "releases/isaac-roi-simplified-v2-a1-attempt001/source/mission.py": "d38e5011d015a5c76f0de859d55574956b13a8e9f864e103e8fcd3ca278ae337",
+    "releases/isaac-roi-simplified-v2-a1-attempt001/source/run_a1.py": "72d026487c25a865adf1903d825345482a7065b4934f22fa357bc3ca9fc25dc1",
+    "releases/isaac-roi-simplified-v2-a1-attempt001/source/test_mission.py": "c0d022c947fd5b1bba88ceec228ccd98807f4b414ca1e1ac528d9d7dd953b38c",
+    "releases/isaac-roi-simplified-v2-a1-attempt001/source/configs/a1_representative.json": "8178a7042638bd7236c33426eb60a5d99789cd8a6c9bde0ab1f2b3c69f251ace"
+  },
+  "evidence_files": {
+    "evidence/isaac-roi-v2-a1-attempt001/COORDINATOR_A1_REVIEW.json": "51360637cf18d73761783521d151617f045da093d72cb8868970ea51a6082113",
+    "evidence/isaac-roi-v2-a1-attempt001/run_receipt.json": "0c10bcc31fe1a150d9c747c395c63951579467a46ba043f445e72ded13698aa9",
+    "evidence/isaac-roi-v2-a1-attempt001/manifest.json": "de004f68e41968c13fc4d39fb2e53ca21d561d39ca3bcbade740364872fb2a58",
+    "evidence/isaac-roi-v2-a1-attempt001/A1_ATTEMPT_SUMMARY.md": "3cbbf31cf395bfb4350b77eb5fdd807b761a4e2d5543b25cae924697ef43fab5",
+    "evidence/isaac-roi-v2-a1-attempt001/OUTPUT_SHA256SUMS.txt": "f1ddb6e272ab5321ba0691af492511d8c9e33e54030f5aa8c5f45876ddb8ceaf"
+  }
+}

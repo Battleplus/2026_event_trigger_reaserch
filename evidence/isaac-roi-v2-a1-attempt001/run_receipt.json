@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "record_kind": "sanitized_execution_receipt",
+  "run_id": "isaac-roi-a1-representative-v2",
+  "phase": "representative",
+  "execution_status": "complete",
+  "actual_isaac_run": true,
+  "runtime_exit": 0,
+  "simulated_seconds": 5400,
+  "trajectory_rows": 194400,
+  "aircraft_count": 36,
+  "map_size_km": 300,
+  "roi_width_km": 50,
+  "meters_per_unit": 100,
+  "config_sha256": "8178a7042638bd7236c33426eb60a5d99789cd8a6c9bde0ab1f2b3c69f251ace",
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "six_isaac_dependency_hashes_verified": true,
+  "downloaded_trajectory_uncompressed_hash_matches": true,
+  "runtime_resources": {
+    "wall_clock_seconds": 101.61,
+    "maximum_resident_set_size_kib": 4391696,
+    "exit_status": 0
+  },
+  "modeling_limits": {
+    "aircraft_motion": "simplified_source_kinematic_without_turn_rate_or_turn_radius_constraint",
+    "energy": "linear distance Wh/km analytical estimate; not physical measurement",
+    "communications": "time-addressed command delay/drop model; not radio physics"
+  },
+  "independent_audit": {
+    "status": "fail",
+    "failure_count": 506037,
+    "categories": [
+      "actor type/kind/speed schema mismatch",
+      "platform/task type compatibility mismatch",
+      "non-finite energy values"
+    ],
+    "maxspeed_recheck": "not_verified",
+    "invariant_failure_count": 0,
+    "zero_invariant_failures_is_not_acceptance": true,
+    "coordinator_decision": "REPAIR_REQUIRED"
+  },
+  "unaccepted_raw_metrics": {
+    "public_task_count": 81,
+    "completed_public_tasks": 81,
+    "discovered_target_count": 27,
+    "serviced_target_count": 0,
+    "command_attempts": 7128,
+    "faulted_aircraft_count": 1
+  },
+  "not_run": [
+    "A1 paired comparison",
+    "36-episode pilot",
+    "168-episode formal collection",
+    "model training"
+  ],
+  "not_included_payloads": [
+    "raw trajectory",
+    "raw event log",
+    "raw detailed audit report"
+  ],
+  "source_receipt_sha256": "c7929b76148caa99d045f6107c9387d16108f1ec0441c8ff9c41e070e9975af3"
+}
