@@ -1,10 +1,16 @@
 # Isaac ROI Protocol v2: Execution Protocol
 
-Status: protocol specification; execution has not started. Dates and observations below are based on the v1 audit artifacts dated 2026-10-19. This file does not certify an experiment as passed.
+Status: protocol specification with A1 prototype execution underway; no scientific or method acceptance is implied. Attempt001/002 exposed implementation and audit gaps; current attempt status is tracked in the repository root `STATUS.md`.
 
 ## Purpose and scope
 
 Stage A is a bounded research experiment in Isaac. Stage B ports the frozen task, data contract, and selected methods to the formal platform. Stage A may compare decision methods; it must not claim a completed Stage B integration. The task is intentionally limited to search and search plus abstract strike selection. It has no weapon control, projectile simulation, ballistics, or physical damage model. A strike action means only selecting/assigning an abstract target for an eligible platform.
+
+### Current A1 implementation boundary
+
+The running A1 implementation is a simplified engineering prototype, not the complete Stage A study specification above. Its initial assignment is a newly implemented public greedy C1 proxy, not the historical C1 solver. Aircraft use the source scene's kinematic motion model without turn-rate or turn-radius constraints. Target discovery is an analytic two-dimensional distance check at a commanded/display altitude of 20 km; it is not physical sensing, line-of-sight sensing, or validated sensor geometry. Energy is an analytical distance-based estimate, and communication delay/drop is synthetic task-layer behavior rather than radio propagation. No hard mission deadline is implemented in this A1 prototype.
+
+The attempt002 candidate estimator is not acceptable as an implemented cost model: it treats a configured value in Wh/km as power and omits support approach/queue-connection distance from ETA. A corrected candidate cost/gain calculation, independently checked geometry, and a production scalar definition remain pending. A genuine ordinary-decision trigger policy also remains to be implemented and validated in the pilot; do not treat the prototype's current command/planner call behavior as that trigger. A1 work does not establish that A2 pilot, A3 data collection, or A4 training/evaluation has been implemented or run.
 
 ## Scenario contract
 

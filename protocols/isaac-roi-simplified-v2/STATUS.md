@@ -1,6 +1,6 @@
 # Protocol Status
 
-As of 2026-10-19, this directory contains the v2 execution specification, experiment matrix, migration contract, and this status record. These are plans and contracts, not experiment receipts. No v2 experiment is declared PASS.
+As of 2026-10-19, this directory contains the v2 execution specification, experiment matrix, migration contract, and this status record. A1 prototype execution has occurred, but the attempts remain under repair and do not establish scientific acceptance. A2 pilot, A3 formal trajectories, and A4 model training/evaluation are not established as run.
 
 ## Verified prior evidence
 
@@ -12,7 +12,7 @@ The latest coordinator-provided runtime snapshot is Python 3.10.12, Isaac Sim 4.
 
 ## v2 execution state
 
-- A1: deployment prerequisite resolved and current execution is authorized; no receipt yet establishes completion of the 90-minute Isaac mission or 30-minute fair pair.
+- A1: actual Isaac representative and paired prototype phases are recorded in the repository root status and attempt-specific evidence. Known limits include public greedy C1 proxy, kinematic motion without turn constraints, analytic 2D discovery at 20 km, and no hard deadline. Candidate cost/gain and ordinary-trigger implementations remain incomplete; current attempts are not accepted study results.
 - A2: planned; zero of 36 pilot episodes evidenced.
 - A3: planned; zero v2 trajectories evidenced, no 30 positive plus 30 non-positive unique training state IDs established.
 - A4: planned; no fitted baselines or GPU model checkpoints, no frozen `G`/`GWM`, and zero of 42 independent test scenes evidenced.
