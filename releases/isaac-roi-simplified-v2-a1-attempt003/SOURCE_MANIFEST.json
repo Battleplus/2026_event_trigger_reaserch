@@ -1,34 +1,14 @@
-[
-  {
-    "path": "source/a1_representative.json",
-    "sha256": "e98bd34c1aef9bbe34f6ac83b00ac86dfd54024e42ddd61b01c8455bf0de4876"
-  },
-  {
-    "path": "source/audit_trajectory.py",
-    "sha256": "29041c78053cc5a4fd3d1642241cb5e93e330e35059e076a268f12ac9d008d30"
-  },
-  {
-    "path": "source/isaac_backend.py",
-    "sha256": "90f88d9f0a7bf55a7146a58ad69c0f41a4892c212a2db68f13ee72383b69f97c"
-  },
-  {
-    "path": "source/mission.py",
-    "sha256": "e9894c152021a7094d9e936c4b11d5145daf7f662234a77efa6da25e68277a78"
-  },
-  {
-    "path": "source/README.md",
-    "sha256": "f2f294b1ef7366d62864b1fca207a0a4dba582572f0cd9c48cd80eace251ae73"
-  },
-  {
-    "path": "source/run_a1.py",
-    "sha256": "f45cf17f2c3bde0f816adab65d3a2f2795e2b26142612fa5d5691d6bb6c84357"
-  },
-  {
-    "path": "source/test_mission.py",
-    "sha256": "aab4b7c04b6c9c1055122aed720f99aa8d13beebef306e9167e1a2f3ed00ad85"
-  },
-  {
-    "path": "source/configs/a1_representative.json",
-    "sha256": "e98bd34c1aef9bbe34f6ac83b00ac86dfd54024e42ddd61b01c8455bf0de4876"
-  }
-]
+{
+  "attempt": "isaac-roi-a1-v2-attempt003-20261019",
+  "source_files": [
+    "source/audit_trajectory.py",
+    "source/isaac_backend.py",
+    "source/mission.py",
+    "source/README.md",
+    "source/run_a1.py",
+    "source/test_mission.py",
+    "source/configs/a1_representative.json"
+  ],
+  "source_sha256": "See evidence/source_verification_after.txt and the original frozen SHA256SUMS; copied files are byte-identical to the seven-file package.",
+  "status": "frozen_for_A1_engineering_archive"
+}
