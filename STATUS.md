@@ -4,7 +4,8 @@ Date: 2026-10-19 (Asia/Shanghai).
 
 - User requires the existing 20w Isaac Sim scene and actual Isaac-origin world-model data; formation geometry is not fixed.
 - Protocol amendment: protocols/ISAAC_20W_SCOPE_AMENDMENT.md.
-- Scene archive and entry points have been identified. Isaac runtime and task/telemetry interfaces are under inspection.
+- Scene inventory and coordinator source review are archived in evidence/isaac20w-inventory-v1. The eight-platform kinematic scene needs a new civil task/waypoint adapter; this is not 30-platform acceptance.
+- Candidate Isaac runtime installation was still in progress during inspection. A short actual-frame/waypoint pilot adapter is now being implemented; no runtime success is assumed.
 - Pure-Python N02 V3.3 collection is paused. Prior shards are diagnostic history, not Isaac data.
 - New Isaac episodes, training and six-arm results: NOT RUN. Scientific conclusions: INCONCLUSIVE.
 - This milestone archives the revised protocol only; no scene acceptance or trained model is claimed.

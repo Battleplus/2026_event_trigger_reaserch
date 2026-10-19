@@ -1,0 +1,23 @@
+{
+  "schema": "coordinator-isaac-inventory-review/1",
+  "role": "coordinator read-only; implementation by GPT-6 Luna",
+  "actual_reviewer_model": "Codex coordinator; exact runtime model identifier not exposed",
+  "verdict": "READY_FOR_ADAPTER_IMPLEMENTATION",
+  "engineering_acceptance": false,
+  "actual_isaac_data_collected": false,
+  "verified": [
+    "20w scene entry and construction module",
+    "native meters/time-scale must be explicitly bound",
+    "eight hardcoded platforms do not prove 30-platform execution",
+    "waypoint reference follows existing speed-limited motion model",
+    "counter-only reset is insufficient for fair counterfactual branches",
+    "old state-injection interface is not executable motion control"
+  ],
+  "open_items": [
+    "actual callable Isaac runtime",
+    "headless civil adapter and real frame/trajectory export",
+    "state and RNG replay",
+    "30-platform mission-layer integration"
+  ],
+  "scope": "Inventory and source review only; no scientific support verdict."
+}

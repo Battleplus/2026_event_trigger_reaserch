@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "path": "COORDINATOR_REVIEW.json",
+      "bytes": 1040,
+      "sha256": "93f22e6bf23ad40188d7707d578685064ac669279a9af203bd4420d0310282b1"
+    },
+    {
+      "path": "inventory.json",
+      "bytes": 3881,
+      "sha256": "55f02841ede214d1541985a7741a58d89d846c0d3ca9926a7b82ecc5554ed8a3"
+    },
+    {
+      "path": "ISAAC_REUSE_AUDIT.md",
+      "bytes": 7005,
+      "sha256": "14c5a16eda7e142781c4bec5e0bcf1e7bc9271e37d82583366a23e7fa1729f0d"
+    }
+  ]
+}

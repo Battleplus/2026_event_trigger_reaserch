@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-19",
+  "timezone": "Asia/Shanghai",
+  "source": {
+    "archive_path": "54_20-master.zip",
+    "archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+    "archive_entries": 659,
+    "extracted_regular_files": 558,
+    "extracted_to": "source/54_20-master",
+    "path_traversal_checked": true,
+    "symlink_entries_rejected": true,
+    "scripts_executed": false,
+    "license_file_found": false,
+    "redistribution_rights": "unverified; keep source snapshot private"
+  },
+  "scene": {
+    "entry": "test_air_combat_scene.py",
+    "scene_module": "scenes/air_combat_scene.py",
+    "map_size_km_default": 300.0,
+    "meters_per_unit_default": 100.0,
+    "stage_meters_per_unit_written": true,
+    "time_scale_default": 45.0,
+    "time_scale_in_test_configurable_by_env": true,
+    "time_scale_controller_override": 1.0,
+    "default_platform_count": 8,
+    "platforms_hardcoded": true,
+    "default_motion_backend": "kinematic model with scene.update writing USD root pose",
+    "default_motion_backend_physx_rigidbody": false,
+    "effective_configuration": "must record QL_AIR_COMBAT_* overrides at runtime",
+    "unsafe_entry_side_effects": [
+      "creates visible SimulationApp at import",
+      "opening missile demo enabled by default"
+    ]
+  },
+  "interfaces": {
+    "command": "IsaacSessionController accepts state-injection fields for spawned platform IDs; _ExternalMotionModel writes commanded state directly and is not executable movement control",
+    "pilot_actuation_path": "replace platform reference_fn with a waypoint reference and let the existing kinematic model plus scene.update enforce motion",
+    "telemetry_snapshot": [
+      "platforms/agents",
+      "targets",
+      "sensor contacts",
+      "obstacles",
+      "tactical time"
+    ],
+    "existing_persistence": "MP4 plus manifest only; no training trajectory table",
+    "reset": "session controller restores captured platform and target fields/world state; generic runtime reset only counters",
+    "rng_state_restored": false,
+    "civil_task_api": false,
+    "energy_model": false,
+    "communication_model": false,
+    "paired_keep_replan_logger": false,
+    "combat_bridge_reusable_for_public_civil_schema": false
+  },
+  "runtime_preflight": {
+    "local_callable_runtime_found": false,
+    "local_project_venv_isaacsim_module_found": false,
+    "authorized_server": "authorized-linux-server",
+    "server_hostname": "authorized-linux-server",
+    "server_os": "Ubuntu 22.04; Linux 5.19 x86_64",
+    "candidate_venv": "<ISAAC_RUNTIME>",
+    "candidate_venv_python": "Python 3.10",
+    "isaacsim_package_present_at_inspection": false,
+    "external_install_process": {
+      "pid": 2065131,
+      "requested_version": "4.5.0.0",
+      "status_at_inspection": "running; not started or modified by this audit"
+    },
+    "gpu": [
+      {
+        "index": 0,
+        "model": "NVIDIA GeForce RTX 2080 Ti",
+        "memory_used_mib": 6,
+        "utilization_percent": 0
+      },
+      {
+        "index": 1,
+        "model": "NVIDIA GeForce RTX 2080 Ti",
+        "memory_used_mib": 38,
+        "utilization_percent": 0
+      }
+    ],
+    "isaac_process_found": false,
+    "docker_inventory_available": false,
+    "docker_reason": "permission denied on Docker daemon socket"
+  },
+  "task_layer_targets_not_scene_defaults": {
+    "grid_cells": 10000,
+    "regions": 9,
+    "platforms": 30,
+    "tasks": 54,
+    "formation_fixed": false
+  },
+  "actual_isaac_data_collected": false,
+  "first_pilot_minimum": "After runtime is callable, build a headless civil adapter, spawn 1-2 inspection platforms/sites, advance a short waypoint sequence at time_scale=1, and export seeded per-step JSONL with task/energy/communication fields."
+}
