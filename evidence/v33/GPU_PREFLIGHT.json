@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Shanghai",
+  "scope": "seeded 8x8 CUDA matmul, scalar loss and backward only; no experiment model training",
+  "seed": 8201,
+  "python": "3.11.16",
+  "torch": "2.7.0+cu128",
+  "cuda": true,
+  "witness": "cuda_forward_backward",
+  "device": "cuda:0",
+  "finite_gradient": true,
+  "gpu": "NVIDIA GeForce RTX 2080 Ti",
+  "runtime": "existing dedicated runtime reused without install/rebuild",
+  "default_python_repaired": false,
+  "experiment_training_started": false,
+  "limitations": "hardware/runtime feasibility only; this is not an experiment optimizer update or checkpoint restore"
+}
