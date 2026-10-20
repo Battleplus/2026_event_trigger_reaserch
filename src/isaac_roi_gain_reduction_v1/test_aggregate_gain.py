@@ -15,11 +15,11 @@ class AggregateGainTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
-    def write(self, state, seed, gain, **extra):
+    def write(self, state, seed, gain, split="train", **extra):
         path = self.root / state / f"suffix_{seed}" / "reduction.json"
         path.parent.mkdir(parents=True)
         path.write_text(json.dumps({"status": "PASS", "state_id": state,
-                                    "suffix_seed": seed, "G": gain, **extra}), encoding="utf-8")
+                                    "suffix_seed": seed, "split": split, "G": gain, **extra}), encoding="utf-8")
 
     def test_suffix_mean_and_30_30_counts(self):
         for index in range(2):

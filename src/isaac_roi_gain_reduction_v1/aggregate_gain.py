@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 from pathlib import Path
 
 
@@ -47,6 +46,7 @@ def aggregate(root: Path, output: Path):
             variance = sum((value - mean) ** 2 for value in gains) / (len(gains) - 1)
             states.append({"state_id": state_id, "valid_mask": True, "gain_mean": mean,
                            "gain_variance": variance, "suffix_count": len(gains),
+                           "split": sorted({item.get("split") for item in valid if item.get("split") is not None}),
                            "suffix_seeds": sorted(seeds)})
         else:
             states.append({"state_id": state_id, "valid_mask": False, "unknown_reason": reason,
@@ -55,9 +55,21 @@ def aggregate(root: Path, output: Path):
     ordinary = [state for state in states if state.get("valid_mask") is True]
     positive = [state for state in ordinary if state["gain_mean"] > 0]
     nonpositive = [state for state in ordinary if state["gain_mean"] <= 0]
+    split_counts = {"positive": {"train": 0, "validation": 0},
+                    "nonpositive": {"train": 0, "validation": 0}}
+    for state in positive + nonpositive:
+        label = "positive" if state["gain_mean"] > 0 else "nonpositive"
+        for split in state.get("split", []):
+            if split in split_counts[label]:
+                split_counts[label][split] += 1
+    count_gate = len(positive) >= 30 and len(nonpositive) >= 30
+    split_gate = all(split_counts[label][split] > 0
+                     for label in ("positive", "nonpositive")
+                     for split in ("train", "validation"))
     result = {"status": "PASS", "state_count": len(states), "valid_state_count": len(ordinary),
               "positive_count": len(positive), "nonpositive_count": len(nonpositive),
-              "met_30_30": len(positive) >= 30 and len(nonpositive) >= 30,
+              "count_30_30_met": count_gate, "split_coverage_met": split_gate,
+              "met_30_30": count_gate and split_gate, "split_counts": split_counts,
               "states": states,
               "excluded_count": len(states) - len(ordinary),
               "source_report_count": len(reports)}

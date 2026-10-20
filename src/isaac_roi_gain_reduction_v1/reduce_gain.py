@@ -189,6 +189,7 @@ def reduce_suffix(suffix_dir, output):
     report = {"status": "PASS", "fixture_only": bool(manifest.get("fixture_only", False)),
               "state_id": suffix_meta.get("state_id"),
               "suffix_seed": suffix_meta.get("seed"),
+              "split": manifest.get("split", manifest.get("config", {}).get("split")),
               "forced": bool(suffix_meta.get("audit_interface", {}).get("forced", False)),
               "J_exec_keep": keep["metrics"]["j_exec"], "J_exec_replan": replan["metrics"]["j_exec"],
               "C_increment": c_increment, "G": gain,

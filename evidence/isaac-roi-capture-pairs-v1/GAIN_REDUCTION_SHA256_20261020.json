@@ -3,39 +3,9 @@
   "status": "LOCAL_REVIEW_ONLY",
   "files": [
     {
-      "path": "src/isaac_roi_capture_pairs_v1/run_capture.py",
-      "sha256": "c19cdf17afdc9e67584994059d0f812e8b2bd54bc6c3a4f7a39753025568fcc8",
-      "size": 59857
-    },
-    {
-      "path": "src/isaac_roi_capture_pairs_v1/run_suffix_pairs.py",
-      "sha256": "58fb17d265a5c5e2ae50a9ae644fc984f9dcf27d841c3616aeef80c5cd8900df",
-      "size": 4325
-    },
-    {
-      "path": "src/isaac_roi_gain_reduction_v1/reduce_gain.py",
-      "sha256": "4b380d99d80dacbb027c6533f22f1c1bc0b86693d500bccec5f98f3ab0840b80",
-      "size": 11698
-    },
-    {
-      "path": "src/isaac_roi_gain_reduction_v1/aggregate_gain.py",
-      "sha256": "b9e4585ed6a6614fc88ac03239cf0e05c2fea880a938c7cfdf0e21f1f1bf593e",
-      "size": 3309
-    },
-    {
-      "path": "src/isaac_roi_gain_reduction_v1/README.md",
-      "sha256": "757864a762485c79cf100fff4b4a95354d76530b191710eb069ea65d782548fa",
-      "size": 1626
-    },
-    {
-      "path": "src/isaac_roi_gain_reduction_v1/test_reduce_gain.py",
-      "sha256": "7a7fd344f4fc4576dc20c289d7dd5521644a74b108f7fea117ac6a9a3f07ed3d",
-      "size": 4590
-    },
-    {
-      "path": "src/isaac_roi_gain_reduction_v1/test_aggregate_gain.py",
-      "sha256": "5214254fc0cafc3228b5d5e437460a5007466fe473b53e0658447225f32e5ec1",
-      "size": 1652
+      "path": "evidence/isaac-roi-capture-pairs-v1/REMOTE_CAPTURE_NEXT_STEP_20261020.md",
+      "sha256": "eb7614a773821295ef11be6313c023081850461475023adc4f969bb7b9c5e0b1",
+      "size": 1179
     },
     {
       "path": "protocols/isaac-roi-simplified-v2/gain_reduction/FROZEN_SCALAR_PROTOCOL_V1.md",
@@ -48,9 +18,39 @@
       "size": 1164
     },
     {
-      "path": "evidence/isaac-roi-capture-pairs-v1/REMOTE_CAPTURE_NEXT_STEP_20261020.md",
-      "sha256": "eb7614a773821295ef11be6313c023081850461475023adc4f969bb7b9c5e0b1",
-      "size": 1179
+      "path": "src/isaac_roi_capture_pairs_v1/run_capture.py",
+      "sha256": "c19cdf17afdc9e67584994059d0f812e8b2bd54bc6c3a4f7a39753025568fcc8",
+      "size": 59857
+    },
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/run_suffix_pairs.py",
+      "sha256": "58fb17d265a5c5e2ae50a9ae644fc984f9dcf27d841c3616aeef80c5cd8900df",
+      "size": 4325
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/aggregate_gain.py",
+      "sha256": "7752d8c8151f90b6faa64fb444c84e9c16f5f6122d42480c021de12c6517a502",
+      "size": 4118
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/README.md",
+      "sha256": "757864a762485c79cf100fff4b4a95354d76530b191710eb069ea65d782548fa",
+      "size": 1626
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/reduce_gain.py",
+      "sha256": "f47ee8f87aca27b37fc5dffbbb939ad5541d08a5f4b0fe41b46b517880852f35",
+      "size": 11785
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_aggregate_gain.py",
+      "sha256": "9e1b8e5aa2846711c8ba06c724cc049ddf3ebcce0407159690ab4e18d1fae15a",
+      "size": 1683
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_reduce_gain.py",
+      "sha256": "7a7fd344f4fc4576dc20c289d7dd5521644a74b108f7fea117ac6a9a3f07ed3d",
+      "size": 4590
     }
   ]
 }
