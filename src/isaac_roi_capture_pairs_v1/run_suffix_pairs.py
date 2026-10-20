@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import pickle
+import sys
 from pathlib import Path
 
 from run_capture import run
@@ -52,6 +53,11 @@ def run_pairs(config_path: Path, source_root: Path, state_index: Path,
         raise ValueError("snapshot continuation phase is not supported")
     if int(entry["sim_time_s"]) != int(entry["decision_time_s"]):
         raise ValueError("decision and simulation times differ in state index")
+    # The snapshot contains source-backed objects whose modules must be importable
+    # before unpickling. Add the explicitly selected Isaac source tree first.
+    source_root = source_root.resolve()
+    if str(source_root) not in sys.path:
+        sys.path.insert(0, str(source_root))
     # Pickle is executable input. This runner accepts only the indexed private file
     # from the explicitly selected sampling directory.
     with private_path.open("rb") as stream:
