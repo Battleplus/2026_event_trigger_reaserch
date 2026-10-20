@@ -1,0 +1,32 @@
+{
+  "pair_prefix": {
+    "transmission_sent": 4341,
+    "command_dropped": 149,
+    "command_delivered": 4337,
+    "command_applied": 4337,
+    "candidate_generation": 5,
+    "command_attempts": 4490,
+    "raw_row_attempted": 4490,
+    "raw_row_delivered": 4337
+  },
+  "keep": {
+    "transmission_sent": 2359,
+    "command_dropped": 61,
+    "command_delivered": 2362,
+    "command_applied": 2362,
+    "candidate_generation": 0,
+    "command_attempts": 2420,
+    "raw_row_attempted": 2420,
+    "raw_row_delivered": 2362
+  },
+  "replan": {
+    "transmission_sent": 2383,
+    "command_dropped": 62,
+    "command_delivered": 2387,
+    "command_applied": 2387,
+    "candidate_generation": 0,
+    "command_attempts": 2445,
+    "raw_row_attempted": 2445,
+    "raw_row_delivered": 2387
+  }
+}

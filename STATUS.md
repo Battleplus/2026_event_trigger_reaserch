@@ -1,3 +1,9 @@
+# V3 Isaac ROI: 2026-10-20 update
+
+attempt006: REPAIR_REQUIRED; representative audit PASS, pair original audit FAIL due to command-stage accounting. Independent sends+drops recount confirms production attempt delta -25. Zero measured speed-block exposure, incomplete disturbance coverage and undercounted planner calls still block pilot acceptance. Formal collection, training, world model and PPO: NOT_RUN. See [attempt006 review](evidence/isaac-roi-v3-attempt006/REVIEW.md). Historical status follows.
+
+---
+
 # Isaac ROI Simplified v2: Current Status
 
 Date: 2026-10-19. Implementation is in progress. Attempt001's 90-minute representative run completed in actual Isaac: 5400 simulation steps, 194400 trajectory rows, exit 0, 101.61 seconds wall time, and 4391696 KiB maximum RSS. All six source dependency hashes and the downloaded trajectory hash matched. Its independent audit failed with 506037 findings, including actor type/kind/speed schema mismatch and non-finite energy values. Attempt001 pair: NOT_RUN. Attempt002's representative and keep/replan execution completed, but its acceptance remains `REPAIR_REQUIRED` (details below). Pilot: NOT_RUN. Formal 168-episode collection: NOT_RUN. Training: NOT_RUN. See [the v2 protocol](protocols/isaac-roi-simplified-v2/EXECUTION_PROTOCOL.md), [attempt001 summary](evidence/isaac-roi-v2-a1-attempt001/A1_ATTEMPT_SUMMARY.md), and [attempt002 summary](evidence/isaac-roi-v2-a1-attempt002/A1_ATTEMPT_SUMMARY.md).
