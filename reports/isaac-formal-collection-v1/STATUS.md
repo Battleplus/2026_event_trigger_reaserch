@@ -37,3 +37,7 @@ not run. The earlier non-Isaac analytical run is explicitly excluded.
 Search with three targets per region is a frozen design value, not a pilot-selected
 optimum. Source kinematic models, analytical energy/communication and 1-second
 planning-time quantization remain scientific limitations.
+
+Later observation: the first scene 90-minute acquisition receipt reached complete,
+with 76,881,535 compressed trajectory bytes. Its first suffix worker was active
+under the same batch process. No full-scene pair completion or label is claimed.
