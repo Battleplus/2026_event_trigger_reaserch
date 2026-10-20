@@ -1,0 +1,15 @@
+{
+  "status": "prepared_not_uploaded",
+  "local_package": "remote-prep/capture_pairs_v1.zip",
+  "sha256": "ED7455AE9C8F6CF377D1139C5B64386455DC5576D1DE2BEAA49E37741409DF98",
+  "size_bytes": 43743,
+  "target_directory": "/home/user1/n02-isaac/roi-mission-v3-20261020/capture_pairs_v1/",
+  "gpu": "GPU1 only",
+  "planned_sequence": [
+    "representative capture",
+    "independent audit",
+    "two suffixes from one ordinary state",
+    "independent reduction and aggregation"
+  ],
+  "scientific_result": "NOT_RUN"
+}
