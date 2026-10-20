@@ -8,6 +8,8 @@ Approved execution: 2026-10-20 (Asia/Shanghai). Implementation: GPT-6 Luna. Pare
 - Map100x100, nine regions, two UAVs and two helicopters per region (36 platforms).
 - Ninety simulated minutes, <=16 candidate actions including NOOP, paired horizon30min truncated at episode end, two matched suffixes.
 - Default: search then rescue delivery, three target sites/region. Sites and generated dependent tasks are separate counts. Unobserved sites/demands are not public policy inputs.
+- Target density means total sites, not initial sites plus extras: each region has one initially hidden arriving search site within that total; rescue obligations become visible only when their corresponding search completes. Thus the one-site pilot intentionally starts with no public search tasks; its empty C1 assignment must be reported honestly. Default three-site mode has27sites/54logical tasks,18initial public searches.
+- All seven disturbance conditions share the same nine regional search arrivals as background workload, independently timed at integer minutes22 through26. The task-update condition adds a deadline update to an initially public task when one exists; other conditions add their respective disturbances. This keeps task load comparable across disturbance groups.
 - Responsibility regions permit assistance. Selection accounts for capability, travel, energy, communication and donor-region outstanding commitments.
 - No custom CPU/wall/memory guardian termination. Record actual usage; preserve genuine errors. No fabricated completion receipts.
 
@@ -16,7 +18,7 @@ Approved execution: 2026-10-20 (Asia/Shanghai). Implementation: GPT-6 Luna. Pare
 1. Correct completed-task residual scoring and trainable-mask counting; adapt task semantics and36-platform scene. Preserve V3.2 failures; exclude old labels.
 2. Focused checks: completed/incomplete scoring; reveal causality; real non-NOOP cross-region pair, nontarget effects and independent raw recomputation; affected region/safety regressions. Coordinator reviews before launch.
 3. Complete all18 default smoke instances (six inherited conditions x three). No partial old/new concatenation.
-4. Configuration pilot: search-only/search-and-rescue x1/3/6 sites per region x three shared seeds (18 instances). Default changes require a documented feasibility/load rationale, never favorable method-effect selection.
+4. Configuration pilot: search-only/search-and-rescue x1/3/6 sites per region x three shared seeds (18 instances), all with the same task_update_or_arrival disturbance condition. Smoke separately covers the six inherited disturbance conditions. Default changes require a documented feasibility/load rationale, never favorable method-effect selection.
 5. After engineering review, freeze source/config and collect seven conditions x(12train+12validation)=168 scenarios, <=8ordinary states/trajectory, two suffixes. Existing-ET/Periodic-4min/Random-Allow-Suppress proportions remain frozen.
 6. Require >=30positive and >=30nonpositive unique valid ordinary states, classes covered across splits/groups. Exclude forced, unknown and empty windows. Suffixes are not independent states. No extra seeds to chase this gate.
 7. Only after gate: CPU constant/Ridge/tree and CUDA MLP(64,64; batch32; lr0.001; <=100epochs; patience10; seeds8201/8202/8203), real update and fresh-process restore. Repair existing CUDA issue; no silent CPU fallback.
