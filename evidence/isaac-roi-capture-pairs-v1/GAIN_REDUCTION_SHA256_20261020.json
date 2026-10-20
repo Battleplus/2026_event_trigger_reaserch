@@ -1,0 +1,51 @@
+{
+  "generated_utc": "2026-10-20T13:55:35.8338546Z",
+  "status": "LOCAL_REVIEW_ONLY",
+  "files": [
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/run_capture.py",
+      "sha256": "c19cdf17afdc9e67584994059d0f812e8b2bd54bc6c3a4f7a39753025568fcc8",
+      "size": 59857
+    },
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/run_suffix_pairs.py",
+      "sha256": "58fb17d265a5c5e2ae50a9ae644fc984f9dcf27d841c3616aeef80c5cd8900df",
+      "size": 4325
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/reduce_gain.py",
+      "sha256": "4b380d99d80dacbb027c6533f22f1c1bc0b86693d500bccec5f98f3ab0840b80",
+      "size": 11698
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/aggregate_gain.py",
+      "sha256": "b9e4585ed6a6614fc88ac03239cf0e05c2fea880a938c7cfdf0e21f1f1bf593e",
+      "size": 3309
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/README.md",
+      "sha256": "757864a762485c79cf100fff4b4a95354d76530b191710eb069ea65d782548fa",
+      "size": 1626
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_reduce_gain.py",
+      "sha256": "7a7fd344f4fc4576dc20c289d7dd5521644a74b108f7fea117ac6a9a3f07ed3d",
+      "size": 4590
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_aggregate_gain.py",
+      "sha256": "5214254fc0cafc3228b5d5e437460a5007466fe473b53e0658447225f32e5ec1",
+      "size": 1652
+    },
+    {
+      "path": "protocols/isaac-roi-simplified-v2/gain_reduction/FROZEN_SCALAR_PROTOCOL_V1.md",
+      "sha256": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec",
+      "size": 3337
+    },
+    {
+      "path": "reviews/v3-in-progress/GAIN_REDUCTION_REVIEW_20261020.md",
+      "sha256": "8339e575670eef04c46f8ba50cbe9dce3d734d71f3f7e488d381dec92b8221cc",
+      "size": 1164
+    }
+  ]
+}

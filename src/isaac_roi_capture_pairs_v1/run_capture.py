@@ -587,6 +587,23 @@ def run(config_path, source_root, output, phase, resume_state=None, suffix_seed=
 
                 # Every branch starts from the exact pre-candidate, pre-step state.
                 keep_restore_hash = restore_and_check()
+                initial_mission_state = copy.deepcopy(common[-1])
+                truth_target_ids = set(mission.truth)
+                public_task_ids = {task.task_id for task in mission.tasks}
+                initial_completed = set(initial_mission_state["completed"])
+                initial_remaining_public_task_ids = sorted(
+                    task_id for task_id in public_task_ids
+                    if task_id not in initial_completed and activation.get(task_id, math.inf) <= state_time)
+                audit_interface = {
+                    "state_id": suffix_meta["state_id"],
+                    "state_kind": "ordinary_sampled_decision_state",
+                    "forced": False,
+                    "snapshot_position": "restored snapshot before keep/replan branches",
+                    "initial_discovered_target_ids": sorted(set(initial_mission_state["discovered"])),
+                    "initial_serviced_target_ids": sorted(initial_completed & truth_target_ids),
+                    "initial_completed_public_task_ids": sorted(initial_completed & public_task_ids),
+                    "initial_remaining_public_task_ids": initial_remaining_public_task_ids,
+                }
                 keep_start_backend_time = float(backend.scene.tactical_time_s)
                 keep_rows = segment("keep", horizon, ev, state_time,
                                      skip_prepublic_first_step=True)
@@ -623,6 +640,7 @@ def run(config_path, source_root, output, phase, resume_state=None, suffix_seed=
                         "keep_restore_sha256": keep_restore_hash,
                         "replan_restore_sha256": replan_restore_hash,
                         "snapshot_sha256": expected_digest,
+                        "audit_interface": audit_interface,
                         "keep_rows_written": keep_rows, "replan_rows_written": replan_rows,
                         "keep_backend_time_start_s": keep_start_backend_time,
                         "keep_backend_time_end_s": keep_end_backend_time,
