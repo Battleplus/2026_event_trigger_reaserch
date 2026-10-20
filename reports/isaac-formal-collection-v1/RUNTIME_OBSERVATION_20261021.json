@@ -1,0 +1,41 @@
+{
+  "observed_local_date": "2026-10-21",
+  "scope": "live Isaac formal collection and read-only package metadata",
+  "actual_isaac_run": true,
+  "formal_batch_pid": 2570396,
+  "gpu_index": 1,
+  "gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+  "first_acquisition": {
+    "status": "complete",
+    "aircraft_count": 36,
+    "public_search_task_count": 81,
+    "trajectory_gzip_bytes": 76881535
+  },
+  "later_partial_observation": {
+    "completed_scene_count": 0,
+    "suffix_receipt_count": 6,
+    "complete_suffix_count": 5,
+    "next_suffix_status": "scene_ready",
+    "scalar_labels_computed": false
+  },
+  "isaac_runtime": {
+    "python": "3.10.12",
+    "numpy": "1.26.4",
+    "torch": "2.5.1+cu121",
+    "sklearn": null,
+    "xgboost": null,
+    "lightgbm": null
+  },
+  "other_existing_training_runtime": {
+    "python": "3.11.16",
+    "numpy": "1.26.0",
+    "torch": "2.7.0+cu128",
+    "sklearn": null,
+    "xgboost": null,
+    "lightgbm": null
+  },
+  "new_training_executed": false,
+  "new_gpu_training_context_created": false,
+  "tree_baseline_dependency": "MISSING; no substitute tree and no installation performed",
+  "resource_scope": "Numerical-library thread env requested one thread; Isaac process CPU exceeds wall time, so engine is not certified single-core."
+}
