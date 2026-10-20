@@ -46,6 +46,11 @@
       "path": "reviews/v3-in-progress/GAIN_REDUCTION_REVIEW_20261020.md",
       "sha256": "8339e575670eef04c46f8ba50cbe9dce3d734d71f3f7e488d381dec92b8221cc",
       "size": 1164
+    },
+    {
+      "path": "evidence/isaac-roi-capture-pairs-v1/REMOTE_CAPTURE_NEXT_STEP_20261020.md",
+      "sha256": "eb7614a773821295ef11be6313c023081850461475023adc4f969bb7b9c5e0b1",
+      "size": 1179
     }
   ]
 }
