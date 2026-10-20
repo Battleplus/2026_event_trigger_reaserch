@@ -122,6 +122,8 @@ def main() -> None:
         "status": "SEALED_CONFIGS_ONLY",
         "execution": "NOT_RUN",
         "forbidden_for_training": True,
+        "formal_batch_runner_compatibility": "NOT_APPLICABLE; frozen runner accepts only train/validation registry splits",
+        "unsupported_formal_runner_splits": ["test", "ood"],
         "source": source,
         "generator": "evaluation_holdout_v1/generate_holdout.py",
         "generator_sha256": _sha(ROOT / "generate_holdout.py"),

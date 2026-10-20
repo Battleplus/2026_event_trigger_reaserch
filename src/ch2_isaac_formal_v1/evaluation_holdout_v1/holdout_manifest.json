@@ -2,9 +2,10 @@
   "base_config_sha256": "55890a9c544bbc6046aa3cff12dafde450100155e639f05a659ce57d903ae46b",
   "execution": "NOT_RUN",
   "forbidden_for_training": true,
+  "formal_batch_runner_compatibility": "NOT_APPLICABLE; frozen runner accepts only train/validation registry splits",
   "formal_registry_sha256": "d09eb7165511c34614219aa90c03cc9b0c14b13a766409d60bb7a82c76aabf70",
   "generator": "evaluation_holdout_v1/generate_holdout.py",
-  "generator_sha256": "bdc2f43e493d1e522c1604d14f50563dd69dfd5edc523a74d6cea0a74e89db53",
+  "generator_sha256": "c28c1305b7dd04d34f65ab7eaec92a20762f98910e2036002d809c85b9723206",
   "holdout_id": "evaluation-holdout-v1",
   "id_test": {
     "condition_seed_offset": 100,
@@ -967,9 +968,13 @@
     "split": "ood"
   },
   "protocol_file": "PROTOCOL.md",
-  "protocol_sha256": "511019fe7c9365e34e94e97738123e050431d22558df01a8e58c530981a212f2",
+  "protocol_sha256": "8ea6c2636f3305af637b1b0f46b6202110fa4244698a00e55689cac4917230f0",
   "schema": "isaac_roi_evaluation_holdout_v1",
   "source": "Existing-ET",
   "status": "SEALED_CONFIGS_ONLY",
-  "total_scene_count": 62
+  "total_scene_count": 62,
+  "unsupported_formal_runner_splits": [
+    "test",
+    "ood"
+  ]
 }

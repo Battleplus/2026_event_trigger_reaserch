@@ -7,3 +7,5 @@ The ID test contains 42 scenes: seven formal conditions, six `Existing-ET` scene
 For OOD, the only intentional configuration change is `communication.dropout_probability: 0.03 -> 0.15`. Mechanism switches, schedules, task geometry, timing, target count, and other search3 settings come from the current formal `make_config` output. The collector already consumes this field in its stable command-drop model; no incompatible setting was detected.
 
 Every scene is marked `forbidden_for_training: true`. The manifest records config SHA256 values, the frozen formal registry SHA256, the base config SHA256, and the exact cohort protocol. These configurations remain sealed and must not be used for model fitting, calibration, threshold selection, or hyperparameter selection.
+
+The `test` and `ood` split labels are evaluation-only metadata. They are intentionally outside the frozen formal batch runner's `train`/`validation` registry validator and are not a request to alter that runner.
