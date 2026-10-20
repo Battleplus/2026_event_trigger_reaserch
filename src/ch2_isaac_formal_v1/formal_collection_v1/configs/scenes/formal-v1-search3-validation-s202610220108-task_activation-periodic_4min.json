@@ -1,0 +1,132 @@
+{
+  "abstract_strike_service_duration_s": 20,
+  "abstract_strike_service_radius_km": 0.3,
+  "communication": {
+    "delay_s": 2,
+    "dropout_probability": 0.03
+  },
+  "energy_anomaly": null,
+  "energy_capacity_wh": {
+    "helicopter": 300000,
+    "uav": 180000
+  },
+  "energy_reserve_fraction": 0.1,
+  "energy_wh_per_km": {
+    "helicopter": 900.0,
+    "uav": 240.0
+  },
+  "evaluator_schedule": {
+    "activation_task_ids": [
+      "z0-cell0",
+      "z0-cell1",
+      "z0-cell2",
+      "z1-cell0",
+      "z1-cell1",
+      "z1-cell2",
+      "z2-cell0",
+      "z2-cell1",
+      "z2-cell2"
+    ],
+    "activation_times_s": [
+      600.0,
+      600.0,
+      600.0,
+      600.0,
+      600.0,
+      600.0,
+      600.0,
+      600.0,
+      600.0
+    ],
+    "disturbances": {
+      "communication_outage_duration_s": 120,
+      "communication_outage_time_s": 1800,
+      "platform_fault_time_s": 900
+    },
+    "visibility": "evaluator only; never supplied in public state projection"
+  },
+  "formal": {
+    "baseline_observation_delay_s": 1.0,
+    "batch_id": "isaac-roi-formal-collection-v1",
+    "condition": "task_activation",
+    "cpu_threads_per_worker": 1,
+    "gpu_worker_count": 1,
+    "periodic_interval_s": 240,
+    "pilot_completed": false,
+    "random_allow_probability": 0.5,
+    "scenario_id": "task_activation-seed202610220108",
+    "source": "Periodic-4min",
+    "split": "validation",
+    "state_sample_limit": 8,
+    "suffix_seeds": [
+      730201,
+      730202
+    ],
+    "targets_per_zone_status": "fixed design value; no load search or optimum claim"
+  },
+  "map_size_km": 300.0,
+  "mechanisms": {
+    "communication_outage": {
+      "enabled": false
+    },
+    "energy_anomaly": {
+      "enabled": false
+    },
+    "environment_speed_block": {
+      "enabled": false
+    },
+    "light_delay": {
+      "enabled": false
+    },
+    "platform_fault": {
+      "enabled": false
+    },
+    "task_activation": {
+      "enabled": true
+    }
+  },
+  "meters_per_unit": 100.0,
+  "mode": "search",
+  "pair_duration_s": 1800,
+  "pair_snapshot_time_s": 1200,
+  "pilot": {
+    "ordinary_event_cooldown_s": 240,
+    "ordinary_event_threshold": 1,
+    "planning_delay_s": 1,
+    "state_sampling_seed": 203852962962
+  },
+  "replan_catalog_limit": 12,
+  "representative_duration_s": 5400,
+  "roi_width_km": 50.0,
+  "run_id": "formal-v1-search3-validation-s202610220108-task_activation-periodic_4min",
+  "runtime": {
+    "cuda_physics_ordinal": 0,
+    "expected_gpu_uuid": "GPU-7b708ead-e044-6ce7-a530-6b3093ac905e",
+    "headless": true,
+    "multi_gpu": false,
+    "renderer": "HydraStorm",
+    "vulkan_ordinal": 1
+  },
+  "scenario_id": "task_activation-seed202610220108",
+  "scene": {
+    "aircraft_model": "source_kinematic",
+    "aircraft_visual_scale": 180.0,
+    "forest_tree_count": 140,
+    "spatial_speed_blocks": [],
+    "terrain_grid": 128
+  },
+  "schema_version": 4,
+  "seed": 202610220108,
+  "sensor_radius_km": 0.5,
+  "source_archive_sha256": "99ec901f5ef9ff9ceaccc84c932507f207ae5b06af824da3fc04724a60d0eca5",
+  "study_schedule": {
+    "formal": "168 fixed scenes; 7 conditions x 12 train + 12 validation",
+    "pilot": "NOT_RUN; no result used to select this design",
+    "representative_phase": "complete 90-minute acquisition episode; not a prerequisite gate",
+    "training": "NOT_RUN; only after trajectory audit"
+  },
+  "sweep_lane_spacing_km": 0.8,
+  "target_offset_km": 0.8,
+  "targets_per_zone": 3,
+  "waypoint_tolerance_km": 0.12
+}

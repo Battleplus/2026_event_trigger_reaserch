@@ -1,0 +1,27 @@
+{
+  "schema": "isaac_roi_formal_local_test_receipt_v1",
+  "date": "2026-10-21",
+  "scope": "formal_collection_v1 local validation only; no Isaac capture, SSH upload, or remote process was started",
+  "registry_generation": {
+    "status": "passed",
+    "run_count": 168
+  },
+  "direct_function_invocations": {
+    "status": "passed",
+    "count": 6,
+    "method": "direct Python invocation; tests requiring pytest fixtures received explicit local paths and pytest.MonkeyPatch instances",
+    "tests": [
+      "test_frozen_registry_has_balanced_168_scene_grid_and_unique_seed_families",
+      "test_condition_switches_are_one_at_a_time_or_all_enabled",
+      "test_periodic_source_is_causal_and_does_not_create_eventless_sample_events",
+      "test_suffix_metadata_binds_source_config_scenario_and_split",
+      "test_suffix_seeds_are_dispatched_as_separate_single_seed_processes",
+      "test_first_suffix_failure_stops_second_worker_without_retry"
+    ]
+  },
+  "pytest": {
+    "status": "incomplete_environment_setup",
+    "result": "3 passed; 3 errors before test assertions",
+    "reason": "WinError 5 access denied while pytest tried to create or traverse tmp_path/basetemp directories; no test assertion failures were observed"
+  }
+}
