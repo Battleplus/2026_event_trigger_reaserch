@@ -41,3 +41,5 @@ planning-time quantization remain scientific limitations.
 Later observation: the first scene 90-minute acquisition receipt reached complete,
 with 76,881,535 compressed trajectory bytes. Its first suffix worker was active
 under the same batch process. No full-scene pair completion or label is claimed.
+
+Latest read-only progress: two scenes have complete 90-minute acquisition receipts (36 aircraft and 81 public tasks each). Twenty of 21 observed suffix receipts are complete; the next suffix is running. The batch remains active and no label aggregate or model result has been accepted.
