@@ -1,3 +1,9 @@
+# V3 Isaac ROI current review: 2026-10-20
+
+attempt007 representative and pair completed with raw trajectory audits PASS. Protocol acceptance remains REPAIR_REQUIRED: paired planner-delay handling and mandatory NOOP retention need repair. Measured local slowdown and energy reserve pause are established; no scalar gain, trained model, pilot or formal data result is claimed. See [attempt007 review](evidence/isaac-roi-v3-attempt007/REVIEW.md).
+
+---
+
 # V3 Isaac ROI: 2026-10-20 update
 
 attempt006: REPAIR_REQUIRED; representative audit PASS, pair original audit FAIL due to command-stage accounting. Independent sends+drops recount confirms production attempt delta -25. Zero measured speed-block exposure, incomplete disturbance coverage and undercounted planner calls still block pilot acceptance. Formal collection, training, world model and PPO: NOT_RUN. See [attempt006 review](evidence/isaac-roi-v3-attempt006/REVIEW.md). Historical status follows.
