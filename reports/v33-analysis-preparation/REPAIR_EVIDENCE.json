@@ -1,0 +1,83 @@
+{
+  "schema": "v33-analysis-repair-evidence/1",
+  "status": "prepared_for_independent_review",
+  "script": {
+    "path": "tools/v33_conclusion_analysis.py",
+    "sha256": "7D9D3182D2E2DF704F651FBE194B4F40D9A86585B47D736B980053DC406FA7F3"
+  },
+  "repair_scope": [
+    "Derive expected identities and split-condition coverage from validated v3_shards expected registry for search_rescue with targets_per_region=3.",
+    "Compare committed scenario IDs and header identity fields against that registry before reporting complete_168.",
+    "Parse failure records by scenario_id and distinguish historical resolved failures from unresolved failures.",
+    "Aggregate selected cross-region regional outcomes by recipient task region, receiving platform home region, donor home region for transfer, and other regions at state-by-suffix granularity; report overlapping roles.",
+    "Name insert routes home_region_insert; route metadata does not establish that the platform was idle.",
+    "Verify every shard against current frozen package/config binding and reject mismatched collection progress bindings.",
+    "Collapse duplicate state IDs only when the canonical full training-row evidence digest agrees; reject conflicts before counting again.",
+    "Publish row-major ordinal-to-contract region mapping and correct cost-component JSON path, lineage source field, and reused-plus-new completion count."
+  ],
+  "verification": {
+    "kind": "synthetic_functional_fixture_only",
+    "experimental_data": false,
+    "real_shards_read": false,
+    "full_analysis_run": false,
+    "frozen_expected_registry": {
+      "source": "package/civilian/v3_shards.py expected_registry and validate_registry",
+      "task_mode": "search_rescue",
+      "targets_per_region": 3,
+      "validated_identity_count": 168
+    },
+    "analyzer_fixture": {
+      "committed_synthetic_header_count": 1,
+      "observed_status": "FAILED_SHARDS",
+      "historical_failure_resolved_by_matching_header": true,
+      "unresolved_synthetic_failure_reported": true,
+      "header_identity_mismatch_count": 0,
+      "expected_train_none_or_light_cell_count": 12
+    },
+    "synthetic_route_role_check": {
+      "roles_checked": [
+        "recipient_task_region",
+        "platform_home_region",
+        "donor_home_region",
+        "other_region"
+      ],
+      "overlapping_role_region_checked": "00",
+      "passed": true
+    },
+    "syntax_check": "python -m py_compile tools/v33_conclusion_analysis.py completed successfully",
+    "binding_and_digest_fixture": {
+      "kind": "synthetic_tiny_committed_header",
+      "valid_frozen_binding_accepted": true,
+      "mismatched_binding_rejected": true,
+      "canonical_row_digest_stable_under_key_order": true,
+      "canonical_row_digest_changes_when_evidence_changes": true,
+      "region_ordinal_mapping_checked": true,
+      "real_shards_read": false
+    },
+    "batch_binding_fixture": {
+      "kind": "synthetic_only",
+      "matching_binding_tiny_shard_accepted": true,
+      "mixed_binding_batch_rejected": true,
+      "synthetic_scenario_count": 1,
+      "real_shards_read": false
+    },
+    "lineage_progress_fields": {
+      "lineage_source_field": "source_run_id",
+      "completed_count_definition": "reused_committed + new_committed",
+      "completed_scenarios_list_semantics": "new commits only"
+    }
+  },
+  "temporary_directory_acl_incidents": [
+    {
+      "location": "<REDACTED_TEMP_PATH>",
+      "incident": "Windows PermissionError blocked fixture creation and tempfile automatic cleanup.",
+      "current_observation": "Empty directory remains; no files were listed."
+    },
+    {
+      "location": "<REDACTED_TEMP_PATH>",
+      "incident": "Windows PermissionError blocked fixture creation and tempfile automatic cleanup.",
+      "current_observation": "Empty directory remains; no files were listed."
+    }
+  ],
+  "review_boundary": "This is implementation evidence only. Full collection analysis and independent review remain required; no stage pass is asserted."
+}

@@ -1,7 +1,7 @@
 {
   "schema": "public-archive-manifest/2",
-  "milestone": "v3-3-partial-collection-snapshot",
-  "claim_scope": "V3.3 collection progress snapshot; formal collection remains incomplete and analysis remains bound to the separate 66-marker snapshot; no scientific performance claim",
+  "milestone": "v3-3-active-partial-collection-analysis-preparation",
+  "claim_scope": "V3.3 collection snapshot and analysis preparation evidence only; collection incomplete; synthetic repair checks and static reviews do not establish 168-scenario experiment acceptance or scientific performance",
   "files": [
     {
       "public_path": ".gitattributes",
@@ -11,9 +11,21 @@
     },
     {
       "public_path": ".gitignore",
-      "public_sha256": "293460cc95a156765052873a5f17fdcccb3165c4608d86d2b7562b4bdb009eff",
-      "bytes": 155,
+      "public_sha256": "cba2e1b7fbba1008c68f2d27e4d705d6a4a5e6035216f54caf31b07542108335",
+      "bytes": 244,
       "scope": "historical_v2"
+    },
+    {
+      "public_path": "analysis/v33/tools/v33_conclusion_analysis.py",
+      "public_sha256": "7d9d3182d2e2df704f651fbe194b4f40d9a86585b47d736b980053dc406fa7f3",
+      "bytes": 61348,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "analysis/v33/tools/v33_support_plot.py",
+      "public_sha256": "f962cd7619b73e2f80721628f80d3091820f58e4168aced51ca696da4f54842a",
+      "bytes": 16975,
+      "scope": "v33_analysis_preparation"
     },
     {
       "public_path": "BASELINE_PROVENANCE.json",
@@ -94,15 +106,15 @@
       "scope": "historical_v2"
     },
     {
-      "bytes": 9685,
+      "bytes": 10297,
       "public_path": "evidence/v33/collection-progress/COLLECTION_PROGRESS.json",
-      "public_sha256": "76167957c9b0d97110da1281419c1d6066eef77cc0d6d2f6bb08f6e769aedad9",
+      "public_sha256": "70921af532f889ffd8f41893feaaa7b8f8f396145d083a765b9aa36ef73c3b97",
       "scope": "v3_collection_snapshot"
     },
     {
-      "bytes": 105926,
+      "bytes": 108985,
       "public_path": "evidence/v33/collection-progress/COLLECTION_RECEIPT.json",
-      "public_sha256": "65f001747cf36aebf5118c93de67e62ad662c94ef4c4d7985f611640601045f4",
+      "public_sha256": "4b804c223cba3a3b82d9eaf2af230b7b71c63d5e1bda87fd5ad1a4a182ad3bc0",
       "scope": "v3_collection_snapshot"
     },
     {
@@ -110,6 +122,12 @@
       "public_path": "evidence/v33/collection-progress/FAILURE_REGISTRY_097.json",
       "public_sha256": "5a5d4854d9316fed809334f298c5a3f79d5eaa246668c7d10f5273b3f750f328",
       "scope": "v3_collection_snapshot"
+    },
+    {
+      "public_path": "evidence/v33/collection-progress/FAILURE_REGISTRY_106.json",
+      "public_sha256": "ccb58920760e6541ce854ccbf38aacf7f576d7edd5738ff555e6dc9fcf556959",
+      "bytes": 915,
+      "scope": "v33_analysis_preparation"
     },
     {
       "public_path": "EXPERIMENT_PLAN.md",
@@ -121,12 +139,6 @@
       "public_path": "EXPERIMENT_PROTOCOL.md",
       "public_sha256": "f2b6eafb4f7943133ec079c4fbe1a2fac4616105438c721064421d3d934c2303",
       "bytes": 986,
-      "scope": "historical_v2"
-    },
-    {
-      "public_path": "MANIFEST.md",
-      "public_sha256": "c58c7f6edfcc413ae95ab10346dcf36b3051ee94347e74d5cac73842b05f4ea8",
-      "bytes": 1082,
       "scope": "historical_v2"
     },
     {
@@ -677,8 +689,8 @@
     },
     {
       "public_path": "README.md",
-      "public_sha256": "c454c172e24743585448796d41e4ed6f091dbbc283f5b8a178626aefc9d72a75",
-      "bytes": 1268,
+      "public_sha256": "9e3ad193e01413ad9b10dbf0e5e95c52a871cfae036d9adc75367769713da17d",
+      "bytes": 3752,
       "scope": "v3_protocol"
     },
     {
@@ -704,6 +716,48 @@
       "public_sha256": "790530e662a44daaa904819345446486c7b7c0dd3ea9a7b4020ac70fc1ed9080",
       "bytes": 8360,
       "scope": "historical_v2"
+    },
+    {
+      "public_path": "reports/v33-analysis-preparation/REPAIR_EVIDENCE.json",
+      "public_sha256": "fdcd545e5f9df0674dcb854e6322e43215ec0b3a0f17321c7e67e8c69839dcb3",
+      "bytes": 4011,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-analysis-preparation/REPAIR_EVIDENCE.md",
+      "public_sha256": "763f2a1ac60ae106049a4c4315329071562d8e2e3728db8f7d1b42094ba203bd",
+      "bytes": 1423,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-support-trajectory/CHANGELOG.md",
+      "public_sha256": "34f3456a207a03e059c621fce1ef0ab736f49be7b798f33d86261696f8bd01c3",
+      "bytes": 344,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-support-trajectory/data.json",
+      "public_sha256": "a04297cd9d73f7edcf549f111a8734f0dbe2fdde16d6b9cbf27e439218a3737c",
+      "bytes": 9092,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-support-trajectory/README.md",
+      "public_sha256": "e6e922585debb590bcf9c163aeb60c766855b03bf97720aedb1fed5c774b56e8",
+      "bytes": 2183,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-support-trajectory/trajectory.png",
+      "public_sha256": "c1b23d02e3f3e5819af82e88880cfa91ecc5363080bee4da7a04387335fd5a34",
+      "bytes": 142743,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-support-trajectory/trajectory.svg",
+      "public_sha256": "3189b584972b77e58363d0234ad26df9e1fd2d64e5f88c5be05e9eb5819a45a3",
+      "bytes": 96816,
+      "scope": "v33_analysis_preparation"
     },
     {
       "public_path": "requirements.txt",
@@ -826,6 +880,18 @@
       "scope": "v3_progress_evidence"
     },
     {
+      "public_path": "reviews/v33-analysis-preparation/V33_ANALYSIS_PREPARATION_ASTRA_REVIEW.md",
+      "public_sha256": "5848cee4b270e8492c3be8e3f76f450ef35bd9d932a43ee6a6243a1089582977",
+      "bytes": 6104,
+      "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reviews/v33-analysis-preparation/V33_ANALYSIS_PREPARATION_REPAIR_REVIEW.md",
+      "public_sha256": "357dd648d425f73f78bcb72fd728619696a383c4d5584997f246689adc4278ee",
+      "bytes": 3293,
+      "scope": "v33_analysis_preparation"
+    },
+    {
       "public_path": "ROADMAP.md",
       "public_sha256": "589de4ccfcb961db788c03fc76f92eb23bc7471bb5a6aca1a9b0a940f7b87db6",
       "bytes": 1251,
@@ -863,8 +929,8 @@
     },
     {
       "public_path": "STATUS.md",
-      "public_sha256": "868c9ef0e77faf7489a7e045be265e41478e59db4a18a6a2ed098fdbe6895772",
-      "bytes": 5722,
+      "public_sha256": "dc30f855da1240d6ca1a99b86a775bdbd4a7fa77cad6cecf3baaf1ac8c461a99",
+      "bytes": 6703,
       "scope": "v3_protocol"
     }
   ],

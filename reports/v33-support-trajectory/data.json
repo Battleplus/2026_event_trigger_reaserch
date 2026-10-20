@@ -1,0 +1,320 @@
+{
+  "schema": "v33-support-trajectory/1",
+  "scenario_id": "v33-train-communication_degradation-search_rescue-n3-004-00012205",
+  "state_id": "v33-train-communication_degradation-search_rescue-n3-004-00012205-periodic_4min-t008-s005",
+  "split": "train",
+  "time": 8,
+  "event_type": "task_disturbance",
+  "selected_action": {
+    "action": {
+      "action_type": "reconstruct",
+      "scope": "LOCAL_REPAIR",
+      "noop": false,
+      "queue_operations": [
+        {
+          "op": "insert",
+          "task_id": "v33-rescue-r03-s01",
+          "from_platform": null,
+          "to_platform": "v33-uav-r00-1"
+        }
+      ],
+      "dispatches": []
+    },
+    "full_action_sha256": "106b3a07d8926ab14b6c9e96519cb4d8771c59346441fe769a3d933b7ae93685"
+  },
+  "route": {
+    "op": "insert",
+    "task_id": "v33-rescue-r03-s01",
+    "task_region": "03",
+    "platform_id": "v33-uav-r00-1",
+    "platform_home_region": "00",
+    "from_platform": null,
+    "task_contract_region": "r10",
+    "platform_home_contract_region": "r00"
+  },
+  "selected_public_cost_estimate": 38.91071678973765,
+  "selection_basis": "ascending selected-state public_cost_estimate; ties by SHA-256 of canonical full action JSON",
+  "candidate_order": [
+    {
+      "public_cost_estimate": 38.91071678973765,
+      "candidate_key": "event-action-106b3a07d8926ab14b6c9e96",
+      "cross_region": true,
+      "full_action_sha256": "106b3a07d8926ab14b6c9e96519cb4d8771c59346441fe769a3d933b7ae93685",
+      "action": {
+        "action_type": "reconstruct",
+        "scope": "LOCAL_REPAIR",
+        "noop": false,
+        "queue_operations": [
+          {
+            "op": "insert",
+            "task_id": "v33-rescue-r03-s01",
+            "from_platform": null,
+            "to_platform": "v33-uav-r00-1"
+          }
+        ],
+        "dispatches": []
+      }
+    },
+    {
+      "public_cost_estimate": 39.60879531423404,
+      "candidate_key": "event-action-7d9a4080cf590ba335560d38",
+      "cross_region": true,
+      "full_action_sha256": "7d9a4080cf590ba335560d389c5956637d461241f70aa7f23cdbe6fb538e4a23",
+      "action": {
+        "action_type": "reconstruct",
+        "scope": "LOCAL_REPAIR",
+        "noop": false,
+        "queue_operations": [
+          {
+            "op": "insert",
+            "task_id": "v33-rescue-r03-s01",
+            "from_platform": null,
+            "to_platform": "v33-heli-r00-1"
+          }
+        ],
+        "dispatches": []
+      }
+    },
+    {
+      "public_cost_estimate": 42.1757186611923,
+      "candidate_key": "event-action-0877f6fcf8a02873a9685a50",
+      "cross_region": false,
+      "full_action_sha256": "0877f6fcf8a02873a9685a501ed4ac2ab2c91edbe036178202e858c7f0e8b1dc",
+      "action": {
+        "action_type": "reconstruct",
+        "scope": "NOOP",
+        "noop": true,
+        "queue_operations": [],
+        "dispatches": []
+      }
+    }
+  ],
+  "forced": false,
+  "gain_mask": {
+    "label_valid_mask": true,
+    "pair_valid_mask": true,
+    "effective_gain_usable": true,
+    "gain_mean": -0.18814849880339302,
+    "pair_gain": -0.2745999465033928,
+    "unknown_reason": null
+  },
+  "trace": {
+    "arm": "replan",
+    "pair_sha256": "a61f2408e01cb534fe33ee601bf0e178e1f95c83282aba5b65a6f0336ab3d29e",
+    "platform_id": "v33-uav-r00-1",
+    "public_position_nodes": [
+      {
+        "time": 9,
+        "x": 14.643001449074712,
+        "y": 18.60026215349474,
+        "source": "public_observation"
+      },
+      {
+        "time": 10,
+        "x": 15.81,
+        "y": 17.921,
+        "source": "public_observation"
+      },
+      {
+        "time": 11,
+        "x": 15.81,
+        "y": 17.921,
+        "source": "public_observation"
+      },
+      {
+        "time": 12,
+        "x": 17.236477872858455,
+        "y": 18.129949200154535,
+        "source": "public_observation"
+      },
+      {
+        "time": 13,
+        "x": 18.662955745716907,
+        "y": 18.33889840030907,
+        "source": "public_observation"
+      },
+      {
+        "time": 14,
+        "x": 20.089433618575363,
+        "y": 18.547847600463605,
+        "source": "public_observation"
+      },
+      {
+        "time": 15,
+        "x": 21.51591149143382,
+        "y": 18.75679680061814,
+        "source": "public_observation"
+      },
+      {
+        "time": 16,
+        "x": 22.942389364292275,
+        "y": 18.965746000772675,
+        "source": "public_observation"
+      },
+      {
+        "time": 17,
+        "x": 24.36886723715073,
+        "y": 19.17469520092721,
+        "source": "public_observation"
+      },
+      {
+        "time": 18,
+        "x": 25.795345110009187,
+        "y": 19.383644401081742,
+        "source": "public_observation"
+      },
+      {
+        "time": 19,
+        "x": 27.221822982867643,
+        "y": 19.592593601236278,
+        "source": "public_observation"
+      },
+      {
+        "time": 20,
+        "x": 28.037,
+        "y": 19.712,
+        "source": "public_observation"
+      },
+      {
+        "time": 21,
+        "x": 28.037,
+        "y": 19.712,
+        "source": "public_observation"
+      },
+      {
+        "time": 22,
+        "x": 27.94522711536259,
+        "y": 21.150776086694982,
+        "source": "public_observation"
+      },
+      {
+        "time": 23,
+        "x": 27.853454230725184,
+        "y": 22.589552173389965,
+        "source": "public_observation"
+      },
+      {
+        "time": 24,
+        "x": 27.761681346087776,
+        "y": 24.028328260084947,
+        "source": "public_observation"
+      },
+      {
+        "time": 25,
+        "x": 27.66990846145037,
+        "y": 25.46710434677993,
+        "source": "public_observation"
+      },
+      {
+        "time": 26,
+        "x": 27.57813557681296,
+        "y": 26.905880433474913,
+        "source": "public_observation"
+      },
+      {
+        "time": 27,
+        "x": 27.486362692175554,
+        "y": 28.344656520169895,
+        "source": "public_observation"
+      },
+      {
+        "time": 28,
+        "x": 27.394589807538146,
+        "y": 29.783432606864878,
+        "source": "public_observation"
+      },
+      {
+        "time": 29,
+        "x": 27.30281692290074,
+        "y": 31.22220869355986,
+        "source": "public_observation"
+      },
+      {
+        "time": 30,
+        "x": 27.21104403826333,
+        "y": 32.66098478025484,
+        "source": "public_observation"
+      },
+      {
+        "time": 31,
+        "x": 27.11927115362592,
+        "y": 34.09976086694983,
+        "source": "public_observation"
+      },
+      {
+        "time": 32,
+        "x": 27.027498268988513,
+        "y": 35.538536953644815,
+        "source": "public_observation"
+      },
+      {
+        "time": 33,
+        "x": 26.9357253843511,
+        "y": 36.9773130403398,
+        "source": "public_observation"
+      },
+      {
+        "time": 34,
+        "x": 26.843952499713694,
+        "y": 38.41608912703479,
+        "source": "public_observation"
+      },
+      {
+        "time": 35,
+        "x": 26.752179615076283,
+        "y": 39.854865213729774,
+        "source": "public_observation"
+      },
+      {
+        "time": 36,
+        "x": 26.660406730438876,
+        "y": 41.29364130042475,
+        "source": "public_observation"
+      },
+      {
+        "time": 37,
+        "x": 26.568633845801465,
+        "y": 42.73241738711974,
+        "source": "public_observation"
+      },
+      {
+        "time": 38,
+        "x": 26.476860961164057,
+        "y": 44.171193473814725,
+        "source": "public_observation"
+      }
+    ],
+    "node_count": 30,
+    "total_trace_steps": 30,
+    "sampling": "all public-observation position nodes; consecutive duplicate records removed",
+    "truth_start_endpoint": null
+  },
+  "source": {
+    "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+    "shard_file": "v33-train-communication_degradation-search_rescue-n3-004-00012205.jsonl.gz",
+    "relative_shard_path": "runs-v33\\v33-collect-resume-20261020T075751Z-cf8baae09a4a\\shards\\train\\communication_degradation\\v33-train-communication_degradation-search_rescue-n3-004-00012205.jsonl.gz",
+    "compressed_sha256": "0b2037e3aeacbf58f980c6e8b7a10a46c3d62d9701f0e09e8656effb7e3d40f1",
+    "commit_marker": "runs-v33\\v33-collect-resume-20261020T075751Z-cf8baae09a4a\\shards\\train\\communication_degradation\\v33-train-communication_degradation-search_rescue-n3-004-00012205.commit.json",
+    "commit_marker_sha256": "f0708b6f9bbf8d450b63462abbd28c6de42d185ca17d917a7a16328f61488928",
+    "scenario_content_sha256": "196dca6d142df4f014ddd0ee692f157b7e44aacfc55b3c382eb900117ced5621",
+    "trajectory_source": "Periodic-4min",
+    "trajectory_header": {
+      "trajectory_source": "Periodic-4min",
+      "ordinary_candidate_count": 20,
+      "selected_state_count": 16,
+      "elapsed_ticks": 90,
+      "terminated": true,
+      "truncated": false
+    }
+  },
+  "artifacts": {
+    "trajectory.png": {
+      "file": "trajectory.png",
+      "sha256": "c1b23d02e3f3e5819af82e88880cfa91ecc5363080bee4da7a04387335fd5a34"
+    },
+    "trajectory.svg": {
+      "file": "trajectory.svg",
+      "sha256": "3189b584972b77e58363d0234ad26df9e1fd2d64e5f88c5be05e9eb5819a45a3"
+    }
+  }
+}

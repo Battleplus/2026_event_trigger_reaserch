@@ -1,0 +1,18 @@
+{
+  "schema": "v33-public-failure-evidence/1",
+  "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+  "scenario_id": "v33-train-communication_degradation-search_rescue-n3-010-00012211",
+  "exit_code": 1,
+  "cause": "MemoryError during JSON serialization of paired counterfactual trace (json.dumps pair payload)",
+  "job_summary": "registry ordinal 106; train / communication_degradation; instance 10; seed variant 12211; search_rescue; 3 targets per region",
+  "stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "bytes": 3611,
+    "sha256": "7c17b6c539ee1f6c9849dc0696fe2e35e1997de9a27ab89df890a3350d0eea33"
+  },
+  "redacted_trace_excerpt": "MemoryError while json.dumps serialized pair payload; frames identify paired counterfactual trace keep arm / trace / steps. Local absolute paths removed.",
+  "rerun": "not rerun"
+}

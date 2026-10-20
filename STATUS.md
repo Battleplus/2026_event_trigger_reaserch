@@ -5,19 +5,23 @@ Snapshot updated:2026-10-21 (Asia/Shanghai). Implementation: GPT-6 Luna. Protoco
 | Stage | Status at archive snapshot |
 |---|---|
 | Smoke | COMPLETE: 18/18 instances; 278 rows, 45 valid and 233 masked. Engineering evidence only. |
-| Formal collection | ACTIVE / INCOMPLETE: 104/168 scenarios committed at the 2026-10-21 snapshot (88 new plus 16 lineage-verified reused); 64 pending, 1 worker failure recorded with cause UNKNOWN. Worker PID 53708 was live at snapshot time. |
+| Formal collection | ACTIVE / INCOMPLETE: 109/168 scenarios committed at the 2026-10-21 snapshot (93 new plus 16 lineage-verified reused); 59 pending, 2 worker failures recorded. Worker PID 53708 was live at snapshot time. |
 | Formal data gate | NOT MET in the 66-marker analysis snapshot: 164 evaluable ordinary states, 2 positive and 162 nonpositive; 30/30 positive/nonpositive and split coverage gates are not met. |
 | CPU baselines / GPU training | NOT_RUN |
 | World model / PPO | NOT_RUN |
 | Method conclusion | INCONCLUSIVE; no scientific performance claim. |
 
-The collection snapshot and the conclusion report have different cutoffs: the public report is bound to 66 commit markers (`d91757825888ad6334cf9b7bdbab56f78955066c95da06787f85e2ed1b5329db`); the collection snapshot later advanced to 104/168. Do not read the report counts as a recomputation of the later collection state. The 16 reused shards retain source-run lineage and marker/content hashes. Raw JSONL traces and compressed shard files are not included in this public archive.
+The collection snapshot and the conclusion report have different cutoffs: the public report is bound to 66 commit markers (`d91757825888ad6334cf9b7bdbab56f78955066c95da06787f85e2ed1b5329db`); the collection snapshot later advanced to 109/168. Do not read the report counts as a recomputation of the later collection state. The 16 reused shards retain source-run lineage and marker/content hashes. Raw JSONL traces and compressed shard files are not included in this public archive.
 
 Focused exact-once simulation evidence covers split and cooperate fixtures: one report generation and receipt per mode, no repeated-NOOP discovery events, valid paired labels, and inclusion of the revealed rescue obligation. An independent GPT-6 Astra review is same-family and provisional; the source audit verdict is WARN. This evidence does not establish collection acceptance or method performance. Completed-task residual penalty was independently recomputed as zero in the snapshot report; the earlier residual-cost issue is historical V3.2 context only.
 
-Collection snapshot resource receipts: 88 newly committed shards report summed process CPU 51,404.500 seconds and summed per-shard wall time 57,785.928 seconds; maximum receipt-time RSS is 1,252,184,064 bytes. These per-shard sums are not an end-to-end run wall-clock receipt or peak-memory measurement. The 66-marker analysis snapshot reports planner CPU 2,486.875 seconds and committed-shard process CPU 29,163.594 seconds; peak memory is UNKNOWN. These are separate cutoffs and must not be combined as one analysis.
+Collection snapshot resource receipts: 93 newly committed shards report summed process CPU 53,795.563 seconds and summed per-shard wall time 60,641.739 seconds; maximum receipt-time RSS is 1,252,184,064 bytes. These per-shard sums are not an end-to-end run wall-clock receipt or peak-memory measurement. The 66-marker analysis snapshot reports planner CPU 2,486.875 seconds and committed-shard process CPU 29,163.594 seconds; peak memory is UNKNOWN. These are separate cutoffs and must not be combined as one analysis.
 
 Failure evidence for registry-097 records exit code 1, empty stdout/stderr, both empty-log SHA-256 values, and a redacted job summary. The cause is UNKNOWN; no scientific-failure interpretation is supported by the available evidence.
+
+Registry-106 exited with a `MemoryError` while `json.dumps` serialized a paired counterfactual trace. Its compact redacted traceback excerpt and empty stdout hash are preserved in `evidence/v33/collection-progress/FAILURE_REGISTRY_106.json`; it has not been rerun. These worker failures do not establish experiment-level failure or success.
+
+Analysis preparation artifacts are archived separately from experimental results. Synthetic repair evidence records `experimental_data=false`, `real_shards_read=false`, and `full_analysis_run=false`. The first fresh same-family Astra review was provisional WARN; the later static repair reinspection was provisional PASS limited to the listed repairs. Neither review approves the unfinished 168-scenario experiment. The support trajectory is one selected case frozen from the generation-time committed snapshot; later shard additions and the expanded cross-region definition were not globally rescanned, and the case was not selected by gain. It is not a treatment-effect result.
 
 The formal registry was checked as168 train/validation scenarios,12 per condition/split. All conditions share nine regional search arrivals. Runtime cutoffs are removed; resources are recorded only. The CUDA kernel preflight succeeded in an existing dedicated runtime; no experiment optimizer update has occurred. Local measured dependencies are recorded in evidence/v33/LOCAL_RUNTIME.json; inherited requirements are not a verified fresh installation.
 
