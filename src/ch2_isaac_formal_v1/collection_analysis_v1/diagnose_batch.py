@@ -90,9 +90,9 @@ def _valid_run_identity(row: dict, receipt: dict | None) -> bool:
     if not all(receipt.get(key) == row.get(key)
                for key in ("run_id", "scenario_id", "split", "condition", "source")):
         return False
-    if "config_sha256" in receipt and receipt.get("config_sha256") != row.get("config_sha256"):
+    if receipt.get("config_sha256") != row.get("config_sha256"):
         return False
-    if "output_path" in receipt and receipt.get("output_path") != row.get("output_path"):
+    if receipt.get("output_path") != row.get("output_path"):
         return False
     return True
 
@@ -835,7 +835,7 @@ def analyze_batch(registry_path: Path, batch_receipt_path: Path,
         },
         "data_status": "DATA_TARGET_MET" if data_target_met else "INCOMPLETE_OR_INSUFFICIENT",
         "remaining_experiment_items": [
-            "Complete missing or invalid raw evidence without retries or replacement scenes; preserve the frozen no-retry design.",
+            "Retain missing or invalid raw evidence as unknown; preserve the frozen no-retry and no-replacement design.",
             "Complete independent trajectory audit and verify the requested label coverage against actual suffix reductions.",
             "Run method training and frozen ID test only after acquisition and audit close; method remains INCONCLUSIVE / NOT_RUN here.",
             "Run the sealed OOD evaluation only after model and threshold freeze; world-model work remains NOT_RUN.",
