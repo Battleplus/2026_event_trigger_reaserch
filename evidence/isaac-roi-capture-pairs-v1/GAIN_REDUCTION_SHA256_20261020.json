@@ -49,8 +49,8 @@
     },
     {
       "path": "src/isaac_roi_gain_reduction_v1/test_reduce_gain.py",
-      "sha256": "7a7fd344f4fc4576dc20c289d7dd5521644a74b108f7fea117ac6a9a3f07ed3d",
-      "size": 4590
+      "sha256": "3be723ee5801804ee65dc9c2d3d571634cea656d59630e8edb8c4aa5624ccdf0",
+      "size": 5970
     }
   ]
 }

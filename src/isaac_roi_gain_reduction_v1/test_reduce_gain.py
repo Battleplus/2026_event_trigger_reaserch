@@ -67,6 +67,24 @@ class GainReductionFixtureTests(unittest.TestCase):
                 report = reduce_suffix(root, root / "reduction.json")
                 self.assertEqual(report["status"], "UNKNOWN")
 
+    def test_public_observation_delay_does_not_change_execution_score(self):
+        root = self.make_fixture(replan_distance=1.0)
+        baseline = reduce_suffix(root, root / "baseline.json")
+        for branch in ("keep", "replan"):
+            events_path = root / branch / "events.jsonl"
+            events = [json.loads(line) for line in events_path.read_text(encoding="utf-8").splitlines() if line]
+            events_path.write_text(
+                "\n".join(json.dumps(event) for event in events if event["event"] != "public_observation") + "\n",
+                encoding="utf-8")
+            binding = {"trajectory.jsonl": hashlib.sha256((root / branch / "trajectory.jsonl").read_bytes()).hexdigest(),
+                       "events.jsonl": hashlib.sha256(events_path.read_bytes()).hexdigest(),
+                       "evaluator_truth.json": hashlib.sha256((root / "evaluator_truth.json").read_bytes()).hexdigest()}
+            (root / branch / "audit_report.json").write_text(json.dumps({"status": "pass", "input_sha256": binding}), encoding="utf-8")
+        delayed_removed = reduce_suffix(root, root / "without_public_observation.json")
+        self.assertEqual(delayed_removed["status"], "PASS")
+        self.assertEqual(baseline["J_exec_keep"], delayed_removed["J_exec_keep"])
+        self.assertEqual(baseline["J_exec_replan"], delayed_removed["J_exec_replan"])
+
 
 if __name__ == "__main__":
     unittest.main()
