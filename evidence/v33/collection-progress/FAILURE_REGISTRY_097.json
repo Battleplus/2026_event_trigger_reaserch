@@ -1,0 +1,17 @@
+{
+  "schema": "v33-public-failure-evidence/1",
+  "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+  "interpretation": "Worker exited nonzero with empty stdout and stderr. Evidence does not establish a scientific failure or a technical cause.",
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "job_summary": "registry ordinal 97; train / communication_degradation; instance 1; seed variant 12202; search_rescue; 3 targets per region",
+  "exit_code": 1,
+  "scenario_id": "v33-train-communication_degradation-search_rescue-n3-001-00012202",
+  "stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cause": "UNKNOWN"
+}

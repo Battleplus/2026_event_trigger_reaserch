@@ -1,56 +1,415 @@
 {
   "schema": "v33-public-collection-receipt/1",
   "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
-  "snapshot_updated_unix": 1792499348.3399043,
+  "snapshot_updated_unix": 1792513473.6449223,
   "expected_scenarios": 168,
-  "committed_scenarios": 69,
-  "new_committed": 53,
+  "committed_scenarios": 104,
+  "new_committed": 88,
   "reused_committed": 16,
-  "pending_scenarios": 99,
-  "failed_scenarios": 0,
+  "pending_scenarios": 64,
+  "failed_scenarios": 1,
+  "collection_status": "active",
+  "worker_pid": 53708,
+  "worker_state": "live at snapshot",
   "condition_split_counts": [
     {
-      "split": "train",
-      "condition": "none_or_light",
-      "committed": 12
-    },
-    {
-      "split": "train",
-      "condition": "platform_failure_or_capability_loss",
-      "committed": 12
-    },
-    {
-      "split": "train",
-      "condition": "task_update_or_arrival",
-      "committed": 12
-    },
-    {
-      "split": "validation",
-      "condition": "none_or_light",
-      "committed": 12
-    },
-    {
-      "split": "validation",
-      "condition": "platform_failure_or_capability_loss",
-      "committed": 9
-    },
-    {
-      "split": "validation",
-      "condition": "task_update_or_arrival",
-      "committed": 12
+      "split": "",
+      "condition": null,
+      "committed": 104
     }
   ],
   "resource_summary": {
-    "current_run_marker_receipts": 53,
-    "summed_process_cpu_seconds": 27214.547,
-    "summed_per_shard_wall_seconds": 30205.097,
+    "current_run_marker_receipts": 88,
+    "summed_process_cpu_seconds": 51404.5,
+    "summed_per_shard_wall_seconds": 57785.928,
     "maximum_receipt_time_rss_bytes": 1252184064.0,
     "end_to_end_wall_seconds": null,
     "peak_memory_bytes": null,
-    "interpretation": "Per-shard sums and receipt-time RSS; not a run-level wall-clock or peak-memory measurement."
+    "interpretation": "Per-shard sums and receipt-time RSS; elapsed is progress-start to snapshot update, not a synchronized run-level wall-clock measurement or peak-memory measurement."
   },
   "raw_trace_files_included": false,
+  "failure_evidence": "FAILURE_REGISTRY_097.json",
   "shard_commit_receipts": [
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-000-00012201",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-000-00012201.jsonl.gz",
+      "row_count": 81,
+      "compressed_sha256": "cfc042d48dc473cd749eee1b081bc1dc315de8d9514fb5fca7657b36cf566ac9",
+      "decompressed_jsonl_sha256": "8240b78054c24c5b2cd4cb29a1fab076a48a18e4dd453f0a6e9ffb722c69a49c",
+      "marker_sha256": "95e3b417f2e6477044456bfb5ea9a963edbdbe87182678ddf311223b898bd377",
+      "scenario_content_sha256": "6bfd984c35029907496801766e12ec73aa4951101af9215dfdf1cb8e6b5eb1a0",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1121.21875,
+        "wall_seconds": 1302.35420110001,
+        "current_rss_bytes_at_receipt": 327512064,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-002-00012203",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-002-00012203.jsonl.gz",
+      "row_count": 87,
+      "compressed_sha256": "4f9628940188c2ac972a122527a8ac21f3a3d979a2268ba251b6b4727e439e16",
+      "decompressed_jsonl_sha256": "3d583eb0546d309691086dfbf14e4b937e71a39d0f48f71c70c4b56fd06e2ea9",
+      "marker_sha256": "583234a2eb589f8d40aa6bd0535326f9b5d921db17c72534efe22beeec69dd5f",
+      "scenario_content_sha256": "a85e58875e19262f7bdd958d8ab6b2c2a549857ff3aa906456fc96a09429365f",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1125.859375,
+        "wall_seconds": 1263.8471433000232,
+        "current_rss_bytes_at_receipt": 327249920,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-003-00012204",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-003-00012204.jsonl.gz",
+      "row_count": 11,
+      "compressed_sha256": "f783b3b31c03b10feee7ecc62bd1a7671f8c71f1d61f63bbc55c547c092f93dd",
+      "decompressed_jsonl_sha256": "c7eb7640b296fae404b1ece17a79837577cd0168c5c2e23b7c65e8c73cabf4e7",
+      "marker_sha256": "d25b433606df2216d11b0eaa48c0513734ede2e2fca85954eec961668fd0f0de",
+      "scenario_content_sha256": "c5f682c21211855f7accd618f12cb5f88820c62e31ed6825418f60e647e9812a",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 156.40625,
+        "wall_seconds": 177.32158039999194,
+        "current_rss_bytes_at_receipt": 161067008,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-004-00012205",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-004-00012205.jsonl.gz",
+      "row_count": 17,
+      "compressed_sha256": "0b2037e3aeacbf58f980c6e8b7a10a46c3d62d9701f0e09e8656effb7e3d40f1",
+      "decompressed_jsonl_sha256": "9ba56f1269e489b4393478e040009c0cf14092dfccfd31fd5895ee2dbbb0fdc9",
+      "marker_sha256": "f2d347a9095087ba9621509e6e4f34ba24055d44dd23a8e38abf859cd86e35d1",
+      "scenario_content_sha256": "196dca6d142df4f014ddd0ee692f157b7e44aacfc55b3c382eb900117ced5621",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1596.171875,
+        "wall_seconds": 1796.3909478000132,
+        "current_rss_bytes_at_receipt": 1128517632,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-005-00012206",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-005-00012206.jsonl.gz",
+      "row_count": 84,
+      "compressed_sha256": "9a19b73ca52af74915f460039906056cb29b040fe30fa83a6a0b745ed790e54f",
+      "decompressed_jsonl_sha256": "08625d463cf7432322a74ec63bfbab37beb49261e5ca7af91a00d9a20ddc47ab",
+      "marker_sha256": "090bdebc5c07544c467a680283e92f5e04bc99d4878f407b3b52729675519f27",
+      "scenario_content_sha256": "74aa98f25dd598504f7a10ed1aa8555a966dfb482c809cc5c09a16b9176a30f0",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1223.796875,
+        "wall_seconds": 1373.0159839999978,
+        "current_rss_bytes_at_receipt": 326176768,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-006-00012207",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-006-00012207.jsonl.gz",
+      "row_count": 10,
+      "compressed_sha256": "786d8b2449c2fef70a837189c716ce2f577866cdcf1fdd97312415f8cbc5957e",
+      "decompressed_jsonl_sha256": "f0235c2710b1685b01c88a642013120975ee7c282cf865d03a331c6a8c7d8016",
+      "marker_sha256": "d4052309b1e4735c542734f983df5e6eda4e271dcb475c2c584f574859e6d115",
+      "scenario_content_sha256": "3c64bb20311962d4a8c2a5ff1eec424a7a802daf7e2f8a4577ee5ea49c277717",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 120.5625,
+        "wall_seconds": 135.5958946000028,
+        "current_rss_bytes_at_receipt": 144216064,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-008-00012209",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-008-00012209.jsonl.gz",
+      "row_count": 14,
+      "compressed_sha256": "fc85afa8e73532d27b9c8a0b705239ff4862251e2735a306c4894de20596b624",
+      "decompressed_jsonl_sha256": "787cb84c40462e153fb213a7d47e57d7be860493d6760bf5f261d398f6f2bc27",
+      "marker_sha256": "73e02e375b76473bc0cbf2cd4b68a95ffb630fc951d9d6e157a279cce8a17909",
+      "scenario_content_sha256": "d48b3891624f07df5872ecd0840dc8f42e4f8ab2e82b2e1654d26277b537cf00",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 165.359375,
+        "wall_seconds": 186.70980360000976,
+        "current_rss_bytes_at_receipt": 157278208,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-communication_degradation-search_rescue-n3-009-00012210",
+      "split": "train",
+      "condition": "communication_degradation",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-communication_degradation-search_rescue-n3-009-00012210.jsonl.gz",
+      "row_count": 13,
+      "compressed_sha256": "1b66ca1b9d7a33286dbe9d0efe1887135ad29b19c7b107895ba0b283214ca42d",
+      "decompressed_jsonl_sha256": "aa2b26e4186517fbf9256da8491e4117ea4fa14437fe1c9f3b52c452c3ce833c",
+      "marker_sha256": "6923117941df1efa931570e0e1b071e975295db5ac2351fd821fc10d8d32c682",
+      "scenario_content_sha256": "fc60adaa6e28774c772424148275f11a334b2058221f6edd55f362974ec33e19",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 170.0625,
+        "wall_seconds": 194.12657269998454,
+        "current_rss_bytes_at_receipt": 180973568,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-000-00011201",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-000-00011201.jsonl.gz",
+      "row_count": 16,
+      "compressed_sha256": "43209c0276a0d26bdf8c8a4250603b0d57003c9e91ec68ff15d7a2f45eac7ef2",
+      "decompressed_jsonl_sha256": "17410e7ef18638cf20cc3c34e936148fd23b1a8bc4c6145e9fc3feeb0270a0b5",
+      "marker_sha256": "8c3bf698b6674c54aa9fa5b626b7e5b96619821f2e9773923c999593dfdb54ac",
+      "scenario_content_sha256": "948153c90f36f1d4ab9a69397e2fef6c20fbc7d1c065f4b24385c4dbcf5f67ef",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 163.625,
+        "wall_seconds": 183.30516940000234,
+        "current_rss_bytes_at_receipt": 150921216,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-001-00011202",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-001-00011202.jsonl.gz",
+      "row_count": 23,
+      "compressed_sha256": "dfda6b5bd6b5825013b9f9984d2e8b423faecc8f9073dac225347cede93a4a99",
+      "decompressed_jsonl_sha256": "c7410f70fb1d4fbe41e08774f8f805fff1d10f9921b84bb5dbe72d732d874f34",
+      "marker_sha256": "34109fb6835d07de39964c397763afa2db07602dce9d92342647ffcef993d32c",
+      "scenario_content_sha256": "5d1e7d6d9ae6af0db99278524ab317eb305cbaacf85e7f3979137e28105e1902",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1431.734375,
+        "wall_seconds": 1698.9424373000074,
+        "current_rss_bytes_at_receipt": 899690496,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-002-00011203",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-002-00011203.jsonl.gz",
+      "row_count": 14,
+      "compressed_sha256": "f94a181c0918424eaeec84d87681961f5e9a6a44044e5c905ef2f14ee6d9e5a8",
+      "decompressed_jsonl_sha256": "60af013e3305b5388918dbde6659430a5a645958e42e750732d8a4d8c2613ce3",
+      "marker_sha256": "e667c13f9be653977c62e3c7170ba145633ee5e0dd0a3bbcebe5bd328ba65613",
+      "scenario_content_sha256": "72d45fdb1c213b631e131da2f4d83e152e5574bfc5a1cf5aabbbc18c34bf8926",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 177.046875,
+        "wall_seconds": 197.16477909999958,
+        "current_rss_bytes_at_receipt": 161398784,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-003-00011204",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-003-00011204.jsonl.gz",
+      "row_count": 10,
+      "compressed_sha256": "4d793dab88389e0e37abb05bdeda96bbdda7581c280fde6ec8a02845def5d50c",
+      "decompressed_jsonl_sha256": "f8fd2c448034b7ed114f223f96eb8866e8edd27039daa11ad3f535d1d38ada2a",
+      "marker_sha256": "c1c6b247cdd156e44c0dc5a001523de47ced1d0f94c3ab67cf2d07e222a648db",
+      "scenario_content_sha256": "474d9882f4f93ad7d663ef57a73cf19a38b17640d5ce00278fdb3a47caeda335",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 95.546875,
+        "wall_seconds": 106.28956910000124,
+        "current_rss_bytes_at_receipt": 139472896,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-004-00011205",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-004-00011205.jsonl.gz",
+      "row_count": 26,
+      "compressed_sha256": "7e194e51c94b1301581efcd8d2be7a526589770e29d76b917cc67c219feb9c7e",
+      "decompressed_jsonl_sha256": "0909e1a4b0c2cfa37b96b27345bdabb6d787f41c2b4bd192122c0d1de3628c03",
+      "marker_sha256": "c306a88948fb6ce45fe1b03e2b1b2bb603b1ab138130a7bc9e68cb5c11497181",
+      "scenario_content_sha256": "f62483281339f71fea88abb7600f08cc4e4a0960cb2685504b52ed4091e51372",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1737.484375,
+        "wall_seconds": 1996.2856735999958,
+        "current_rss_bytes_at_receipt": 1160286208,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-005-00011206",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-005-00011206.jsonl.gz",
+      "row_count": 10,
+      "compressed_sha256": "19af1f86f976934e5b328f37a2d56049948d9250cdd7403cdcefb0477b6a8824",
+      "decompressed_jsonl_sha256": "16b9a9447b3b8017ced42baab6dd03f7711b68efb97350e1b8070bf866097865",
+      "marker_sha256": "e8915479e23a6f6d871b03928d3ee5f99ccbe36cc4e18214964773947bab4278",
+      "scenario_content_sha256": "5b48af9cd657bd2c352f28879f7060824bef5b7ce42d3bec26f209c5bed35e48",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 121.953125,
+        "wall_seconds": 138.5525209000043,
+        "current_rss_bytes_at_receipt": 136409088,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-006-00011207",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-006-00011207.jsonl.gz",
+      "row_count": 8,
+      "compressed_sha256": "dd3e2eac67f04c6853bd7a7ebe3e1858118eb0b66e162b9a8205d924b474871e",
+      "decompressed_jsonl_sha256": "35a972380c94ca91cd812eb1a2d01eef5245fe081b430bd6b037b46bc370eb78",
+      "marker_sha256": "4d21a337de85e3b01d1524597a454171e4bb978377b1d693c8f0593340489d1b",
+      "scenario_content_sha256": "5fc74626ae27ad9c82f8a42feb253644741100325b6215ffebd70fd0477a4405",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 96.3125,
+        "wall_seconds": 107.25561510000261,
+        "current_rss_bytes_at_receipt": 129036288,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-007-00011208",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-007-00011208.jsonl.gz",
+      "row_count": 18,
+      "compressed_sha256": "0a72b4bf561b78d4c69572441d5493b7abedd5b3f6567b726818bdf439fc1483",
+      "decompressed_jsonl_sha256": "78b08e4f36c21675da6a5425933be200987063b2b0c63772f0756a29fc61581c",
+      "marker_sha256": "6fbf7249518e2bfd76d1ad7981ec03a6b8bcdc513533e1996ed96b2de39774b2",
+      "scenario_content_sha256": "0b520c755740667b62813e76973966b4e2647d3a3c54a62b93c7dc51f06e8fc8",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1436.3125,
+        "wall_seconds": 1657.9823232999915,
+        "current_rss_bytes_at_receipt": 1021689856,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-008-00011209",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-008-00011209.jsonl.gz",
+      "row_count": 9,
+      "compressed_sha256": "e6be9fb86026f44886ed9e0a0679ba84ca3faa4a14c40dd3bc23b7ce5af0b80a",
+      "decompressed_jsonl_sha256": "21d6af2ae42f5621301c81a893bc6a1a62e874a02862a50cca673dc0b07df45e",
+      "marker_sha256": "14da1ff87de937fb9656c1507e4b6beab016f740f407632642c6125c86ded7d3",
+      "scenario_content_sha256": "924d3253e754758d8dde330d7c111faeb43418b81288195da6d0a69bcccdd047",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 110.65625,
+        "wall_seconds": 124.04154930000368,
+        "current_rss_bytes_at_receipt": 141950976,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-009-00011210",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-009-00011210.jsonl.gz",
+      "row_count": 9,
+      "compressed_sha256": "46c659d6b312139d7dcd4839085f920dc0555ee2173f2f714e96246affa0880a",
+      "decompressed_jsonl_sha256": "82e21bb9c062d6d956944d208b75f20fc8dced5a532bb69e80bc78b7d6602e64",
+      "marker_sha256": "24903b52f020d43f9648e2c3b5aba0cafdbbbea8515fa6b17ff2ce5f5a913d68",
+      "scenario_content_sha256": "26dabc2bf9b921f6dc71faefc7da024b28c6be08b441463bfcee6eaa2c5d76df",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 192.9375,
+        "wall_seconds": 217.4977421999938,
+        "current_rss_bytes_at_receipt": 137662464,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-010-00011211",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-010-00011211.jsonl.gz",
+      "row_count": 21,
+      "compressed_sha256": "a753a731854e58120b6a514b2215c3d0d2210d7ec1564af349745e6932b8e588",
+      "decompressed_jsonl_sha256": "0c589901af4c55d55f64588c512fff9b221842a10a9b03e5f01be202b77bcb2c",
+      "marker_sha256": "eee04d642ef2a2bcdad2c4d70fdc30be1ec8b8fbc289f237d1d378ba78a755fd",
+      "scenario_content_sha256": "2e6867b6ad2eb626199d92cff7addd99163cca43cc0da8e96e24f2efbe7867fd",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1503.671875,
+        "wall_seconds": 1698.9504361,
+        "current_rss_bytes_at_receipt": 1222742016,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-train-energy_anomaly-search_rescue-n3-011-00011212",
+      "split": "train",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-train-energy_anomaly-search_rescue-n3-011-00011212.jsonl.gz",
+      "row_count": 16,
+      "compressed_sha256": "f25ea3bb6bf0a2e9b4ec7a9b49765965cb1ac86325093f0164ac91c60728b75e",
+      "decompressed_jsonl_sha256": "cdf16da217abc4e8f359c45aa33e28c99fb77e22350ba22b2e7a8274343105d5",
+      "marker_sha256": "222c6e197fb6dfeb3ba62be28279934fb8daee41bee39f044fc3d5812ee01426",
+      "scenario_content_sha256": "0887433656be0a7ead4c37dd3c2ba2853ac30aa11d3ed3f4ae6365aa9fbbf126",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 281.5,
+        "wall_seconds": 322.15285420000146,
+        "current_rss_bytes_at_receipt": 159735808,
+        "simulation_device": "cpu"
+      }
+    },
     {
       "scenario_id": "v33-train-none_or_light-search_rescue-n3-000-00008201",
       "split": "train",
@@ -736,6 +1095,234 @@
       }
     },
     {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-000-00111201",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-000-00111201.jsonl.gz",
+      "row_count": 12,
+      "compressed_sha256": "1d4c0213b6585c3bf2f234c7a1e7b279f5bb848a3eed50b8e5185d3ea57a0bcb",
+      "decompressed_jsonl_sha256": "a351060a80db6fc9418ba1f4c75e7bacf3886c639177851f5c9d02acbee104c6",
+      "marker_sha256": "eabc898177609457d0413eb4fc238d418517d8b698de640e94485248082c3927",
+      "scenario_content_sha256": "d0965c87a390a6f3277d2ae225d2359813d469f676a95df87acb16e9b123b4da",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 136.875,
+        "wall_seconds": 153.63948589999927,
+        "current_rss_bytes_at_receipt": 160313344,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-001-00111202",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-001-00111202.jsonl.gz",
+      "row_count": 19,
+      "compressed_sha256": "e5bc294f133fc40c7d330bd31835a5264bb1713ee8e152fd70541eefec793c6d",
+      "decompressed_jsonl_sha256": "934e0c5dd8d00859709a7a8414a9aacea879aa0702a86072f3cdbeb6620262c8",
+      "marker_sha256": "f57925189b57ac47276c4688c74934646c5804153e4f1f9edd197ceef3b6f4c8",
+      "scenario_content_sha256": "e61812e1ba2800f5f6d4ef7821eac1503dc2f444855f160d1bb7cabe7a3d90d8",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1461.4375,
+        "wall_seconds": 1638.109315499998,
+        "current_rss_bytes_at_receipt": 1124708352,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-002-00111203",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-002-00111203.jsonl.gz",
+      "row_count": 10,
+      "compressed_sha256": "4d10f7b4c94a68896f32c7a7bc5299b7a23aafb71e9657012fbb9cc58f1a664f",
+      "decompressed_jsonl_sha256": "eb82f0d5e1830c699ea5dcffb17f0ba69f00758bea6788f791651157682571dd",
+      "marker_sha256": "ef5c4601d3cd21894a7beadede5d53d7dd92023abbf154f07051161444de6e6e",
+      "scenario_content_sha256": "d08eb0f3aa5c1c9b65a54f63c60c6af7ccf67410a3f1fb4f42874ab3d21c2d90",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 103.609375,
+        "wall_seconds": 117.25125590000243,
+        "current_rss_bytes_at_receipt": 132116480,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-003-00111204",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-003-00111204.jsonl.gz",
+      "row_count": 19,
+      "compressed_sha256": "558c5c33c1d665d4b52a68486fc97d4496533a58a93d86c890f7e5d12e8f3f64",
+      "decompressed_jsonl_sha256": "9fce3b532e4ac7462574198914d2bf0d462991d5de97a26370d96b2b993a37ff",
+      "marker_sha256": "50ef29027a7bb1d801135a796a789974f8e9bea8c19456b59d47265ca4825406",
+      "scenario_content_sha256": "f3e22c09a88c94d11bb52a46589cec71d21b5b51600c44b684d4336773ec3466",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 232.234375,
+        "wall_seconds": 253.84163609999814,
+        "current_rss_bytes_at_receipt": 168349696,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-004-00111205",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-004-00111205.jsonl.gz",
+      "row_count": 21,
+      "compressed_sha256": "271834ef49098e7b4a3afc495a1855ce00968eaa6d334a916a7a31de6c4eb13e",
+      "decompressed_jsonl_sha256": "a8d357efa4f30f7edf76fd0fdbbe5c4e893e820ea3f58c77310ae2dfcb0796d0",
+      "marker_sha256": "f9aec9c127581e649adf16da9a68faf7b98b295faec7252ef48c36f3f47085ed",
+      "scenario_content_sha256": "24f53a6ec80dde8cfbe589773b262582e0c441b302f1ddb2abf64718ff92b1e0",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1431.375,
+        "wall_seconds": 1612.0646398999816,
+        "current_rss_bytes_at_receipt": 1058852864,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-005-00111206",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-005-00111206.jsonl.gz",
+      "row_count": 13,
+      "compressed_sha256": "5dbdc1fb32833d93d134b991ec341eaa2178ebe66a2bd2315220d25ae3f5f724",
+      "decompressed_jsonl_sha256": "02e4780bbb999769d994d947edd42d8376b742673f3b03278b4ee87b57ff38fa",
+      "marker_sha256": "22e7b7d86b9bb4ef18525a2b9c81fdad7584ffd6a60fd02cb174e02c338108a2",
+      "scenario_content_sha256": "0af0361b927b60941bb8facab728c871a0636b3b9488f3cbb1bee22c4ffda9b5",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 129.671875,
+        "wall_seconds": 145.45006789999024,
+        "current_rss_bytes_at_receipt": 151232512,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-006-00111207",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-006-00111207.jsonl.gz",
+      "row_count": 12,
+      "compressed_sha256": "b0872fd9b5073355ca01896c3588d242bf4f00c17d44f6c197d442e80d99ffdc",
+      "decompressed_jsonl_sha256": "37d31d3181d49c16d5b9cd0c6ed5b9a9f242431833bd3251b276492a9339e642",
+      "marker_sha256": "e38a686ec4ebf6d4956d91dd0a00c88e1df012bdfde6e5e8f1c9bfc23e5d73de",
+      "scenario_content_sha256": "787846208028349224eaadd81ab240f93cb62147a6bfe53cad9c13ab047a5f48",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 162.03125,
+        "wall_seconds": 180.75529950000055,
+        "current_rss_bytes_at_receipt": 154558464,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-007-00111208",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-007-00111208.jsonl.gz",
+      "row_count": 22,
+      "compressed_sha256": "ba540692f2f60a075496a28263a06c0bc209efb01c73043e922ccd5295f33151",
+      "decompressed_jsonl_sha256": "e3d65ac4830dade852469493b0541e646af8b23ca115f931798b3f8ee49bd63c",
+      "marker_sha256": "f8ae62a61fad860a31082acc4d3a93ed67d22b6ad750cfd588619624143effbe",
+      "scenario_content_sha256": "37edb513137e487607bf6b850cfcb96df03fd3de527cbbd56debeb42befc5c32",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1489.71875,
+        "wall_seconds": 1678.1926946000021,
+        "current_rss_bytes_at_receipt": 968970240,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-008-00111209",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-008-00111209.jsonl.gz",
+      "row_count": 10,
+      "compressed_sha256": "8659930724b9ddbab6e763767055351e3aa9fae3fe5fd78b7de1afb559744df4",
+      "decompressed_jsonl_sha256": "19ca3b64c92862243b40226fe928fa90f1af101ddec514c2f6ab97269f18cbc7",
+      "marker_sha256": "20b5470775df458e77e584c682f930e83df0fd607771aa037beaba150c4c41cc",
+      "scenario_content_sha256": "eeb89f507d32839980873f2bcf2cef5c912edfda8447d56d655d5cab30cf0211",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 122.96875,
+        "wall_seconds": 136.5423187999986,
+        "current_rss_bytes_at_receipt": 144912384,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-009-00111210",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-009-00111210.jsonl.gz",
+      "row_count": 9,
+      "compressed_sha256": "83a759ab9deeaf9850ea699a8d242fdf4e02c7c1e4a57c3fb62b98610150e3d0",
+      "decompressed_jsonl_sha256": "49d77c1cf4dad8b36feca12ef5c47495afafaa2a0f2ef5eb39bd11f330487fa6",
+      "marker_sha256": "e47de8983c27e390df1af878ea208f239664caa482c44a54048af3d73ab69817",
+      "scenario_content_sha256": "98516935d97fd46ea85e0a2905284607741926b13cf8a091f3fde24a63f265d6",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 103.921875,
+        "wall_seconds": 117.65888889998314,
+        "current_rss_bytes_at_receipt": 139489280,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-010-00111211",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-010-00111211.jsonl.gz",
+      "row_count": 18,
+      "compressed_sha256": "5bb83571d7d8dde359ebe717d8052543ceae4daea2c93a5b10f7feb8c1ea2b91",
+      "decompressed_jsonl_sha256": "864a8e332f9e61bbdc9922d66c930946d5e0938ab173b0f3f9462b4e88abff0e",
+      "marker_sha256": "c63c2d9888505c98cd8df5df49c48699fe851c7e5d3addba95442a09273971f4",
+      "scenario_content_sha256": "0d76e62c6a707019543b1b9fa3113928f6671ec3c252cee2223c9c557aa26f65",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1299.078125,
+        "wall_seconds": 1505.3632920000236,
+        "current_rss_bytes_at_receipt": 852496384,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-energy_anomaly-search_rescue-n3-011-00111212",
+      "split": "validation",
+      "condition": "energy_anomaly",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-energy_anomaly-search_rescue-n3-011-00111212.jsonl.gz",
+      "row_count": 17,
+      "compressed_sha256": "150fb05b6b98f2746802af7571efdb9bbf3b1eb30fd0ea49220f0c31b61293e5",
+      "decompressed_jsonl_sha256": "1b082b8521753ad286672ff830ef9a389992d2b6f5e27d20c5dbede3ffe24490",
+      "marker_sha256": "07e41266be81c3f3a56e30f4d90d3c45dee01143abd3d39d6c3bb7d2c0e801ae",
+      "scenario_content_sha256": "edf09584a745a7efd5393ff89aa168e36242efb14a76f94cd621ec1b26e99b62",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 237.609375,
+        "wall_seconds": 276.0551489999925,
+        "current_rss_bytes_at_receipt": 152842240,
+        "simulation_device": "cpu"
+      }
+    },
+    {
       "scenario_id": "v33-validation-none_or_light-search_rescue-n3-000-00108201",
       "split": "validation",
       "condition": "none_or_light",
@@ -1097,6 +1684,25 @@
       }
     },
     {
+      "scenario_id": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-007-00110208",
+      "split": "validation",
+      "condition": "platform_failure_or_capability_loss",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-007-00110208.jsonl.gz",
+      "row_count": 27,
+      "compressed_sha256": "3776312e7ec103951bac2c2d36e20a67c012c1857d7872898dc50da139182877",
+      "decompressed_jsonl_sha256": "ff5608c0c6861979f4ea3fe575954f193f9b570ed64a2451c7087a1341362831",
+      "marker_sha256": "22f5c8d53e3bdd011389a51d7687c4ef1909035aabc41d41ddbc77ec7ae717b5",
+      "scenario_content_sha256": "94c7a7344fec544b4a9827fd99cf605220b20e1f9b365a1bdf85076746d0a031",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 1676.703125,
+        "wall_seconds": 1912.3915190999978,
+        "current_rss_bytes_at_receipt": 1015455744,
+        "simulation_device": "cpu"
+      }
+    },
+    {
       "scenario_id": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-008-00110209",
       "split": "validation",
       "condition": "platform_failure_or_capability_loss",
@@ -1131,6 +1737,44 @@
         "process_cpu_seconds": 327.609375,
         "wall_seconds": 387.89546839999093,
         "current_rss_bytes_at_receipt": 160997376,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-010-00110211",
+      "split": "validation",
+      "condition": "platform_failure_or_capability_loss",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-010-00110211.jsonl.gz",
+      "row_count": 24,
+      "compressed_sha256": "91b4536101217e3047192165b259c4918c2c0bdf5a868228a2d06cd70a626a4d",
+      "decompressed_jsonl_sha256": "30fc27c869ea7e97e601bea502f4e13f82db4e8530aa0c7855da597bf5844ec1",
+      "marker_sha256": "42b9bf84f984cdc248dd2762efc2c68f86ebc94d76a359ecc552ed88c6ff820a",
+      "scenario_content_sha256": "50cafaa7db2f4791a65bb59f41435e999b008ee85cea292d2c08e21fc4730ccb",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 2345.421875,
+        "wall_seconds": 2720.7010625999974,
+        "current_rss_bytes_at_receipt": 563863552,
+        "simulation_device": "cpu"
+      }
+    },
+    {
+      "scenario_id": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-011-00110212",
+      "split": "validation",
+      "condition": "platform_failure_or_capability_loss",
+      "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+      "shard_file": "v33-validation-platform_failure_or_capability_loss-search_rescue-n3-011-00110212.jsonl.gz",
+      "row_count": 18,
+      "compressed_sha256": "f18073f93fee72f3fb59b4cc0f3a5984c9fdc78da7d56f22da58b487cf8b9735",
+      "decompressed_jsonl_sha256": "2a2963e0e054d6d5c348115e7f1e379b760fad3043f3dd25a5b13fdc8771f0d7",
+      "marker_sha256": "1ae8b4d0e110fbdf53970c36f764f1ef866eccde25135dcd3eb05fb233bb6dbb",
+      "scenario_content_sha256": "3c33af0083bb5f92a34679684cc3d9559664c13cd35746141292ad8ca5937aa4",
+      "runtime_receipt": {
+        "exit_state": "complete",
+        "process_cpu_seconds": 229.078125,
+        "wall_seconds": 255.03185600000143,
+        "current_rss_bytes_at_receipt": 153354240,
         "simulation_device": "cpu"
       }
     },

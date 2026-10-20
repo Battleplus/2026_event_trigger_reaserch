@@ -1,8 +1,8 @@
 # Public archive payload manifest
 
-Generated 2026-10-20. Payload inventory excludes MANIFEST.md and SHA256SUMS.txt to avoid recursive self-hashes. SHA256SUMS.txt records every payload file plus MANIFEST.md.
+Generated 2026-10-21. Payload inventory excludes MANIFEST.md and SHA256SUMS.txt to avoid recursive self-hashes. SHA256SUMS.txt records every payload file plus MANIFEST.md.
 
-Payload files: 359
+Payload files: 360
 
 - `.gitattributes` (8 bytes, sha256 `705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da`)
 - `.gitignore` (244 bytes, sha256 `cba2e1b7fbba1008c68f2d27e4d705d6a4a5e6035216f54caf31b07542108335`)
@@ -45,8 +45,9 @@ Payload files: 359
 - `evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-001-00900002.jsonl.gz` (8929769 bytes, sha256 `47285765cb9416d2624bd36fa70b07454a05f878e554caeb0bb93bfe252d46cb`)
 - `evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-002-00900003.commit.json` (2525 bytes, sha256 `d6c78efb96abf9ec856ec9558f5f9d7bb1f17de8e65a9ddec7ea2801bfb30951`)
 - `evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-002-00900003.jsonl.gz` (1052440 bytes, sha256 `7825f6704b9836d80afb089971843954ecfd0c11e670eaf926260051d484167b`)
-- `evidence/v33/collection-progress/COLLECTION_PROGRESS.json` (5435 bytes, sha256 `5b7164141c144d8e13cb846205c1a2171000bf2de26f38be58797c2717f36c2f`)
-- `evidence/v33/collection-progress/COLLECTION_RECEIPT.json` (71281 bytes, sha256 `be087be4880b8a8dba51b3a8a1a7fc0c6cede64d76d583cbe76c595d8e14a3a5`)
+- `evidence/v33/collection-progress/COLLECTION_PROGRESS.json` (9685 bytes, sha256 `76167957c9b0d97110da1281419c1d6066eef77cc0d6d2f6bb08f6e769aedad9`)
+- `evidence/v33/collection-progress/COLLECTION_RECEIPT.json` (105926 bytes, sha256 `65f001747cf36aebf5118c93de67e62ad662c94ef4c4d7985f611640601045f4`)
+- `evidence/v33/collection-progress/FAILURE_REGISTRY_097.json` (777 bytes, sha256 `5a5d4854d9316fed809334f298c5a3f79d5eaa246668c7d10f5273b3f750f328`)
 - `evidence/v33/collection-progress/REUSED_SHARDS.json` (7750 bytes, sha256 `db11f2f93a9ef289d1b4aa723848b3d46fa024ce39215b99b0c7aef403a105d2`)
 - `evidence/v33/exact-once/EXACT_ONCE_PUBLIC_SUMMARY.json` (1767 bytes, sha256 `3065f2f1e6e42e91ea22e5b0123cb0b6bf73a1178186b71afcb8de710009d1cc`)
 - `evidence/v33/exact-once/focused_check.py` (10210 bytes, sha256 `5a27f6f56e481bfad272285c82352cde96828ba9489148cfc95b09360b04f820`)
@@ -150,7 +151,7 @@ Payload files: 359
 - `protocols/v3-baseline/STATUS.md` (1975 bytes, sha256 `d3698784a96080876251a89d866076e3290b5650549a8b7fd0f4df694c94978e`)
 - `protocols/V32_PERFORMANCE_LIGHT.md` (2457 bytes, sha256 `a8e29f9a0da2a8d802a957768b0195aa6f92dd9189e3732435df1bcf5e7fb479`)
 - `protocols/V33_CIVILIAN_SEARCH_RESCUE.md` (5143 bytes, sha256 `e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6`)
-- `PUBLIC_ARCHIVE_MANIFEST.json` (32113 bytes, sha256 `b4d548e5a772ce21918ee68f627766511496f4d8c6a3ed2afb34862cbbfae45c`)
+- `PUBLIC_ARCHIVE_MANIFEST.json` (32974 bytes, sha256 `d5f3bce44a66a529f594d29593c4dd3b5c7ac5a8dd34fa95720a55daa36d447d`)
 - `README.md` (3752 bytes, sha256 `9e3ad193e01413ad9b10dbf0e5e95c52a871cfae036d9adc75367769713da17d`)
 - `releases/gain-gate-v3-2-performance-light/BASELINE_PROVENANCE.json` (1169 bytes, sha256 `b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0`)
 - `releases/gain-gate-v3-2-performance-light/configs/ENVIRONMENT_SPEC.json` (578 bytes, sha256 `9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0`)
@@ -362,4 +363,4 @@ Payload files: 359
 - `staging_tools/resume_v33_collect.py` (9892 bytes, sha256 `a0fc8532e0157c77d9c5f873984a1c2b16a9d41458fc39dd47c796258fa455ca`)
 - `staging_tools/test_prepare_public_archive.py` (2856 bytes, sha256 `b931b34992e710614c7648ecf9c1e1572452ba3e90bced4bdb236c6119a19def`)
 - `staging_tools/v33_conclusion_analysis.py` (45614 bytes, sha256 `efac61c59adab7ec29501627093406d8f98c506902f95890d08cf472ac01a95c`)
-- `STATUS.md` (5300 bytes, sha256 `01a5a8103d308a5c09749e5ebf491c8253edf8df18ad1c7a56e8496a059cac2b`)
+- `STATUS.md` (5710 bytes, sha256 `cfda63ae2ad562f080eacaf9b967fda38d95126f2552a73e5cfbd8ce8f90e10f`)
