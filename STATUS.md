@@ -1,6 +1,10 @@
 # V3.3 execution status
 
-Date:2026-10-20 (Asia/Shanghai). Implementation IN_PROGRESS: GPT-6 Luna. Coordinator review PENDING. V3.3 smoke/pilot/formal collection/training NOT_RUN. Protocol:[V33](protocols/V33_CIVILIAN_SEARCH_RESCUE.md). Separate version; no old labels reused. No scientific improvement claimed.
+Date:2026-10-20 (Asia/Shanghai). Implementation: GPT-6 Luna. Focused validation and fresh read-only source review found execution/label issues; repairs IN_PROGRESS before a new freeze. V3.3 smoke/pilot/formal collection/training NOT_RUN. Protocol:[V33](protocols/V33_CIVILIAN_SEARCH_RESCUE.md). Separate version; no old labels reused. No scientific improvement claimed.
+
+The formal registry was checked as168 train/validation scenarios,12 per condition/split. All conditions share nine regional search arrivals. Runtime cutoffs are removed; resources are recorded only. The CUDA kernel preflight succeeded in an existing dedicated runtime; no experiment optimizer update has occurred. Local measured dependencies are recorded in evidence/v33/LOCAL_RUNTIME.json; inherited requirements are not a verified fresh installation.
+
+Current repair items: preserve the complete remaining exogenous event tape while scoring only30 minutes; propagate verified live safety resolution to branch/label validity; preserve search-to-rescue discovery when cooperative child tasks complete their logical parent. Failed diagnostic attempts are retained. A completed90-minute NOOP is engineering evidence only, not method support.
 
 ## Historical V3.2 final status (preserved)
 

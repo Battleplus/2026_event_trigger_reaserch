@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="690" viewBox="0 0 780 690">
+<rect width="780" height="690" fill="#f7f9fc"/>
+<g font-family="Arial, sans-serif" fill="#17273b">
+<text x="36" y="36" font-size="23">V3.3 civilian scenario contract</text>
+<text x="36" y="64" font-size="15">100 x 100 map | 9 regions | 36 platforms | 27 sites / 54 tasks</text>
+<rect x="36" y="90" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="52" y="120" font-size="19">Region r00</text>
+<text x="52" y="151" font-size="16">2 UAV + 2 helicopters</text>
+<text x="52" y="180" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="52" y="208" font-size="15">Search reveals supply demand</text>
+<rect x="276" y="90" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="292" y="120" font-size="19">Region r01</text>
+<text x="292" y="151" font-size="16">2 UAV + 2 helicopters</text>
+<text x="292" y="180" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="292" y="208" font-size="15">Search reveals supply demand</text>
+<rect x="516" y="90" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="532" y="120" font-size="19">Region r02</text>
+<text x="532" y="151" font-size="16">2 UAV + 2 helicopters</text>
+<text x="532" y="180" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="532" y="208" font-size="15">Search reveals supply demand</text>
+<rect x="36" y="265" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="52" y="295" font-size="19">Region r10</text>
+<text x="52" y="326" font-size="16">2 UAV + 2 helicopters</text>
+<text x="52" y="355" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="52" y="383" font-size="15">Search reveals supply demand</text>
+<rect x="276" y="265" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="292" y="295" font-size="19">Region r11</text>
+<text x="292" y="326" font-size="16">2 UAV + 2 helicopters</text>
+<text x="292" y="355" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="292" y="383" font-size="15">Search reveals supply demand</text>
+<rect x="516" y="265" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="532" y="295" font-size="19">Region r12</text>
+<text x="532" y="326" font-size="16">2 UAV + 2 helicopters</text>
+<text x="532" y="355" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="532" y="383" font-size="15">Search reveals supply demand</text>
+<rect x="36" y="440" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="52" y="470" font-size="19">Region r20</text>
+<text x="52" y="501" font-size="16">2 UAV + 2 helicopters</text>
+<text x="52" y="530" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="52" y="558" font-size="15">Search reveals supply demand</text>
+<rect x="276" y="440" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="292" y="470" font-size="19">Region r21</text>
+<text x="292" y="501" font-size="16">2 UAV + 2 helicopters</text>
+<text x="292" y="530" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="292" y="558" font-size="15">Search reveals supply demand</text>
+<rect x="516" y="440" width="228" height="163" rx="10" fill="#e8f0fa" stroke="#647e9c"/>
+<text x="532" y="470" font-size="19">Region r22</text>
+<text x="532" y="501" font-size="16">2 UAV + 2 helicopters</text>
+<text x="532" y="530" font-size="15">3 sites: 2 public + 1 arrival</text>
+<text x="532" y="558" font-size="15">Search reveals supply demand</text>
+<text x="36" y="643" font-size="14">Schematic only; positions are randomized. Cross-region support is selected by the replanner.</text>
+<text x="36" y="667" font-size="14">Pilot compares 1 / 3 / 6 sites and search-only / search-plus-rescue.</text>
+</g></svg>
