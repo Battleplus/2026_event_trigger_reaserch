@@ -1,0 +1,143 @@
+{
+  "schema": "v33-source-audit/1",
+  "audit_skill": "experiment-audit",
+  "verdict": "REPAIR",
+  "overall_verdict": "REPAIR",
+  "integrity_status": "fail",
+  "reason_code": "oracle_unresolved_safety_path_and_r2_test_evidence_open_r3_pending",
+  "summary": "R1 producer masking is repaired, but the independent oracle does not reject a hash-consistent valid label containing raw unresolved safety receipts. R2 logical split/cooperate discovery source path is provisionally repaired; focused evidence lacks split and exactly-once/oracle coverage. R3 primary raw evidence was not supplied and remains open.",
+  "auditor": "GPT-6 Astra ultra",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "ultra",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict_id": "/root/v33_source_audit/followup-r1-r2",
+  "date": "2026-10-20",
+  "review_type": "source_readiness_followup",
+  "source_frozen": false,
+  "hash_scope": "Changed source and directly referenced helper/test inputs read for the R1/R2 impact review; not a release freeze. Initial 27-item manifest remains preserved in V33_SOURCE_AUDIT.json.",
+  "evaluation_type": "simulation_only",
+  "simulations_run_by_reviewer": 0,
+  "tests_run_by_reviewer": 0,
+  "audited_input_hashes": {
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_runner.py": "sha256:c4542a7f0a7f47e4a1108fa5142ffa004e4ba6f1d087401925b19eb08b957565",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/counterfactual_pairs.py": "sha256:139c07d332bc35d64af1c105a9044bcd7c122ff5f8e42a22c9666d1ffb7a4397",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_oracle.py": "sha256:51dec7d7cab71055b0ae45a11575f88500fc6bb95517fdf0d68a031b5a06c2df",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_environment.py": "sha256:385b755b0ff5bde29ffb34a3dfdbc81862153e41d07cbf74bf11f5907caea407",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/relief_env.py": "sha256:e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_safety.py": "sha256:fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_shards.py": "sha256:2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_v33_scenario_contract.py": "sha256:b998957aed2d1a679c0a8ef19a125c62465c61f324251b3c1ac35fc1eb67e7dc"
+  },
+  "issues": [
+    {
+      "id": "R1",
+      "status": "REPAIR",
+      "severity": "high",
+      "title": "Independent oracle accepts raw unresolved safety on a coherently marked valid label",
+      "details": "Runner and collector now mask unresolved safety and retain receipts. The oracle checks unresolved summaries for already-invalid pairs, but its valid path only compares the summary and continues into cost/gain recomputation. A hash-consistent label/pair/trace marked valid can therefore carry an unresolved receipt without being rejected.",
+      "evidence": [
+        "package/civilian/v3_runner.py:200-215",
+        "package/civilian/v3_runner.py:240-262",
+        "package/civilian/counterfactual_pairs.py:641-692",
+        "package/civilian/counterfactual_pairs.py:1034-1087",
+        "package/civilian/gain_oracle.py:236-276",
+        "package/civilian/gain_oracle.py:559-608",
+        "package/civilian/gain_oracle.py:793-868",
+        "package/tests/test_v33_scenario_contract.py:140-208"
+      ],
+      "required_closure": "Reject any raw-derived unresolved reason before valid cost/gain return; test forged/hash-consistent valid flags, live-receipt-only unresolved evidence, and shard count exclusion."
+    },
+    {
+      "id": "R2",
+      "status": "REPAIR",
+      "severity": "medium",
+      "title": "Logical discovery source path repaired, but split and evidence closure are missing",
+      "details": "Logical completion requires all physical children and schedules the dependent rescue once with parent identity and report delay. The contract test covers cooperative partial/full completion and delay, but has no split case, no exact-once assertions after repeated steps, and no paired label/oracle gain recomputation tied to the revealed rescue.",
+      "evidence": [
+        "package/civilian/event_environment.py:1978-2009",
+        "package/civilian/event_environment.py:2055-2060",
+        "package/civilian/event_environment.py:2315-2339",
+        "package/civilian/relief_env.py:480-504",
+        "package/civilian/relief_env.py:578-584",
+        "package/civilian/relief_env.py:680-684",
+        "package/tests/test_v33_scenario_contract.py:211-298"
+      ],
+      "required_closure": "Add split and cooperate exact-once generation/receipt tests, repeated-step no-resend checks, and independent paired oracle recomputation with the dependent rescue in the obligation set."
+    },
+    {
+      "id": "R3",
+      "status": "OPEN",
+      "severity": "high",
+      "title": "Primary raw pair evidence not supplied",
+      "details": "The requested production raw paired labels/traces and local binding path were not available for this follow-up. The initial focused artifact remains invalid and non-replayable.",
+      "evidence": [],
+      "required_closure": "Provide the raw keep/replan traces, label, oracle receipt, local resolvable path, and hashes; preserve the prior failed artifact."
+    }
+  ],
+  "checks": {
+    "R1_producer_masking": {
+      "status": "PASS",
+      "details": "Updated runner, collector, label aggregation, and shard validity path propagate unresolved safety as unknown/masked and retain raw evidence.",
+      "evidence": [
+        "package/civilian/v3_runner.py:297-305",
+        "package/civilian/counterfactual_pairs.py:684-692",
+        "package/civilian/v3_shards.py:55-68"
+      ]
+    },
+    "R1_independent_oracle": {
+      "status": "FAIL",
+      "details": "Valid-path oracle recomputation does not reject nonempty raw-derived unresolved safety reasons.",
+      "evidence": [
+        "package/civilian/gain_oracle.py:579-608",
+        "package/civilian/gain_oracle.py:831-868"
+      ]
+    },
+    "R2_logical_discovery_source": {
+      "status": "PASS",
+      "details": "All-child logical completion, delayed parent-identity report, deduplication and raw event capture are connected in the updated source.",
+      "evidence": [
+        "package/civilian/event_environment.py:1978-2009",
+        "package/civilian/event_environment.py:2315-2339"
+      ]
+    },
+    "R2_test_evidence": {
+      "status": "FAIL",
+      "details": "Only cooperative completion is covered; split, exact-once after repeated steps, and gain/oracle closure are absent.",
+      "evidence": [
+        "package/tests/test_v33_scenario_contract.py:211-298"
+      ]
+    },
+    "R3_primary_evidence": {
+      "status": "OPEN",
+      "details": "Awaiting production raw evidence path from coordinator.",
+      "evidence": []
+    }
+  },
+  "claims": [
+    {
+      "id": "engineering_readiness",
+      "impact": "repair_required"
+    },
+    {
+      "id": "method_performance",
+      "impact": "unsupported_not_claimed"
+    },
+    {
+      "id": "completed_smoke_or_collection",
+      "impact": "not_accepted"
+    },
+    {
+      "id": "model_training_or_generalization",
+      "impact": "outside_review"
+    }
+  ],
+  "rereview_scope": [
+    "R1 unresolved-safety runner/pair/oracle masking",
+    "R2 logical split/cooperate discovery source and tests",
+    "R3 primary raw pair evidence pending"
+  ],
+  "report_path": "releases/gain-gate-v3-3-civilian-search-rescue/reviews/V33_SOURCE_AUDIT_FOLLOWUP.md",
+  "public_copy_note": "Absolute local paths replaced with release-relative references; verdict and hashes unchanged; source was not final at review."
+}
