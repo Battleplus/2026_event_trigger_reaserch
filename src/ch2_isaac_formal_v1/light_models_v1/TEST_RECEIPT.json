@@ -1,0 +1,20 @@
+{
+  "schema": "isaac_roi_light_models_synthetic_test_receipt_v1",
+  "date": "2026-10-21",
+  "scope": "light_models_v1 interface and synthetic projection tests only",
+  "command": "python -B -m unittest test_light_models -v",
+  "passed": 5,
+  "failed": 0,
+  "py_compile": {
+    "command": "python -B -m py_compile data_gate.py features.py dataset.py train_models.py test_light_models.py",
+    "status": "PASS"
+  },
+  "actual_isaac_run": false,
+  "real_batch_read": false,
+  "real_aggregate_or_gain_read": false,
+  "gpu_used": false,
+  "limitations": [
+    "Synthetic receipts exercise terminal and 30/30 gates without asserting formal collection completion.",
+    "No model fit was started and no performance claim is made."
+  ]
+}
