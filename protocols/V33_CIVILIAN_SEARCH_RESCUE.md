@@ -26,6 +26,8 @@ Approved execution: 2026-10-20 (Asia/Shanghai). Implementation: GPT-6 Luna. Pare
 
 Keep/replan share snapshot, exogenous suffix and continuation safety policy. Labels derive from trajectories, not predictions. Completed tasks have zero residual-work penalty; unknowns remain masked. Count donor losses and receiver benefits. No hidden schedule, private identity or unobserved demand enters features.
 
+Search-dependent rescue scoring: the common outstanding-task/arrival universe is expanded to its statically defined discovery-dependent rescue obligations for both arms, even if one arm has not discovered them. Offline frozen truth priorities are allowed only for label accounting. The denominator is shared and must not depend on which arm discovered more tasks. Public policies/features still see demands only after observation. This corrects a missing consequence of the old task-arrival-only universe; it is not a reward-weight adjustment.
+
 Retained criteria:100%forced safety handling; no added controllable hard violations; weighted completion paired95%CI lower bound above-2percentage points; total-cost improvement supported by paired95%CI. Engineering completion is separate from method support.
 
 Archive source, safe summaries, hashes and failures after milestones/conditions. Large raw traces stay local as on the previously approved archive route. No successful tags for unexecuted phases.
