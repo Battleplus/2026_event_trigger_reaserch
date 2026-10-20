@@ -1,3 +1,9 @@
+# Collection source preparation: 2026-10-20
+
+A separate local capture runner now selects up to eight ordinary states before candidate generation and separates trusted private snapshots from whitelisted public input. Three sampler tests and two service-safety tests passed; source review is provisional for integration. Isaac capture is NOT_RUN; two-suffix rollout and independent service trajectory reduction are NOT_IMPLEMENTED. attempt008 is unchanged and its remote deployment authorization remains pending. See [capture source](src/isaac_roi_capture_local_v1/) and [review](evidence/isaac-roi-capture-local-v1/REVIEW.md).
+
+---
+
 # attempt008 local repair review: 2026-10-20
 
 Local repair accepted for Isaac validation; three targeted tests passed. Remote upload/run is NOT_RUN pending specific attempt008 authorization. The fixed pilot matrix is being prepared locally. Pilot requires multi-state/two-suffix collection before its 30/30 gate; the A1 single-snapshot runner does not yet implement that workflow. See [local review](evidence/isaac-roi-v3-attempt008-local/REVIEW.md) and [pilot readiness](evidence/isaac-roi-v3-attempt008-local/PILOT_READINESS_REVIEW.md).
