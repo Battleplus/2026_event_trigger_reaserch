@@ -1,0 +1,18 @@
+{
+  "verification_date": "2026-10-20",
+  "basis": "Read-only SSH sha256sum and wc -l after execution",
+  "exit_status": 0,
+  "raw_trajectories": [
+    {
+      "path": "representative/trajectory.jsonl",
+      "sha256": "7b71918be961c492b18713d3c3916a41253e38491c2da9d8e0207713525657e3",
+      "rows": 194400
+    },
+    {
+      "path": "pair/trajectory.jsonl",
+      "sha256": "ebf6d3a16b0d8d1fe8e4c0e330007dec361fb54f276c6256633cc8e5ec783008",
+      "rows": 172800
+    }
+  ],
+  "retention": "Raw trajectories verified on authorized execution host; not uploaded to GitHub in this receipt"
+}
