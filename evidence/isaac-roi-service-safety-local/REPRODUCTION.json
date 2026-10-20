@@ -1,0 +1,14 @@
+{
+  "status": "REPAIR_REQUIRED",
+  "scope": "isolated invocation of attempt008 mission.abstract_strike, not an Isaac run",
+  "scenario": "service starts at t=100; assigned platform becomes unavailable; repeated service call at t=120",
+  "platform_available": false,
+  "completed_return": true,
+  "target_in_completed": true,
+  "source": "attempt008/package/mission.py",
+  "runner_issue": "service completion loop invokes helper without fault, safety-pause or communication-hold guard",
+  "affected_mode": "search_strike",
+  "unaffected_mode": "search",
+  "interpretation": "A concrete helper/caller gap; actual occurrence rate not measured",
+  "next_action": "Luna minimal service safety and continuous-dwell repair, no change to frozen attempt008"
+}
