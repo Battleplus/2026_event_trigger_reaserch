@@ -1,0 +1,40 @@
+{
+  "completion_marker_written": false,
+  "first_error": {
+    "message": "No module named 'package.civilian.'",
+    "type": "ModuleNotFoundError"
+  },
+  "registry_spec": {
+    "condition": "task_update_or_arrival",
+    "instance_index": 0,
+    "seed_variant": 900001,
+    "split": "pilot",
+    "targets_per_region": 3,
+    "task_mode": "search_rescue"
+  },
+  "resource_receipt": {
+    "current_rss_bytes_at_receipt": 129318912,
+    "error": "No module named 'package.civilian.'",
+    "error_type": "ModuleNotFoundError",
+    "execution": {
+      "cuda_visible_devices": "",
+      "simulation_device": "cpu",
+      "thread_environment": {
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      }
+    },
+    "exit_state": "failed",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "process_cpu_seconds": 44.046875,
+    "python": "3.14.4",
+    "schema": "gain-gate-v33-resource-receipt/1",
+    "stage": "smoke",
+    "wall_seconds": 48.64275130000897
+  },
+  "run_id": "raw-first-smoke-20261020-01",
+  "scenario_id": "registry-000",
+  "schema": "gain-gate-v33-shard-failure/1"
+}

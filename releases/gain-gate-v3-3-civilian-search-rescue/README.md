@@ -17,12 +17,12 @@ Episodes run for 90 simulated minutes. Local disturbances occupy 2 x 2 map cells
 Run from the project directory. These are the runner's current command forms; they have not yet been executed for V3.3.
 
 ```powershell
-python -B -m package.civilian.v3_runner audit --output-dir runs-v33
-python -B -m package.civilian.v3_runner validate --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
-python -B -m package.civilian.v3_runner smoke --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
-python -B -m package.civilian.v3_runner pilot --output-dir runs-v33
-python -B -m package.civilian.v3_runner collect --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
-python -B -m package.civilian.v3_runner verify --output-dir runs-v33 --run-id run-id-from-prior-command
+python -B package/civilian/v3_runner.py audit --output-dir runs-v33
+python -B package/civilian/v3_runner.py validate --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
+python -B package/civilian/v3_runner.py smoke --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
+python -B package/civilian/v3_runner.py pilot --output-dir runs-v33
+python -B package/civilian/v3_runner.py collect --output-dir runs-v33 --task-mode search_rescue --targets-per-region 3
+python -B package/civilian/v3_runner.py verify --output-dir runs-v33 --run-id run-id-from-prior-command
 ```
 
 `smoke` is six disturbance families by three instances. `pilot` compares two task modes, three target densities, and three shared seeds. The formal target is seven conditions by 12 training and 12 validation instances per condition. The formal registry is restricted to those 168 training/validation instances; pilot scenarios are separate.

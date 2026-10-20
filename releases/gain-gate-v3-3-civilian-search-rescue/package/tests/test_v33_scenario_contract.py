@@ -5,6 +5,8 @@ import hashlib
 import sys
 from pathlib import Path
 
+import pytest
+
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 if str(PACKAGE_ROOT) not in sys.path:
     sys.path.insert(0, str(PACKAGE_ROOT))
@@ -13,6 +15,7 @@ if str(CIVILIAN_MODULE_ROOT) not in sys.path:
     sys.path.insert(0, str(CIVILIAN_MODULE_ROOT))
 
 from civilian.event_environment import EventReliefEnv
+from civilian import gain_oracle
 from civilian.counterfactual_pairs import (
     CONTINUATION_RECEIPT_SCHEMA,
     capture_snapshot,
@@ -169,9 +172,6 @@ def test_unresolved_post_state_safety_masks_label_and_oracle_reads_raw_receipts(
             "planner_cpu_seconds": 0.0,
             "safety_monitor_cpu_seconds": 0.0,
             "policy_version": "focused-unresolved-safety-test",
-            "safety_disposition": {
-                "resolved": False, "unknown_reason": "post_state_safety_unresolved",
-            },
             "safety_apply_receipt": {
                 "schema": "gain-live-safety-disposition/1", "status": "unresolved",
                 "resolved": False, "pre_public_sha256": "0" * 64,
@@ -206,6 +206,76 @@ def test_unresolved_post_state_safety_masks_label_and_oracle_reads_raw_receipts(
     assert oracle["valid"] is True
     assert oracle["label_valid_mask"] is False
     assert oracle["recomputed_gain_mean"] is None
+
+
+def test_oracle_rejects_resigned_valid_label_with_live_unresolved_receipt() -> None:
+    scenario = make_v33_scenario(
+        split="pilot", condition="task_update_or_arrival", seed_variant=930101,
+        instance_index=0, task_mode="search_rescue", targets_per_region=3,
+    )
+    env = EventReliefEnv(copy.deepcopy(scenario))
+    env.reset()
+    initial_public_task_count = len(env.public_observation()["tasks"])
+    while env.time < 12 and len(env.public_observation()["tasks"]) == initial_public_task_count:
+        env.step(copy.deepcopy(NOOP))
+    snapshot = capture_snapshot(
+        env, state_id="v33-oracle-live-only-tamper-930101",
+        scenario_id=scenario["parent_id"], parent_family=scenario["parent_family"],
+        split="pilot", event_type="focused_live_receipt_tamper", forced=False,
+        replanner_version=REPLANNER_VERSION,
+    )
+    suffix_seed = 930203
+    suffix = prepare_suffix_snapshot(
+        snapshot,
+        future_events=sample_v33_future_suffix(
+            scenario, after_time=int(env.time),
+            horizon_minutes=HORIZON_MINUTES - int(env.time), suffix_seed=suffix_seed,
+        ),
+        suffix_seed=suffix_seed, env_factory=EventReliefEnv,
+    )
+    label = run_paired_counterfactual(
+        snapshot, replan_action=copy.deepcopy(NOOP), suffixes=[suffix],
+        replanner_version=REPLANNER_VERSION, replanner_cpu_seconds=0.0,
+        horizon_minutes=30,
+    )
+    assert label["valid_mask"] is True
+    pair = label["pairs"][0]
+    trace = copy.deepcopy(pair["keep"]["trace"])
+    assert trace["continuation_policy_receipts"]
+    receipt = copy.deepcopy(trace["continuation_policy_receipts"][0])
+    live_receipt = {
+        "schema": "gain-live-safety-disposition/1", "status": "unresolved",
+        "resolved": False, "pre_public_sha256": "0" * 64,
+        "post_public_sha256": "1" * 64, "actions": [],
+        "actions_sha256": hashlib.sha256(b"[]").hexdigest(),
+    }
+    receipt["safety_apply_receipt"] = live_receipt
+    receipt["unknown_reason"] = "tampered_live_receipt"
+    evidence = {
+        field: receipt[field]
+        for field in gain_oracle.SAFETY_EVIDENCE_FIELDS
+        if field in receipt
+    }
+    receipt["safety_evidence_sha256"] = gain_oracle._digest(evidence)
+    trace["continuation_policy_receipts"][0] = receipt
+    trace["unresolved_safety_disposition_count"] = 1
+    trace["unresolved_safety_unknown_reasons"] = ["tampered_live_receipt"]
+    trace["trace_sha256"] = gain_oracle._digest({
+        key: value for key, value in trace.items() if key != "trace_sha256"
+    })
+    pair["keep"]["trace"] = trace
+    pair["unresolved_safety_disposition_count"] = 1
+    pair["unresolved_safety_unknown_reasons"] = ["tampered_live_receipt"]
+    pair["pair_sha256"] = gain_oracle._digest({
+        key: value for key, value in pair.items() if key != "pair_sha256"
+    })
+    label["pairs"][0] = pair
+    label["label_sha256"] = gain_oracle._digest({
+        key: value for key, value in label.items() if key != "label_sha256"
+    })
+
+    with pytest.raises(ValueError, match="GAIN_ORACLE_VALID_TRACE_HAS_UNRESOLVED_SAFETY"):
+        validate_gain_label(label)
 
 
 def test_cooperative_search_completion_publishes_dependent_rescue() -> None:

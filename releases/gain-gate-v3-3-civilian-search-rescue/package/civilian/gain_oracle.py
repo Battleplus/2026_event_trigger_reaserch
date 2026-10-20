@@ -578,7 +578,12 @@ def _trace_cost(
             raise ValueError("GAIN_ORACLE_CONTINUATION_CALL_TYPE_INVALID")
         unresolved_reason = _validate_continuation_safety_evidence(receipt)
         if unresolved_reason is not None:
-            unresolved_safety_reasons.append(unresolved_reason)
+            # A trace marked valid cannot contain a raw continuation safety
+            # receipt that says the live disposition remained unresolved.
+            # Masked pairs are handled separately by _validate_masked_pair_safety;
+            # reaching this cost path means the producer claimed this branch was
+            # valid, so the independent oracle must reject that claim outright.
+            raise ValueError("GAIN_ORACLE_VALID_TRACE_HAS_UNRESOLVED_SAFETY")
         receipt_planner += planner_cpu
         receipt_safety += safety_cpu
         if invoked:
