@@ -1,0 +1,60 @@
+{
+  "schema": "ch2_local_review_manifest_v1",
+  "generated_utc": "2026-10-20T14:24:47.9924544Z",
+  "git_commit": "200389dbb482c8f99f60fbfa530afbdb0c3f72e3",
+  "remote_runtime": "NOT_RUN",
+  "scientific_status": "INCONCLUSIVE",
+  "focused_tests": "12 passed, 5 subtests passed",
+  "files": [
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/run_capture.py",
+      "sha256": "c19cdf17afdc9e67584994059d0f812e8b2bd54bc6c3a4f7a39753025568fcc8",
+      "size": 59857
+    },
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/run_suffix_pairs.py",
+      "sha256": "58fb17d265a5c5e2ae50a9ae644fc984f9dcf27d841c3616aeef80c5cd8900df",
+      "size": 4325
+    },
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/state_sampling.py",
+      "sha256": "907b49c6f89d4b280333c6ecef47a1a7e56f32272037ebf658dc6572559042c0",
+      "size": 6908
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/reduce_gain.py",
+      "sha256": "f47ee8f87aca27b37fc5dffbbb939ad5541d08a5f4b0fe41b46b517880852f35",
+      "size": 11785
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/aggregate_gain.py",
+      "sha256": "7752d8c8151f90b6faa64fb444c84e9c16f5f6122d42480c021de12c6517a502",
+      "size": 4118
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_reduce_gain.py",
+      "sha256": "3be723ee5801804ee65dc9c2d3d571634cea656d59630e8edb8c4aa5624ccdf0",
+      "size": 5970
+    },
+    {
+      "path": "src/isaac_roi_gain_reduction_v1/test_aggregate_gain.py",
+      "sha256": "9e1b8e5aa2846711c8ba06c724cc049ddf3ebcce0407159690ab4e18d1fae15a",
+      "size": 1683
+    },
+    {
+      "path": "src/isaac_roi_capture_pairs_v1/test_suffix_pairs.py",
+      "sha256": "59f93183a10491181ed4252ed3fd6fc8d76cb57e2f1387eea18c9cdd083c0dbc",
+      "size": 1030
+    },
+    {
+      "path": "src/isaac_roi_service_audit_v1/audit_service.py",
+      "sha256": "9b5547e7a84bcf0069f487eedd8abb49e5db6d08074e1aa85820ed291e391bce",
+      "size": 12124
+    },
+    {
+      "path": "protocols/isaac-roi-simplified-v2/gain_reduction/FROZEN_SCALAR_PROTOCOL_V1.md",
+      "sha256": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec",
+      "size": 3337
+    }
+  ]
+}
