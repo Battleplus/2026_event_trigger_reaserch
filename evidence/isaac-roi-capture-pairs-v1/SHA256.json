@@ -1,0 +1,16 @@
+{
+  "protocols/isaac-roi/FROZEN_SCALAR_PROTOCOL_V1.md": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec",
+  "src/isaac_roi_capture_pairs_v1/configs/capture_v1_representative.json": "55890a9c544bbc6046aa3cff12dafde450100155e639f05a659ce57d903ae46b",
+  "src/isaac_roi_capture_pairs_v1/isaac_backend.py": "4b4c67bec549f1a34694dff2b9c3767a7b9213728a6f607ef36a92ddb01af504",
+  "src/isaac_roi_capture_pairs_v1/mission.py": "0bce912c53822b90002d5166a45c09459f35cb3fce263716eda7d2c76c48e9b1",
+  "src/isaac_roi_capture_pairs_v1/README.md": "ae0b4da9f71706021135269b66f3713857841ba4c4ed525f32ab93fe5a24b0ff",
+  "src/isaac_roi_capture_pairs_v1/run_capture.py": "813ae00062688d8a93a63795f52515597567f1d6822c11e5ca7ded4fa46e0144",
+  "src/isaac_roi_capture_pairs_v1/run_suffix_pairs.py": "58fb17d265a5c5e2ae50a9ae644fc984f9dcf27d841c3616aeef80c5cd8900df",
+  "src/isaac_roi_capture_pairs_v1/state_sampling.py": "907b49c6f89d4b280333c6ecef47a1a7e56f32272037ebf658dc6572559042c0",
+  "src/isaac_roi_capture_pairs_v1/test_collection_service_safety.py": "998d905c202ea2621eadc09c5c71f0325c5ed237f14b01653e3e90888be384a0",
+  "src/isaac_roi_capture_pairs_v1/test_state_sampling.py": "2f430a118e2fdc4d91078f6237568fdada09f5483ddbb614c3f274d4f5975255",
+  "src/isaac_roi_capture_pairs_v1/test_suffix_pairs.py": "59f93183a10491181ed4252ed3fd6fc8d76cb57e2f1387eea18c9cdd083c0dbc",
+  "src/isaac_roi_service_audit_v1/audit_service.py": "9b5547e7a84bcf0069f487eedd8abb49e5db6d08074e1aa85820ed291e391bce",
+  "src/isaac_roi_service_audit_v1/README.md": "d660562711653e0a0aed84a18d8bf523512b36c6d10d5971b52d91ff801a41bc",
+  "src/isaac_roi_service_audit_v1/test_audit_service.py": "7148034db9834d4d774092aedbb734c15a5ee26eec2a2784a952daa92553c890"
+}
