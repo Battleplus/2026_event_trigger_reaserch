@@ -1,6 +1,6 @@
 # V3.3 Civilian Search, Rescue, and Cross-Region Support
 
-**Status: implementation in progress.** The 18-instance smoke, configuration pilot, formal collection, and model training have not run. No method-performance result is claimed. The V3.2 stop and its partial evidence remain historical and are not V3.3 results.
+**Status: smoke engineering check complete; formal collection not started.** The 18-instance smoke completed 18/18 with all focused integrity checks passing. It produced 45 valid ordinary labels, all with non-positive gain; this is not the formal 30/30 gate and no model or method-performance result is claimed. The V3.2 stop and its partial evidence remain historical and are not V3.3 results.
 
 ## Scope
 
@@ -32,3 +32,7 @@ There is no custom time- or memory-guardian termination in this version. Runs re
 ## Provenance and review
 
 V3.2 source hashes and file-level reuse decisions are in [REUSE_INVENTORY.json](REUSE_INVENTORY.json). The source archive is pinned in [BASELINE_PROVENANCE.json](BASELINE_PROVENANCE.json). V3.3 changes require a later source/config/evidence freeze and coordinator review before smoke or collection is treated as accepted evidence.
+
+## Smoke evidence
+
+The completed smoke audit is in `evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.md`. It is simulation-only engineering evidence. Formal train/validation collection and model training remain pending.

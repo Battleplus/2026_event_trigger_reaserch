@@ -1,0 +1,57 @@
+{
+  "schema": "gain-gate-v33-smoke-audit/1",
+  "run_id": "v33-smoke-20261020T120749Z-821648377615",
+  "status": "PASS",
+  "scope": "read-only audit of SMOKE_MANIFEST.json, SMOKE_SUMMARY.json, RUN_RECEIPT.json and all 18 committed shards",
+  "checks": {
+    "manifest_complete": true,
+    "summary_complete": true,
+    "receipt_complete": true,
+    "markers_present": true,
+    "shard_hashes_match": true,
+    "headers_18": true,
+    "scale_100x100_36platform_54task_9region": true,
+    "public_trajectory_90": true,
+    "platform_usage_36": true,
+    "c1_receipts": true,
+    "live_unresolved_safety_zero": true,
+    "no_illegal_duplicate": true,
+    "no_half_cooperation": true,
+    "mask_matches_oracle": true,
+    "resource_receipts_complete": true
+  },
+  "counts": {
+    "rows": 278,
+    "valid_mask": 45,
+    "masked": 233,
+    "oracle_valid": 278,
+    "oracle_invalid": 0,
+    "oracle_label_valid": 45,
+    "oracle_label_masked": 233,
+    "forced_rows": 230,
+    "ordinary_rows": 48,
+    "valid_positive_gain": 0,
+    "valid_non_positive_gain": 45
+  },
+  "by_condition": {
+    "task_update_or_arrival": {"rows": 40, "forced": 32, "ordinary": 8, "valid": 8, "masked": 32},
+    "platform_failure_or_capability_loss": {"rows": 53, "forced": 45, "ordinary": 8, "valid": 7, "masked": 46},
+    "energy_anomaly": {"rows": 41, "forced": 33, "ordinary": 8, "valid": 8, "masked": 33},
+    "communication_degradation": {"rows": 47, "forced": 39, "ordinary": 8, "valid": 8, "masked": 39},
+    "environment_or_obstacle_change": {"rows": 40, "forced": 32, "ordinary": 8, "valid": 8, "masked": 32},
+    "compound": {"rows": 57, "forced": 49, "ordinary": 8, "valid": 6, "masked": 51}
+  },
+  "resources": {
+    "process_cpu_seconds": 5044.859375,
+    "wall_seconds": 5348.815082100002,
+    "current_rss_bytes_at_receipt": 586960896,
+    "simulation_device": "cpu",
+    "python": "3.14.4"
+  },
+  "interpretation": {
+    "engineering": "PASS",
+    "data_gate": "NOT_EVALUATED_FORMAL",
+    "training": "NOT_RUN",
+    "note": "Smoke labels are not formal training data; all 45 valid smoke gains are non-positive. Proceed to formal collection only after coordinator review."
+  }
+}

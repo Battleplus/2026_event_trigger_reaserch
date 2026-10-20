@@ -1,12 +1,42 @@
 {
   "version": "gain-gate-v3-3-civilian-search-rescue",
-  "status": "source_frozen_focused_validation_complete_raw_pair_and_smoke_not_complete",
+  "status": "smoke_18_of_18_complete_formal_collection_not_started",
   "source_review": "initial REPAIR and followup REPAIR; final focused review pending",
   "files": [
     {
       "path": "BASELINE_PROVENANCE.json",
       "sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805",
       "bytes": 1750
+    },
+    {
+      "path": "MANIFEST.json",
+      "sha256": "183f48ecbe92afe92172e129d6f3376d3e1c372543004a8198844edfd2ddc782",
+      "bytes": 11408
+    },
+    {
+      "path": "README.md",
+      "sha256": "d390b983ab9ec3a4420171f502ac007eeb10c925826fc316262827f4140b9504",
+      "bytes": 3788
+    },
+    {
+      "path": "REUSE_INVENTORY.json",
+      "sha256": "e7bc9546e4219ceed581465fdd51de4de55ead7415b62b20ec2bf0f966dd3714",
+      "bytes": 7862
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "sha256": "70af9bb7163cf1fe9b4c13fe5d4a01d7289891c65d67f2cc724e28bf46bb3789",
+      "bytes": 5938
+    },
+    {
+      "path": "V33_SOURCE_AUDIT_FINAL_FOCUSED.json",
+      "sha256": "a56c2dd62ce488f027be070f75504468c2c8fcbd4eacb8c35ed23ea3b61b684d",
+      "bytes": 8166
+    },
+    {
+      "path": "V33_SOURCE_AUDIT_FINAL_FOCUSED.md",
+      "sha256": "6b74800bb603db5377bb5cf6be2b524b08f604bb5ca699c10fc796a5b4e3820a",
+      "bytes": 8955
     },
     {
       "path": "configs/ENVIRONMENT_SPEC.json",
@@ -34,9 +64,14 @@
       "bytes": 1162
     },
     {
-      "path": "MANIFEST.json",
-      "sha256": "183f48ecbe92afe92172e129d6f3376d3e1c372543004a8198844edfd2ddc782",
-      "bytes": 11408
+      "path": "evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.json",
+      "sha256": "0af3e31ca7a90c2740905657a66cf181e8bf6fa88989ff8d03e1c438cb143b13",
+      "bytes": 2165
+    },
+    {
+      "path": "evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.md",
+      "sha256": "b327925dd4663493ca343b6be59b2df91efac84136ec3c7c267704c6b1d90a73",
+      "bytes": 1185
     },
     {
       "path": "package/civilian/baselines.py",
@@ -299,24 +334,9 @@
       "bytes": 5143
     },
     {
-      "path": "README.md",
-      "sha256": "d390b983ab9ec3a4420171f502ac007eeb10c925826fc316262827f4140b9504",
-      "bytes": 3788
-    },
-    {
       "path": "requirements.txt",
       "sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130",
       "bytes": 96
-    },
-    {
-      "path": "REUSE_INVENTORY.json",
-      "sha256": "e7bc9546e4219ceed581465fdd51de4de55ead7415b62b20ec2bf0f966dd3714",
-      "bytes": 7862
-    },
-    {
-      "path": "SHA256SUMS.txt",
-      "sha256": "70af9bb7163cf1fe9b4c13fe5d4a01d7289891c65d67f2cc724e28bf46bb3789",
-      "bytes": 5938
     }
   ],
   "evidence_note": "Focused failed summaries and first wrapper failure are public; complete paired raw traces stay local. Smoke/pilot/formal collection/training are not complete.",
@@ -339,5 +359,13 @@
     ],
     "evidence_sha256": "f4e8a54690838e5659534a39b9e514702100f314b445b7e83faad015ebda7fde",
     "baseline_provenance_sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805"
+  },
+  "smoke_audit": {
+    "path": "evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.json",
+    "result": "PASS",
+    "valid_ordinary_labels": 45,
+    "valid_ordinary_gains_non_positive": 45,
+    "formal_30_30": "NOT_EVALUATED",
+    "models": "NOT_RUN"
   }
 }
