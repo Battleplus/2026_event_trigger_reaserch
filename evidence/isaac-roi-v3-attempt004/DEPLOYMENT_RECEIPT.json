@@ -1,0 +1,12 @@
+{
+  "run_id": "isaac-roi-a2-representative-v3-attempt004-20261020",
+  "stage": "deployment",
+  "status": "NOT_RUN",
+  "reason": "SSH TCP connection to authorized server port 22 timed out before authentication",
+  "upload_performed": false,
+  "gpu_job_started": false,
+  "automatic_retry": false,
+  "source_hashes_match": true,
+  "next_step": "Restore SSH network reachability; resume same authorized deployment after explicit continuation",
+  "timestamp_local": "2026-10-20T09:16:23.4852026+08:00"
+}
