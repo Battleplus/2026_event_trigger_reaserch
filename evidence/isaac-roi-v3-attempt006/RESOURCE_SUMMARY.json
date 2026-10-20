@@ -1,0 +1,20 @@
+{
+  "scope": "Isaac execution only; audit, deployment and training time not included",
+  "representative": {
+    "wall_s": 124.38,
+    "cpu_user_s": 295.86,
+    "cpu_system_s": 72.6,
+    "peak_rss_kib": 4409484
+  },
+  "pair": {
+    "wall_s": 117.64,
+    "cpu_user_s": 303.66,
+    "cpu_system_s": 75.09,
+    "peak_rss_kib": 4417544
+  },
+  "local_pair_events_sha256": "24906c6707791700246d624cd3bb3b3dac5913bfee0c34b590cec598bcf7aa22",
+  "raw_resource_receipt_sha256": {
+    "resource_pair.txt": "dc2aee8ad72aa6841f83ac6d3c11533956cf64c53dd7b3ac60c9fdc6bd34c5cf",
+    "resource_representative.txt": "43723a6ef4b2978b21c870845546cb713f68878cc51b52b4d5b9b95ab85458d8"
+  }
+}

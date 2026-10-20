@@ -1,0 +1,34 @@
+{
+  "run_id": "isaac-roi-v3-attempt007-20261020",
+  "status": "LOCAL_READY_REMOTE_NOT_RUN",
+  "implementation_role": "GPT-6 Luna",
+  "review_role": "primary coordinator; read-only review",
+  "targeted_tests_passed": 5,
+  "manifest_entries_verified": 11,
+  "manifest_sha256": "f3924189133d37e7859b4b00ebd6e096d2147ce635a7ea0d0669f0f74dd28203",
+  "files": {
+    "package/mission.py": "a439591924606627734965ddbd132e91a542804644376d0299403bea2f63bac0",
+    "package/isaac_backend.py": "4b4c67bec549f1a34694dff2b9c3767a7b9213728a6f607ef36a92ddb01af504",
+    "package/run_a1.py": "b931c903c5f55f8a8e8e13979994d0a00f0094dc6992186428444283180385b6",
+    "package/audit_trajectory.py": "3bebb2de67ffed921b4ea7f256ecdec674d912930771eaa54eb41be8607b08e4",
+    "package/test_mission.py": "5cda70d077dbcc50bd7febeb287422f3df0add69dd37fc801845a4d97048b148",
+    "package/test_audit_commands.py": "d9a54fb2ec3e2c43187ef0c29f3c3666d8d6e06f67361204c0e0df2bf2d95896",
+    "package/test_a1_attempt007.py": "55b986d4c9b84638d8abc689b0862a64c1a1279d867f4c547357316daf412d8b",
+    "package/README.md": "748482f5ee5406e723e93d0aa9f28cc66586d2399b8b9b76eb330c8b065767fb",
+    "package/configs/a1_representative.json": "106a31607e64be0d4ff1aa178d7a1f481b0329332ffd2638df174fa19dc0037f",
+    "REPAIR_NOTES.md": "92ff9a2f38a0980c00b4caa41a65f137d4ce391a2638e1649d499d541d2d2296",
+    "launch.sh": "918affe5c71ce800afae6b334dab43c33d0936f0ddff9ac55967f573107b25e7"
+  },
+  "changes": [
+    "Count attempts by send/drop; report delivery and application separately",
+    "Count candidate_generation as the single planner call event",
+    "Public energy anomaly: uav-8-1, start 1200s, multiplier 10, independent cost recomputation",
+    "Predeclared engineering speed-block exposure window [0,120)",
+    "Launcher: representative then audit then pair then audit, GPU1"
+  ],
+  "engineering": "PENDING_ISAAC_VALIDATION",
+  "method": "INCONCLUSIVE",
+  "pilot": "NOT_RUN",
+  "formal_collection": "NOT_RUN",
+  "training": "NOT_RUN"
+}
