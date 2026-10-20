@@ -1,0 +1,7 @@
+{
+  "command": "python -B -m unittest test_a1_attempt007.Attempt007TargetedTests.test_replan_action_waits_for_nonzero_decision_delay_and_rejects_started_task test_a1_attempt007.Attempt007TargetedTests.test_energy_anomaly_is_an_ordinary_trigger_event test_mission.MissionTests.test_replan_catalog_keeps_noop_when_positive_transfers_exceed_limit",
+  "working_directory": "attempt008/package",
+  "exit_code": 0,
+  "stdout": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n",
+  "isaac_executed": false
+}

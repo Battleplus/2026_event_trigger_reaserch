@@ -1,3 +1,9 @@
+# attempt008 local repair review: 2026-10-20
+
+Local repair accepted for Isaac validation; three targeted tests passed. Remote upload/run is NOT_RUN pending specific attempt008 authorization. The fixed pilot matrix is being prepared locally. Pilot requires multi-state/two-suffix collection before its 30/30 gate; the A1 single-snapshot runner does not yet implement that workflow. See [local review](evidence/isaac-roi-v3-attempt008-local/REVIEW.md) and [pilot readiness](evidence/isaac-roi-v3-attempt008-local/PILOT_READINESS_REVIEW.md).
+
+---
+
 # V3 Isaac ROI current review: 2026-10-20
 
 attempt007 representative and pair completed with raw trajectory audits PASS. Protocol acceptance remains REPAIR_REQUIRED: paired planner-delay handling and mandatory NOOP retention need repair. Measured local slowdown and energy reserve pause are established; no scalar gain, trained model, pilot or formal data result is claimed. See [attempt007 review](evidence/isaac-roi-v3-attempt007/REVIEW.md).
