@@ -1,0 +1,39 @@
+# V3.3 civilian multi-region search and rescue
+
+Approved execution: 2026-10-20 (Asia/Shanghai). Implementation: GPT-6 Luna. Parent coordinator reviews executable changes read-only; no claim of Sol High review.
+
+## Frozen design
+
+- Civilian search and rescue/supply delivery only; no strike or weapon dispatch.
+- Map100x100, nine regions, two UAVs and two helicopters per region (36 platforms).
+- Ninety simulated minutes, <=16 candidate actions including NOOP, paired horizon30min truncated at episode end, two matched suffixes.
+- Default: search then rescue delivery, three target sites/region. Sites and generated dependent tasks are separate counts. Unobserved sites/demands are not public policy inputs.
+- Target density means total sites, not initial sites plus extras: each region has one initially hidden arriving search site within that total; rescue obligations become visible only when their corresponding search completes. Thus the one-site pilot intentionally starts with no public search tasks; its empty C1 assignment must be reported honestly. Default three-site mode has27sites/54logical tasks,18initial public searches.
+- All seven disturbance conditions share the same nine regional search arrivals as background workload, independently timed at integer minutes22 through26. The task-update condition adds a deadline update to an initially public task when one exists; other conditions add their respective disturbances. This keeps task load comparable across disturbance groups.
+- Responsibility regions permit assistance. Selection accounts for capability, travel, energy, communication and donor-region outstanding commitments.
+- No custom CPU/wall/memory guardian termination. Record actual usage; preserve genuine errors. No fabricated completion receipts.
+
+## Ordered gates
+
+1. Correct completed-task residual scoring and trainable-mask counting; adapt task semantics and36-platform scene. Preserve V3.2 failures; exclude old labels.
+2. Focused checks: completed/incomplete scoring; reveal causality; real non-NOOP cross-region pair, nontarget effects and independent raw recomputation; affected region/safety regressions. Coordinator reviews before launch.
+3. Complete all18 default smoke instances (six inherited conditions x three). No partial old/new concatenation.
+4. Configuration pilot: search-only/search-and-rescue x1/3/6 sites per region x three shared seeds (18 instances), all with the same task_update_or_arrival disturbance condition. Smoke separately covers the six inherited disturbance conditions. Default changes require a documented feasibility/load rationale, never favorable method-effect selection.
+5. After engineering review, freeze source/config and collect seven conditions x(12train+12validation)=168 scenarios, <=8ordinary states/trajectory, two suffixes. Existing-ET/Periodic-4min/Random-Allow-Suppress proportions remain frozen.
+6. Require >=30positive and >=30nonpositive unique valid ordinary states, classes covered across splits/groups. Exclude forced, unknown and empty windows. Suffixes are not independent states. No extra seeds to chase this gate.
+7. Only after gate: CPU constant/Ridge/tree and CUDA MLP(64,64; batch32; lr0.001; <=100epochs; patience10; seeds8201/8202/8203), real update and fresh-process restore. Repair existing CUDA issue; no silent CPU fallback.
+8. Closed-loop methods share frozen replanner/safety. Measure detection, features, transfer/sync, inference, search, repair, communication and switching. Scene-level paired CIs. Independent test7x20 only after development criteria. WM/PPO conditional on stable light-model closed-loop benefit.
+
+## Scientific checks
+
+Keep/replan share snapshot, exogenous suffix and continuation safety policy. Labels derive from trajectories, not predictions. Completed tasks have zero residual-work penalty; unknowns remain masked. Count donor losses and receiver benefits. No hidden schedule, private identity or unobserved demand enters features.
+
+Search-dependent rescue scoring: the common outstanding-task/arrival universe is expanded to its statically defined discovery-dependent rescue obligations for both arms, even if one arm has not discovered them. Offline frozen truth priorities are allowed only for label accounting. The denominator is shared and must not depend on which arm discovered more tasks. Public policies/features still see demands only after observation. This corrects a missing consequence of the old task-arrival-only universe; it is not a reward-weight adjustment.
+
+Retained criteria:100%forced safety handling; no added controllable hard violations; weighted completion paired95%CI lower bound above-2percentage points; total-cost improvement supported by paired95%CI. Engineering completion is separate from method support.
+
+Archive source, safe summaries, hashes and failures after milestones/conditions. Large raw traces stay local as on the previously approved archive route. No successful tags for unexecuted phases.
+
+## Initial state
+
+Implementation in progress. V3.3 smoke, pilot, collection and training NOT_RUN at this protocol commit. Prior V3.2 STOP is historical, not the V3.3 outcome.

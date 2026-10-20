@@ -1,0 +1,44 @@
+{
+  "schema": "gain-gate-v33-baseline-provenance/1",
+  "version": "gain-gate-v3-3-civilian-search-rescue-36platform",
+  "direct_source": {
+    "kind": "v3_2_performance_source_snapshot",
+    "path": "development/ch2_disaster_relief_n02_gain_gate_v32_performance",
+    "runnable_release_path": "releases/gain-gate-v3-2-performance-light",
+    "release_manifest_sha256": "74e8e8b0842dba444b98fba1eb20217e42a17f223f7c7cc7d4572f0a55876346",
+    "per_file_source_hashes": "REUSE_INVENTORY.json"
+  },
+  "public_archive_origin": {
+    "repository": "Battleplus/2026_event_trigger_reaserch",
+    "branch": "archive/gain-gate-v3-2-performance-light",
+    "commit": "d943fff5e59126a390a3ac779c006c60211a0fb9",
+    "relationship": "pinned public source archive for the V3.2 runnable release"
+  },
+  "historical_c1_lineage": {
+    "repository": "Battleplus/2026_GPPO_10.16",
+    "tag": "n02-minimal-closure-v1",
+    "relationship": "historical public C1 adapter lineage; not a claim that the V3.3 adapter is the user's complete Chapter 1 solver"
+  },
+  "copy_boundary": {
+    "selected_baseline_files": "REUSE_INVENTORY.json lists V3.2 source-relative paths and source SHA-256 values only",
+    "added_in_v33": [
+      "package/civilian/v33_scenarios.py",
+      "protocols/V33_CIVILIAN_SEARCH_RESCUE.md"
+    ],
+    "excluded": [
+      "run directories and raw traces",
+      "labels and checkpoints",
+      "tokens, credentials, private keys and authorization bindings",
+      "personal absolute paths",
+      "__pycache__ and bytecode"
+    ]
+  },
+  "status": {
+    "implementation": "IN_PROGRESS",
+    "smoke": "NOT_RUN",
+    "pilot": "NOT_RUN",
+    "formal_collection": "NOT_RUN",
+    "model_training": "NOT_RUN",
+    "scientific_result": "NONE_CLAIMED"
+  }
+}

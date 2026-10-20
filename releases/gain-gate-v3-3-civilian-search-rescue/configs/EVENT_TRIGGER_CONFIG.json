@@ -1,0 +1,118 @@
+{
+  "schema": "n02-event-trigger-config/1",
+  "version": "event-trigger-v1-100x100",
+  "map": {
+    "rows": 100,
+    "cols": 100,
+    "grid_cells": 10000,
+    "grid_contract": "relief-grid-100x100-v1"
+  },
+  "seeds": [
+    8201,
+    8202,
+    8203
+  ],
+  "scenario": {
+    "parents": 6,
+    "train_parents": 4,
+    "development_parents": 2,
+    "uav": 4,
+    "helicopter": 2,
+    "tasks": 12,
+    "horizon": 60,
+    "perturbation_shape": [
+      2,
+      2
+    ]
+  },
+  "trigger": {
+    "weights": [
+      0.35,
+      0.3,
+      0.25,
+      0.1
+    ],
+    "threshold_quantile": 0.75,
+    "delta_min": 4,
+    "periodic_interval": 4,
+    "local_task_limit": 6,
+    "local_platform_limit": 4,
+    "history_length": 4,
+    "calibration_split": "train"
+  },
+  "collection": {
+    "windows": [
+      8,
+      16,
+      24,
+      32
+    ],
+    "max_candidates": 16,
+    "branch_horizon": 30,
+    "minimum_distinct_window_fraction": 0.8,
+    "seed": 8201
+  },
+  "world_model": {
+    "seeds": [
+      8201,
+      8202,
+      8203
+    ],
+    "epochs": 40,
+    "batch_size": 8,
+    "hidden_dim": 48,
+    "learning_rate": 0.001,
+    "history_length": 4,
+    "device": "cpu"
+  },
+  "ppo": {
+    "variants": [
+      "Periodic-G",
+      "Event-G",
+      "Periodic-G-WM",
+      "Event-G-WM"
+    ],
+    "seeds": [
+      8201,
+      8202,
+      8203
+    ],
+    "rounds": 4,
+    "episodes_per_round": 4,
+    "epochs": 4,
+    "minibatch_size": 32,
+    "max_updates": 128,
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_ratio": 0.2,
+    "entropy_coefficient": 0.01,
+    "device": "cpu"
+  },
+  "reward": {
+    "completion": 1.0,
+    "delay": 0.2,
+    "energy": 0.01,
+    "risk": 0.25,
+    "communication": 0.01,
+    "switch": 0.05,
+    "reconstruction": 0.05,
+    "reconstruction_scale": 0.01
+  },
+  "runtime": {
+    "device": "cpu",
+    "threads": 1,
+    "cpu_affinity": [
+      0
+    ],
+    "cuda_visible_devices": "",
+    "wall_timeout_seconds": 7200,
+    "cpu_budget_seconds": 6600,
+    "memory_max_bytes": 8589934592
+  },
+  "analysis": {
+    "development_threshold_tuning": false,
+    "claim_scope": "first-round diagnostic six-parent comparison only",
+    "negative_result_policy": "report observed metrics; do not tune using development or claim superiority without evidence"
+  }
+}

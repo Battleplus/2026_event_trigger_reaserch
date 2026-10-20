@@ -1,0 +1,322 @@
+{
+  "version": "gain-gate-v3-3-civilian-search-rescue",
+  "status": "source_frozen_focused_validation_complete_raw_pair_review_pending",
+  "binding": {
+    "source_manifest_sha256": "79bab98edf5fba7e7d658c8c3f64133cb67d57fb2cd9aeeaaf4a49f1e8e9bdd0",
+    "config_sha256": "dabe15ad5f5640859973e290e165ea528c2618a939a3f83791824a3235764404",
+    "config_files": [
+      {
+        "path": "ENVIRONMENT_SPEC.json",
+        "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      },
+      {
+        "path": "EVENT_TRIGGER_CONFIG.json",
+        "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+      },
+      {
+        "path": "GAIN_GATE_CONFIG.json",
+        "sha256": "08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859"
+      }
+    ],
+    "evidence_sha256": "f4e8a54690838e5659534a39b9e514702100f314b445b7e83faad015ebda7fde",
+    "baseline_provenance_sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805"
+  },
+  "files": [
+    {
+      "path": "BASELINE_PROVENANCE.json",
+      "sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805",
+      "bytes": 1750
+    },
+    {
+      "path": "configs/ENVIRONMENT_SPEC.json",
+      "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0",
+      "bytes": 578
+    },
+    {
+      "path": "configs/EVENT_TRIGGER_CONFIG.json",
+      "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009",
+      "bytes": 2420
+    },
+    {
+      "path": "configs/GAIN_GATE_CONFIG.json",
+      "sha256": "08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859",
+      "bytes": 6012
+    },
+    {
+      "path": "package/civilian/baselines.py",
+      "sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+      "bytes": 5740
+    },
+    {
+      "path": "package/civilian/branching.py",
+      "sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58",
+      "bytes": 21373
+    },
+    {
+      "path": "package/civilian/chapter1_adapter.py",
+      "sha256": "5565c7ec3c176523180118eb28a13d468339025345644c6feb51166a187095b0",
+      "bytes": 8139
+    },
+    {
+      "path": "package/civilian/cost_accounting.py",
+      "sha256": "d38432191fcf09dfc367ff7da3a8664d9eb682ad359d89cfd8c50b5ff5fe5e13",
+      "bytes": 11449
+    },
+    {
+      "path": "package/civilian/counterfactual_pairs.py",
+      "sha256": "139c07d332bc35d64af1c105a9044bcd7c122ff5f8e42a22c9666d1ffb7a4397",
+      "bytes": 57260
+    },
+    {
+      "path": "package/civilian/dataset_protocol.py",
+      "sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1",
+      "bytes": 12779
+    },
+    {
+      "path": "package/civilian/driver.py",
+      "sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32",
+      "bytes": 88322
+    },
+    {
+      "path": "package/civilian/evaluator.py",
+      "sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6",
+      "bytes": 22513
+    },
+    {
+      "path": "package/civilian/event_environment.py",
+      "sha256": "385b755b0ff5bde29ffb34a3dfdbc81862153e41d07cbf74bf11f5907caea407",
+      "bytes": 198681
+    },
+    {
+      "path": "package/civilian/event_models.py",
+      "sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
+      "bytes": 64177
+    },
+    {
+      "path": "package/civilian/event_oracle.py",
+      "sha256": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
+      "bytes": 47562
+    },
+    {
+      "path": "package/civilian/event_policy.py",
+      "sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9",
+      "bytes": 74048
+    },
+    {
+      "path": "package/civilian/event_runner.py",
+      "sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
+      "bytes": 96972
+    },
+    {
+      "path": "package/civilian/event_scenarios.py",
+      "sha256": "f8d1d3b66467b3b883497ef34286d9060a52c38fbd918044c8601aaf827fd661",
+      "bytes": 14297
+    },
+    {
+      "path": "package/civilian/event_trigger.py",
+      "sha256": "6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+      "bytes": 47308
+    },
+    {
+      "path": "package/civilian/execution_gate.py",
+      "sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a",
+      "bytes": 27914
+    },
+    {
+      "path": "package/civilian/fixed_replanner.py",
+      "sha256": "585868146daf30bffd62bbeadcc6dc9dcb1aa537b3e7f62bbe62efe3f8b04735",
+      "bytes": 14458
+    },
+    {
+      "path": "package/civilian/gain_analysis.py",
+      "sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9",
+      "bytes": 8736
+    },
+    {
+      "path": "package/civilian/gain_diagnostics.py",
+      "sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326",
+      "bytes": 24444
+    },
+    {
+      "path": "package/civilian/gain_evaluation.py",
+      "sha256": "64082c56f868851ed562e4ba56f96f636ac86d10a8b667efc12fe66777abb753",
+      "bytes": 55310
+    },
+    {
+      "path": "package/civilian/gain_features.py",
+      "sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
+      "bytes": 11701
+    },
+    {
+      "path": "package/civilian/gain_gate.py",
+      "sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd",
+      "bytes": 2144
+    },
+    {
+      "path": "package/civilian/gain_models.py",
+      "sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c",
+      "bytes": 38919
+    },
+    {
+      "path": "package/civilian/gain_oracle.py",
+      "sha256": "51dec7d7cab71055b0ae45a11575f88500fc6bb95517fdf0d68a031b5a06c2df",
+      "bytes": 54247
+    },
+    {
+      "path": "package/civilian/gain_runner.py",
+      "sha256": "41c359c972d086dca8d7552706b5a03a3dbc509d33fcc9befd8f0e5d8f794d8a",
+      "bytes": 170869
+    },
+    {
+      "path": "package/civilian/gain_safety.py",
+      "sha256": "fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+      "bytes": 23947
+    },
+    {
+      "path": "package/civilian/gain_scenarios.py",
+      "sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
+      "bytes": 37083
+    },
+    {
+      "path": "package/civilian/gain_variance.py",
+      "sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f",
+      "bytes": 25040
+    },
+    {
+      "path": "package/civilian/graph_policy.py",
+      "sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d",
+      "bytes": 35235
+    },
+    {
+      "path": "package/civilian/independent_consequence_oracle.py",
+      "sha256": "2a3c1ab481f76baf4ab022c27caeae3744fb3ab27e1ce0796ae0b62a420c98ba",
+      "bytes": 36474
+    },
+    {
+      "path": "package/civilian/infra_io.py",
+      "sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace",
+      "bytes": 15517
+    },
+    {
+      "path": "package/civilian/literal_graph_ops.py",
+      "sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e",
+      "bytes": 9265
+    },
+    {
+      "path": "package/civilian/n2_stage_pipeline.py",
+      "sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964",
+      "bytes": 96844
+    },
+    {
+      "path": "package/civilian/package_layout.py",
+      "sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c",
+      "bytes": 4982
+    },
+    {
+      "path": "package/civilian/ppo_trainer.py",
+      "sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a",
+      "bytes": 27948
+    },
+    {
+      "path": "package/civilian/protocol_contract.py",
+      "sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b",
+      "bytes": 946
+    },
+    {
+      "path": "package/civilian/region_contract.py",
+      "sha256": "6e0160e17f91af334edcaf1963ca3a5e8b4469cbc6ca88df9f9690e7c8d9bb63",
+      "bytes": 2325
+    },
+    {
+      "path": "package/civilian/relief_env.py",
+      "sha256": "e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+      "bytes": 56607
+    },
+    {
+      "path": "package/civilian/scenario_matrix.py",
+      "sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34",
+      "bytes": 17843
+    },
+    {
+      "path": "package/civilian/scenario_schema.py",
+      "sha256": "844fbcac95b7d7df27efed5eb0e7c656dbf84e734f6cc22fccf8a4eb04e50db3",
+      "bytes": 34974
+    },
+    {
+      "path": "package/civilian/snapshot_contract.py",
+      "sha256": "ef760e5ed7b0377fac441c2a261dd25af28764516c119438f1d80b779fdb1839",
+      "bytes": 7408
+    },
+    {
+      "path": "package/civilian/stable_identity.py",
+      "sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef",
+      "bytes": 1429
+    },
+    {
+      "path": "package/civilian/v33_scenarios.py",
+      "sha256": "290503053642e0b5dfeaad8d92b251ee1e8b733ac875801d59c6176a9caaa2cd",
+      "bytes": 24864
+    },
+    {
+      "path": "package/civilian/v3_runner.py",
+      "sha256": "c4542a7f0a7f47e4a1108fa5142ffa004e4ba6f1d087401925b19eb08b957565",
+      "bytes": 41404
+    },
+    {
+      "path": "package/civilian/v3_scenarios.py",
+      "sha256": "84131c788fdcb2325803716a2079a1d5d841348934951c79d499664726571d29",
+      "bytes": 22059
+    },
+    {
+      "path": "package/civilian/v3_shards.py",
+      "sha256": "2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5",
+      "bytes": 16853
+    },
+    {
+      "path": "package/civilian/wm_prediction_cache.py",
+      "sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
+      "bytes": 8678
+    },
+    {
+      "path": "package/civilian/world_model.py",
+      "sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5",
+      "bytes": 56827
+    },
+    {
+      "path": "package/tests/test_gain_safety_v2.py",
+      "sha256": "92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5",
+      "bytes": 6890
+    },
+    {
+      "path": "package/tests/test_v33_scenario_contract.py",
+      "sha256": "b998957aed2d1a679c0a8ef19a125c62465c61f324251b3c1ac35fc1eb67e7dc",
+      "bytes": 13546
+    },
+    {
+      "path": "package/tests/test_v3_regional_execution.py",
+      "sha256": "5ad1551c51a0a4712a1e5161850ed864ddc35dab763183905915efaf4159244e",
+      "bytes": 16538
+    },
+    {
+      "path": "protocols/V33_CIVILIAN_SEARCH_RESCUE.md",
+      "sha256": "e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6",
+      "bytes": 5143
+    },
+    {
+      "path": "README.md",
+      "sha256": "23ef6286bb8edbac6f82261d26766ef455ceba0482cf8043bbdc2a29643dc97b",
+      "bytes": 3788
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130",
+      "bytes": 96
+    },
+    {
+      "path": "REUSE_INVENTORY.json",
+      "sha256": "e7bc9546e4219ceed581465fdd51de4de55ead7415b62b20ec2bf0f966dd3714",
+      "bytes": 7862
+    }
+  ],
+  "evidence_scope": "Source snapshot only; smoke/pilot/formal collection/model training not completed. Review reports are stored separately."
+}
