@@ -1,0 +1,222 @@
+{
+  "schema": "v33-source-audit/1",
+  "audit_skill": "experiment-audit",
+  "verdict": "REPAIR",
+  "overall_verdict": "REPAIR",
+  "integrity_status": "fail",
+  "reason_code": "safety_mask_discovery_semantics_and_missing_valid_raw_pair",
+  "summary": "Initial source review requires closure of unresolved-safety masking, split/cooperative discovery, and focused paired raw evidence. No completed-experiment or performance acceptance.",
+  "auditor": "GPT-6 Astra ultra",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "ultra",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_id": "/root/v33_source_audit",
+  "verdict_id": "/root/v33_source_audit/initial-repair",
+  "generated_at": "2026-10-20T02:35:20.742642+00:00",
+  "date": "2026-10-20",
+  "review_type": "source_readiness_initial",
+  "source_frozen": false,
+  "hash_scope": "Inspected source revision captured before remaining repairs; not a release freeze. Runner already contains first safety receipt repair.",
+  "evaluation_type": "simulation_only",
+  "simulations_run_by_reviewer": 0,
+  "tests_run_by_reviewer": 0,
+  "audited_input_hashes": {
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v33_scenarios.py": "sha256:290503053642e0b5dfeaad8d92b251ee1e8b733ac875801d59c6176a9caaa2cd",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_runner.py": "sha256:c4542a7f0a7f47e4a1108fa5142ffa004e4ba6f1d087401925b19eb08b957565",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_shards.py": "sha256:2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_environment.py": "sha256:c242e786e2a370cff873868e8acae2b11ebd9d9f952c23c1114bb76efb0a534e",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/region_contract.py": "sha256:6e0160e17f91af334edcaf1963ca3a5e8b4469cbc6ca88df9f9690e7c8d9bb63",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/fixed_replanner.py": "sha256:585868146daf30bffd62bbeadcc6dc9dcb1aa537b3e7f62bbe62efe3f8b04735",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_features.py": "sha256:708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_safety.py": "sha256:fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/counterfactual_pairs.py": "sha256:a9d019248f9001eb5c1bcb896303346068586c10f5c7991976e42ebab82da6f6",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/cost_accounting.py": "sha256:d38432191fcf09dfc367ff7da3a8664d9eb682ad359d89cfd8c50b5ff5fe5e13",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_oracle.py": "sha256:aa9108839ada638d1b759037b206f806bc5f80a9f87b62f6043cac0802b54f46",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_v33_scenario_contract.py": "sha256:894d89d17fd84de714199518f0687821a81e3a4d8d123a595785b2453c537da0",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_v3_regional_execution.py": "sha256:5ad1551c51a0a4712a1e5161850ed864ddc35dab763183905915efaf4159244e",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_gain_safety_v2.py": "sha256:92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5",
+    "releases/gain-gate-v3-3-civilian-search-rescue/configs/GAIN_GATE_CONFIG.json": "sha256:08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859",
+    "releases/gain-gate-v3-3-civilian-search-rescue/README.md": "sha256:23ef6286bb8edbac6f82261d26766ef455ceba0482cf8043bbdc2a29643dc97b",
+    "releases/gain-gate-v3-3-civilian-search-rescue/BASELINE_PROVENANCE.json": "sha256:ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805",
+    "releases/gain-gate-v3-3-civilian-search-rescue/REUSE_INVENTORY.json": "sha256:e7bc9546e4219ceed581465fdd51de4de55ead7415b62b20ec2bf0f966dd3714",
+    "releases/gain-gate-v3-3-civilian-search-rescue/protocols/V33_CIVILIAN_SEARCH_RESCUE.md": "sha256:e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_scenarios.py": "sha256:885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/chapter1_adapter.py": "sha256:5565c7ec3c176523180118eb28a13d468339025345644c6feb51166a187095b0",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_models.py": "sha256:0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_runner.py": "sha256:b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_trigger.py": "sha256:6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+    "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/relief_env.py": "sha256:e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+    "releases/gain-gate-v3-3-civilian-search-rescue/evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json": "sha256:f799671468068186a83f47d1866076f68d6935c1edf8e4b14488170552b9c5bd",
+    "./protocols/V33_CIVILIAN_SEARCH_RESCUE.md": "sha256:e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6"
+  },
+  "baseline_source_hash_verification": {
+    "checked": 51,
+    "matched": 51,
+    "missing": 0,
+    "mismatched": 0,
+    "remote_archive_fetched": false
+  },
+  "issues": [
+    {
+      "id": "R1",
+      "status": "REPAIR",
+      "severity": "high",
+      "title": "Unresolved continuation safety can remain trainable",
+      "details": "Runner actual-state verification was added during review, but branch/pair validity and independent oracle still accept numerically recomputable traces with unresolved safety, permitting 30/30 counting. Rereview only changed safety path and masked-state evidence.",
+      "evidence": [
+        "package/civilian/v3_runner.py:202",
+        "package/civilian/v3_runner.py:213",
+        "package/civilian/counterfactual_pairs.py:611",
+        "package/civilian/counterfactual_pairs.py:658",
+        "package/civilian/counterfactual_pairs.py:1017",
+        "package/civilian/counterfactual_pairs.py:1044",
+        "package/civilian/gain_oracle.py:761",
+        "package/civilian/gain_oracle.py:798",
+        "package/civilian/v3_shards.py:55"
+      ]
+    },
+    {
+      "id": "R2",
+      "status": "REPAIR",
+      "severity": "high",
+      "title": "Split/cooperative search completion does not reveal its rescue",
+      "details": "Dependent rescue points to original parent ID, while only physical children execute base inspection completion. Logical wrapper completion does not invoke discovery. Require exactly-once parent discovery after all children, preserving reporting/event semantics.",
+      "evidence": [
+        "package/civilian/v33_scenarios.py:113",
+        "package/civilian/event_environment.py:1606",
+        "package/civilian/event_environment.py:1646",
+        "package/civilian/event_environment.py:1978",
+        "package/civilian/event_environment.py:2035",
+        "package/civilian/relief_env.py:916",
+        "package/tests/test_v3_regional_execution.py:319"
+      ]
+    },
+    {
+      "id": "R3",
+      "status": "REPAIR",
+      "severity": "high",
+      "title": "Focused cross-region evidence is invalid and not independently replayable",
+      "details": "Summary says invalid label, two null gains, no donor transfer and zero nontarget differences. Only hashes are persisted; no raw paired labels/trajectory path or actual collection error is available in supplied evidence. Preserve failed attempt and provide fresh raw evidence, regardless of gain sign.",
+      "evidence": [
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1281",
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1283",
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1284",
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1289",
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1297",
+        "protocols/V33_CIVILIAN_SEARCH_RESCUE.md:19"
+      ]
+    }
+  ],
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "FAIL",
+      "details": "Trajectory-based simulation, not predictive-model references; R1/R2 compromise readiness.",
+      "evidence": [
+        "package/civilian/counterfactual_pairs.py:1003",
+        "package/civilian/gain_oracle.py:454"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Shared physical task-priority denominator, no model-output denominator in active gain path.",
+      "evidence": [
+        "package/civilian/counterfactual_pairs.py:802",
+        "package/civilian/gain_oracle.py:713",
+        "package/civilian/cost_accounting.py:223"
+      ]
+    },
+    "C_result_existence": {
+      "status": "WARN",
+      "details": "No method-performance claim. Focused summary exists but label is invalid and raw evidence is missing.",
+      "evidence": [
+        "README.md:3",
+        "BASELINE_PROVENANCE.json:36",
+        "evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json:1283"
+      ]
+    },
+    "D_evaluation_path": {
+      "status": "WARN",
+      "details": "Collector and oracle are called. Safety verification originally disconnected, now partially repaired; unresolved labels still need masking. WM/PPO are outside this milestone.",
+      "evidence": [
+        "package/civilian/v3_runner.py:344",
+        "package/civilian/v3_runner.py:358",
+        "package/civilian/counterfactual_pairs.py:1006"
+      ]
+    },
+    "E_scope": {
+      "status": "PASS",
+      "details": "README appropriately limits claim and does not treat tests as scientific success. Focused evidence gate remains open.",
+      "evidence": [
+        "README.md:3",
+        "README.md:7",
+        "protocols/V33_CIVILIAN_SEARCH_RESCUE.md:19"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "simulation_only",
+      "evidence": [
+        "package/civilian/v33_scenarios.py:264",
+        "package/civilian/v33_scenarios.py:266"
+      ]
+    }
+  },
+  "resolved_during_review": [
+    {
+      "id": "DOC1",
+      "details": "Local protocol synchronized to approved archive; both SHA-256 values equal e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6."
+    }
+  ],
+  "nonblocking_limits": [
+    {
+      "id": "L1",
+      "details": "Cancellation absent in frozen V33 conditions; inherited completed->cancelled transition not certified. Do not extend claims to cancellation.",
+      "evidence": [
+        "package/civilian/v33_scenarios.py:120",
+        "package/civilian/event_environment.py:1850",
+        "package/civilian/cost_accounting.py:98"
+      ]
+    },
+    {
+      "id": "L2",
+      "details": "Current evidence binding hashes only baseline provenance. Freeze raw evidence, tests and protocol separately.",
+      "evidence": [
+        "package/civilian/v3_shards.py:126"
+      ]
+    },
+    {
+      "id": "L3",
+      "details": "verify_run checks found shards rather than enforcing completeness; use expected manifest/registry for completion.",
+      "evidence": [
+        "package/civilian/v3_shards.py:307"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "engineering_readiness",
+      "impact": "repair_required"
+    },
+    {
+      "id": "method_performance",
+      "impact": "unsupported_not_claimed"
+    },
+    {
+      "id": "completed_smoke_or_collection",
+      "impact": "not_accepted"
+    },
+    {
+      "id": "model_training_or_generalization",
+      "impact": "outside_review"
+    }
+  ],
+  "rereview_scope": [
+    "R1 changed safety runner/pair/oracle/counting code and focused evidence",
+    "R2 changed logical completion/discovery code and focused evidence",
+    "R3 raw primary pair evidence and binding closure"
+  ],
+  "report_path": "releases/gain-gate-v3-3-civilian-search-rescue/reviews/V33_SOURCE_AUDIT.md",
+  "public_copy_note": "Local absolute paths replaced by release-relative references; source hashes and reviewer verdict unchanged. Original report retained locally."
+}
