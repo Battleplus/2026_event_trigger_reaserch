@@ -1,0 +1,655 @@
+{
+  "status": "PARTIAL",
+  "snapshot": {
+    "generated_at_utc": "2026-10-20T12:22:35.454784+00:00",
+    "committed_marker_count": 66,
+    "committed_marker_manifest_sha256": "d91757825888ad6334cf9b7bdbab56f78955066c95da06787f85e2ed1b5329db"
+  },
+  "scenario_count": 66,
+  "expected_scenarios": 168,
+  "complete_168": false,
+  "run_coverage": {
+    "split_condition": {
+      "train:none_or_light": 12,
+      "train:platform_failure_or_capability_loss": 12,
+      "train:task_update_or_arrival": 12,
+      "validation:none_or_light": 12,
+      "validation:platform_failure_or_capability_loss": 6,
+      "validation:task_update_or_arrival": 12
+    }
+  },
+  "state_counts": {
+    "unique_state_id": 1007,
+    "evaluable": 164,
+    "positive": 2,
+    "zero": 0,
+    "negative": 162,
+    "forced_excluded": 839,
+    "empty_excluded": 4,
+    "unknown_excluded": 0,
+    "total_30_positive_30_nonpositive_met": false,
+    "split_coverage_met": false,
+    "runner_thirty_thirty_met": false,
+    "by_split": {
+      "train": {
+        "states_unique": 546,
+        "forced_excluded": 450,
+        "empty_excluded": 0,
+        "unknown_excluded": 0,
+        "evaluable": 96,
+        "positive": 1,
+        "nonpositive": 95,
+        "positive_scenarios": 1,
+        "nonpositive_scenarios": 12,
+        "unknown_reasons": {}
+      },
+      "validation": {
+        "states_unique": 461,
+        "forced_excluded": 389,
+        "empty_excluded": 4,
+        "unknown_excluded": 0,
+        "evaluable": 68,
+        "positive": 1,
+        "nonpositive": 67,
+        "positive_scenarios": 1,
+        "nonpositive_scenarios": 9,
+        "unknown_reasons": {}
+      }
+    }
+  },
+  "candidate_coverage": {
+    "candidate_actions_any_cross_region": 3794,
+    "candidate_actions_any_cross_region_forced": 3743,
+    "candidate_operations_insert": 3051,
+    "candidate_queue_operations_insert": 3051,
+    "candidate_actions_insert": 3051,
+    "candidate_actions_forced_insert": 3014,
+    "selected_actions_any_cross_region": 475,
+    "selected_actions_any_cross_region_forced": 472,
+    "selected_operations_insert": 393,
+    "selected_queue_operations_insert": 393,
+    "selected_actions_insert": 393,
+    "selected_actions_forced_insert": 391,
+    "candidate_operations_cooperate": 216,
+    "candidate_queue_operations_cooperate": 216,
+    "candidate_actions_cooperate": 216,
+    "candidate_actions_forced_cooperate": 212,
+    "candidate_operations_transfer": 216,
+    "candidate_queue_operations_transfer": 216,
+    "candidate_actions_transfer": 216,
+    "candidate_actions_forced_transfer": 211,
+    "candidate_operations_split": 220,
+    "candidate_queue_operations_split": 220,
+    "candidate_actions_split": 220,
+    "candidate_actions_forced_split": 216,
+    "candidate_operations_direct_dispatch": 127,
+    "candidate_direct_dispatch_routes_forced": 125,
+    "candidate_actions_direct_dispatch": 91,
+    "candidate_actions_forced_direct_dispatch": 90,
+    "selected_operations_direct_dispatch": 118,
+    "selected_direct_dispatch_routes_forced": 116,
+    "selected_actions_direct_dispatch": 82,
+    "selected_actions_forced_direct_dispatch": 81,
+    "candidate_actions_any_cross_region_ordinary": 51,
+    "candidate_actions_ordinary_insert": 37,
+    "selected_actions_any_cross_region_ordinary": 3,
+    "selected_actions_ordinary_insert": 2,
+    "candidate_actions_ordinary_transfer": 5,
+    "candidate_direct_dispatch_routes_ordinary": 2,
+    "candidate_actions_ordinary_direct_dispatch": 1,
+    "candidate_actions_ordinary_cooperate": 4,
+    "candidate_actions_ordinary_split": 4,
+    "selected_direct_dispatch_routes_ordinary": 2,
+    "selected_actions_ordinary_direct_dispatch": 1,
+    "candidate_actions": 3794,
+    "selected_actions": 475,
+    "candidate_states": {
+      "ordinary": 9,
+      "forced": 691
+    },
+    "selected_states": {
+      "ordinary": 3,
+      "forced": 472
+    },
+    "candidate_actions_by_kind": {
+      "insert": 3051,
+      "cooperate": 216,
+      "transfer": 216,
+      "split": 220,
+      "direct_dispatch": 91
+    },
+    "selected_actions_by_kind": {
+      "insert": 393,
+      "direct_dispatch": 82
+    },
+    "candidate_states_by_kind": {
+      "any": {
+        "ordinary": 9,
+        "forced": 691
+      },
+      "insert": {
+        "ordinary": 7,
+        "forced": 588
+      },
+      "cooperate": {
+        "ordinary": 1,
+        "forced": 70
+      },
+      "transfer": {
+        "ordinary": 2,
+        "forced": 69
+      },
+      "split": {
+        "ordinary": 1,
+        "forced": 70
+      },
+      "direct_dispatch": {
+        "ordinary": 1,
+        "forced": 90
+      }
+    },
+    "selected_states_by_kind": {
+      "any": {
+        "ordinary": 3,
+        "forced": 472
+      },
+      "insert": {
+        "ordinary": 2,
+        "forced": 391
+      },
+      "direct_dispatch": {
+        "ordinary": 1,
+        "forced": 81
+      }
+    }
+  },
+  "noop_summary": {
+    "ordinary_valid_states": 164,
+    "selected_noop": 156,
+    "selected_nonnoop": 8,
+    "selection_reasons_for_noop": {
+      "NOOP_only_legal_candidate": 155,
+      "NOOP_has_lower_public_cost_than_all_alternatives": 1
+    },
+    "selection_reasons_for_nonnoop": {
+      "NONNOOP_selected_by_public_cost": 8
+    }
+  },
+  "selection_rank_verification": {
+    "verified": 1007,
+    "mismatch": 0
+  },
+  "outcome_decomposition": {
+    "ordinary_valid_suffix_pairs": 328,
+    "completed_endpoint_tasks": 25555,
+    "completed_endpoint_tasks_below_full_progress": 0,
+    "regional_endpoint_effect_means": {
+      "00": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.0
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.554878048780488
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.4359756097560976
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.0
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.554878048780488
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.4359756097560976
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "01": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.509146341463414
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.4893292682926829
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.5060975609756095
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.4923780487804879
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "02": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.003048780487804878
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.375
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.6216971544715446
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.003048780487804878
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.378048780487805
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.6186483739837396
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "03": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.006097560975609756
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.6189024390243905
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.3795731707317074
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.006097560975609756
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.625
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.3734756097560976
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "04": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.329268292682927
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.6651422764227641
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.326219512195122
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.668191056910569
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "05": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.009146341463414634
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.234756097560975
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.7629573170731707
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.009146341463414634
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.2439024390243905
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.7538109756097562
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "06": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.003048780487804878
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.158536585365853
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.8384146341463414
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.003048780487804878
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.161585365853658
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.8353658536585367
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "07": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.137195121951219
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.858231707317073
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": -0.003048780487804878
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.134146341463414
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.861280487804878
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      },
+      "08": {
+        "completed_delta_replan_minus_keep": {
+          "count": 328,
+          "mean": 0.009146341463414634
+        },
+        "keep_completed": {
+          "count": 328,
+          "mean": 4.027439024390244
+        },
+        "keep_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.9664634146341464
+        },
+        "remaining_fraction_delta_keep_minus_replan": {
+          "count": 328,
+          "mean": 0.009146341463414634
+        },
+        "replan_completed": {
+          "count": 328,
+          "mean": 4.036585365853658
+        },
+        "replan_remaining_fraction_sum": {
+          "count": 328,
+          "mean": 1.9573170731707317
+        },
+        "task_count": {
+          "count": 328,
+          "mean": 6.0
+        }
+      }
+    },
+    "global_cost_component_means": {
+      "C_replan": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.21442501905487804,
+          "replan": 0.27382240853658535,
+          "delta_replan_minus_keep": 0.05939738948170731
+        }
+      },
+      "C_safety": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.06659155868902439,
+          "replan": 0.06603610899390244,
+          "delta_replan_minus_keep": -0.0005554496951219456
+        }
+      },
+      "J_exec": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 4.923068976667254,
+          "replan": 4.926038830778872,
+          "delta_replan_minus_keep": 0.0029698541116172095
+        }
+      },
+      "J_total": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 5.204085554411157,
+          "replan": 5.26589734830936,
+          "delta_replan_minus_keep": 0.061811793898202794
+        }
+      },
+      "execution_components.completion_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.6675343454221601,
+          "replan": 0.666500777879847
+        }
+      },
+      "execution_components.delay_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 2.9920731707317074,
+          "replan": 2.9896341463414635
+        }
+      },
+      "execution_components.delay_minutes": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 14.960365853658537,
+          "replan": 14.948170731707316
+        }
+      },
+      "execution_components.energy_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 1.210657962921037,
+          "replan": 1.2171004089652115
+        }
+      },
+      "execution_components.energy_units": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 121.0657962921037,
+          "replan": 121.71004089652116
+        }
+      },
+      "execution_components.risk_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.0528034975923496,
+          "replan": 0.0528034975923496
+        }
+      },
+      "execution_components.risk_units": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.2112139903693984,
+          "replan": 0.2112139903693984
+        }
+      },
+      "execution_components.weighted_completion": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.33123788106750984,
+          "replan": 0.33227144860982294
+        }
+      },
+      "execution_components.weighted_remaining_fraction": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.6675343454221601,
+          "replan": 0.666500777879847
+        }
+      },
+      "replan_components.call_count": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 1.6768292682926829,
+          "replan": 2.6646341463414633
+        }
+      },
+      "replan_components.communication_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.04753048780487805,
+          "replan": 0.04847560975609756
+        }
+      },
+      "replan_components.communication_messages": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 4.753048780487805,
+          "replan": 4.847560975609756
+        }
+      },
+      "replan_components.continuation_planner_cpu_seconds": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 6.8571360518292686,
+          "replan": 6.828315548780488
+        }
+      },
+      "replan_components.planner_cpu_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.06857136051829268,
+          "replan": 0.0766577743902439
+        }
+      },
+      "replan_components.planner_cpu_seconds": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.0,
+          "replan": 0.8374618902439024
+        }
+      },
+      "replan_components.reconstruction_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.08384146341463415,
+          "replan": 0.13323170731707318
+        }
+      },
+      "replan_components.reconstruction_size": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 1.326219512195122,
+          "replan": 1.3932926829268293
+        }
+      },
+      "replan_components.reconstruction_size_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.01326219512195122,
+          "replan": 0.013932926829268293
+        }
+      },
+      "replan_components.switch_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.0012195121951219512,
+          "replan": 0.001524390243902439
+        }
+      },
+      "replan_components.switch_count": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.024390243902439025,
+          "replan": 0.03048780487804878
+        }
+      },
+      "safety_components.continuation_policy_cpu_cost": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 0.06659155868902439,
+          "replan": 0.06603610899390244
+        }
+      },
+      "safety_components.continuation_policy_cpu_seconds": {
+        "pair_count": 328,
+        "mean": {
+          "keep": 6.659155868902439,
+          "replan": 6.603610899390244
+        }
+      }
+    }
+  },
+  "run_ids": [
+    "v33-collect-resume-20261020T075751Z-cf8baae09a4a"
+  ],
+  "limitations": [
+    "simulation_only",
+    "partial_snapshot_not_formal_conclusion",
+    "cross_region_counts_are_descriptive_not_causal"
+  ]
+}

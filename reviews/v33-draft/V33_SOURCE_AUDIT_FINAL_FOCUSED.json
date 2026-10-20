@@ -1,0 +1,158 @@
+{
+  "schema": "v33-source-audit-final-focused/1",
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "r2_split_test_and_primary_raw_evidence_limit",
+  "summary": "Current source passes the focused unresolved-safety oracle rejection, producer masking/raw-reason preservation, cooperative logical discovery, and no-custom-runtime-cutoff checks. Split support is present in source but lacks a split contract test, explicit repeated-step exactly-once assertion, and paired oracle raw evidence. No scientific result claim is accepted.",
+  "auditor": "GPT-6 Astra ultra",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "ultra",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict_id": "/root/v33_final_audit/focused-final-20261020",
+  "generated_at": "2026-10-20T04:12:40Z",
+  "date": "2026-10-20",
+  "review_type": "source_readiness_final_focused",
+  "source_frozen": true,
+  "simulations_run_by_reviewer": 0,
+  "tests_run_by_reviewer": 0,
+  "evaluation_type": "simulation_only",
+  "failed_wrapper_receipt": {
+    "path": "evidence/v33-focused-checks/raw-smoke-first/raw-first-smoke-20261020-01/failures/registry-000.failure.json",
+    "accepted_as_experiment_data": false,
+    "reason": "ModuleNotFoundError with completion_marker_written=false",
+    "evidence": [
+      ":1",
+      ":2-6",
+      ":29-35",
+      ":37-39"
+    ]
+  },
+  "checks": {
+    "oracle_rejects_resigned_unresolved_safety": {
+      "status": "PASS",
+      "details": "Raw unresolved reasons are derived from persisted continuation receipts and valid trace cost recomputation raises GAIN_ORACLE_VALID_TRACE_HAS_UNRESOLVED_SAFETY before a valid gain can be returned. The focused test re-signs trace, pair, and label hashes after injecting a live unresolved receipt and expects rejection.",
+      "evidence": [
+        "package/civilian/gain_oracle.py:559-586",
+        "package/civilian/gain_oracle.py:798-835",
+        "package/civilian/gain_oracle.py:894-912",
+        "package/tests/test_v33_scenario_contract.py:211-278"
+      ]
+    },
+    "producer_masks_unresolved_safety_preserves_reason": {
+      "status": "PASS",
+      "details": "Runner applies and verifies live safety, records raw receipt/disposition/unknown_reason, forces NOOP on unresolved state, and paired collection masks branch/pair/label validity while retaining the raw receipt and reason.",
+      "evidence": [
+        "package/civilian/v3_runner.py:189-215",
+        "package/civilian/v3_runner.py:230-248",
+        "package/civilian/v3_runner.py:297-305",
+        "package/civilian/counterfactual_pairs.py:641-699",
+        "package/civilian/counterfactual_pairs.py:1034-1087",
+        "package/tests/test_v33_scenario_contract.py:143-208"
+      ]
+    },
+    "cooperative_logical_completion_delayed_once": {
+      "status": "PASS_WITH_EVIDENCE_LIMIT",
+      "details": "Logical completion requires all manifest children; discovery is scheduled once with parent inspection_id and report_delay, and due reports are received once. The cooperative test covers partial completion, delayed visibility, and parent causal IDs, but does not count events after repeated NOOP steps.",
+      "evidence": [
+        "package/civilian/event_environment.py:1978-2009",
+        "package/civilian/event_environment.py:2315-2339",
+        "package/civilian/relief_env.py:457-504",
+        "package/civilian/relief_env.py:540-550",
+        "package/civilian/relief_env.py:680-684",
+        "package/tests/test_v33_scenario_contract.py:281-367"
+      ]
+    },
+    "split_support_and_evidence": {
+      "status": "WARN",
+      "details": "Source creates split/cooperate child manifests and routes both through generic logical completion/discovery. No split test exists in the focused contract file; no exact-once repeated-step assertion or paired oracle closure is present. This is an evidence limitation even though source semantics appear correct.",
+      "evidence": [
+        "package/civilian/event_environment.py:1596-1655",
+        "package/civilian/event_environment.py:1978-2009",
+        "package/tests/test_v33_scenario_contract.py:281-367"
+      ]
+    },
+    "no_custom_runtime_cutoff": {
+      "status": "PASS",
+      "details": "Runner loops on environment terminated/truncated state and records wall/CPU/RSS receipts. No custom timeout/cutoff/resource termination branch is present. Protocol horizon limits are simulation semantics. Config explicitly states no automatic time or memory termination.",
+      "evidence": [
+        "package/civilian/v3_runner.py:183-230",
+        "package/civilian/v3_runner.py:299-310",
+        "package/civilian/v3_runner.py:398-424",
+        "package/civilian/v3_runner.py:757-783",
+        "configs/GAIN_GATE_CONFIG.json:25",
+        "configs/GAIN_GATE_CONFIG.json:52-60",
+        "configs/GAIN_GATE_CONFIG.json:72-80"
+      ]
+    }
+  },
+  "evidence_limits": [
+    {
+      "id": "R2_SPLIT_TEST_MISSING",
+      "status": "OPEN",
+      "details": "No split operation/test in package/tests/test_v33_scenario_contract.py; source-level support is provisional only."
+    },
+    {
+      "id": "R2_EXACT_ONCE_ASSERTION_MISSING",
+      "status": "OPEN",
+      "details": "Current cooperative test finds one report event but does not assert zero additional report_generated/report_received events after repeated NOOP steps."
+    },
+    {
+      "id": "R2_PAIRED_ORACLE_EVIDENCE_MISSING",
+      "status": "OPEN",
+      "details": "No local raw paired keep/replan traces, label, and independent oracle receipt tied to a revealed dependent rescue were supplied."
+    },
+    {
+      "id": "WRAPPER_FAILURE_EXCLUDED",
+      "status": "CLOSED_AS_DATA",
+      "details": "The failed wrapper receipt is preserved for diagnostics and excluded from experiment data."
+    }
+  ],
+  "claims": [
+    {
+      "id": "oracle_safety_rejection",
+      "impact": "source_supported"
+    },
+    {
+      "id": "producer_safety_masking",
+      "impact": "source_supported"
+    },
+    {
+      "id": "cooperative_delayed_discovery",
+      "impact": "source_supported_with_partial_test_evidence"
+    },
+    {
+      "id": "split_discovery_exactly_once",
+      "impact": "needs_split_test_and_repeated_step_evidence"
+    },
+    {
+      "id": "scientific_performance",
+      "impact": "unsupported_not_claimed"
+    },
+    {
+      "id": "completed_smoke_or_collection",
+      "impact": "not_established_by_failed_wrapper"
+    },
+    {
+      "id": "model_training_or_generalization",
+      "impact": "outside_review"
+    }
+  ],
+  "audited_input_hashes": {
+    "package/civilian/gain_oracle.py": "sha256:604bc620685a971d71bf9e922b805e7cd48b820196e90aeabff7554af59a284b",
+    "package/civilian/counterfactual_pairs.py": "sha256:139c07d332bc35d64af1c105a9044bcd7c122ff5f8e42a22c9666d1ffb7a4397",
+    "package/civilian/event_environment.py": "sha256:385b755b0ff5bde29ffb34a3dfdbc81862153e41d07cbf74bf11f5907caea407",
+    "package/civilian/v3_runner.py": "sha256:c4542a7f0a7f47e4a1108fa5142ffa004e4ba6f1d087401925b19eb08b957565",
+    "package/tests/test_v33_scenario_contract.py": "sha256:4be2108dcb998fb8d212ffaef6d10794194ba4e6b8982559cdb737f6feee5ad1",
+    "configs/GAIN_GATE_CONFIG.json": "sha256:08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859",
+    "reviews/V33_SOURCE_AUDIT.md": "sha256:980d7fff23c3469a5625345c3d48ebcd9d5fb1405a6542f63156d0ab5d3ac4d1",
+    "reviews/V33_SOURCE_AUDIT.json": "sha256:9d41d4ff4bc36fb49688ff09c379e9c2017109bbfd5df84637d0af20f01de4e2",
+    "reviews/V33_SOURCE_AUDIT_FOLLOWUP.md": "sha256:511a7427c46f0fb9127ae7c33062d4aa9ced33152be466cdfc7a77d52df418bf",
+    "reviews/V33_SOURCE_AUDIT_FOLLOWUP.json": "sha256:83b2a36c94eaec853592d2462b638c131a68fd0f036e16e80fdc3e383d1f8b81",
+    "evidence/v33-focused-checks/raw-smoke-first/raw-first-smoke-20261020-01/failures/registry-000.failure.json": "sha256:0963e50fe2fb7e576ce537277f48a61331ee41c449d8019cbf12686020d60ec3"
+  }
+}
+

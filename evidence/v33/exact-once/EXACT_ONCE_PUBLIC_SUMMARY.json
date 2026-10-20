@@ -1,0 +1,42 @@
+{
+  "schema": "v33-exact-once-public-summary/1",
+  "evidence_type": "focused_simulation_contract_check",
+  "raw_evidence_included": false,
+  "raw_evidence_file": "evidence.json",
+  "raw_evidence_bytes": 34597903,
+  "raw_evidence_sha256": "2bea30c1b9f532320ceee7c94867fe7fd76f56a9391244cea9a9dfabbeefc27e",
+  "focused_script_sha256": "5a27f6f56e481bfad272285c82352cde96828ba9489148cfc95b09360b04f820",
+  "independent_review": {
+    "reviewer_model": "GPT-6 Astra",
+    "reviewer_family": "OpenAI",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional"
+  },
+  "modes": [
+    {
+      "mode": "split",
+      "report_generated_count": 1,
+      "report_received_count": 1,
+      "repeated_noop_added_discovery_events": 0,
+      "paired_label_valid_mask": true,
+      "oracle_valid": true,
+      "oracle_includes_revealed_rescue": true,
+      "oracle_recomputed_gain_mean": -0.050000000000000044,
+      "pair_sha256": "27ea2518744a6136d32fdbebcc764a304401dfcde9c6dff2cfc965ae0293b913",
+      "label_sha256": "56a0bcbfb285c9261e42574c61a69bf87a95a9e97657a1fc56de43ff7f998d87"
+    },
+    {
+      "mode": "cooperate",
+      "report_generated_count": 1,
+      "report_received_count": 1,
+      "repeated_noop_added_discovery_events": 0,
+      "paired_label_valid_mask": true,
+      "oracle_valid": true,
+      "oracle_includes_revealed_rescue": true,
+      "oracle_recomputed_gain_mean": -0.050000000000000044,
+      "pair_sha256": "66985afca8a677bee4d564eac11079f7c8384af192071b48eda88cac26bc1872",
+      "label_sha256": "f91f151f29d81403b8b21d02d061dd9880d6be7e42a2e4f1f7de0191527fa100"
+    }
+  ],
+  "claim_limit": "Focused deterministic simulation evidence only; it does not establish collection acceptance, training, or scientific performance."
+}
