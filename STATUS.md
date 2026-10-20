@@ -1,4 +1,8 @@
-# V3.2 final status
+# V3.3 execution status
+
+Date:2026-10-20 (Asia/Shanghai). Implementation IN_PROGRESS: GPT-6 Luna. Coordinator review PENDING. V3.3 smoke/pilot/formal collection/training NOT_RUN. Protocol:[V33](protocols/V33_CIVILIAN_SEARCH_RESCUE.md). Separate version; no old labels reused. No scientific improvement claimed.
+
+## Historical V3.2 final status (preserved)
 
 Date: 2026-10-19 (Asia/Shanghai).
 

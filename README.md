@@ -1,4 +1,8 @@
-# V3.2: nine-region performance and gain-gate study
+# V3.3: civilian multi-region search and rescue (in progress)
+
+Protocol: [V3.3 civilian search/rescue](protocols/V33_CIVILIAN_SEARCH_RESCUE.md). Nine regions,36 platforms(two UAVs+two helicopters per region), cross-region assistance, no custom runtime termination. Implementation: GPT-6 Luna; coordinator review before experimental launch. At this protocol commit V3.3 implementation is in progress; smoke, pilot, formal collection and training are NOT_RUN. New runnable source will be placed in a separate V3.3 release directory after review.
+
+## Historical V3.2 outcome (preserved)
 
 **Final outcome: STOP.** The single18-instance smoke completed7 scenarios before the fixed1800 CPU-second limit. Formal168-scenario collection, CPU/GPU training, world model and PPO were not started. Method evidence remains inconclusive.
 
