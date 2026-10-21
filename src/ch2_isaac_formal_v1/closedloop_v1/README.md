@@ -1,5 +1,13 @@
 # Closed-loop v1
 
+Compare completed, independently reduced episodes using the frozen registration manifest. The comparator reads only registered `episode_reduction.json` files and never launches a simulator or loads private trajectory/evaluator data:
+
+```powershell
+python -B -m closedloop_v1.compare_methods --registry <registry.json> --reductions-root <runs-root> --primary-method <registered-method> --output <comparison.json>
+```
+
+Pairing uses `scene_id`, falling back to `scenario_id`; `parent_family` is never treated as an independent scene key. Repeated training seeds are averaged within each scene and method, while duplicate or missing pre-registered seeds, missing/invalid reductions, scope mismatches, or unpaired scenes make the comparison inconclusive. Reported confidence intervals are uncorrected scene-bootstrap intervals. Permutation p-values use one Holm family per split across all non-primary methods and available metrics. Numerical thresholds are reported separately and the comparator does not issue a method-support decision. Safety evidence is incomplete unless the reducer explicitly records `safety.all_forced_safety_actions_applied: true`.
+
 `runtime.py` runs one 90-minute representative episode through the real `formal_collection_v1.isaac_backend.IsaacBackend`, `mission` implementation, and source-kinematic simulation package. From the pilot directory, invoke it with the Isaac source tree and a fresh output directory:
 
 ```powershell
