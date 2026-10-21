@@ -1,0 +1,19 @@
+{
+  "observed_utc": "2026-10-21T11:02:44.692440+00:00",
+  "batch": "formal-168-v1",
+  "registered_scenes": 168,
+  "scene_receipts": 42,
+  "receipt_status_parse": "status key absent; success count not inferred",
+  "batch_receipt_present": false,
+  "aggregate_present": false,
+  "live_process_evidence": {
+    "main_pids": [2570396, 2570401],
+    "elapsed": "18:53:46",
+    "active_isaac_pid": 3112803,
+    "active_isaac_cpu_percent": 403
+  },
+  "storage": {"available_GiB_approx": 72, "used_percent": 92},
+  "cache_cleanup": "not authorized; nothing deleted",
+  "training": "NOT_RUN",
+  "scientific_result": "NOT_RUN"
+}
