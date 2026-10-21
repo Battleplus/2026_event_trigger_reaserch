@@ -9,7 +9,10 @@ from pathlib import Path
 
 import torch
 
-from civilian import event_models, v4_models
+from civilian import event_models, v4_models, v4_policy
+from civilian.v4_checkpoint_witness import (
+    _wm_probe_identity, check_policies, check_world_models, policy_probe_prediction,
+)
 
 
 def _observation(platform_count=2, task_count=2):
@@ -196,3 +199,59 @@ def test_checkpoint_predictions_restore_in_fresh_process():
                                capture_output=True, check=True, env=env)
     actual = json.loads(completed.stdout)
     assert torch.allclose(torch.tensor(actual), torch.tensor(expected))
+
+
+def test_formal_restore_witnesses_compare_presave_prediction_and_optimizer_state():
+    tmp_path = Path(__file__).resolve().parent / "_restore_witness_fixture"
+    tmp_path.mkdir(exist_ok=True)
+    sample = _sample({"scope": "NOOP"})
+    sample["split"] = "train"
+    model = v4_models.V4DynamicWorldModel().eval()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    batch, _ = v4_models.collate_v4_samples([sample])
+    loss = sum(value.square().mean() for value in model(batch).values())
+    loss.backward(); optimizer.step()
+    with torch.no_grad():
+        expected_wm = {key: value[0].cpu().tolist() for key, value in model(batch).items()}
+    data_identity = v4_models._identity([sample])
+    norm = {name: getattr(model, name).cpu().tolist() for name in
+            ("node_mean", "node_scale", "action_mean", "action_scale")}
+    wm_path = tmp_path / "wm.pt"
+    torch.save({"schema": v4_models.V4_MODEL_SCHEMA, "seed": 8201, "config": model.config,
+                "data_identity": data_identity, "normalization": norm, "model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(), "python_rng_state": __import__("random").getstate(),
+                "torch_rng_state": torch.get_rng_state(), "cuda_rng_state_all": [torch.zeros(1)],
+                "restore_witness": {"presave_prediction": expected_wm,
+                                    "reference_device": "cpu",
+                                    "probe_sample_identity": _wm_probe_identity(sample)}}, wm_path)
+    wm_check = check_world_models([{"checkpoint_path": str(wm_path), "probe": sample,
+                                    "presave_prediction": expected_wm, "data_identity": data_identity,
+                                    "probe_sample_identity": _wm_probe_identity(sample)}])
+    assert wm_check["checks"][0]["optimizer_state_entries"] > 0
+    assert wm_check["checks"][0]["optimizer_state_matches"] is True
+    assert wm_check["checks"][0]["normalization_restored"]
+    assert torch.load(wm_path, map_location="cpu", weights_only=False)["restore_witness"]["reference_device"] == "cpu"
+
+    observation = _observation()
+    candidates = [{"candidate_key": "NOOP", "candidate_scope": "NOOP", "legal": True,
+                   "full_environment_action": {"scope": "NOOP", "noop": True}},
+                  {"candidate_key": "LOCAL", "candidate_scope": "LOCAL_REPAIR", "legal": False,
+                   "full_environment_action": {"scope": "LOCAL_REPAIR"}}]
+    policy = v4_policy.build_v4_policy(13)
+    policy_optimizer = torch.optim.Adam(policy.parameters(), lr=0.0003)
+    policy.value(observation).backward(); policy_optimizer.step()
+    policy_path = tmp_path / "policy.pt"
+    probe = {"observation": observation, "candidates": candidates,
+             "high_level_mask": [True, False, False], "candidate_mask": [True, False], "wm_predictions": None}
+    expected_policy = policy_probe_prediction(policy, probe)
+    v4_policy.save_v4_checkpoint(policy_path, policy, policy_optimizer, variant="Event-G", seed=13,
+                                 config={"learning_rate": 0.0003}, source_identity="fixture",
+                                 restore_witness={"data_identity": "fixture", "presave_prediction": expected_policy,
+                                                  "reference_device": "cpu",
+                                                  "probe": probe})
+    policy_check = check_policies([{"checkpoint_path": str(policy_path), "data_identity": "fixture",
+                                    "presave_prediction": expected_policy, "probe": probe}])
+    assert policy_check["checks"][0]["optimizer_state_entries"] > 0
+    assert policy_check["checks"][0]["optimizer_state_matches"] is True
+    assert torch.load(policy_path, map_location="cpu", weights_only=False)["restore_witness"]["reference_device"] == "cpu"
+    wm_path.unlink(); policy_path.unlink()

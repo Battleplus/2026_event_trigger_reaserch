@@ -934,6 +934,11 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
         raise ValueError("V4_POLICY_WORLD_MODEL_ENSEMBLE_REQUIRED")
     world_model_state_before = [{key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
                                 for model in world_models]
+    try:
+        from .v4_checkpoint_witness import check_policies, policy_probe_prediction
+    except ImportError:
+        from v4_checkpoint_witness import check_policies, policy_probe_prediction
+    restore_witness_rows: dict[str, dict] = {}
     for model in world_models:
         model.eval().requires_grad_(False)
     calibration = settings.get("calibration") or _calibrate_thresholds(train_scenarios, world_models, settings)
@@ -961,6 +966,7 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
             validation_curve = []; training_curve = []; timings = {"rollout": 0.0, "ppo": 0.0, "validation": 0.0}
             actor_updates = critic_updates = 0
             schedule_rng = random.Random(int(settings.get("episode_schedule_seed", 842701)))
+            fixed_probe_record = None
             for round_index in range(rounds):
                 train_rows = list(train_scenarios)
                 schedule_rng.shuffle(train_rows)
@@ -974,6 +980,8 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
                                                            deterministic=False)
                     timings["rollout"] += time.perf_counter() - start
                     batch_records.extend(records); episode_rows.append(summary)
+                    if fixed_probe_record is None and records:
+                        fixed_probe_record = copy.deepcopy(records[0])
                 start = time.perf_counter()
                 update_log = update_v4_policy(policy, optimizer, batch_records,
                     seed=seed + round_index * 100_003, epochs=int(settings["epochs"]),
@@ -1009,12 +1017,30 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
                     timings["validation"] += time.perf_counter() - start
                     mean_cost = sum(row["validation_cost"] for row in validation_rows) / len(validation_rows)
                     validation_curve.append({"round": round_index + 1, "mean_cost": mean_cost, "episodes": validation_rows})
-                    policy.to(device).train()
                     if mean_cost < best_cost:
                         best_cost = mean_cost
+                        if fixed_probe_record is None:
+                            raise RuntimeError("V4_PPO_RESTORE_PROBE_MISSING")
+                        probe_payload = {key: copy.deepcopy(fixed_probe_record.get(key)) for key in
+                                         ("observation", "candidates", "high_level_mask", "candidate_mask", "wm_predictions")}
+                        probe_reference = policy_probe_prediction(policy, probe_payload)
+                        policy.to(device).train()
                         save_v4_checkpoint(best_path, policy, optimizer, variant=variant, seed=seed,
                                            config={**settings, "learning_rate": float(settings["learning_rate"])},
-                                           source_identity=source_identity)
+                                           source_identity=source_identity,
+                                           restore_witness={"data_identity": source_identity,
+                                                            "presave_prediction": probe_reference,
+                                                            "reference_device": "cpu",
+                                                            "probe": probe_payload})
+                        witness_row = {
+                            "checkpoint_path": str(best_path.resolve()), "data_identity": source_identity,
+                            "presave_prediction": probe_reference,
+                            "probe": probe_payload,
+                            "variant": variant, "seed": seed,
+                        }
+                        restore_witness_rows[witness_row["checkpoint_path"]] = witness_row
+                    else:
+                        policy.to(device).train()
             save_v4_checkpoint(last_path, policy, optimizer, variant=variant, seed=seed,
                                config={**settings, "learning_rate": float(settings["learning_rate"])},
                                source_identity=source_identity)
@@ -1037,6 +1063,8 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
                 "critic_parameter_delta_l2": parameter_deltas["critic_l2"],
                 "world_model_frozen": all(not parameter.requires_grad for model in world_models for parameter in model.parameters()),
             }
+    ppo_restore_witness = check_policies(list(restore_witness_rows.values()))
+    checks_by_path = {row["checkpoint_path"]: row for row in ppo_restore_witness["checks"]}
     world_model_unchanged = all(
         set(before) == set(model.state_dict()) and all(torch.equal(before[key], value.detach().cpu())
                                                        for key, value in model.state_dict().items())
@@ -1046,6 +1074,11 @@ def train_v4_methods(train_scenarios: Sequence[dict], validation_scenarios: Sequ
     for variant in VARIANTS:
         for seed in seeds:
             result["variants"][variant][str(seed)]["world_model_state_unchanged"] = world_model_unchanged
+            checkpoint = result["variants"][variant][str(seed)]["best_checkpoint"]
+            result["variants"][variant][str(seed)]["fresh_process_restore_witness"] = {
+                "status": "complete", "fresh_process": True, "child_pid": ppo_restore_witness["child_pid"],
+                "check": checks_by_path[checkpoint],
+            }
     result["status"] = "complete"
     (output / "V4_POLICY_TRAINING.json").write_text(json.dumps(result, sort_keys=True, indent=2, allow_nan=False), encoding="utf-8")
     return result

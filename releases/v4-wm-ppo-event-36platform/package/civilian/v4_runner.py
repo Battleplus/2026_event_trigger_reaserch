@@ -208,11 +208,19 @@ def _train_wm(output: Path, config: dict) -> dict:
     validation = _all_model_samples(output, "validation")
     try:
         from .v4_models import evaluate_v4_predictions, load_v4_ensemble, train_v4_ensemble
+        from .v4_checkpoint_witness import check_world_models
     except ImportError:
         from v4_models import evaluate_v4_predictions, load_v4_ensemble, train_v4_ensemble
+        from v4_checkpoint_witness import check_world_models
     model_cfg = dict(config["world_model"])
     model_cfg["device"] = "cuda"
     receipt = train_v4_ensemble(rows, output / "world_models", model_cfg, validation_samples=validation)
+    probe = receipt.pop("probe_sample")
+    references = receipt.pop("probe_predictions")
+    receipt["fresh_process_restore_witness"] = check_world_models([
+        {"checkpoint_path": path, "probe": probe, "presave_prediction": reference["prediction"],
+         "data_identity": receipt["data_identity"], "probe_sample_identity": reference["probe_sample_identity"]}
+        for path, reference in zip(receipt["checkpoint_paths"], references, strict=True)])
     evaluation_models, _ = load_v4_ensemble(receipt["checkpoint_paths"], device="cpu")
     receipt["validation_evaluation"] = evaluate_v4_predictions(
         evaluation_models, validation, split="validation", device="cpu",

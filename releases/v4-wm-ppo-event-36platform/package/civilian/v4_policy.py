@@ -273,7 +273,8 @@ def variant_policy_options(variant: str) -> dict[str, bool]:
 
 
 def save_v4_checkpoint(path: str | Path, policy: V4HierarchicalPolicy, optimizer: torch.optim.Optimizer,
-                       *, variant: str, seed: int, config: dict, source_identity: str) -> dict[str, Any]:
+                       *, variant: str, seed: int, config: dict, source_identity: str,
+                       restore_witness: dict[str, Any] | None = None) -> dict[str, Any]:
     """Persist all state needed to resume an optimizer in a fresh process."""
     if variant not in VARIANTS or not source_identity:
         raise ValueError("V4_CHECKPOINT_IDENTITY")
@@ -287,6 +288,8 @@ def save_v4_checkpoint(path: str | Path, policy: V4HierarchicalPolicy, optimizer
         "torch_rng_state": torch.get_rng_state(),
         "cuda_rng_state_all": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
     }
+    if restore_witness is not None:
+        payload["restore_witness"] = copy.deepcopy(restore_witness)
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
     try:

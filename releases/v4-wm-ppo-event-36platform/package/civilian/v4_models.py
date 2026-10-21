@@ -12,6 +12,7 @@ import copy
 import hashlib
 import json
 import math
+import os
 import random
 import time
 from pathlib import Path
@@ -299,12 +300,15 @@ def train_v4_ensemble(samples: Sequence[dict], output_dir: str|Path, config: dic
     if device.type!="cuda": raise RuntimeError("V4_TRAINING_REQUIRES_CUDA")
     if device.type=="cuda" and not torch.cuda.is_available(): raise RuntimeError("V4_CUDA_REQUIRED_BUT_UNAVAILABLE")
     identity=_identity(samples); validation_identity=_identity(validation_samples); root=Path(output_dir); root.mkdir(parents=True,exist_ok=True); paths=[]
+    probe_predictions = []
     for seed in seeds:
         random.seed(seed); torch.manual_seed(seed)
         model=V4DynamicWorldModel().to(device); norm=_fit_norm(model,samples); opt=torch.optim.Adam(model.parameters(),lr=lr)
         generator=torch.Generator().manual_seed(seed+17); best=math.inf; best_state=None; best_optimizer=None; stale=0; logs=[]; updates=0; best_updates=0
         torch.cuda.reset_peak_memory_stats(device); started=time.perf_counter()
         gpu_start=torch.cuda.Event(enable_timing=True); gpu_end=torch.cuda.Event(enable_timing=True); gpu_start.record()
+        epoch_started = time.perf_counter()
+        progress_path = root / "V4_WORLD_MODEL_TRAINING_PROGRESS.jsonl"
         for epoch in range(min(epochs,100)):
             order=torch.randperm(len(samples),generator=generator).tolist(); losses=[]; model.train()
             for start in range(0,len(order),batch):
@@ -322,16 +326,36 @@ def train_v4_ensemble(samples: Sequence[dict], output_dir: str|Path, config: dic
                 opt.zero_grad(set_to_none=True); loss.backward()
                 nn.utils.clip_grad_norm_(model.parameters(),1.0); opt.step(); updates+=1; losses.append(float(loss.detach().cpu()))
             mean=sum(losses)/len(losses); val_loss=_validation_loss(model,validation_samples,device); logs.append({"epoch":epoch+1,"train_loss":mean,"validation_loss":val_loss})
+            with progress_path.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({"seed": seed, "epoch": epoch + 1, "train_loss": mean,
+                                        "validation_loss": val_loss, "optimizer_update_count": updates,
+                                        "elapsed_seconds": time.perf_counter() - epoch_started},
+                                       sort_keys=True, allow_nan=False) + "\n")
+                stream.flush(); os.fsync(stream.fileno())
             if val_loss < best-1e-8:
                 best=val_loss; best_state=copy.deepcopy(model.state_dict()); best_optimizer=copy.deepcopy(opt.state_dict()); best_updates=updates; stale=0
             else: stale+=1
             if stale>=patience: break
         if best_state is None: raise AssertionError("V4_NO_CHECKPOINT")
         model.load_state_dict(best_state); model.eval()
+        probe = samples[0]
+        probe_model = copy.deepcopy(model).to("cpu").eval()
+        probe_batch = collate_v4_samples([probe])[0]
+        with torch.no_grad():
+            probe_prediction = {key: value[0].tolist() for key, value in probe_model(probe_batch).items()}
         path=root/f"v4_world_model_seed_{seed}.pt"
         gpu_end.record(); torch.cuda.synchronize(device); wall_elapsed=time.perf_counter()-started; gpu_elapsed=gpu_start.elapsed_time(gpu_end)/1000.0; peak=torch.cuda.max_memory_allocated(device)
-        torch.save({"schema":V4_MODEL_SCHEMA,"seed":seed,"config":model.config,"data_identity":identity,"validation_identity":validation_identity,"normalization":norm,"model_state":{k:v.cpu() for k,v in best_state.items()},"optimizer_state":best_optimizer,"torch_rng_state":torch.get_rng_state(),"cuda_rng_state_all":torch.cuda.get_rng_state_all(),"python_rng_state":random.getstate(),"training_history":logs,"optimizer_update_count":updates,"optimizer_update_count_at_best":best_updates,"gpu_seconds":gpu_elapsed,"training_wall_seconds":wall_elapsed,"peak_gpu_memory_bytes":peak},path); paths.append(str(path.resolve()))
-    return {"status":"complete","schema":V4_MODEL_SCHEMA,"data_identity":identity,"validation_identity":validation_identity,"checkpoint_paths":paths,"seeds":list(seeds),"epochs_max":epochs,"batch_size":batch,"patience":patience,"learning_rate":lr}
+        probe_sample_identity = hashlib.sha256(json.dumps(
+                                      {key: probe.get(key) for key in ("sample_id", "split", "parent_id", "history", "action")},
+                                      sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+                                      allow_nan=False).encode()).hexdigest()
+        restore_witness = {"probe_sample_identity": probe_sample_identity,
+                           "presave_prediction": probe_prediction, "data_identity": identity,
+                           "reference_device": "cpu"}
+        torch.save({"schema":V4_MODEL_SCHEMA,"seed":seed,"config":model.config,"data_identity":identity,"validation_identity":validation_identity,"normalization":norm,"model_state":{k:v.cpu() for k,v in best_state.items()},"optimizer_state":best_optimizer,"torch_rng_state":torch.get_rng_state(),"cuda_rng_state_all":torch.cuda.get_rng_state_all(),"python_rng_state":random.getstate(),"training_history":logs,"optimizer_update_count":updates,"optimizer_update_count_at_best":best_updates,"gpu_seconds":gpu_elapsed,"training_wall_seconds":wall_elapsed,"peak_gpu_memory_bytes":peak,"restore_witness":restore_witness},path); paths.append(str(path.resolve()))
+        probe_predictions.append({"seed": seed, "prediction": probe_prediction,
+                                  "probe_sample_identity": probe_sample_identity})
+    return {"status":"complete","schema":V4_MODEL_SCHEMA,"data_identity":identity,"validation_identity":validation_identity,"checkpoint_paths":paths,"seeds":list(seeds),"epochs_max":epochs,"batch_size":batch,"patience":patience,"learning_rate":lr,"probe_predictions":probe_predictions,"probe_sample":samples[0]}
 
 
 def load_v4_ensemble(paths: Sequence[str|Path], device: str|torch.device="cpu"):
