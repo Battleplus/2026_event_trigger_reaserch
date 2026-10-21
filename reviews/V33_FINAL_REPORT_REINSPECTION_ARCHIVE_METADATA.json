@@ -1,0 +1,10 @@
+{
+  "schema": "public-review-copy/1",
+  "source_identity": "/root/v33_final_integrity_review:2026-10-21_run01",
+  "original_json_sha256": "87b118e499c52a7b2d44738740330f38e45d28cca931877c44117ac176f7a711",
+  "original_markdown_sha256": "dc1aa851360787cb856eb1f6cb81b65e44eaff6078cc32cdd448a7850d8bd1d1",
+  "absolute_path_redaction": "Archive absolute paths made relative; source project path replaced with <local-project>",
+  "trace": "Original trace retained unchanged in local source project; not copied into public payload",
+  "follow_up_disclosures": "After this limited reinspection, added requested NOOP-positive suffix and resource-accounting clarifications to FINAL_DIAGNOSTICS. These disclosures do not alter counts or gate status; the review expressly says report corrections were not independently recalculated.",
+  "public_copy_normalization": "UTF-8 without BOM, LF line endings; Markdown trailing spaces removed; original source hashes retained."
+}

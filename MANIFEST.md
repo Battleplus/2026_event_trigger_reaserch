@@ -1,12 +1,13 @@
 # Public archive payload manifest
 
-Generated 2026-10-21. Payload inventory excludes MANIFEST.md and SHA256SUMS.txt to avoid recursive self-hashes. SHA256SUMS.txt records every payload file plus MANIFEST.md.
+Generated 2026-10-21. Inventory excludes PUBLIC_ARCHIVE_MANIFEST.json, MANIFEST.md, and SHA256SUMS.txt to avoid self-hashes. SHA256SUMS.txt records every payload file plus MANIFEST.md.
 
-Payload files: 372
+Payload files: 387
 
 - `.gitattributes` (8 bytes, sha256 `705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da`)
 - `.gitignore` (244 bytes, sha256 `cba2e1b7fbba1008c68f2d27e4d705d6a4a5e6035216f54caf31b07542108335`)
-- `analysis/v33/tools/v33_conclusion_analysis.py` (61348 bytes, sha256 `7d9d3182d2e2df704f651fbe194b4f40d9a86585b47d736b980053dc406fa7f3`)
+- `analysis/v33/README.md` (1412 bytes, sha256 `c895ac231ef4aee828b6db6ae60c83d1c82fb6a6adbc075139002c276c847dda`)
+- `analysis/v33/tools/v33_conclusion_analysis.py` (67667 bytes, sha256 `66d59d9a80b932e97e0f4e106bf29c1c87dd31f18d22ae3b09f31616660c40be`)
 - `analysis/v33/tools/v33_support_plot.py` (16975 bytes, sha256 `f962cd7619b73e2f80721628f80d3091820f58e4168aced51ca696da4f54842a`)
 - `BASELINE_PROVENANCE.json` (1669 bytes, sha256 `3fa1a7d67c53f0d602da673d4ba1affd7c3a2e59dc03e4e37aed52a3483da986`)
 - `configs/ENVIRONMENT_SPEC.json` (578 bytes, sha256 `9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0`)
@@ -154,8 +155,7 @@ Payload files: 372
 - `protocols/v3-baseline/STATUS.md` (1975 bytes, sha256 `d3698784a96080876251a89d866076e3290b5650549a8b7fd0f4df694c94978e`)
 - `protocols/V32_PERFORMANCE_LIGHT.md` (2457 bytes, sha256 `a8e29f9a0da2a8d802a957768b0195aa6f92dd9189e3732435df1bcf5e7fb479`)
 - `protocols/V33_CIVILIAN_SEARCH_RESCUE.md` (5143 bytes, sha256 `e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6`)
-- `PUBLIC_ARCHIVE_MANIFEST.json` (34881 bytes, sha256 `3b426fb43e9d66e7320395ee31584706dce0f5bcec032a09410b968eae61aaef`)
-- `README.md` (3752 bytes, sha256 `9e3ad193e01413ad9b10dbf0e5e95c52a871cfae036d9adc75367769713da17d`)
+- `README.md` (4097 bytes, sha256 `07c61387571b89ef1815e03d57aee950aeadf755546df7d935a7548260d5308d`)
 - `releases/gain-gate-v3-2-performance-light/BASELINE_PROVENANCE.json` (1169 bytes, sha256 `b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0`)
 - `releases/gain-gate-v3-2-performance-light/configs/ENVIRONMENT_SPEC.json` (578 bytes, sha256 `9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0`)
 - `releases/gain-gate-v3-2-performance-light/configs/EVENT_TRIGGER_CONFIG.json` (2420 bytes, sha256 `45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009`)
@@ -324,6 +324,14 @@ Payload files: 372
 - `reports/V32_PERFORMANCE_DIAGNOSIS.md` (2362 bytes, sha256 `6ea82e264b0b95c0e0c7ee36a3f4e71314783ad2cc3d30ee4b448a44acbd163a`)
 - `reports/v33-analysis-preparation/REPAIR_EVIDENCE.json` (4011 bytes, sha256 `fdcd545e5f9df0674dcb854e6322e43215ec0b3a0f17321c7e67e8c69839dcb3`)
 - `reports/v33-analysis-preparation/REPAIR_EVIDENCE.md` (1423 bytes, sha256 `763f2a1ac60ae106049a4c4315329071562d8e2e3728db8f7d1b42094ba203bd`)
+- `reports/v33-conclusion-final-168/analysis.json` (32106282 bytes, sha256 `2d30e4063644669e305399149ea7c39bbf7142059bb51f5d08c233531d0e5abd`)
+- `reports/v33-conclusion-final-168/conclusion.md` (16690 bytes, sha256 `109f0dc0bded69bde580c80e562f5ff658003b5771ab17e8e8e9ee551532f892`)
+- `reports/v33-conclusion-final-168/FINAL_CONCLUSION.md` (3709 bytes, sha256 `f220b79e68c2030fb9709bc43194410a3bc324d6950f426b17da46a33eb63967`)
+- `reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.json` (3617 bytes, sha256 `75387f88edef79d65fb22c77656481c0ae24f2215f9887d944791a84aaef65e5`)
+- `reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.md` (3222 bytes, sha256 `f38d719a19ec2d46af31aa524ac93315cd52e0a0791d287610f5d384816eae1f`)
+- `reports/v33-conclusion-final-168/SHA256SUMS.txt` (823 bytes, sha256 `6efb30f79cd30fa4f38eb8d385073a9958107eafdbdea4331a60376c70a8a182`)
+- `reports/v33-conclusion-final-168/state_detail.csv` (18553417 bytes, sha256 `2442dfac7f4cc7bf60e37dba7d97960e35fb8682ebe9b699751b55ae3470037b`)
+- `reports/v33-conclusion-final-168/summary.json` (831967 bytes, sha256 `59be35eba9d10b9b86458426b52ab38c81bdb4dddedca1e2e4487cd2ad2835ea`)
 - `reports/v33-conclusion-snapshot-66/conclusion.md` (6750 bytes, sha256 `8041b0d95e71e17e64901b3c7b6e1b1f76ed4c28feb31e64c91d49a3efcb6145`)
 - `reports/v33-conclusion-snapshot-66/summary.json` (18461 bytes, sha256 `42e86d92ff7f60a44d5b5e797752e6898a6e9d62d080b26db1299a3bc4b807bb`)
 - `reports/v33-support-trajectory/CHANGELOG.md` (344 bytes, sha256 `34f3456a207a03e059c621fce1ef0ab736f49be7b798f33d86261696f8bd01c3`)
@@ -334,6 +342,9 @@ Payload files: 372
 - `requirements.txt` (96 bytes, sha256 `f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130`)
 - `REUSE_INVENTORY.json` (2904 bytes, sha256 `e027bde5a791ac5ff261ceb0af663cf7223d6c4434f30c56f2187546fd8402ac`)
 - `reviews/check_noop_v32.py` (2566 bytes, sha256 `49ae7c85da5d226478857f178dad2934897a29fe113b9d8f1de0b9236492aafa`)
+- `reviews/EXPERIMENT_AUDIT_ARCHIVE_METADATA.json` (720 bytes, sha256 `145edc31abe549a5b75703f3cc60b8062882e0dba71de7b5108ba36d93c5996d`)
+- `reviews/EXPERIMENT_AUDIT.json` (60260 bytes, sha256 `e8e8a25f574e6c28fd6627b5679d36ad137cc030f1a70117cf403492c8fe151d`)
+- `reviews/EXPERIMENT_AUDIT.md` (9003 bytes, sha256 `69032d7a4e6f7fd33b35003312bc802b44102a25f5ba9018c35fbc5c26cde544`)
 - `reviews/INDEPENDENT_FOCUSED_CHECK_20261017c.json` (576 bytes, sha256 `2aded3172fd068cc29fa3f2432b04cf27e6512db5889cc67d3eb31c6026e9c38`)
 - `reviews/INDEPENDENT_INTEGRATION_CHECK_20261017b.json` (698 bytes, sha256 `f85b588d125462df8e3d4a42e11ebe65b84852d9efe98a74934bb08fc3671a90`)
 - `reviews/P0_P1_PRELIMINARY_REPAIR_20261017.md` (2887 bytes, sha256 `7214a3af17b86d6ee7595c34ba518fce6fb4263a5ba69687d705b741dab0260e`)
@@ -356,6 +367,10 @@ Payload files: 372
 - `reviews/V32_COORDINATOR_DECISION.md` (3064 bytes, sha256 `f8f5e998d612147591516143097d0845c62ad6fa16703c9147f704bf06ae7c12`)
 - `reviews/V32_EXPERIMENT_AUDIT.json` (2032 bytes, sha256 `281c70f7222fdc10ffee3bc9bb242b0f909c61a8b8e509e8342548088fd57f95`)
 - `reviews/V32_EXPERIMENT_AUDIT.md` (6700 bytes, sha256 `e36e0fd4eb4937af695cb70ae716f97b31e1fb3a977f579fec3f7c3a89d2308e`)
+- `reviews/V33_FINAL_COORDINATOR_DECISION.md` (4620 bytes, sha256 `8147476d6d8609b16f4ab25a46e56dd7df7b5275864f0d188bb651822833c33e`)
+- `reviews/V33_FINAL_REPORT_REINSPECTION_ARCHIVE_METADATA.json` (963 bytes, sha256 `a09233717915a1cff482c3421391addd74ccb1f06bc64dcd5cc0a0d2cb8cbd11`)
+- `reviews/V33_FINAL_REPORT_REINSPECTION.json` (4411 bytes, sha256 `8efcf5af9ced905d8d69381fda453f63ed44ddd9ad650dd1e65c57a1910095ad`)
+- `reviews/V33_FINAL_REPORT_REINSPECTION.md` (3665 bytes, sha256 `3fc314c4a2abfdbce10c5d82c97309b88ee1ba51eb3ef14d8bf702964ef06d4e`)
 - `reviews/V33_SOURCE_AUDIT_FOLLOWUP.json` (8048 bytes, sha256 `83268b755e2cc1fb7fd6b6f6eab48b8984e3b7571b6d9d38027c878376772e5f`)
 - `reviews/V33_SOURCE_AUDIT_FOLLOWUP.md` (5917 bytes, sha256 `8a8a4f23779911008ff805a4418e417d46d438b4e275ae38ebbce2edacf10b3b`)
 - `reviews/V33_SOURCE_AUDIT_INITIAL.json` (12717 bytes, sha256 `18d16719c87bbb2bac93f2a38dd3b4e3a9185cd008a2d90690d0bb1ddbe559a0`)
@@ -374,5 +389,5 @@ Payload files: 372
 - `staging_tools/prepare_public_archive.py` (14667 bytes, sha256 `b75db445ab7548cd1f130780bd59fef99aaa2cbef4a41323aed885d641f31d3f`)
 - `staging_tools/resume_v33_collect.py` (9892 bytes, sha256 `a0fc8532e0157c77d9c5f873984a1c2b16a9d41458fc39dd47c796258fa455ca`)
 - `staging_tools/test_prepare_public_archive.py` (2856 bytes, sha256 `b931b34992e710614c7648ecf9c1e1572452ba3e90bced4bdb236c6119a19def`)
-- `staging_tools/v33_conclusion_analysis.py` (45614 bytes, sha256 `efac61c59adab7ec29501627093406d8f98c506902f95890d08cf472ac01a95c`)
-- `STATUS.md` (6703 bytes, sha256 `dc30f855da1240d6ca1a99b86a775bdbd4a7fa77cad6cecf3baaf1ac8c461a99`)
+- `staging_tools/v33_conclusion_analysis.py` (68491 bytes, sha256 `94ff0a6aeadc8a4523f8f6b76accbaf90e16e159204c6b55494b9df1dc95bead`)
+- `STATUS.md` (8012 bytes, sha256 `38e515c78be014c6b40ed0174f76d47044df950e6489b5ca02c6d5aab44ab070`)

@@ -1,7 +1,7 @@
 {
   "schema": "public-archive-manifest/2",
-  "milestone": "v3-3-active-partial-collection-analysis-preparation",
-  "claim_scope": "V3.3 collection snapshot and analysis preparation evidence only; collection incomplete; synthetic repair checks and static reviews do not establish 168-scenario experiment acceptance or scientific performance",
+  "milestone": "v3-3-complete-168-gate-not-met",
+  "claim_scope": "V3.3 168/168 collection snapshot and bounded analysis/review evidence; the 30/30 gate was not met; engineering remains REPAIR_REQUIRED; no method or safety pass is asserted.",
   "files": [
     {
       "public_path": ".gitattributes",
@@ -16,9 +16,15 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "analysis/v33/README.md",
+      "public_sha256": "c895ac231ef4aee828b6db6ae60c83d1c82fb6a6adbc075139002c276c847dda",
+      "bytes": 1412,
+      "scope": "v33_analysis_preparation"
+    },
+    {
       "public_path": "analysis/v33/tools/v33_conclusion_analysis.py",
-      "public_sha256": "7d9d3182d2e2df704f651fbe194b4f40d9a86585b47d736b980053dc406fa7f3",
-      "bytes": 61348,
+      "public_sha256": "66d59d9a80b932e97e0f4e106bf29c1c87dd31f18d22ae3b09f31616660c40be",
+      "bytes": 67667,
       "scope": "v33_analysis_preparation"
     },
     {
@@ -106,21 +112,177 @@
       "scope": "historical_v2"
     },
     {
-      "bytes": 10297,
+      "public_path": "evidence/v3-1-smoke-stop-20261019/ARCHIVE_RECEIPT.json",
+      "public_sha256": "d2b9e4601b1a7957ae16332f620ee3e409c41779b86a1a21407114b9147598c0",
+      "bytes": 730,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v3-1-smoke-stop-20261019/FAILURE.json",
+      "public_sha256": "1eb655bcbba0cc2200b50112f3e78204c98911f4d4e84af0ed4a597f0e25bc38",
+      "bytes": 552,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/baseline-profile.json",
+      "public_sha256": "6d4137e4fda912c7878a2d71ad4566adfebf7c6d76e49df647a278d658996351",
+      "bytes": 10424,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/final-source-verification.json",
+      "public_sha256": "c69f9f1a03a75b4c227c2a37db3c431598f8eec85ff8d565114536798edf2f44",
+      "bytes": 433,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/focused-checks.json",
+      "public_sha256": "699eb073ab9b87693c4d3d5de514124e049a482c46129a3e372a5f7b292ebc53",
+      "bytes": 1175,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/gpu-preflight.json",
+      "public_sha256": "f9c5351912b586632122750927ed3189d96b65cddbbb41d1e60301eb252df271",
+      "bytes": 675,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/noop-acceptance/noop-90min.json",
+      "public_sha256": "093cbdfe180044a8f6aab8a53a98adb01da7b93669bdbc0a8165c269ae8959ff",
+      "bytes": 2226,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/noop-acceptance/noop-90min.jsonl.gz",
+      "public_sha256": "54128d1b402578ebc9e7cd5fcd412488076966db9cf6789761177e13e6de119b",
+      "bytes": 538835,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/old-slow-instance-reference.json",
+      "public_sha256": "fba695819e45a9b6176ef3b98974e6a1a52b77cdbd3bb4ad97a8abb18cc8fb15",
+      "bytes": 591,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/optimized-slow-instance.json",
+      "public_sha256": "0e1a0f17431cb9f28b11c9bbeae4ddeb0c36c1f0adf2c6b749c084e4b041fb0a",
+      "bytes": 62175,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/resource-settlement.json",
+      "public_sha256": "4cd32edcd8bf9ebef469ad149d4f1fa612ec878cfb41480b3ed18ddfa582f352",
+      "bytes": 1024,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/smoke-final-recomputation.json",
+      "public_sha256": "a6d4d3b211d1e498023b4aa60e5c251818076248314fccabbe592d526c60906d",
+      "bytes": 33327,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/smoke-progress-review.json",
+      "public_sha256": "bf205ee23982d7dfc6bfff012612f40ce7dc1c3b60a6f1c2a6595b7f3ba403bc",
+      "bytes": 17521,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/smoke-resource-observation.json",
+      "public_sha256": "6170a2d6f12bbfc8a08082e84de9cf19b03f380652e3a86befff0322963b1680",
+      "bytes": 487,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/v3-train-task_update_or_arrival-001-00900002.commit.json",
+      "public_sha256": "b3bdb339e9da12dd1838a2c9c2e5e471e5390f32f55396e95133bf2c744d8037",
+      "bytes": 2525,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-performance/v3-train-task_update_or_arrival-001-00900002.jsonl.gz",
+      "public_sha256": "dcd8c35824e2e684182ef41eb0aa07370e3d12f223ca04fb91ed37e88e06e810",
+      "bytes": 1573185,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/FAILURE.json",
+      "public_sha256": "7f9dbf822ad78411434ff96a3bcd7b3c8bbfc1ec788e45d661ec73bd28504d54",
+      "bytes": 637,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shard-index.json",
+      "public_sha256": "ffe58efd355808a29100a76c151e8c72ba7f5c9e5e7e3ba28bae6bad5b9f0a04",
+      "bytes": 17749,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/platform_failure_or_capability_loss/v3-train-platform_failure_or_capability_loss-000-00900101.commit.json",
+      "public_sha256": "9206803c26f12f2f3708e398ff57ba3b1f45dd6fcd7e002759d9a45fe1c3a89d",
+      "bytes": 2564,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/platform_failure_or_capability_loss/v3-train-platform_failure_or_capability_loss-000-00900101.jsonl.gz",
+      "public_sha256": "e6ba0ce675210296696a731fc78398fb16d28671c0f9c059fde6b30b091d1e84",
+      "bytes": 1087682,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-000-00900001.commit.json",
+      "public_sha256": "8626be15a33ce531f8558c544c5dec1033075eb67b0620df2238d00a852693cc",
+      "bytes": 2521,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-000-00900001.jsonl.gz",
+      "public_sha256": "a873fec1d294512cfe27d578e4db097116eacd3c8cc802a045fca83a120264ef",
+      "bytes": 1034160,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-001-00900002.commit.json",
+      "public_sha256": "34f00834840a439250286c7c4a29719c7f6b539516bd8c9f4b5fc3ede5ccd364",
+      "bytes": 2526,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-001-00900002.jsonl.gz",
+      "public_sha256": "47285765cb9416d2624bd36fa70b07454a05f878e554caeb0bb93bfe252d46cb",
+      "bytes": 8929769,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-002-00900003.commit.json",
+      "public_sha256": "d6c78efb96abf9ec856ec9558f5f9d7bb1f17de8e65a9ddec7ea2801bfb30951",
+      "bytes": 2525,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v32-smoke/shards/train/task_update_or_arrival/v3-train-task_update_or_arrival-002-00900003.jsonl.gz",
+      "public_sha256": "7825f6704b9836d80afb089971843954ecfd0c11e670eaf926260051d484167b",
+      "bytes": 1052440,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "evidence/v33/collection-progress/COLLECTION_PROGRESS.json",
       "public_sha256": "70921af532f889ffd8f41893feaaa7b8f8f396145d083a765b9aa36ef73c3b97",
+      "bytes": 10297,
       "scope": "v3_collection_snapshot"
     },
     {
-      "bytes": 108985,
       "public_path": "evidence/v33/collection-progress/COLLECTION_RECEIPT.json",
       "public_sha256": "4b804c223cba3a3b82d9eaf2af230b7b71c63d5e1bda87fd5ad1a4a182ad3bc0",
+      "bytes": 108985,
       "scope": "v3_collection_snapshot"
     },
     {
-      "bytes": 777,
       "public_path": "evidence/v33/collection-progress/FAILURE_REGISTRY_097.json",
       "public_sha256": "5a5d4854d9316fed809334f298c5a3f79d5eaa246668c7d10f5273b3f750f328",
+      "bytes": 777,
       "scope": "v3_collection_snapshot"
     },
     {
@@ -128,6 +290,42 @@
       "public_sha256": "ccb58920760e6541ce854ccbf38aacf7f576d7edd5738ff555e6dc9fcf556959",
       "bytes": 915,
       "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "evidence/v33/collection-progress/REUSED_SHARDS.json",
+      "public_sha256": "db11f2f93a9ef289d1b4aa723848b3d46fa024ce39215b99b0c7aef403a105d2",
+      "bytes": 7750,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v33/exact-once/EXACT_ONCE_PUBLIC_SUMMARY.json",
+      "public_sha256": "3065f2f1e6e42e91ea22e5b0123cb0b6bf73a1178186b71afcb8de710009d1cc",
+      "bytes": 1767,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v33/exact-once/focused_check.py",
+      "public_sha256": "5a27f6f56e481bfad272285c82352cde96828ba9489148cfc95b09360b04f820",
+      "bytes": 10210,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v33/GPU_PREFLIGHT.json",
+      "public_sha256": "180cded97bc210a10a605388389158a03e1c22d20e6fff896458a5f5f04934bf",
+      "bytes": 633,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v33/LOCAL_RUNTIME.json",
+      "public_sha256": "d8e839509c0d079ce4f46772e4691b744d074ce5fcd91543c0f07b44b9337331",
+      "bytes": 312,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "evidence/v33/SCENARIO_LAYOUT.svg",
+      "public_sha256": "0c8d7a5d6c18275024ec1a681e9c23cec4064a8aba3ec55f7110db7571846817",
+      "bytes": 3873,
+      "scope": "historical_v2"
     },
     {
       "public_path": "EXPERIMENT_PLAN.md",
@@ -139,6 +337,12 @@
       "public_path": "EXPERIMENT_PROTOCOL.md",
       "public_sha256": "f2b6eafb4f7943133ec079c4fbe1a2fac4616105438c721064421d3d934c2303",
       "bytes": 986,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "MANIFEST.md",
+      "public_sha256": "da84489babd1c29922a0e71e55eb3bb28bafa97f7b76ab6be2d628692ccd69c8",
+      "bytes": 59232,
       "scope": "historical_v2"
     },
     {
@@ -496,6 +700,12 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "package/civilian/v3_runner_v31.py",
+      "public_sha256": "5c9281eed84310ae54cdf311a716d3b432a15ca381f8a77f08bf87dadd6fd902",
+      "bytes": 42865,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "package/civilian/wm_prediction_cache.py",
       "public_sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
       "bytes": 8678,
@@ -622,6 +832,12 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "package/tests/test_v3_shards_v31.py",
+      "public_sha256": "e169c9c98a891c4a61e2f3b7865cc25187cabc234fea31a3593adce76ce123c7",
+      "bytes": 8732,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "protocols/AMENDMENT_ATTEMPT_COOLDOWN_BASELINE_20261017.md",
       "public_sha256": "4511b978a0d13a54705c6bd6c0702bcbead3b39624971c97f501b8f35e5a9735",
       "bytes": 2392,
@@ -688,10 +904,982 @@
       "scope": "v3_protocol"
     },
     {
+      "public_path": "protocols/V32_PERFORMANCE_LIGHT.md",
+      "public_sha256": "a8e29f9a0da2a8d802a957768b0195aa6f92dd9189e3732435df1bcf5e7fb479",
+      "bytes": 2457,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "protocols/V33_CIVILIAN_SEARCH_RESCUE.md",
+      "public_sha256": "e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6",
+      "bytes": 5143,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "README.md",
-      "public_sha256": "9e3ad193e01413ad9b10dbf0e5e95c52a871cfae036d9adc75367769713da17d",
-      "bytes": 3752,
+      "public_sha256": "07c61387571b89ef1815e03d57aee950aeadf755546df7d935a7548260d5308d",
+      "bytes": 4097,
       "scope": "v3_protocol"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/BASELINE_PROVENANCE.json",
+      "public_sha256": "b64a6f28f8fa6d5754405caa7427bdd0bf758e96025c49eec9d8befb795bfef0",
+      "bytes": 1169,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/configs/ENVIRONMENT_SPEC.json",
+      "public_sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0",
+      "bytes": 578,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/configs/EVENT_TRIGGER_CONFIG.json",
+      "public_sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009",
+      "bytes": 2420,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/configs/GAIN_GATE_CONFIG.json",
+      "public_sha256": "50200cd3af9ad0d1ef13a54d8d92cd18202b331501f1c432993ea1a28f5311a9",
+      "bytes": 5962,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/MANIFEST.json",
+      "public_sha256": "74e8e8b0842dba444b98fba1eb20217e42a17f223f7c7cc7d4572f0a55876346",
+      "bytes": 22077,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/acceptance_harness.py",
+      "public_sha256": "7bc54625386514a3ccb0b645fc38d63d2393d650b3bc6e056c0e0ab52aa19c1d",
+      "bytes": 45973,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/baselines.py",
+      "public_sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+      "bytes": 5740,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/branching.py",
+      "public_sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58",
+      "bytes": 21373,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/budget_ledger.py",
+      "public_sha256": "108b420e30c16771d3eab6fadbf17a6e9e023f8cdb0f6606e6d39e8c8038cb46",
+      "bytes": 18098,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/chapter1_adapter.py",
+      "public_sha256": "5565c7ec3c176523180118eb28a13d468339025345644c6feb51166a187095b0",
+      "bytes": 8139,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/cost_accounting.py",
+      "public_sha256": "739ffd363736aa3782476b7a4c8dd56a9c33416390156eb955a0fdc05e591071",
+      "bytes": 11431,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/counterfactual_pairs.py",
+      "public_sha256": "1cdc69cc463d41295fc793317eab52fdd6f5e89ab01b30a0205a9f5d3953f172",
+      "bytes": 54693,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/dataset_protocol.py",
+      "public_sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1",
+      "bytes": 12779,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/driver.py",
+      "public_sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32",
+      "bytes": 88322,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/evaluator.py",
+      "public_sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6",
+      "bytes": 22513,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_environment.py",
+      "public_sha256": "63c6eb1a9a442eef69457164d2f61d415684e563c2855fb5df043cd28f400ebb",
+      "bytes": 196877,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_models.py",
+      "public_sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
+      "bytes": 64177,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_oracle.py",
+      "public_sha256": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
+      "bytes": 47562,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_policy.py",
+      "public_sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9",
+      "bytes": 74048,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_runner.py",
+      "public_sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
+      "bytes": 96972,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_scenarios.py",
+      "public_sha256": "0361af11e524815e9a709e174a5b201a19fd03d6d479e9e4722c4a19b6bbc7ce",
+      "bytes": 14008,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/event_trigger.py",
+      "public_sha256": "6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+      "bytes": 47308,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/execution_gate.py",
+      "public_sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a",
+      "bytes": 27914,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixed_replanner.py",
+      "public_sha256": "70abcb0acac409611c2b8384b66f12094d089d20029770de3b57852475deff6a",
+      "bytes": 14457,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/combined.json",
+      "public_sha256": "ad507f15039998cc80a608cc097f58b88e2ccfdcc100518e252a5c4f26b4d4c6",
+      "bytes": 5300,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/control.json",
+      "public_sha256": "4bcbc5c4bbd7ffbfb3e850aaf23a06e95bd68817ceb36b21b2345ddc2957370a",
+      "bytes": 4849,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/energy_change.json",
+      "public_sha256": "17b473f8cb6f006b5d89f182b4c6f4ba617286c1d60517e1738bb173c54b6df5",
+      "bytes": 5002,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/external_commitment.json",
+      "public_sha256": "f2d5e830695fa0fd84e876ed66807e3102a559c7f361dffc2886a768e2673ae9",
+      "bytes": 5323,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/failure.json",
+      "public_sha256": "e8775eced309e04d8f454315fd6e76c2661967adf1c583ce223f10b1aa9a35af",
+      "bytes": 4971,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/report_delay.json",
+      "public_sha256": "d384e89dbb6c81fec0569aa63dc37cea1280f966d60eee84bc03e8dd33fdb0a7",
+      "bytes": 4854,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/fixtures/stock_loss.json",
+      "public_sha256": "0ad22b5f9eba894daefdc0726b4b5a9563987ae3186514243d08bdf754e941a8",
+      "bytes": 5030,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_analysis.py",
+      "public_sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9",
+      "bytes": 8736,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_diagnostics.py",
+      "public_sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326",
+      "bytes": 24444,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_evaluation.py",
+      "public_sha256": "64082c56f868851ed562e4ba56f96f636ac86d10a8b667efc12fe66777abb753",
+      "bytes": 55310,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_features.py",
+      "public_sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
+      "bytes": 11701,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_gate.py",
+      "public_sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd",
+      "bytes": 2144,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_models.py",
+      "public_sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c",
+      "bytes": 38919,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_oracle.py",
+      "public_sha256": "2ac6f3bac015db2070c49f6f22830964d88fbe5fc02ceb40d8d89650a5d509f1",
+      "bytes": 44053,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_runner.py",
+      "public_sha256": "41c359c972d086dca8d7552706b5a03a3dbc509d33fcc9befd8f0e5d8f794d8a",
+      "bytes": 170869,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_safety.py",
+      "public_sha256": "fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+      "bytes": 23947,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_scenarios.py",
+      "public_sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
+      "bytes": 37083,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/gain_variance.py",
+      "public_sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f",
+      "bytes": 25040,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/graph_policy.py",
+      "public_sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d",
+      "bytes": 35235,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/independent_consequence_oracle.py",
+      "public_sha256": "2a3c1ab481f76baf4ab022c27caeae3744fb3ab27e1ce0796ae0b62a420c98ba",
+      "bytes": 36474,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/infra_io.py",
+      "public_sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace",
+      "bytes": 15517,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/literal_graph_ops.py",
+      "public_sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e",
+      "bytes": 9265,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/n2_stage_pipeline.py",
+      "public_sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964",
+      "bytes": 96844,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/package_layout.py",
+      "public_sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c",
+      "bytes": 4982,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/phase_handshake.py",
+      "public_sha256": "018e1b1da978ad229d75282d853f72aafb8d6762b70762bc5c983dc1979d96e5",
+      "bytes": 33935,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/ppo_trainer.py",
+      "public_sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a",
+      "bytes": 27948,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/process_guardian.py",
+      "public_sha256": "83c6f0e8947c6ee83394eb9c96376434e58e843693701bffdfbd7c7082945a6e",
+      "bytes": 65604,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/protocol_contract.py",
+      "public_sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b",
+      "bytes": 946,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/region_contract.py",
+      "public_sha256": "04d957ace1fe14c83776f11c37811d4493b4d278a50ae3f18fb7d97f01a5b567",
+      "bytes": 2434,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/registered_data/data/development/n02-development-carrier_competition-00-e73e3aa2e7c48b9b.json",
+      "public_sha256": "7fa112d167370b8fdfbe77e388d61b28355dda5251cdac21b67742ae08924f76",
+      "bytes": 9610,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/registered_data/data/train/n02-train-base-00-c85321165ea17af3.json",
+      "public_sha256": "9c8189a22fbc0ded031f400406cce83251030eee0a29fa9763268e5a90052919",
+      "bytes": 9598,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/registered_data/data/train/n02-train-carrier_competition-01-c602805a4f19d6ed.json",
+      "public_sha256": "29b212d80d03d91825f4de3497461d991b144779d9d80b2d2e9d2227bb668a6c",
+      "bytes": 9605,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/registered_data/fixtures/causal_allocation_case.json",
+      "public_sha256": "51d1435a44ebcc55dc781c9d6e4bc978ea00807a39e006a34b6996ecb98a2bda",
+      "bytes": 4254,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/registered_data/input_registry.json",
+      "public_sha256": "6547ff78911ed7ccf10d66c9fb012c210e58ff7e25842cd4de258821aa8fe308",
+      "bytes": 3355,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/relief_env.py",
+      "public_sha256": "e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+      "bytes": 56607,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/resource_supervisor.py",
+      "public_sha256": "d84fc78b18543e4a8ceceb40a8ccaa6c73c4953c9591497e9feaf101ab9a34e3",
+      "bytes": 46286,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/scenario_matrix.py",
+      "public_sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34",
+      "bytes": 17843,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/scenario_schema.py",
+      "public_sha256": "844fbcac95b7d7df27efed5eb0e7c656dbf84e734f6cc22fccf8a4eb04e50db3",
+      "bytes": 34974,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/snapshot_contract.py",
+      "public_sha256": "ef760e5ed7b0377fac441c2a261dd25af28764516c119438f1d80b779fdb1839",
+      "bytes": 7408,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/stable_identity.py",
+      "public_sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef",
+      "bytes": 1429,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/test_synthetic_critic_interface.py",
+      "public_sha256": "d4e6c5f4a1cf9cd4fbbd05d120932596fecbbf25ae9806939238307424ec8008",
+      "bytes": 7230,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/v3_runner.py",
+      "public_sha256": "2d46e85bec2f083fec3ef9c883cc4ca7efe0398d6189742e871b825cd79ef3e9",
+      "bytes": 43438,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/v3_scenarios.py",
+      "public_sha256": "84131c788fdcb2325803716a2079a1d5d841348934951c79d499664726571d29",
+      "bytes": 22059,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/v3_shards.py",
+      "public_sha256": "e4f26814b286c905b22dc788aa63553b0573ccc3a457030cdb67a40bb10ba4e2",
+      "bytes": 18970,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/wm_prediction_cache.py",
+      "public_sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
+      "bytes": 8678,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/civilian/world_model.py",
+      "public_sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5",
+      "bytes": 56827,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_100x100_contract.py",
+      "public_sha256": "54acd5998ae311f77f1888a0f52c85599fc61b81249f5243874c1d4f5917abd7",
+      "bytes": 19922,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_driver_close_snapshot.py",
+      "public_sha256": "db5bad004e586d5e5301df5b6073e4daa530c44d3a2ae0e3f91c75d9a16e6eac",
+      "bytes": 2878,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_environment.py",
+      "public_sha256": "c55543b32da72ca05b796d25a35ae20027f3e309c332eea1b6b9d56ba0045410",
+      "bytes": 15350,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_models.py",
+      "public_sha256": "2469c4002a171d91058b27e0538bb2ceb9b35c04567fc384608c3c2c5cb0adb6",
+      "bytes": 9501,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_oracle.py",
+      "public_sha256": "a7c86982fb62ba5a1c37c1c7fe03e24762e363327404ac87a0b10920df95dcea",
+      "bytes": 5061,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_policy.py",
+      "public_sha256": "5e9db2e1c1772cbe0fabab56922921732f1831bd4cde495188f25e1c8a3be27f",
+      "bytes": 21748,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_runner_metrics.py",
+      "public_sha256": "d97801247302f0f2f5560f74ac98bd1ed9e227247e3e371891ab23a383ff45e2",
+      "bytes": 9438,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_runner.py",
+      "public_sha256": "0f0377571f202b66b70776b46500561fa9e3348c64c26222ca500c772cb4f519",
+      "bytes": 4362,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_event_trigger.py",
+      "public_sha256": "4ae7789f4ecf9c6eb94ab78326cdc83a90f17584838be6c3ae530dcfccc53dce",
+      "bytes": 9242,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_candidate_cases_v2.py",
+      "public_sha256": "08a5930a9cd995d3ce1387edafb608cd55d285c10c0122628d6c09ab81e23d25",
+      "bytes": 7211,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_capability_oracle_transitions.py",
+      "public_sha256": "f5b0f2d4d4c8019449f8e5dd7e8fc45ccb622b024e87a1a6618b438b272f42e4",
+      "bytes": 3921,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_counterfactual_pairs.py",
+      "public_sha256": "0011b410ae453c6e4e135d5f56580639c9605e224054ca2b2a20ed1f8c053542",
+      "bytes": 15089,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_diagnostics.py",
+      "public_sha256": "08fc49869befaccd360d3081cdf2ea701d70a1b6f7d6625e4cf73704f066bdcf",
+      "bytes": 6628,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_evaluation.py",
+      "public_sha256": "14bcaa8cba5f9207ebcfbcba53d0cbfcd975047c3625d6a9a656819b101b629d",
+      "bytes": 12934,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_models_analysis.py",
+      "public_sha256": "fffe18a8a064c872830eb151c99949698f3d465743a2610f1c20e421d851d7ea",
+      "bytes": 7391,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_runner.py",
+      "public_sha256": "3596b4a9390c4452fa31c097dea8ca750f92196ff89f6089e18b8c5f0fee0cdf",
+      "bytes": 13458,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_safety_v2.py",
+      "public_sha256": "92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5",
+      "bytes": 6890,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_safety.py",
+      "public_sha256": "37f7abe20f2fdcced96dc7dd0d30f43b445586669459c487b6fb1f76f56f2136",
+      "bytes": 11371,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_gain_variance.py",
+      "public_sha256": "ab9efd29eaeac980ebffd07da277311453cc82c382cc3451a082b6fbc36067ea",
+      "bytes": 7010,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_v3_regional_execution.py",
+      "public_sha256": "37cd93f050088ea4f133b8cfb2e20c6384e7683dee887d9625fdd185071cc8cf",
+      "bytes": 16442,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_v3_shards.py",
+      "public_sha256": "1da996776eb8688171883e62c3fa3d84f6c0f51fc5991be917834c5cae2e00d1",
+      "bytes": 8733,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/package/tests/test_v3_trigger_coordinator.py",
+      "public_sha256": "efbab2cbaed219776ea9bb65b54cca7865ec2cf442f32eb4de98ddf33f37efa2",
+      "bytes": 2993,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/perf_profile_instance.py",
+      "public_sha256": "54a00253b0f0ad7962b1c4f864c4a87e231aeb5e7b601edd1764fc45e94c8a75",
+      "bytes": 7572,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-2-performance-light/requirements.txt",
+      "public_sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130",
+      "bytes": 96,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/BASELINE_PROVENANCE.json",
+      "public_sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805",
+      "bytes": 1750,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/configs/ENVIRONMENT_SPEC.json",
+      "public_sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0",
+      "bytes": 578,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/configs/EVENT_TRIGGER_CONFIG.json",
+      "public_sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009",
+      "bytes": 2420,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/configs/GAIN_GATE_CONFIG.json",
+      "public_sha256": "08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859",
+      "bytes": 6012,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/evidence/v33-focused-checks/cross-region-pair-and-noop-seed-930101.json",
+      "public_sha256": "f799671468068186a83f47d1866076f68d6935c1edf8e4b14488170552b9c5bd",
+      "bytes": 40006,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/evidence/v33-focused-checks/raw-smoke-first/raw-first-smoke-20261020-01/failures/registry-000.failure.json",
+      "public_sha256": "0963e50fe2fb7e576ce537277f48a61331ee41c449d8019cbf12686020d60ec3",
+      "bytes": 1162,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.json",
+      "public_sha256": "0af3e31ca7a90c2740905657a66cf181e8bf6fa88989ff8d03e1c438cb143b13",
+      "bytes": 2165,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/evidence/v33-smoke-20261020T120749Z-821648377615/SMOKE_AUDIT.md",
+      "public_sha256": "b327925dd4663493ca343b6be59b2df91efac84136ec3c7c267704c6b1d90a73",
+      "bytes": 1185,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/MANIFEST.json",
+      "public_sha256": "519618eec1aef078a793a8a55f7f69e81522a8fb96b13c00d39208fe4ecce2f5",
+      "bytes": 13318,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/baselines.py",
+      "public_sha256": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+      "bytes": 5740,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/branching.py",
+      "public_sha256": "77fa42f76bc3238d0962b4603097920070821e1802c0f0862720c3c858375e58",
+      "bytes": 21373,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/chapter1_adapter.py",
+      "public_sha256": "5565c7ec3c176523180118eb28a13d468339025345644c6feb51166a187095b0",
+      "bytes": 8139,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/cost_accounting.py",
+      "public_sha256": "d38432191fcf09dfc367ff7da3a8664d9eb682ad359d89cfd8c50b5ff5fe5e13",
+      "bytes": 11449,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/counterfactual_pairs.py",
+      "public_sha256": "139c07d332bc35d64af1c105a9044bcd7c122ff5f8e42a22c9666d1ffb7a4397",
+      "bytes": 57260,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/dataset_protocol.py",
+      "public_sha256": "fdd3e9a887b51bd2fd889dfe5366acd733dba88437ef96efd834f536d6a48da1",
+      "bytes": 12779,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/driver.py",
+      "public_sha256": "1e8ef06c910284785d3427efbf1e0f2578ec4bbd9597037e08b5f7cd704e3c32",
+      "bytes": 88322,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/evaluator.py",
+      "public_sha256": "7bdf8a83be7b7d2028528bdfec189b725c15bbaac710cb7c4517ecff9dc24bd6",
+      "bytes": 22513,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_environment.py",
+      "public_sha256": "385b755b0ff5bde29ffb34a3dfdbc81862153e41d07cbf74bf11f5907caea407",
+      "bytes": 198681,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_models.py",
+      "public_sha256": "0facc4b09de8902c3b4b385b6e10695dd8c67c32a021c67d281bf8a3a9d8fb58",
+      "bytes": 64177,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_oracle.py",
+      "public_sha256": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
+      "bytes": 47562,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_policy.py",
+      "public_sha256": "f89e6cbe485f095b6f5f6c4792bc991eb92f9c6392dfc806f3baa6a89fc5fcf9",
+      "bytes": 74048,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_runner.py",
+      "public_sha256": "b464799f1cdd6d67835c9e344cf58d485b4fb778fd9ec084582e71a7a5cb6bf4",
+      "bytes": 96972,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_scenarios.py",
+      "public_sha256": "f8d1d3b66467b3b883497ef34286d9060a52c38fbd918044c8601aaf827fd661",
+      "bytes": 14297,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/event_trigger.py",
+      "public_sha256": "6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+      "bytes": 47308,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/execution_gate.py",
+      "public_sha256": "d09513e1156ab8c7f01313a8daa79f7ad58f64b96eda8ba27cf9ab952b023d6a",
+      "bytes": 27914,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/fixed_replanner.py",
+      "public_sha256": "585868146daf30bffd62bbeadcc6dc9dcb1aa537b3e7f62bbe62efe3f8b04735",
+      "bytes": 14458,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_analysis.py",
+      "public_sha256": "40e7d77ecb2774c183d92be4131c52238a8552318b5060d154cce83484136cc9",
+      "bytes": 8736,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_diagnostics.py",
+      "public_sha256": "482ef1612a4bf4f8e43359bb7641b7160d70b7a9b0bfd80e14d5c964d35fa326",
+      "bytes": 24444,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_evaluation.py",
+      "public_sha256": "64082c56f868851ed562e4ba56f96f636ac86d10a8b667efc12fe66777abb753",
+      "bytes": 55310,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_features.py",
+      "public_sha256": "708ea58a3385cb036b4486fafd6c32f246c347f74f4ce63ba623b8b72b60dd99",
+      "bytes": 11701,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_gate.py",
+      "public_sha256": "94458f8fa67d162e8abf437a06bf580155359dcf17205ba7f992e038024759bd",
+      "bytes": 2144,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_models.py",
+      "public_sha256": "7d25969a41c1be86ad0dfc57cfb1b443b9f65fb0c1dabf7e305298b4083bca1c",
+      "bytes": 38919,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_oracle.py",
+      "public_sha256": "604bc620685a971d71bf9e922b805e7cd48b820196e90aeabff7554af59a284b",
+      "bytes": 54652,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_runner.py",
+      "public_sha256": "41c359c972d086dca8d7552706b5a03a3dbc509d33fcc9befd8f0e5d8f794d8a",
+      "bytes": 170869,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_safety.py",
+      "public_sha256": "fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+      "bytes": 23947,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_scenarios.py",
+      "public_sha256": "885d7087e3ad9baf6530fb862df3bcf6f39429485811f7aee1bd92250b0532fe",
+      "bytes": 37083,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/gain_variance.py",
+      "public_sha256": "dd23af4d9f26a2996b1bb9be601ae9bb87d6d0392304cbb8952a32b89986167f",
+      "bytes": 25040,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/graph_policy.py",
+      "public_sha256": "ccbbc895858b9c1963b39a52b3201f90b18dcb6dca942a856b2576aad06f397d",
+      "bytes": 35235,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/independent_consequence_oracle.py",
+      "public_sha256": "2a3c1ab481f76baf4ab022c27caeae3744fb3ab27e1ce0796ae0b62a420c98ba",
+      "bytes": 36474,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/infra_io.py",
+      "public_sha256": "fbd6533833f8845d49ce6ad28b793245e58f22467acbe83e7c45a14704db7ace",
+      "bytes": 15517,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/literal_graph_ops.py",
+      "public_sha256": "8a7e9e225c9efe758087c09260bb7af67281d5e30ec88f05650f87984ee2ed4e",
+      "bytes": 9265,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/n2_stage_pipeline.py",
+      "public_sha256": "3e5ba3fa5799b341d41c0298eb3d28d48b14754fec5f0c876a931ea7be11d964",
+      "bytes": 96844,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/package_layout.py",
+      "public_sha256": "fab653be54da4248654dd0a2ccbd6e3f9a38a389acc0d0b65973897c4a9b4d8c",
+      "bytes": 4982,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/ppo_trainer.py",
+      "public_sha256": "d16c466ba42dc261723e7bc8b345980ea53464e23f6489979b997f64596ee37a",
+      "bytes": 27948,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/protocol_contract.py",
+      "public_sha256": "2199963b828c101bb8ce82903d5106040f435419063bf9cfe3b7f95da1e9ce3b",
+      "bytes": 946,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/region_contract.py",
+      "public_sha256": "6e0160e17f91af334edcaf1963ca3a5e8b4469cbc6ca88df9f9690e7c8d9bb63",
+      "bytes": 2325,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/relief_env.py",
+      "public_sha256": "e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+      "bytes": 56607,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/scenario_matrix.py",
+      "public_sha256": "29fe6f2f7965c7d5da3430bd32a177daca38cfe37bdb36377d7d63baa8327a34",
+      "bytes": 17843,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/scenario_schema.py",
+      "public_sha256": "844fbcac95b7d7df27efed5eb0e7c656dbf84e734f6cc22fccf8a4eb04e50db3",
+      "bytes": 34974,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/snapshot_contract.py",
+      "public_sha256": "ef760e5ed7b0377fac441c2a261dd25af28764516c119438f1d80b779fdb1839",
+      "bytes": 7408,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/stable_identity.py",
+      "public_sha256": "812944f9f7cb4f16c9907c4d6cf6c552f5b0dc3f7ec8fa2e5ccbe859b04757ef",
+      "bytes": 1429,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_runner.py",
+      "public_sha256": "c4542a7f0a7f47e4a1108fa5142ffa004e4ba6f1d087401925b19eb08b957565",
+      "bytes": 41404,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_scenarios.py",
+      "public_sha256": "84131c788fdcb2325803716a2079a1d5d841348934951c79d499664726571d29",
+      "bytes": 22059,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v3_shards.py",
+      "public_sha256": "2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5",
+      "bytes": 16853,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/v33_scenarios.py",
+      "public_sha256": "290503053642e0b5dfeaad8d92b251ee1e8b733ac875801d59c6176a9caaa2cd",
+      "bytes": 24864,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/wm_prediction_cache.py",
+      "public_sha256": "6fa16499a7e743c7b5150a65144adad232d7335defc447b0cb7d5c39a785d62e",
+      "bytes": 8678,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/civilian/world_model.py",
+      "public_sha256": "3adeaa6960c0494c59ddc34bce5e230491a62e7f76800dd13eedb473b3fdf4c5",
+      "bytes": 56827,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_gain_safety_v2.py",
+      "public_sha256": "92bf4d78a3403584708ea7e15f4f1ee7b8af92f7c805f7691056f6e90e3113b5",
+      "bytes": 6890,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_v3_regional_execution.py",
+      "public_sha256": "5ad1551c51a0a4712a1e5161850ed864ddc35dab763183905915efaf4159244e",
+      "bytes": 16538,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/package/tests/test_v33_scenario_contract.py",
+      "public_sha256": "4be2108dcb998fb8d212ffaef6d10794194ba4e6b8982559cdb737f6feee5ad1",
+      "bytes": 16598,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/protocols/V33_CIVILIAN_SEARCH_RESCUE.md",
+      "public_sha256": "e175194c9cb1cae652d377177a635ff19da81e2493ef2209b8f9edb0ae1cd0c6",
+      "bytes": 5143,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/README.md",
+      "public_sha256": "ec9265bb792c3c126bb897ab77ca95e571ade0887d68e191b7c29ae675338f67",
+      "bytes": 4194,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/requirements.txt",
+      "public_sha256": "f6fc211b8ffb6e80aca1a8e5a6a72e1b83f3e95734023602314184d3a7d4e130",
+      "bytes": 96,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/REUSE_INVENTORY.json",
+      "public_sha256": "e7bc9546e4219ceed581465fdd51de4de55ead7415b62b20ec2bf0f966dd3714",
+      "bytes": 7862,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/V33_SOURCE_AUDIT_FINAL_FOCUSED.json",
+      "public_sha256": "a56c2dd62ce488f027be070f75504468c2c8fcbd4eacb8c35ed23ea3b61b684d",
+      "bytes": 8166,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "releases/gain-gate-v3-3-civilian-search-rescue/V33_SOURCE_AUDIT_FINAL_FOCUSED.md",
+      "public_sha256": "6b74800bb603db5377bb5cf6be2b524b08f604bb5ca699c10fc796a5b4e3820a",
+      "bytes": 8955,
+      "scope": "historical_v2"
     },
     {
       "public_path": "REPO_AUDIT.md",
@@ -718,6 +1906,18 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "reports/V31_LABEL_DIAGNOSIS.md",
+      "public_sha256": "fbd12c92729039d4834bfee7cd0edbcce95be67a367bca7528120bdde4b6463e",
+      "bytes": 1139,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reports/V32_PERFORMANCE_DIAGNOSIS.md",
+      "public_sha256": "6ea82e264b0b95c0e0c7ee36a3f4e71314783ad2cc3d30ee4b448a44acbd163a",
+      "bytes": 2362,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "reports/v33-analysis-preparation/REPAIR_EVIDENCE.json",
       "public_sha256": "fdcd545e5f9df0674dcb854e6322e43215ec0b3a0f17321c7e67e8c69839dcb3",
       "bytes": 4011,
@@ -728,6 +1928,66 @@
       "public_sha256": "763f2a1ac60ae106049a4c4315329071562d8e2e3728db8f7d1b42094ba203bd",
       "bytes": 1423,
       "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/analysis.json",
+      "public_sha256": "2d30e4063644669e305399149ea7c39bbf7142059bb51f5d08c233531d0e5abd",
+      "bytes": 32106282,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/conclusion.md",
+      "public_sha256": "109f0dc0bded69bde580c80e562f5ff658003b5771ab17e8e8e9ee551532f892",
+      "bytes": 16690,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/FINAL_CONCLUSION.md",
+      "public_sha256": "f220b79e68c2030fb9709bc43194410a3bc324d6950f426b17da46a33eb63967",
+      "bytes": 3709,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.json",
+      "public_sha256": "75387f88edef79d65fb22c77656481c0ae24f2215f9887d944791a84aaef65e5",
+      "bytes": 3617,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.md",
+      "public_sha256": "f38d719a19ec2d46af31aa524ac93315cd52e0a0791d287610f5d384816eae1f",
+      "bytes": 3222,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/SHA256SUMS.txt",
+      "public_sha256": "6efb30f79cd30fa4f38eb8d385073a9958107eafdbdea4331a60376c70a8a182",
+      "bytes": 823,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/state_detail.csv",
+      "public_sha256": "2442dfac7f4cc7bf60e37dba7d97960e35fb8682ebe9b699751b55ae3470037b",
+      "bytes": 18553417,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-final-168/summary.json",
+      "public_sha256": "59be35eba9d10b9b86458426b52ab38c81bdb4dddedca1e2e4487cd2ad2835ea",
+      "bytes": 831967,
+      "scope": "v33_final_analysis"
+    },
+    {
+      "public_path": "reports/v33-conclusion-snapshot-66/conclusion.md",
+      "public_sha256": "8041b0d95e71e17e64901b3c7b6e1b1f76ed4c28feb31e64c91d49a3efcb6145",
+      "bytes": 6750,
+      "scope": "historical_v2"
+    },
+    {
+      "public_path": "reports/v33-conclusion-snapshot-66/summary.json",
+      "public_sha256": "42e86d92ff7f60a44d5b5e797752e6898a6e9d62d080b26db1299a3bc4b807bb",
+      "bytes": 18461,
+      "scope": "historical_v2"
     },
     {
       "public_path": "reports/v33-support-trajectory/CHANGELOG.md",
@@ -770,6 +2030,30 @@
       "public_sha256": "e027bde5a791ac5ff261ceb0af663cf7223d6c4434f30c56f2187546fd8402ac",
       "bytes": 2904,
       "scope": "historical_v2"
+    },
+    {
+      "public_path": "reviews/check_noop_v32.py",
+      "public_sha256": "49ae7c85da5d226478857f178dad2934897a29fe113b9d8f1de0b9236492aafa",
+      "bytes": 2566,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/EXPERIMENT_AUDIT_ARCHIVE_METADATA.json",
+      "public_sha256": "145edc31abe549a5b75703f3cc60b8062882e0dba71de7b5108ba36d93c5996d",
+      "bytes": 720,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/EXPERIMENT_AUDIT.json",
+      "public_sha256": "e8e8a25f574e6c28fd6627b5679d36ad137cc030f1a70117cf403492c8fe151d",
+      "bytes": 60260,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/EXPERIMENT_AUDIT.md",
+      "public_sha256": "69032d7a4e6f7fd33b35003312bc802b44102a25f5ba9018c35fbc5c26cde544",
+      "bytes": 9003,
+      "scope": "v33_final_review"
     },
     {
       "public_path": "reviews/INDEPENDENT_FOCUSED_CHECK_20261017c.json",
@@ -850,6 +2134,12 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "reviews/recompute_v32_shards.py",
+      "public_sha256": "b71d0a8e5d03a4ae02b6f31216163ce2957abeaf7b41f4e9c30183bf55cedd5c",
+      "bytes": 2810,
+      "scope": "v33_final_review"
+    },
+    {
       "public_path": "reviews/V2_SMOKE_REVIEW_20261017_R3.json",
       "public_sha256": "e0c01bddcf592667d48a0c7c4d585937e402d344584bc40bc1738fed18429b98",
       "bytes": 2763,
@@ -880,6 +2170,72 @@
       "scope": "v3_progress_evidence"
     },
     {
+      "public_path": "reviews/V32_COORDINATOR_DECISION.md",
+      "public_sha256": "f8f5e998d612147591516143097d0845c62ad6fa16703c9147f704bf06ae7c12",
+      "bytes": 3064,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V32_EXPERIMENT_AUDIT.json",
+      "public_sha256": "281c70f7222fdc10ffee3bc9bb242b0f909c61a8b8e509e8342548088fd57f95",
+      "bytes": 2032,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V32_EXPERIMENT_AUDIT.md",
+      "public_sha256": "e36e0fd4eb4937af695cb70ae716f97b31e1fb3a977f579fec3f7c3a89d2308e",
+      "bytes": 6700,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_FINAL_COORDINATOR_DECISION.md",
+      "public_sha256": "8147476d6d8609b16f4ab25a46e56dd7df7b5275864f0d188bb651822833c33e",
+      "bytes": 4620,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_FINAL_REPORT_REINSPECTION_ARCHIVE_METADATA.json",
+      "public_sha256": "a09233717915a1cff482c3421391addd74ccb1f06bc64dcd5cc0a0d2cb8cbd11",
+      "bytes": 963,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_FINAL_REPORT_REINSPECTION.json",
+      "public_sha256": "8efcf5af9ced905d8d69381fda453f63ed44ddd9ad650dd1e65c57a1910095ad",
+      "bytes": 4411,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_FINAL_REPORT_REINSPECTION.md",
+      "public_sha256": "3fc314c4a2abfdbce10c5d82c97309b88ee1ba51eb3ef14d8bf702964ef06d4e",
+      "bytes": 3665,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_SOURCE_AUDIT_FOLLOWUP.json",
+      "public_sha256": "83268b755e2cc1fb7fd6b6f6eab48b8984e3b7571b6d9d38027c878376772e5f",
+      "bytes": 8048,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_SOURCE_AUDIT_FOLLOWUP.md",
+      "public_sha256": "8a8a4f23779911008ff805a4418e417d46d438b4e275ae38ebbce2edacf10b3b",
+      "bytes": 5917,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_SOURCE_AUDIT_INITIAL.json",
+      "public_sha256": "18d16719c87bbb2bac93f2a38dd3b4e3a9185cd008a2d90690d0bb1ddbe559a0",
+      "bytes": 12717,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/V33_SOURCE_AUDIT_INITIAL.md",
+      "public_sha256": "980d7fff23c3469a5625345c3d48ebcd9d5fb1405a6542f63156d0ab5d3ac4d1",
+      "bytes": 14401,
+      "scope": "v33_final_review"
+    },
+    {
       "public_path": "reviews/v33-analysis-preparation/V33_ANALYSIS_PREPARATION_ASTRA_REVIEW.md",
       "public_sha256": "5848cee4b270e8492c3be8e3f76f450ef35bd9d932a43ee6a6243a1089582977",
       "bytes": 6104,
@@ -890,6 +2246,36 @@
       "public_sha256": "357dd648d425f73f78bcb72fd728619696a383c4d5584997f246689adc4278ee",
       "bytes": 3293,
       "scope": "v33_analysis_preparation"
+    },
+    {
+      "public_path": "reviews/v33-draft/V33_CONCLUSION_INDEPENDENT_REVIEW_DRAFT.json",
+      "public_sha256": "cf8d7798e7eb40bf96af5216748a78c5acb2258778db29bd116f103eb9616a05",
+      "bytes": 4932,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/v33-draft/V33_CONCLUSION_INDEPENDENT_REVIEW_DRAFT.md",
+      "public_sha256": "8af9ae184688e3c6e47f4ddb7006d6e6555a894add0029791461908d28e9603a",
+      "bytes": 8333,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/v33-draft/V33_FOCUSED_INDEPENDENT_REEXECUTION.json",
+      "public_sha256": "d94a070fa1c600c08ca365bfe3a4d722ac15322b6d83c9d3cbc93a8424545055",
+      "bytes": 4945,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/v33-draft/V33_SOURCE_AUDIT_FINAL_FOCUSED.json",
+      "public_sha256": "a56c2dd62ce488f027be070f75504468c2c8fcbd4eacb8c35ed23ea3b61b684d",
+      "bytes": 8166,
+      "scope": "v33_final_review"
+    },
+    {
+      "public_path": "reviews/v33-draft/V33_SOURCE_AUDIT_FINAL_FOCUSED.md",
+      "public_sha256": "6b74800bb603db5377bb5cf6be2b524b08f604bb5ca699c10fc796a5b4e3820a",
+      "bytes": 8955,
+      "scope": "v33_final_review"
     },
     {
       "public_path": "ROADMAP.md",
@@ -922,15 +2308,27 @@
       "scope": "historical_v2"
     },
     {
+      "public_path": "staging_tools/resume_v33_collect.py",
+      "public_sha256": "a0fc8532e0157c77d9c5f873984a1c2b16a9d41458fc39dd47c796258fa455ca",
+      "bytes": 9892,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "staging_tools/test_prepare_public_archive.py",
       "public_sha256": "b931b34992e710614c7648ecf9c1e1572452ba3e90bced4bdb236c6119a19def",
       "bytes": 2856,
       "scope": "historical_v2"
     },
     {
+      "public_path": "staging_tools/v33_conclusion_analysis.py",
+      "public_sha256": "94ff0a6aeadc8a4523f8f6b76accbaf90e16e159204c6b55494b9df1dc95bead",
+      "bytes": 68491,
+      "scope": "historical_v2"
+    },
+    {
       "public_path": "STATUS.md",
-      "public_sha256": "dc30f855da1240d6ca1a99b86a775bdbd4a7fa77cad6cecf3baaf1ac8c461a99",
-      "bytes": 6703,
+      "public_sha256": "38e515c78be014c6b40ed0174f76d47044df950e6489b5ca02c6d5aab44ab070",
+      "bytes": 8012,
       "scope": "v3_protocol"
     }
   ],

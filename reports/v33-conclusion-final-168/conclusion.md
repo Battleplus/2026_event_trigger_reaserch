@@ -6,7 +6,7 @@
 
 - 跨区有效否：当前证据不足以作正式结论。发现跨区候选 action 9352 个、选派 action 1145 个；候选/选派唯一状态数按 split 见下表。这些不是跨区相对本地策略的因果效应。
 - 门控有效否：3 个正增益、0 个零增益、414 个负增益唯一普通状态。冻结门槛（总正≥30、总非正≥30，且 train 与 validation 各自两类均覆盖多个场景）未达。
-- 推荐方法：当前 168 场景均已提交且无失败分片，可进入门槛评估；本快照不据此选定模型或部署门控。
+- 结论状态：采集已完成，但收益门槛未达；方法有效性 inconclusive，数据门槛 not met，不能据此推荐部署任何策略。
 - WM 值不值得：当前数据没有 WM 与轻量方法/无模型的闭环对照，不能回答；不应据此训练或推荐 WM。
 - 适用范围：合成 100×100、3×3 九区、36 平台、search-rescue 场景与已覆盖扰动；不能外推真实灾害或未覆盖任务。
 
@@ -28,8 +28,7 @@
 
 ## Live Safety Receipt
 
-从 header `trajectory_trace` 独立计数 `safety_disposition.resolved == false`：已知场景 168/168，实际未解决处置数合计 343；摘要计数合计 343。缺失 trajectory trace 的场景 0 个，不按零处理；逐场景计数、原因和摘要匹配结果在 `analysis.json.scenarios.*.live_safety_receipt_audit`。摘要不一致场景：`[]`。
-强制状态实际计数 2432；header 摘要已知计数合计 2432，缺摘要 0 个场景；不一致场景：`[]`。这是运行时安全处置回执核验，不证明全部硬约束已满足或方法安全；branch safety 仍由 gain oracle 的配对标签单独复算，最终安全结论限于协议和实际核验范围。
+从 header `trajectory_trace` 独立计数 `safety_disposition.resolved == false`：已知场景 168/168，实际未解决处置数合计 343；摘要计数合计 343。逐事件原因均为 `safety_receipt_pre_public_hash_mismatch`：前态公开快照哈希不匹配，不能据此判定处置本身违反安全约束；343 不是已证实违规数。缺失 trajectory trace 的场景 0 个；摘要不一致场景 `[]`。强制状态实际计数 2432，header 摘要完全匹配。安全达标尚未证实，需修复/解释该回执哈希问题并完成安全审查。
 
 
 ## 跨区动作与后果
@@ -211,7 +210,7 @@ execution / replan / safety 子项的全量数值与上述成本汇总一并保�
 
 ## 下一步所需证据
 
-168 个 train/validation 场景及 commit marker 均已校验；仍需检查 30/30 标签门槛及 train/validation 覆盖结果。
+168 个 train/validation 场景及 commit marker 均已校验；30/30 收益标签门槛未达（3 正、414 非正），且 417 个普通有效状态全部来自 56 个 `Periodic-4min` 场景；`Existing-ET` 与 `Random-Allow-Suppress` 各 56 个场景没有普通有效标签。390 个普通有效状态只有 NOOP 合法候选；正例占全部普通有效状态 0.72%，不存在正例来自 NOOP-only 状态的证据。该来源集中限制了对其他轨迹来源的外推。
 若要回答跨区纯因果问题，需预先定义并随机/成对构造具有共同可行性的 local 与 cross-region 动作对，并固定外生 suffix、安全继续策略和任务宇宙。若要回答门控与 WM，须在训练门槛通过后用闭环策略、相同 replanner/safety、独立测试场景比较，报告场景单位配对 CI。
 
 原 45 条 smoke 记录属于工程 smoke，不能拼入正式类门槛或方法效应。

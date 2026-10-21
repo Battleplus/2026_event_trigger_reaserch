@@ -1,0 +1,75 @@
+{
+  "schema": "v33-final-diagnostics/1",
+  "snapshot": {
+    "committed_scenarios": 168,
+    "marker_manifest_sha256": "9f6963b87c796714bc7c3001f88310c340f60d88e5b1bcf2c49f02986041f9b3",
+    "source_summary": {
+      "Periodic-4min": {"scenarios": 56, "ordinary_valid_states": 417},
+      "Existing-ET": {"scenarios": 56, "ordinary_valid_states": 0},
+      "Random-Allow-Suppress": {"scenarios": 56, "ordinary_valid_states": 0}
+    }
+  },
+  "safety_receipts": {
+    "scenarios_with_trace": 168,
+    "scenarios_missing_trace": 0,
+    "unresolved_receipt_count": 343,
+    "reported_count": 343,
+    "mismatch_scenarios": 0,
+    "reason_counts": {"safety_receipt_pre_public_hash_mismatch": 343},
+    "interpretation": "Pre-state public snapshot hash verification mismatch. These records do not establish that the corresponding dispositions violated a safety constraint; safety attainment remains unverified.",
+    "unknown_gain_states": {
+      "count": 2,
+      "split": "validation",
+      "reason": "safety_receipt_pre_public_hash_mismatch",
+      "excluded_from_gain_gate": true
+    },
+    "forced_state_count": 2432,
+    "forced_count_header_match": true
+  },
+  "gain_gate": {
+    "ordinary_valid_states": 417,
+    "positive": 3,
+    "zero": 0,
+    "negative": 414,
+    "positive_fraction": 0.007194244604316547,
+    "positive_examples": 3,
+    "all_positive_sources": "Periodic-4min",
+    "all_positive_actions": "local insert",
+    "positive_states_selected_noop": 0,
+    "noop_only_legal_candidate_states": 390,
+    "gate_status": "NOT_MET",
+    "method_status": "INCONCLUSIVE",
+    "training_or_deployment_recommendation": false,
+    "suffix_stability": {
+      "third_positive_state_gain_by_suffix": [-0.20151, 1.31886],
+      "interpretation": "Sign varies by suffix; state-level positive mean is unstable across paired suffixes."
+    }
+  },
+  "cross_region": {
+    "ordinary_selected_states": 12,
+    "selected_actions": {"insert": 11, "direct_dispatch": 1},
+    "paired_state_descriptive_j_total_replan_minus_keep": 0.18467739695820773,
+    "interpretation": "Descriptive paired outcome for selected cross-region states only. It is not a randomized cross-region versus local-action causal comparison and does not establish donor sacrifice or general benefit/harm."
+  },
+  "collection_history": {
+    "final_committed_scenario_failures": 0,
+    "initial_collection_failures": 4,
+    "initial_failure_exit_codes": {"communication_degradation": 1, "environment_or_obstacle_change": 4294967295},
+    "known_original_failure": "registry-106 MemoryError; consult separately retained original failure archive",
+    "retry_recorded_failures": 3,
+    "retry_log_completeness": "Some retry logs were overwritten; current COLLECTION_PROGRESS is not the complete failure history.",
+    "interpretation": "Collection completed after retries; historical process/coordinator failures remain part of the record. Coordinator duplicate starts/kills affected failure attribution, so these should not all be described as natural simulator failures. Final review verdict WARN."
+  },
+  "resource_limitations": {
+    "peak_memory": "UNKNOWN",
+    "interrupted_and_duplicate_process_total_cpu": "UNKNOWN",
+    "timing_interpretation": "Planner CPU measurements do not remove execution-level timing variability; positive examples are too few to support a method claim.",
+    "gpu": "NOT_RUN",
+    "world_model": "NOT_RUN",
+    "ppo": "NOT_RUN"
+  },
+  "provenance_scope": {
+    "marker_binding": "Package civilian source/config/baseline; postprocessing is separately hashed.",
+    "no_raw_shard_recollection_or_training": true
+  }
+}

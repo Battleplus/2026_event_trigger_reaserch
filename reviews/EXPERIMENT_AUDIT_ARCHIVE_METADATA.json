@@ -1,0 +1,10 @@
+{
+  "schema": "public-review-copy/1",
+  "originals_remain_at": "local source project; byte-for-byte unchanged",
+  "source_identity": "/root/v33_final_integrity_review:2026-10-21_run01",
+  "original_audit_json_sha256": "c8c595bd663ec466eb40c1293f557bd18a4a8371d19c4c84bd4f666b913d9ee6",
+  "original_audit_markdown_sha256": "38ce9e4304a33540c519f95268a39a25b4b51437d7f423ae3aff54094bfe8647",
+  "redaction": "Absolute project path replaced with <local-project> in public copies",
+  "trace": "Original trace retained unchanged in local source project and not copied to public archive",
+  "public_copy_normalization": "UTF-8 without BOM, LF line endings; Markdown trailing spaces removed; original source hashes retained."
+}

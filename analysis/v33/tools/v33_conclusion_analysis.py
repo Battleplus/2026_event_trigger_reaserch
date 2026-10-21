@@ -58,6 +58,40 @@ def _row_evidence_sha256(row: Mapping[str, Any]) -> str:
     return hashlib.sha256(canonical.encode("ascii")).hexdigest()
 
 
+def _audit_live_safety_receipt(trajectory: Mapping[str, Any], rows: list[dict[str, Any]]) -> dict[str, Any]:
+    trace = trajectory.get("trajectory_trace")
+    actual_unresolved: int | None = None
+    actual_reasons: list[Any] | None = None
+    unknown_resolution_count: int | None = None
+    if isinstance(trace, list):
+        dispositions = [step["safety_disposition"] for step in trace
+                       if isinstance(step, Mapping) and isinstance(step.get("safety_disposition"), Mapping)]
+        unresolved = [item for item in dispositions if item.get("resolved") is False]
+        actual_unresolved = len(unresolved)
+        actual_reasons = [item.get("unknown_reason") for item in unresolved]
+        unknown_resolution_count = sum("resolved" not in item or not isinstance(item.get("resolved"), bool)
+                                       for item in dispositions)
+    reported = trajectory.get("live_unresolved_safety_disposition_count")
+    reported = reported if type(reported) is int and reported >= 0 else None
+    forced_rows = [row for row in rows if row.get("forced") is True]
+    forced_ids = {str(row.get("state_id")) for row in forced_rows if row.get("state_id")}
+    forced_actual = len(forced_ids) if forced_ids else len(forced_rows)
+    forced_reported = trajectory.get("forced_state_count")
+    forced_reported = forced_reported if type(forced_reported) is int and forced_reported >= 0 else None
+    return {
+        "actual_unresolved_disposition_count": actual_unresolved,
+        "reported_unresolved_disposition_count": reported,
+        "unresolved_count_matches_summary": (actual_unresolved == reported) if actual_unresolved is not None and reported is not None else None,
+        "actual_unresolved_unknown_reasons": actual_reasons,
+        "unknown_resolution_disposition_count": unknown_resolution_count,
+        "trajectory_trace_available": isinstance(trace, list),
+        "actual_forced_state_count": forced_actual,
+        "reported_forced_state_count": forced_reported,
+        "forced_count_matches_summary": forced_actual == forced_reported if forced_reported is not None else None,
+        "receipt_interpretation": "live safety-disposition receipt audit only; not proof of all hard constraints or method safety",
+    }
+
+
 def _cross_region_routes(action: Mapping[str, Any]) -> list[dict[str, Any]]:
     routes = []
     ops = action.get("queue_operations", [])
@@ -368,7 +402,8 @@ def analyze(run_dirs: list[Path]) -> dict[str, Any]:
                                          "elapsed_ticks": trajectory.get("elapsed_ticks"),
                                          "trajectory_terminated": trajectory.get("terminated"),
                                          "trajectory_truncated": trajectory.get("truncated"),
-                                         "platform_usage": trajectory.get("platform_usage")}
+                                         "platform_usage": trajectory.get("platform_usage"),
+                                         "live_safety_receipt_audit": _audit_live_safety_receipt(trajectory, rows)}
         shard_records.append({"file_name": path.name, "source_run_id": commit.get("run_id"), "scenario_id": scenario_id,
                               "split": scenario.get("split"), "rows": len(rows), "compressed_sha256": commit.get("compressed_sha256")})
         for row in rows:
@@ -402,9 +437,9 @@ def analyze(run_dirs: list[Path]) -> dict[str, Any]:
                      "unknown_reason": label.get("unknown_reason"), "gain": gain,
                      "gain_class": ("positive" if gain > 0 else "nonpositive") if valid else None,
                      "selected_action": _action_summary(row.get("replan_action", {})),
-                     "public_cost_estimate": row.get("candidate_receipt", {}).get("selected_public_cost_estimate"),
-                     "selection_key": row.get("candidate_receipt", {}).get("selection_key"),
-                     "selected_candidate_key": row.get("candidate_receipt", {}).get("selected_candidate_key"),
+                     "public_cost_estimate": (row.get("candidate_receipt") or {}).get("selected_public_cost_estimate"),
+                     "selection_key": (row.get("candidate_receipt") or {}).get("selection_key"),
+                     "selected_candidate_key": (row.get("candidate_receipt") or {}).get("selected_candidate_key"),
                      "planner_cpu_seconds": row.get("planner_cpu_seconds"),
                      "offline_label_planner_cpu_seconds": row.get("offline_label_planner_cpu_seconds"),
                      "pair_count": recomputed["pair_count"], "pair_gains": [], "branch_components": [], "region_effects": []}
@@ -507,6 +542,16 @@ def analyze(run_dirs: list[Path]) -> dict[str, Any]:
                     state["noop_public_cost_estimate"] = noop_cost
                     state["selected_minus_noop_public_cost"] = selected_cost - noop_cost
 
+    safety_audits = [row["live_safety_receipt_audit"] for row in scenario_headers.values()]
+    actual_safety_counts = [row["actual_unresolved_disposition_count"] for row in safety_audits
+                            if row["actual_unresolved_disposition_count"] is not None]
+    reported_safety_counts = [row["reported_unresolved_disposition_count"] for row in safety_audits
+                              if row["reported_unresolved_disposition_count"] is not None]
+    safety_mismatches = [row for row in scenario_headers.values()
+                         if row["live_safety_receipt_audit"]["unresolved_count_matches_summary"] is False]
+    actual_forced_counts = [row["actual_forced_state_count"] for row in safety_audits]
+    reported_forced_counts = [row["reported_forced_state_count"] for row in safety_audits
+                              if row["reported_forced_state_count"] is not None]
     evaluable = [s for s in states.values() if s["valid"] and not s["forced"] and not s["empty"]]
     positives = [s for s in evaluable if s["gain"] > 0]
     nonpositives = [s for s in evaluable if s["gain"] <= 0]
@@ -621,6 +666,22 @@ def analyze(run_dirs: list[Path]) -> dict[str, Any]:
                          "committed_marker_manifest_sha256": marker_manifest_sha256},
             "region_id_mapping": {"ordinal_to_contract_region": REGION_ORDINAL_TO_COORD,
                                   "note": "Task/platform IDs encode a two-digit row-major region ordinal; 00..08 map to contract region coordinates r00,r01,r02,r10,r11,r12,r20,r21,r22."},
+            "live_safety_receipt_audit": {
+                "scenario_count": len(safety_audits),
+                "scenarios_with_trace": sum(row["trajectory_trace_available"] for row in safety_audits),
+                "scenarios_missing_trace": sum(not row["trajectory_trace_available"] for row in safety_audits),
+                "actual_unresolved_disposition_total_known_scenarios": sum(actual_safety_counts),
+                "actual_unresolved_disposition_unknown_scenarios": len(safety_audits) - len(actual_safety_counts),
+                "reported_unresolved_disposition_total_known_scenarios": sum(reported_safety_counts),
+                "reported_unresolved_disposition_unknown_scenarios": len(safety_audits) - len(reported_safety_counts),
+                "unresolved_count_summary_mismatch_scenarios": [row["scenario_id"] for row in safety_mismatches],
+                "actual_forced_state_total": sum(actual_forced_counts),
+                "reported_forced_state_total_known_scenarios": sum(reported_forced_counts),
+                "reported_forced_state_unknown_scenarios": len(safety_audits) - len(reported_forced_counts),
+                "forced_count_summary_mismatch_scenarios": [row["scenario_id"] for row in scenario_headers.values()
+                    if row["live_safety_receipt_audit"]["forced_count_matches_summary"] is False],
+                "interpretation": "trajectory disposition receipt cross-check and forced-state counts only; does not establish all hard constraints or method safety",
+            },
             "run_coverage": {"split_condition": dict(observed_cells), "expected_split_condition": expected_cells,
                              "missing_or_short_cells": missing_cells, "coverage_complete": not missing_cells},
             "scenario_level_gain_summary": _scenario_gain_summary(list(states.values())),
@@ -680,6 +741,10 @@ def render_markdown(data: Mapping[str, Any]) -> str:
         rendered_ci = "NA (n<2)" if ci is None else f"[{ci[0]:.6f}, {ci[1]:.6f}]"
         mean = summary.get("mean_of_scenario_means")
         lines.append(f"| {split} | {summary['scenario_count']} | {'UNKNOWN' if mean is None else f'{mean:.6f}'} | {rendered_ci} |")
+    safety = data["live_safety_receipt_audit"]
+    lines += ["", "## Live Safety Receipt", "",
+              f"从 header `trajectory_trace` 独立计数 `safety_disposition.resolved == false`：已知场景 {safety['scenarios_with_trace']}/{safety['scenario_count']}，实际未解决处置数合计 {safety['actual_unresolved_disposition_total_known_scenarios']}；摘要计数合计 {safety['reported_unresolved_disposition_total_known_scenarios']}。缺失 trajectory trace 的场景 {safety['scenarios_missing_trace']} 个，不按零处理；逐场景计数、原因和摘要匹配结果在 `analysis.json.scenarios.*.live_safety_receipt_audit`。摘要不一致场景：`{json.dumps(safety['unresolved_count_summary_mismatch_scenarios'], ensure_ascii=False)}`。",
+              f"强制状态实际计数 {safety['actual_forced_state_total']}；header 摘要已知计数合计 {safety['reported_forced_state_total_known_scenarios']}，缺摘要 {safety['reported_forced_state_unknown_scenarios']} 个场景；不一致场景：`{json.dumps(safety['forced_count_summary_mismatch_scenarios'], ensure_ascii=False)}`。这是运行时安全处置回执核验，不证明全部硬约束已满足或方法安全；branch safety 仍由 gain oracle 的配对标签单独复算，最终安全结论限于协议和实际核验范围。", ""]
     lines += ["",
               "## 跨区动作与后果", "",
               ("候选回执排序复核 {} 条、排序不匹配 {} 条。跨区 action 以每个候选/选中动作计数，唯一状态按 `state_id` 去重：候选 {} actions，选派 {} actions。按 queue operation 的原始语义分别计数，insert={}、transfer={}、split={}、cooperate={}；split/cooperate 不计作 donor transfer。含跨区 direct dispatch 的候选 action={}、选派 action={}，即使没有 queue operation 也纳入 action 总数.".format(
@@ -735,11 +800,11 @@ def render_markdown(data: Mapping[str, Any]) -> str:
     lines += ["", "execution / replan / safety 子项的全量数值与上述成本汇总一并保存在 `analysis.json` 的 `outcome_decomposition.global_cost_component_means`。这些值比较 paired keep 与 replan 的整体结果，不能单独解释为跨区的效果。", "",
               "## 可识别性与限制", "",
               f"普通有效状态共 {data['noop_summary']['ordinary_valid_states']} 个，选派 NOOP {data['noop_summary']['selected_noop']} 个、非 NOOP {data['noop_summary']['selected_nonnoop']} 个；NOOP 选择原因（仅 selected NOOP）：`{json.dumps(data['noop_summary']['selection_reasons_for_noop'], ensure_ascii=False)}`；selected non-NOOP 原因：`{json.dumps(data['noop_summary']['selection_reasons_for_nonnoop'], ensure_ascii=False)}`。候选与不可行数明细在 `state_detail.csv`。forced 的跨区选派没有可用 gain 标签，不能用来估计动作收益。", "",
-              "当前可从轨迹识别：候选是否合法且跨区、所选动作与公开排序数值、匹配 suffix 下 keep/replan 的整体成本和区域任务后果、全局 gain 正零负及 mask 原因。不能从该采集识别：将同一时点同一局面随机分配跨区与本地动作的纯跨区因果效应；跨区具体机制相对能力/距离/供需排序的独立贡献；训练后模型门控的闭环收益；相对 WM 的性能/成本；真实救灾的外部有效性。", "",
+              "当前可从轨迹识别：候选是否合法且跨区、所选动作与公开排序数值、匹配 suffix 下 keep/replan 的整体成本和区域任务后果、全局 gain 正零负及 mask 原因。live safety receipt 只核对运行时处置回执及摘要，不代表所有硬约束或方法安全证明。不能从该采集识别：将同一时点同一局面随机分配跨区与本地动作的纯跨区因果效应；跨区具体机制相对能力/距离/供需排序的独立贡献；训练后模型门控的闭环收益；相对 WM 的性能/成本；真实救灾的外部有效性。", "",
               f"资源：选派 planner CPU 合计 {data['resource_evidence']['selected_planner_cpu_seconds_sum']:.3f} 秒；已提交分片 runtime receipt 报告进程 CPU {data['resource_evidence']['sum_shard_process_cpu_seconds']:.3f} 秒、墙钟 {data['resource_evidence']['sum_shard_wall_seconds']:.3f} 秒，receipt 时 RSS 最大值 {data['resource_evidence']['maximum_recorded_rss_bytes']} bytes。峰值内存为 UNKNOWN，不能由 receipt 时 RSS 替代。", 
               f"成本复核：独立复算覆盖 {decomposition['ordinary_valid_suffix_pairs']} 个普通有效 matched suffix；其中 keep/replan endpoint 共 {decomposition['completed_endpoint_tasks']} 个完成任务记录，完成但 progress<1 的记录为 {decomposition['completed_endpoint_tasks_below_full_progress']}。oracle 的 completed 任务分支直接跳过 residual 累加，因此完成任务残余惩罚为零；未完成任务按加权 clipped `(1-progress)` 计入。", "",
               "## 下一步所需证据", "",
-              (f"采集状态 `{data['collection_status']['state']}`：已提交 {data['scenario_count']}/{data['expected_scenarios']} 场景，失败 {data['collection_status']['failed_scenario_count']} 个；相对冻结计划，split-condition 缺失或不足单元：`{json.dumps(data['run_coverage']['missing_or_short_cells'], ensure_ascii=False)}`。" if not data["complete_168"] else "168 个 train/validation 场景及 commit marker 均已校验；仍需检查 30/30 标签门槛及 train/validation 覆盖结果。"),
+              (f"采集状态 `{data['collection_status']['state']}`：已提交 {data['scenario_count']}/{data['expected_scenarios']} 场景，失败 {data['collection_status']['failed_scenario_count']} 个；相对冻结计划，split-condition 缺失或不足单元：`{json.dumps(data['run_coverage']['missing_or_short_cells'], ensure_ascii=False)}`。" if not data["complete_168"] else "168 个 train/validation 场景及 commit marker 均已校验；30/30 标签门槛状态见上表；方法有效性与安全达标均未证实。"),
               "若要回答跨区纯因果问题，需预先定义并随机/成对构造具有共同可行性的 local 与 cross-region 动作对，并固定外生 suffix、安全继续策略和任务宇宙。若要回答门控与 WM，须在训练门槛通过后用闭环策略、相同 replanner/safety、独立测试场景比较，报告场景单位配对 CI。", "",
               "原 45 条 smoke 记录属于工程 smoke，不能拼入正式类门槛或方法效应。", ""]
     return "\n".join(lines)
@@ -754,7 +819,7 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir / "analysis.json").write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     (args.output_dir / "conclusion.md").write_text(render_markdown(data), encoding="utf-8")
-    summary = {key: data[key] for key in ("status", "snapshot", "scenario_count", "expected_scenarios", "complete_168", "collection_status", "run_coverage", "state_counts", "candidate_coverage", "noop_summary", "selection_rank_verification", "outcome_decomposition", "selected_cross_region_decomposition")}
+    summary = {key: data[key] for key in ("status", "snapshot", "scenario_count", "expected_scenarios", "complete_168", "collection_status", "run_coverage", "live_safety_receipt_audit", "state_counts", "candidate_coverage", "noop_summary", "selection_rank_verification", "outcome_decomposition", "selected_cross_region_decomposition")}
     summary["run_ids"] = data["run_dirs"]
     summary["limitations"] = ["simulation_only", "cross_region_counts_are_descriptive_not_causal"]
     if not data["complete_168"]:

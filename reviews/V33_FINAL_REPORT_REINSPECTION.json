@@ -1,0 +1,112 @@
+{
+  "schema": "v33-final-report-reinspection/1",
+  "generated_at": "2026-10-21T06:33:07.935712+00:00",
+  "date": "2026-10-21",
+  "verdict": "WARN",
+  "scope": "limited_report_reinspection",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "ultra",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_reviewer": true,
+  "agent_id": "/root/v33_final_integrity_review",
+  "agent_id_kind": "canonical_task_name",
+  "previous_audit": "reviews/EXPERIMENT_AUDIT.md",
+  "checks": [
+    {
+      "id": "E1",
+      "status": "ADDRESSED",
+      "evidence": [
+        "FINAL_CONCLUSION.md:16",
+        "FINAL_DIAGNOSTICS.md:3"
+      ],
+      "details": "All ordinary valid labels explicitly confined to 56 Periodic-4min scenarios."
+    },
+    {
+      "id": "E2",
+      "status": "ADDRESSED",
+      "evidence": [
+        "FINAL_CONCLUSION.md:7",
+        "FINAL_CONCLUSION.md:16",
+        "FINAL_DIAGNOSTICS.md:5"
+      ],
+      "details": "343 pre-public hash verification unknowns distinguished from physical violations and safety acceptance."
+    },
+    {
+      "id": "E3",
+      "status": "PARTIALLY_ADDRESSED",
+      "evidence": [
+        "FINAL_CONCLUSION.md:18",
+        "FINAL_DIAGNOSTICS.json:38",
+        "FINAL_DIAGNOSTICS.md:7"
+      ],
+      "details": "All positive states local inserts and zero positive NOOP states disclosed; three NOOP-positive suffixes with negative parent means and identical J_exec not explicitly disclosed."
+    },
+    {
+      "id": "E4",
+      "status": "ADDRESSED",
+      "evidence": [
+        "FINAL_CONCLUSION.md:5",
+        "FINAL_CONCLUSION.md:18",
+        "FINAL_DIAGNOSTICS.md:9"
+      ],
+      "details": "Selected subset descriptive costs, distinct cost components, unweighted regional endpoints, no donor-sacrifice or causal inference; actual selected action types stated."
+    },
+    {
+      "id": "E5",
+      "status": "ADDRESSED",
+      "evidence": [
+        "conclusion.md:20",
+        "conclusion.md:213"
+      ],
+      "details": "Frozen pooled train+validation 30/30 plus split/scenario coverage rule retained; stale pending-check wording corrected."
+    },
+    {
+      "id": "E6",
+      "status": "ADDRESSED",
+      "evidence": [
+        "FINAL_DIAGNOSTICS.json:71",
+        "reviews/V33_FINAL_COORDINATOR_DECISION.md:26"
+      ],
+      "details": "Marker binding and postprocessing hashes distinguished; five inspected inputs snapshot/hash-bound here."
+    }
+  ],
+  "remaining_findings": [
+    {
+      "id": "R1",
+      "severity": "disclosure_improvement",
+      "changes_gate_result": false,
+      "details": "Add explicit disclosure of three NOOP-positive individual suffixes with negative state means and equal J_exec; CPU timing difference can outweigh the fixed call cost. Current reports correctly keep positive NOOP state count at zero."
+    }
+  ],
+  "exactly_once_scope_correctly_qualified": true,
+  "donor_first_bullet_corrected": true,
+  "future_positive_outcome_selection_prohibited": true,
+  "verification_scope": {
+    "files_read": 5,
+    "raw_shards_read": 0,
+    "tests_run": 0,
+    "simulations_run": 0,
+    "oracle_calls": 0,
+    "experiment_statistics_recomputed": false,
+    "directory_sync_independently_verified": false,
+    "all_input_bytes_matched_expected_at_persistence": true
+  },
+  "audited_input_hashes": {
+    "reports/v33-conclusion-final-168/FINAL_CONCLUSION.md": "sha256:f220b79e68c2030fb9709bc43194410a3bc324d6950f426b17da46a33eb63967",
+    "reports/v33-conclusion-final-168/conclusion.md": "sha256:109f0dc0bded69bde580c80e562f5ff658003b5771ab17e8e8e9ee551532f892",
+    "reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.md": "sha256:793e864c2b95bb6768b78cdd5c5d81c33e5865432dd6c7a01ca6c6f876dd7ede",
+    "reports/v33-conclusion-final-168/FINAL_DIAGNOSTICS.json": "sha256:78627e7d08727aeb21058feea9cfa654fc9899208747db0a732d5db68d3ce367",
+    "<local-project>/reviews/V33_FINAL_COORDINATOR_DECISION.md": "sha256:8147476d6d8609b16f4ab25a46e56dd7df7b5275864f0d188bb651822833c33e"
+  },
+  "trace_path": ".aris/traces/experiment-audit/2026-10-21_run01/",
+  "claims": {
+    "collection_complete": "retains previously bounded support",
+    "safety_attainment": "unverified",
+    "learned_gate_efficacy": "inconclusive/not_run",
+    "cross_region_causal_efficacy": "unsupported",
+    "training_gate": "not_met",
+    "overall_engineering_pass": "not_granted"
+  }
+}
