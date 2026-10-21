@@ -1,0 +1,28 @@
+{
+  "schema": "isaac_roi_closedloop_runtime_provenance_v1",
+  "derived_from": "formal_collection_v1/run_capture.py",
+  "source_sha256_before_adaptation": "9329E4EB69652EC1F8278E8A7DE71953826261AE6C66EEB0601150FD52EA7693",
+  "adapted_copy": "runtime.py",
+  "preserved_semantics": [
+    "mission initialization and public C1 assignment",
+    "real formal_collection_v1 IsaacBackend and source kinematics",
+    "1 Hz state update and public target-observation delay",
+    "command queue delay/drop, energy accounting, local safety holds, route switching",
+    "lazy invocation boundary before build_public_replan_catalog",
+    "selected-action delay, stale task checks, recipient availability and energy feasibility",
+    "raw per-aircraft trajectory and event logging",
+    "mutually exclusive per-tick CPU and wall timing phases for event/state/safety, projection/policy/planning, and command readiness; simulator step and mixed post-step state/evaluator/event/output processing are reported separately, while unavailable startup/load timing is unknown",
+    "independent episode reducer uses raw trajectory and events plus manifest-bound public geometry/config and evaluator truth to replay ordered per-actor/task sweep waypoints and recompute discovery, energy, stationary hold behavior, actor-zone constraints, communication, switching, timing, and the registered execution objective; decision effect-delay coverage gates physical-evidence reduction completeness; runtime measures startup/load, mutually exclusive online phases, simulator stepping, evaluator/telemetry work, artifact logging, timing-record writes, periodic flushes, and backend close separately; only online algorithm phases receive the user-plan CPU charge, while simulator and offline evidence-logging costs remain resource accounting and are excluded from method cost"
+  ],
+  "adaptations": [
+    "representative single-episode mode only; pair and suffix execution rejected",
+    "DecisionAdapter selects existing_et, periodic, risk, and explicit gain-gated variants",
+    "candidate generation is called only through the post-gate callback",
+    "evaluator truth is retained as evaluator-side evidence with a manifest hash; it is never passed to policy",
+    "state-sampling artifact generation removed",
+    "heldout execution remains deferred until strategy thresholds are frozen",
+    "new action effect delay uses decision-to-command-ready online wall time rounded to the 1-second simulator clock; this does not establish millisecond responsiveness",
+    "single-episode output cannot identify the frozen paired keep-minus-replan control increment; reducer leaves that increment and combined total unknown"
+  ],
+  "original_tree_modified": false
+}

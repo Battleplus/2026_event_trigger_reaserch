@@ -48,3 +48,52 @@ No additional real run or repeated test suite was requested.
 
 Disposition remains REPAIR for full cost evaluation; static safety and coverage
 repairs are accepted only in their inspected scope.
+
+## CPU scope repair readback
+
+Verified evaluate_episode.py SHA-256
+df1ee58d2da79b8e302f78afaaf5e60413cc390d8cfae4b046f6e8f9e09466cc.
+The frozen planner-only subtotal is now clearly separated from a measured-online
+CPU subtotal. The latter replaces the nested planner charge with the sum of
+disjoint measured online phases at the user's 0.01/CPU-second coefficient.
+Full end-to-end cost remains explicitly incomplete because operational sensing
+and task updates still share a post-step interval with evaluation/output.
+
+Disposition: STATIC_CPU_SCOPE_REPAIR_ACCEPTED; full method-cost acceptance is
+not established. Luna is implementing actual separation of those operations
+in the new episode runner, without touching the ongoing frozen collection.
+Missing device identity also needs to remain unknown rather than implying
+absence of GPU use. No real simulator result has been produced by this code.
+
+## Operational timing split readback
+
+Inspected runtime.py ef4a939e324351ed8e11ffba15ce9217b9647e4b02288c49e5abd029f78c63cf
+and evaluate_episode.py ddf9a26d4ecb0c01343c720251c4fc38ead3004fbfb7ee60375cf811e57b147d.
+The new runtime measures post-step operational state separately from row/counter
+bookkeeping and raw artifact logging. Startup and backend-close are measured;
+missing device evidence now stays unknown. These are source-level observations,
+not actual timing measurements from a real run.
+
+Returned a material cost correction: the measured execution resource subtotal
+includes simulator/evaluator/logging CPU and cannot be used as method J. Keep
+that resource ledger separate from four-phase online method CPU. Experiment
+process import/output boundaries must not be confused with online deployment
+cost. Also update receipt resource-scope text after backend-close measurement.
+No additional framework, simulator episode or full test suite was requested.
+
+## Final static cost-scope readback
+
+Verified evaluate_episode.py
+44e319a56c650843c60670da2465fe9283994371e60fbc92bdf4624cd8c9f95f;
+runtime remains ef4a939e324351ed8e11ffba15ce9217b9647e4b02288c49e5abd029f78c63cf.
+The four online phases alone enter the method CPU subtotal, replacing nested
+planner CPU. Simulator/evaluator/evidence logging are retained only in a separate
+resource ledger. Startup/load is reported separately. Missing device identity
+and deployment GPU/transfer costs remain explicit unknowns. Final resource
+observation scope now correctly includes backend close.
+
+Disposition: STATIC_EPISODE_COST_SCOPE_ACCEPTED for these frozen sources.
+No real Isaac episode or actual model artifact has exercised this new runtime
+and reducer. This is not ENGINEERING_PASS, a complete method-cost acceptance,
+or scientific support. Real validation/test/OOD and grouped statistics remain
+pending, as do model selection and calibration.
