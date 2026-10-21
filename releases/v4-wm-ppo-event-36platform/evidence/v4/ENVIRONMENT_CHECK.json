@@ -1,0 +1,167 @@
+{
+  "branch_oracle_recomputed": true,
+  "fixture_sample_count": 1,
+  "full_scenario_noop_and_fault_fixture": {
+    "horizon_minutes": 90,
+    "noop_step_count": 90,
+    "observed_raw_event_kinds": [
+      "arrival",
+      "communication_changed",
+      "communication_tx",
+      "delay_accrued",
+      "energy_fraction_drop",
+      "environment_changed",
+      "inspection_completed",
+      "logical_task_completed",
+      "move",
+      "platform_failed",
+      "platform_failure",
+      "priority_change",
+      "queue_head_dispatch",
+      "report_generated",
+      "report_received",
+      "service",
+      "task_arrived",
+      "task_expired"
+    ],
+    "platform_count": 36,
+    "safety_lifecycle": {
+      "paused_task_ids": [
+        "v33-search-r00-s02",
+        "v33-search-r00-s01",
+        "v33-search-r01-s02",
+        "v33-search-r02-s01",
+        "v33-search-r02-s02",
+        "v33-search-r03-s01",
+        "v33-search-r03-s02",
+        "v33-search-r04-s02",
+        "v33-search-r04-s01",
+        "v33-search-r05-s01",
+        "v33-search-r05-s02",
+        "v33-search-r06-s02",
+        "v33-search-r06-s01",
+        "v33-search-r07-s01",
+        "v33-search-r08-s02",
+        "v33-search-r08-s01",
+        "v33-search-r01-s01",
+        "v33-search-r07-s02"
+      ],
+      "probe_minute": 1,
+      "resumed_task_ids": [
+        "v33-search-r00-s01",
+        "v33-search-r00-s02",
+        "v33-search-r01-s01",
+        "v33-search-r01-s02",
+        "v33-search-r02-s01",
+        "v33-search-r02-s02",
+        "v33-search-r03-s01",
+        "v33-search-r03-s02",
+        "v33-search-r04-s01",
+        "v33-search-r04-s02",
+        "v33-search-r05-s01",
+        "v33-search-r05-s02",
+        "v33-search-r06-s01",
+        "v33-search-r06-s02",
+        "v33-search-r07-s01",
+        "v33-search-r07-s02",
+        "v33-search-r08-s01",
+        "v33-search-r08-s02"
+      ],
+      "safety_receipt_resolved": true
+    },
+    "task_count": 54
+  },
+  "future_input_isolation": {
+    "current_public_observation_equal": true,
+    "fixed_public_decision_equal": true,
+    "future_event_count": 9,
+    "future_suffix_sha256_after": "8bb1ab4cc29f9b05536946aca4472e72fb46c4a551c1b1fe82f59d1a574354f7",
+    "future_suffix_sha256_before": "e9f0930db6369602a3079f43e58b11ad94d1505396a7092d418c5b7ee4b5fb97",
+    "model_inputs_equal": true,
+    "public_history_equal": true
+  },
+  "model_input_shapes": {
+    "action_adjacency": [
+      1,
+      5,
+      107,
+      107
+    ],
+    "action_features": [
+      1,
+      107,
+      25
+    ],
+    "adjacency": [
+      1,
+      4,
+      7,
+      107,
+      107
+    ],
+    "history_lengths": [
+      1
+    ],
+    "node_features": [
+      1,
+      4,
+      107,
+      36
+    ],
+    "node_mask": [
+      1,
+      4,
+      107
+    ],
+    "node_types": [
+      1,
+      4,
+      107
+    ]
+  },
+  "registry_counts": {
+    "test": 140,
+    "train": 84,
+    "validation": 84
+  },
+  "sample_fields": [
+    "action",
+    "history",
+    "parent_id",
+    "sample_id",
+    "split",
+    "targets"
+  ],
+  "schema": "n02-v4-environment-check/1",
+  "source_identity": {
+    "baselines.py": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+    "cost_accounting.py": "d38432191fcf09dfc367ff7da3a8664d9eb682ad359d89cfd8c50b5ff5fe5e13",
+    "event_environment.py": "9c49c27b722e3a4c190b37f18129b39bfc10edf51502fb70fce12fd252d9ca4f",
+    "event_oracle.py": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
+    "event_trigger.py": "6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+    "fixed_replanner.py": "585868146daf30bffd62bbeadcc6dc9dcb1aa537b3e7f62bbe62efe3f8b04735",
+    "gain_safety.py": "fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+    "region_contract.py": "6e0160e17f91af334edcaf1963ca3a5e8b4469cbc6ca88df9f9690e7c8d9bb63",
+    "relief_env.py": "e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+    "scenario_schema.py": "844fbcac95b7d7df27efed5eb0e7c656dbf84e734f6cc22fccf8a4eb04e50db3",
+    "v33_scenarios.py": "290503053642e0b5dfeaad8d92b251ee1e8b733ac875801d59c6176a9caaa2cd",
+    "v3_shards.py": "2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5",
+    "v4_data.py": "c676b0413160d851eb118c6f8432d468cc983a8832ad6381c354ab2b4ca65623"
+  },
+  "status": "fixture_passed_collection_not_run",
+  "target_fields": [
+    "communication_risk",
+    "communication_risk_valid",
+    "delay",
+    "delay_valid",
+    "energy",
+    "energy_valid",
+    "entity_ids",
+    "failure",
+    "failure_valid",
+    "next_minute",
+    "next_minute_valid",
+    "progress",
+    "progress_valid"
+  ]
+}

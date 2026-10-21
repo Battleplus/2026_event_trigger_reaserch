@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 2080 Ti",
+  "torch_version": "2.7.0+cu128",
+  "cuda_runtime_version": "12.8",
+  "fixture_kind": "synthetic_cuda_witness_only",
+  "architecture": "dynamic-action-conditioned-v2-state-aware",
+  "optimizer_updates": 1,
+  "parameter_delta_l2": 0.3043787181377411,
+  "loss": 0.05202924460172653,
+  "optimizer_state_entries_restored": 43,
+  "fresh_process_prediction_match": true,
+  "action_role_reversal_changes_encoding": true,
+  "asymmetric_recipient_state_changes_scalar_prediction": true,
+  "gpu_seconds": 0.14209817594382912,
+  "peak_gpu_memory_bytes": 29295616
+}

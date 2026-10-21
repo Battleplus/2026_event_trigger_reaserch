@@ -1,5 +1,9 @@
 # V3.3 execution status
 
+## V4 environment/data milestone (2026-10-21)
+
+The separate `archive/v4-wm-ppo-event-36platform` branch contains the frozen V4 environment and data/model source plus compact receipts under `releases/v4-wm-ppo-event-36platform/`. Formal 168-scenario collection is in progress in the source project; no full run shard or trajectory is part of this archive snapshot. The approved review is bound to the frozen configuration and protocol and permits collection only. World-model training, PPO training, evaluation, and analysis remain `NOT_RUN`. The V4 model/data source is archived for provenance and is not declared training-ready. The release's `evidence/v4/V4_GPU_WITNESS_V2.json` records a synthetic GPU 1-update and fresh-process restore check only. V3.3 outcomes below remain historical and unchanged.
+
 Snapshot updated:2026-10-21 (Asia/Shanghai). Implementation: GPT-6 Luna. Protocol: [V33](protocols/V33_CIVILIAN_SEARCH_RESCUE.md). Separate version; no old labels reused. No engineering or safety pass is asserted.
 
 | Stage | Status at archive snapshot |

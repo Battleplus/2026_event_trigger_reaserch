@@ -1,0 +1,110 @@
+{
+  "all_branch_reward_and_cost_oracles_recomputed": true,
+  "all_trajectory_steps_have_resolved_live_safety": true,
+  "branch_candidate_keys_unique_per_window": true,
+  "branch_counts_per_window": [
+    4,
+    4,
+    4,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    4,
+    1,
+    4,
+    1,
+    1,
+    1,
+    1,
+    4,
+    4,
+    1,
+    4,
+    1,
+    1,
+    1,
+    1
+  ],
+  "branch_minute_counts_at_most_eight": true,
+  "branch_window_counts": {
+    "event_public_best": 8,
+    "periodic_public_best": 8,
+    "random_legal": 8
+  },
+  "model_input_shapes": {
+    "action_adjacency": [
+      318,
+      5,
+      133,
+      133
+    ],
+    "action_features": [
+      318,
+      133,
+      25
+    ],
+    "adjacency": [
+      318,
+      4,
+      7,
+      133,
+      133
+    ],
+    "history_lengths": [
+      318
+    ],
+    "node_features": [
+      318,
+      4,
+      133,
+      36
+    ],
+    "node_mask": [
+      318,
+      4,
+      133
+    ],
+    "node_types": [
+      318,
+      4,
+      133
+    ]
+  },
+  "one_step_sample_count": 270,
+  "parent_id": "v33-train-none_or_light-search_rescue-n3-000-00008201",
+  "random_action_counts_per_window": [
+    2,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+  ],
+  "random_actions_at_most_two": true,
+  "sample_count": 318,
+  "sample_ids_unique": true,
+  "scenario_identity_sha256": "f2993f45532d45f5a9dacb2a01a6dd69ed6c34975c757e21041d39369b4f7602",
+  "schema": "n02-v4-collect-scenario-integration/1",
+  "source_trajectory_count": 3
+}

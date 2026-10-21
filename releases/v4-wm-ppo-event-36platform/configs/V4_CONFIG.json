@@ -1,0 +1,69 @@
+{
+  "schema": "n02-v4-wm-ppo-config/1",
+  "version": "v4-dynamic-wm-ppo-100x100",
+  "seeds": {
+    "world_model": [8201, 8202, 8203],
+    "policy": [8201, 8202, 8203],
+    "branch": 842701,
+    "registry": {"source": "v3_shards.expected_registry", "test_base": 840000}
+  },
+  "scenario": {
+    "conditions": ["none_or_light", "task_update_or_arrival", "platform_failure_or_capability_loss", "energy_anomaly", "communication_degradation", "environment_or_obstacle_change", "compound"],
+    "task_mode": "search_rescue",
+    "targets_per_region": 3,
+    "train_validation_replicates_per_condition": 12,
+    "test_per_condition": 20,
+    "horizon_minutes": 90,
+    "fleet_platforms": 36,
+    "map_contract": "relief-grid-100x100-v1"
+  },
+  "collection": {
+    "trajectory_policies": ["periodic_public_best", "event_public_best", "random_legal"],
+    "history_length": 4,
+    "trajectory_seed": 842701,
+    "review_gate": "environment_review.json",
+    "max_branch_minutes": 8,
+    "branch_schedule": "fixed-seed-uniform-distinct-minutes",
+    "branch_horizon_minutes": 10,
+    "max_branch_action_minutes": 8,
+    "random_branch_actions": 2,
+    "cpu_threads": 1,
+    "branch_action_names": ["NOOP", "public_best", "random_1", "random_2"],
+    "train_validation_samples_only": true,
+    "test_registry_frozen_before_collection": true
+  },
+  "world_model": {
+    "seeds": [8201, 8202, 8203],
+    "learning_rate": 0.001,
+    "batch_size": 8,
+    "max_epochs": 100,
+    "patience": 10,
+    "hidden_dim": 64,
+    "device": "cuda"
+  },
+  "ppo": {
+    "seeds": [8201, 8202, 8203],
+    "device": "cuda:0",
+    "rounds": 128,
+    "episodes_per_round": 4,
+    "learning_rate": 0.0003,
+    "epochs": 4,
+    "minibatch_size": 64,
+    "entropy_coefficient": 0.01,
+    "variants": ["Periodic-G", "Event-G", "Periodic-G-WM", "Event-G-WM-Decision", "Event-G-WM", "Event-G-WM-NoU", "Event-G-WM-Global"],
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_ratio": 0.2
+  },
+  "trigger": {
+    "weights": {"d_state": 0.35, "d_degradation": 0.30, "d_margin": 0.25, "d_uncertainty": 0.10},
+    "delta_min": 4,
+    "periodic_interval": 4
+  },
+  "review": {
+    "required_status": "approved_read_only",
+    "source_review": "primary-agent-read-only",
+    "bind_protocol_sha256": true,
+    "bind_source_identity": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "status": "approved_read_only",
+  "reviewed_source_identity": {
+    "event_environment.py": "9c49c27b722e3a4c190b37f18129b39bfc10edf51502fb70fce12fd252d9ca4f",
+    "event_oracle.py": "fd65ded4772f138a2842babb01b7e43a81f62a08b08b74e06578e29ff1266d89",
+    "v33_scenarios.py": "290503053642e0b5dfeaad8d92b251ee1e8b733ac875801d59c6176a9caaa2cd",
+    "baselines.py": "13b2a84662022b7ed6a56a19629ad3abe2ad954c46926eb1a72caa326039115a",
+    "fixed_replanner.py": "585868146daf30bffd62bbeadcc6dc9dcb1aa537b3e7f62bbe62efe3f8b04735",
+    "gain_safety.py": "fbd937b2b3d3bc4400fb25bab3dbd5c3f27ed619488468687e0c6e0abeed139c",
+    "relief_env.py": "e7a7e58ebc818c2ba482e7fe4c74ec09fc35b3e9382a20e65c95278c3d527c80",
+    "scenario_schema.py": "844fbcac95b7d7df27efed5eb0e7c656dbf84e734f6cc22fccf8a4eb04e50db3",
+    "region_contract.py": "6e0160e17f91af334edcaf1963ca3a5e8b4469cbc6ca88df9f9690e7c8d9bb63",
+    "v4_data.py": "c676b0413160d851eb118c6f8432d468cc983a8832ad6381c354ab2b4ca65623",
+    "cost_accounting.py": "d38432191fcf09dfc367ff7da3a8664d9eb682ad359d89cfd8c50b5ff5fe5e13",
+    "event_trigger.py": "6673addb90689093c0df444177314de6a65ef8aec4a2c5f06028039b61c3ddc9",
+    "v3_shards.py": "2dddcafdb79470251c82e9804f50e4dba46e34ab67c7d79fcb103fb9014d33c5"
+  },
+  "protocol_sha256": "dd20219a9f76a8b219dd8b80bff0e9e40e362ba67d7312a688c8b15a944ca555",
+  "config_sha256": "b640c66059ee815c729ae6089b81baac686ed0905ae60176da0934994712db3c",
+  "reviewer": "Codex primary coordinator, current session; exact model identifier not exposed",
+  "scope": "Environment and collection only; formal training and method claims not reviewed",
+  "evidence": [
+    "package/.v4-final-integration-20261021b/ENVIRONMENT_CHECK.json",
+    "package/.v4-final-integration-20261021c/COLLECT_SCENARIO_INTEGRATION.json",
+    "package/tests/test_gain_safety_v2.py",
+    "package/tests/test_v3_regional_execution.py"
+  ]
+}

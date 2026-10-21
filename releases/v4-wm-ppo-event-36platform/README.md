@@ -1,0 +1,9 @@
+# V4 Dynamic World Model and PPO: Environment/Data Archive
+
+**Archive status: environment and data freeze; formal collection in progress.** This release records the V4 100 x 100 civilian search-and-rescue setup with 36 platforms, its frozen 84-train/84-validation/140-test registry, environment/data source, action-conditioned world-model source, focused tests, configuration, protocol, review, and compact integration receipts.
+
+The review permits the frozen train/validation collection. It does not establish prediction accuracy, PPO quality, safe closed-loop results, or scientific benefit. The GPU witness is a synthetic one-update check followed by fresh-process checkpoint restore. Full world-model training, PPO training, frozen-test evaluation, and analysis are `NOT_RUN`. The included V4 data/model implementation is an archive snapshot and is not declared training-ready.
+
+The formal collection's live shards and logs, the 22 MB single-scenario integration trace, raw run outputs, GPU witness source archives, checkpoints, caches, and credentials are excluded. The V4 PPO policy, runner, rollout, and analysis modules are omitted because implementation is still in progress. V3.3 outcome evidence remains in the repository history and its prior negative data-gate result is not changed by this archive.
+
+The environment fixture and frozen registry come from the V4 environment freeze; `environment_review.json` binds the approved read-only review to the run configuration and protocol. `COLLECT_SCENARIO_INTEGRATION.json` documents the single-scenario collector path only and is not evidence of completed formal collection. Source lineage follows V3.3's public civilian environment and scenario implementation. Dependencies are listed in `requirements.txt`. The selected source tree contains no separate license file. See `SHA256SUMS.txt` for file hashes.
