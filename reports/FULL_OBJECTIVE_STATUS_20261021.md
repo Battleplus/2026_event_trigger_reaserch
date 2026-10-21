@@ -1,5 +1,20 @@
 # Full Chapter 2 objective: evidence and remaining work
 
+## Latest user amendment: collection scope
+
+The 2026-10-21 user instruction narrows future collection to assignment,
+reconstruction gain, world-model one-step learning and necessary reproduction
+evidence. The authoritative field contract is
+`protocols/COLLECTION_SCOPE_AMENDMENT_20261021.md`.
+Shared terrain, trees, appearance, fixed configuration and full observation
+lists must not be copied into every row. Preserve necessary position increments,
+event timing, public state transitions, assignment queues and paired snapshots;
+keep hidden truth separate for evaluation only. Do not replace this with coarse
+position sampling that loses discovery, pause or energy consequences.
+This amendment changes the future data objective only: preserve existing data
+and the currently running collector unchanged. Research questions and scientific
+acceptance criteria remain in force.
+
 Updated 2026-10-21. The objective remains active. The user's newer direct-formal
 instruction removed separate representative, single-state and 36-scene pilot
 prerequisites; it did not establish any scientific result or waive fair pairing,
