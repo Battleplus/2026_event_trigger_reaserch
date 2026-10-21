@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import pickle
+import json
 from pathlib import Path
 from typing import Any
 
@@ -63,3 +64,76 @@ def load_tree_gain_predictor(path: str | Path):
     if not isinstance(payload, dict):
         raise ValueError("tree checkpoint must contain a mapping")
     return _tree_predictor(payload)
+
+
+def load_gain_artifact(path: str | Path, mode: str = "mean"):
+    """Load a light_models_v1 deployment artifact and return (predictor, gate metadata)."""
+    from light_models_v1.selection import deployment_mode_metadata
+
+    artifact_path = Path(path)
+    if artifact_path.suffix.lower() == ".json":
+        payload = json.loads(artifact_path.read_text(encoding="utf-8"))
+    elif artifact_path.suffix.lower() == ".pkl":
+        with artifact_path.open("rb") as stream:
+            payload = pickle.load(stream)
+    elif artifact_path.suffix.lower() == ".pt":
+        import torch
+        payload = torch.load(artifact_path, map_location="cpu", weights_only=False)
+        if not isinstance(payload, dict):
+            raise ValueError("MLP artifact must contain a mapping")
+        payload = {**payload, "model_kind": "mlp"}
+    else:
+        raise ValueError("gain artifact must be .json, .pkl, or .pt")
+    if not isinstance(payload, dict):
+        raise ValueError("gain artifact must contain a mapping")
+    deployment = payload.get("deployment")
+    if not isinstance(deployment, dict):
+        raise ValueError("gain artifact has no deployment selection/calibration metadata")
+    metadata = deployment_mode_metadata(deployment, mode)
+    if payload.get("feature_schema") != list(FEATURE_SCHEMA):
+        raise ValueError("artifact feature schema does not match FEATURE_SCHEMA")
+    kind = payload.get("model_kind")
+    if payload.get("schema") == "isaac_roi_constant_gain_model_v1":
+        kind = "constant"
+    elif payload.get("schema") == "isaac_roi_ridge_gain_model_v1":
+        kind = "ridge"
+    elif payload.get("schema") == "isaac_roi_tree_checkpoint_v1":
+        kind = "tree"
+    metadata["model_kind"] = kind
+    if kind == "constant":
+        mean = float(payload["mean"])
+        raw_predict = lambda _projection: mean
+    elif kind == "ridge":
+        center = [float(value) for value in payload["center"]]
+        scale = [float(value) for value in payload["scale"]]
+        coefficients = [float(value) for value in payload["coefficients"]]
+        if not (len(center) == len(scale) == len(FEATURE_SCHEMA)
+                and len(coefficients) == len(FEATURE_SCHEMA) + 1):
+            raise ValueError("ridge artifact dimensions do not match FEATURE_SCHEMA")
+        def raw_predict(projection):
+            features = extract_features(projection)
+            values = [features[name] for name in FEATURE_SCHEMA]
+            return coefficients[0] + sum(coefficients[index + 1] *
+                ((values[index] - center[index]) / scale[index]) for index in range(len(values)))
+    elif kind == "tree":
+        raw_predict = _tree_predictor(payload)
+    elif kind == "mlp":
+        import torch
+        from torch import nn
+        center = torch.tensor(payload["center"], dtype=torch.float32)
+        scale = torch.tensor(payload["scale"], dtype=torch.float32).clamp_min(1e-12)
+        model = nn.Sequential(nn.Linear(len(FEATURE_SCHEMA), 64), nn.ReLU(),
+                              nn.Linear(64, 64), nn.ReLU(), nn.Linear(64, 1))
+        model.load_state_dict(payload["model"])
+        model.eval()
+        def raw_predict(projection):
+            features = extract_features(projection)
+            raw = torch.tensor([features[name] for name in FEATURE_SCHEMA], dtype=torch.float32)
+            with torch.no_grad():
+                return float(model(((raw - center) / scale).unsqueeze(0)).item())
+    else:
+        raise ValueError(f"unsupported deployment model kind: {kind!r}")
+
+    q = float(metadata["q"])
+    predictor = lambda projection: float(raw_predict(projection)) + q
+    return predictor, metadata

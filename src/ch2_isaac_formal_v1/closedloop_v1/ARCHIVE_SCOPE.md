@@ -14,7 +14,8 @@ See reviews/TREE_ARTIFACT_REVIEW_20261021.md for evidence scope.
 
 SHA-256:
 
-- checkpoint.py: 48917e26aa3471a9d0602f7122d03c0c25a8ef6ee9dde50a294e4765e3811af3
-- ../light_models_v1/train_models.py: ab1137aa7dcdb3b1633e824d38947afb7b076849ca4ba663cc7703b3fea4f81b
-- runtime.py: ef4a939e324351ed8e11ffba15ce9217b9647e4b02288c49e5abd029f78c63cf
+- checkpoint.py: 3e1860ce0f918bb023da4b140c2de2439b958146540f5058a4426b720bba5275
+- ../light_models_v1/train_models.py: 173a15a3b717c546a25064cc255cd12c34243e889790d7efb8d0d8cc180fb4f7
+- ../light_models_v1/selection.py: c6bb84c86337ac8466d490a8204040d632111f18c00ccc987385a10acf7af7b9
+- runtime.py: 70d9c013c6f9804d71eaff6507498296e7eb02c95344ab91604a56aecca0c219
 - evaluate_episode.py: 44e319a56c650843c60670da2465fe9283994371e60fbc92bdf4624cd8c9f95f

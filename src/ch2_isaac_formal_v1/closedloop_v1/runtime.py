@@ -106,7 +106,7 @@ def queue_replan_action(pending, decision_id, created_time_s, delay_s, selected_
 
 def run(config_path, source_root, output, phase="representative", resume_state=None, suffix_seed=None,
         suffix_meta=None, strategy_mode="existing_et", gain_predictor=None, checkpoint_path=None,
-        checkpoint_model="mlp"):
+        checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None):
     if phase != "representative" or resume_state is not None:
         raise ValueError("closedloop_v1 supports one representative episode only")
     run_wall_start_ns=time.perf_counter_ns(); run_cpu_start_ns=time.process_time_ns()
@@ -116,8 +116,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
     if int(cfg.get("representative_duration_s", 0)) != 5400:
         raise ValueError("closedloop_v1 requires a 5400-second representative episode")
     output.mkdir(parents=True,exist_ok=True)
-    if checkpoint_model not in {"mlp", "tree"}:
-        raise ValueError("checkpoint_model must be 'mlp' or 'tree'")
+    if checkpoint_model not in {"constant", "ridge", "mlp", "tree"}:
+        raise ValueError("checkpoint_model must be constant, ridge, mlp, or tree")
     if strategy_mode.endswith("_gain_gate") and gain_predictor is None:
         raise ValueError(f"strategy mode {strategy_mode} requires a trained {checkpoint_model} checkpoint")
     rec_path=output/"run_receipt.json"; manifest_path=output/"manifest.json"
@@ -130,6 +130,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
     receipt["closedloop"] = {"mode": strategy_mode, "checkpoint_model": checkpoint_model,
         "checkpoint": str(checkpoint_path) if checkpoint_path else None,
         "checkpoint_sha256": sha(checkpoint_path) if checkpoint_path else None,
+        "gain_threshold": float(gain_threshold),
+        "deployment_metadata": copy.deepcopy(deployment_metadata),
         "predictor_device": "cpu" if gain_predictor is not None else None,
         "paired_evaluation": "not_performed", "source_runner": "formal_collection_v1/run_capture.py",
         "source_runner_sha256": "9329E4EB69652EC1F8278E8A7DE71953826261AE6C66EEB0601150FD52EA7693",
@@ -250,7 +252,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
             event_threshold=int(pilot_cfg.get("ordinary_event_threshold", 1)),
             event_cooldown_s=float(pilot_cfg.get("ordinary_event_cooldown_s", 240.0)),
             risk_energy_fraction=0.25,
-            gain_predictor=gain_predictor)
+            gain_predictor=gain_predictor,
+            gain_threshold=float(gain_threshold))
         communication_seed = seed if suffix_seed is None else int(suffix_seed)
         ordinary_events_since_gate=[]; decision_events=[]; forced_event_times=set()
         handled_forced_event_times=set(); ordinary_decision_sequence=0
@@ -1049,10 +1052,14 @@ def main():
     p.add_argument("--source-root",type=Path,required=True); p.add_argument("--output",type=Path,required=True)
     p.add_argument("--mode",choices=sorted(DecisionAdapter.MODES),default="existing_et")
     p.add_argument("--checkpoint",type=Path)
-    p.add_argument("--model",choices=("mlp","tree"),default="mlp",
-                   help="gain predictor artifact format (MLP or ExtraTrees)")
+    p.add_argument("--model",choices=("constant","ridge","mlp","tree"),default=None,
+                   help="optional artifact type assertion; type is otherwise read from the artifact")
+    p.add_argument("--deployment-mode", choices=("mean", "lower_bound"), default="mean")
     a=p.parse_args()
     predictor = None
+    gain_threshold = 0.0
+    deployment_metadata = None
+    checkpoint_model = "mlp"
     if a.mode.endswith("_gain_gate"):
         if a.checkpoint is None:
             p.error("gain-gated modes require --checkpoint pointing to a trained model checkpoint")
@@ -1060,15 +1067,22 @@ def main():
             from . import checkpoint as checkpoint_loader
         except ImportError:
             import checkpoint as checkpoint_loader
-        loader = (checkpoint_loader.load_mlp_gain_predictor if a.model == "mlp"
-                  else checkpoint_loader.load_tree_gain_predictor)
-        predictor = loader(a.checkpoint)
+        try:
+            predictor, deployment_metadata = checkpoint_loader.load_gain_artifact(
+                a.checkpoint, mode=a.deployment_mode)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            p.error(f"could not load deployment artifact: {exc}")
+        checkpoint_model = str(deployment_metadata["model_kind"])
+        if a.model is not None and a.model != checkpoint_model:
+            p.error(f"--model={a.model} conflicts with artifact model type {checkpoint_model}")
+        gain_threshold = float(deployment_metadata["epsilon"])
     elif a.checkpoint is not None:
         p.error("--checkpoint is only valid for a gain-gated mode")
-    elif a.model != "mlp":
-        p.error("--model tree is only valid with a gain-gated mode and --checkpoint")
+    elif a.model is not None:
+        p.error("--model is only valid with a gain-gated mode and --checkpoint")
     rc=run(a.config,a.source_root,a.output,strategy_mode=a.mode,
-           gain_predictor=predictor,checkpoint_path=a.checkpoint,checkpoint_model=a.model)
+           gain_predictor=predictor,checkpoint_path=a.checkpoint,checkpoint_model=checkpoint_model,
+           gain_threshold=gain_threshold,deployment_metadata=deployment_metadata)
     raise SystemExit(rc)
 
 if __name__=="__main__": main()

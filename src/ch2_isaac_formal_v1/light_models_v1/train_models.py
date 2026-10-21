@@ -22,10 +22,12 @@ try:
     from .data_gate import check_feature_coverage
     from .dataset import load_feature_dataset
     from .features import FEATURE_SCHEMA
+    from .selection import build_deployment_metadata
 except ImportError:  # direct invocation from this directory
     from data_gate import check_feature_coverage
     from dataset import load_feature_dataset
     from features import FEATURE_SCHEMA
+    from selection import build_deployment_metadata
 
 
 MODEL_SEEDS = (8201, 8202, 8203)
@@ -63,6 +65,40 @@ def _scenario_validation_split(rows: list[dict[str, Any]]) -> dict[str, list[dic
     }
 
 
+def _training_grouped_cv(rows: list[dict[str, Any]], folds: int = 3) -> dict[str, Any]:
+    """Training-only grouped CV diagnostics; validation scenarios are not consulted."""
+    scenarios = sorted({str(row["scenario_id"]) for row in rows if row.get("split") == "train"})
+    if folds != 3 or len(scenarios) < folds:
+        return {"status": "NOT_RUN_INSUFFICIENT_TRAINING_SCENARIOS", "fold_count": folds,
+                "training_scenarios": scenarios, "folds": []}
+    assignments = {scenario: index % folds for index, scenario in enumerate(scenarios)}
+    fold_results = []
+    for fold_index in range(folds):
+        held_ids = {scenario for scenario, assigned in assignments.items() if assigned == fold_index}
+        fit_rows = [row for row in rows if row.get("split") == "train" and row.get("scenario_id") not in held_ids]
+        held_rows = [row for row in rows if row.get("split") == "train" and row.get("scenario_id") in held_ids]
+        if not fit_rows or not held_rows:
+            return {"status": "NOT_RUN_EMPTY_TRAINING_FOLD", "fold_count": folds,
+                    "training_scenarios": scenarios, "folds": fold_results}
+        mean = sum(float(row["target"]) for row in fit_rows) / len(fit_rows)
+        constant_metrics = _metrics(held_rows, [mean] * len(held_rows))
+        ridge_result = _ridge_model(fit_rows,
+            {"training_fold_validation": held_rows}, output_dir=None, data_identity="training_cv",
+            emit_artifact=False)
+        fold_results.append({"fold": fold_index, "fit_scenarios": sorted({row["scenario_id"] for row in fit_rows}),
+            "heldout_scenarios": sorted(held_ids), "fit_state_count": len(fit_rows),
+            "heldout_state_count": len(held_rows), "constant_fit_mean": mean,
+            "constant_metrics": constant_metrics,
+            "ridge_status": ridge_result.get("status"),
+            "ridge_metrics": ridge_result.get("metrics", {}).get("training_fold_validation")})
+    return {"status": "COMPLETE", "fold_count": folds, "split_scope": "train_only",
+            "group_unit": "scenario_id", "validation_scenarios_used": False,
+            "training_scenarios": scenarios, "folds": fold_results,
+            "macro_metrics": {name: {metric: (sum(fold[name][metric] for fold in fold_results) / folds)
+                                      for metric in ("mae", "regret")}
+                              for name in ("constant_metrics", "ridge_metrics")}}
+
+
 def _metrics(rows: list[dict[str, Any]], predictions: list[float]) -> dict[str, float | None]:
     if not rows:
         return {"mae": None, "regret": None}
@@ -76,15 +112,28 @@ def _metrics(rows: list[dict[str, Any]], predictions: list[float]) -> dict[str, 
     return {"mae": sum(errors) / len(errors), "regret": sum(regrets) / len(regrets)}
 
 
-def _constant_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+def _constant_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]],
+                    output_dir: Path, data_identity: str) -> dict[str, Any]:
     mean = sum(float(row["target"]) for row in train_rows) / len(train_rows)
     metrics = {}
     for name, rows in evaluation.items():
         metrics[name] = _metrics(rows, [mean] * len(rows))
-    return {"status": "PASS", "mean": mean, "metrics": metrics}
+    deployment = build_deployment_metadata(evaluation["validation_selection"],
+        [mean] * len(evaluation["validation_selection"]), evaluation["validation_calibration"],
+        [mean] * len(evaluation["validation_calibration"]), data_identity=data_identity,
+        feature_schema=FEATURE_SCHEMA)
+    artifact = {"schema": "isaac_roi_constant_gain_model_v1", "mean": mean,
+                "feature_schema": list(FEATURE_SCHEMA), "deployment": deployment}
+    path = output_dir / "constant_cpu_gain_artifact.json"
+    _write_json(path, artifact)
+    return {"status": "PASS", "mean": mean, "metrics": metrics,
+            "deployment": deployment, "artifact": str(path),
+            "artifact_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
-def _ridge_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]], alpha: float = 1.0) -> dict[str, Any]:
+def _ridge_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]],
+                 output_dir: Path | None, data_identity: str, alpha: float = 1.0,
+                 emit_artifact: bool = True) -> dict[str, Any]:
     try:
         import numpy as np
     except ImportError:
@@ -107,13 +156,33 @@ def _ridge_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[di
         matrix = np.column_stack([np.ones(len(matrix)), (matrix - center) / scale])
         return [float(value) for value in matrix @ coefficients]
 
+    deployment = None
+    if emit_artifact:
+        selection_predictions = predict(evaluation["validation_selection"])
+        calibration_predictions = predict(evaluation["validation_calibration"])
+        deployment = build_deployment_metadata(evaluation["validation_selection"], selection_predictions,
+            evaluation["validation_calibration"], calibration_predictions, data_identity=data_identity,
+            feature_schema=FEATURE_SCHEMA)
+    metrics = {name: _metrics(rows, predict(rows)) for name, rows in evaluation.items()}
+    if not emit_artifact:
+        return {"status": "PASS", "metrics": metrics}
+    artifact = {"schema": "isaac_roi_ridge_gain_model_v1", "alpha": alpha,
+                "feature_schema": list(FEATURE_SCHEMA), "center": center.tolist(),
+                "scale": scale.tolist(), "coefficients": [float(value) for value in coefficients],
+                "deployment": deployment}
+    assert output_dir is not None
+    path = output_dir / "ridge_cpu_gain_artifact.json"
+    _write_json(path, artifact)
     return {"status": "PASS", "alpha": alpha, "normalization": "train_mean_std",
+            "center": center.tolist(), "scale": scale.tolist(),
             "coefficients": [float(value) for value in coefficients],
-            "metrics": {name: _metrics(rows, predict(rows)) for name, rows in evaluation.items()}}
+            "metrics": metrics,
+            "deployment": deployment, "artifact": str(path),
+            "artifact_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
 def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]],
-                 output_dir: Path) -> dict[str, Any]:
+                 output_dir: Path, data_identity: str) -> dict[str, Any]:
     try:
         from sklearn.ensemble import ExtraTreesRegressor  # type: ignore
     except ImportError:
@@ -132,9 +201,18 @@ def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[di
             return {"status": "TREE_FAILED_NO_SERIALIZATION_PROBE"}
         probe_raw = [float(probe_rows[0]["features"][key]) for key in FEATURE_SCHEMA]
         expected = float(model.predict([probe_raw])[0])
+        selection_rows = evaluation["validation_selection"]
+        calibration_rows = evaluation["validation_calibration"]
+        selection_raw = [[row["features"][key] for key in FEATURE_SCHEMA] for row in selection_rows]
+        calibration_raw = [[row["features"][key] for key in FEATURE_SCHEMA] for row in calibration_rows]
+        deployment = build_deployment_metadata(selection_rows,
+            [float(value) for value in model.predict(selection_raw)], calibration_rows,
+            [float(value) for value in model.predict(calibration_raw)], data_identity=data_identity,
+            feature_schema=FEATURE_SCHEMA)
         artifact = {"schema": "isaac_roi_tree_checkpoint_v1", "estimator": "ExtraTreesRegressor",
                     "feature_schema": list(FEATURE_SCHEMA), "model": model,
-                    "seed": MODEL_SEEDS[0], "probe_raw": probe_raw, "probe_expected": expected}
+                    "seed": MODEL_SEEDS[0], "probe_raw": probe_raw, "probe_expected": expected,
+                    "deployment": deployment}
         checkpoint = output_dir / "tree_seed_8201.pkl"
         with checkpoint.open("wb") as stream:
             pickle.dump(artifact, stream, protocol=pickle.HIGHEST_PROTOCOL)
@@ -147,6 +225,7 @@ def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[di
         return {"status": "PASS" if check["status"] == "PASS" else "TREE_FAILED_CHECKPOINT_CONSISTENCY",
                 "metrics": metrics, "estimator": "ExtraTreesRegressor", "checkpoint": str(checkpoint),
                 "checkpoint_sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+                "deployment": deployment,
                 "roundtrip_checkpoint_consistency": check}
     except Exception as exc:  # pragma: no cover - optional dependency path
         return {"status": "TREE_FAILED", "error": f"{type(exc).__name__}: {exc}"}
@@ -184,7 +263,8 @@ def _fresh_process_checkpoint_check(checkpoint: Path) -> dict[str, Any]:
             "max_abs_error": error, "tolerance": 1e-5}
 
 
-def _mlp_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]], output_dir: Path) -> dict[str, Any]:
+def _mlp_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]],
+                output_dir: Path, data_identity: str) -> dict[str, Any]:
     try:
         import torch
         from torch import nn
@@ -273,24 +353,32 @@ def _mlp_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dic
                                         dtype=torch.float32, device=device)
             probe_expected = float(model(probe_tensor).item())
         metrics = {}
+        evaluation_predictions: dict[str, list[float]] = {}
         for name, rows in evaluation.items():
             if not rows:
                 metrics[name] = _metrics([], [])
+                evaluation_predictions[name] = []
                 continue
             raw = np.asarray([[row["features"][key] for key in FEATURE_SCHEMA] for row in rows], dtype=np.float32)
             tensor = torch.tensor((raw - center) / scale, dtype=torch.float32, device=device)
             with torch.no_grad():
                 predictions = [float(value) for value in model(tensor).reshape(-1).detach().cpu().tolist()]
+            evaluation_predictions[name] = predictions
             metrics[name] = _metrics(rows, predictions)
+        deployment = build_deployment_metadata(evaluation["validation_selection"],
+            evaluation_predictions["validation_selection"], evaluation["validation_calibration"],
+            evaluation_predictions["validation_calibration"], data_identity=data_identity,
+            feature_schema=FEATURE_SCHEMA)
         checkpoint = output_dir / f"mlp_seed_{seed}.pt"
         torch.save({"model": best_model_state, "optimizer": best_optimizer_state,
                     "center": center.tolist(), "scale": scale.tolist(), "seed": seed,
-                    "probe_raw": probe_raw, "probe_expected": probe_expected}, checkpoint)
+                    "probe_raw": probe_raw, "probe_expected": probe_expected,
+                    "feature_schema": list(FEATURE_SCHEMA), "deployment": deployment}, checkpoint)
         fresh_check = _fresh_process_checkpoint_check(checkpoint)
         run = {"seed": seed, "optimizer_updates": updates, "epochs": best_epoch,
                "best_validation_mse": best_loss, "elapsed_s": time.perf_counter() - start,
                "checkpoint": str(checkpoint), "normalization": "train_mean_std",
-               "metrics": metrics, "data_sha256": _dataset_hash(train_rows + selection_rows + evaluation.get("validation_calibration", [])),
+               "metrics": metrics, "deployment": deployment, "data_sha256": data_identity,
                "model_sha256": hashlib.sha256(pickle.dumps(best_model_state, protocol=4)).hexdigest(),
                "checkpoint_sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
                "optimizer_sha256": hashlib.sha256(pickle.dumps(best_optimizer_state, protocol=4)).hexdigest(),
@@ -329,14 +417,32 @@ def run_training(batch_output: str | Path, output_dir: str | Path) -> dict[str, 
         _write_json(output_root / "training_receipt.json", receipt)
         return receipt
     train_rows = [row for row in rows if row.get("split") == "train"]
+    receipt["training_grouped_cv"] = _training_grouped_cv(train_rows, folds=3)
     validation = _scenario_validation_split(rows)
     evaluation = {"validation_selection": validation["selection"],
                   "validation_calibration": validation["calibration"]}
-    receipt["models"]["constant_cpu"] = _constant_model(train_rows, evaluation)
-    receipt["models"]["ridge_cpu"] = _ridge_model(train_rows, evaluation)
     output_root.mkdir(parents=True, exist_ok=True)
-    receipt["models"]["tree"] = _tree_status(train_rows, evaluation, output_root)
-    receipt["models"]["mlp_gpu1"] = _mlp_status(train_rows, evaluation, output_root)
+    if not evaluation["validation_selection"] or not evaluation["validation_calibration"]:
+        receipt["reason"] = "SCENARIO_GROUPED_SELECTION_OR_CALIBRATION_SPLIT_EMPTY"
+        receipt["scenario_groups"] = {split: sorted({row["scenario_id"] for row in rows if row.get("split") == split})
+                                       for split in ("train", "validation")}
+        receipt["elapsed_s"] = time.perf_counter() - start
+        _write_json(output_root / "training_receipt.json", receipt)
+        return receipt
+    data_identity = _dataset_hash(rows)
+    receipt["scenario_groups"] = {
+        "training": sorted({row["scenario_id"] for row in train_rows}),
+        "validation_selection": sorted({row["scenario_id"] for row in evaluation["validation_selection"]}),
+        "validation_calibration": sorted({row["scenario_id"] for row in evaluation["validation_calibration"]}),
+        "states_are_grouped_by_scenario": True,
+        "selection_and_calibration_scenario_sets_disjoint": not bool(
+            {row["scenario_id"] for row in evaluation["validation_selection"]} &
+            {row["scenario_id"] for row in evaluation["validation_calibration"]}),
+    }
+    receipt["models"]["constant_cpu"] = _constant_model(train_rows, evaluation, output_root, data_identity)
+    receipt["models"]["ridge_cpu"] = _ridge_model(train_rows, evaluation, output_root, data_identity)
+    receipt["models"]["tree"] = _tree_status(train_rows, evaluation, output_root, data_identity)
+    receipt["models"]["mlp_gpu1"] = _mlp_status(train_rows, evaluation, output_root, data_identity)
     receipt["status"] = "COMPLETE"
     receipt["elapsed_s"] = time.perf_counter() - start
     _write_json(output_root / "training_receipt.json", receipt)
