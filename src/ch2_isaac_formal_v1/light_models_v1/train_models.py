@@ -112,7 +112,8 @@ def _ridge_model(train_rows: list[dict[str, Any]], evaluation: dict[str, list[di
             "metrics": {name: _metrics(rows, predict(rows)) for name, rows in evaluation.items()}}
 
 
-def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[dict[str, Any]]],
+                 output_dir: Path) -> dict[str, Any]:
     try:
         from sklearn.ensemble import ExtraTreesRegressor  # type: ignore
     except ImportError:
@@ -126,7 +127,27 @@ def _tree_status(train_rows: list[dict[str, Any]], evaluation: dict[str, list[di
         for name, rows in evaluation.items():
             values = [[row["features"][key] for key in FEATURE_SCHEMA] for row in rows]
             metrics[name] = _metrics(rows, [float(value) for value in model.predict(values)]) if rows else _metrics([], [])
-        return {"status": "PASS", "metrics": metrics, "estimator": "ExtraTreesRegressor"}
+        probe_rows = next((rows for rows in evaluation.values() if rows), [])
+        if not probe_rows:
+            return {"status": "TREE_FAILED_NO_SERIALIZATION_PROBE"}
+        probe_raw = [float(probe_rows[0]["features"][key]) for key in FEATURE_SCHEMA]
+        expected = float(model.predict([probe_raw])[0])
+        artifact = {"schema": "isaac_roi_tree_checkpoint_v1", "estimator": "ExtraTreesRegressor",
+                    "feature_schema": list(FEATURE_SCHEMA), "model": model,
+                    "seed": MODEL_SEEDS[0], "probe_raw": probe_raw, "probe_expected": expected}
+        checkpoint = output_dir / "tree_seed_8201.pkl"
+        with checkpoint.open("wb") as stream:
+            pickle.dump(artifact, stream, protocol=pickle.HIGHEST_PROTOCOL)
+        with checkpoint.open("rb") as stream:
+            restored = pickle.load(stream)
+        actual = float(restored["model"].predict([probe_raw])[0])
+        error = abs(actual - expected)
+        check = {"status": "PASS" if error <= 1e-12 else "FAIL",
+                 "max_abs_error": error, "tolerance": 1e-12}
+        return {"status": "PASS" if check["status"] == "PASS" else "TREE_FAILED_CHECKPOINT_CONSISTENCY",
+                "metrics": metrics, "estimator": "ExtraTreesRegressor", "checkpoint": str(checkpoint),
+                "checkpoint_sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+                "roundtrip_checkpoint_consistency": check}
     except Exception as exc:  # pragma: no cover - optional dependency path
         return {"status": "TREE_FAILED", "error": f"{type(exc).__name__}: {exc}"}
 
@@ -313,8 +334,8 @@ def run_training(batch_output: str | Path, output_dir: str | Path) -> dict[str, 
                   "validation_calibration": validation["calibration"]}
     receipt["models"]["constant_cpu"] = _constant_model(train_rows, evaluation)
     receipt["models"]["ridge_cpu"] = _ridge_model(train_rows, evaluation)
-    receipt["models"]["tree"] = _tree_status(train_rows, evaluation)
     output_root.mkdir(parents=True, exist_ok=True)
+    receipt["models"]["tree"] = _tree_status(train_rows, evaluation, output_root)
     receipt["models"]["mlp_gpu1"] = _mlp_status(train_rows, evaluation, output_root)
     receipt["status"] = "COMPLETE"
     receipt["elapsed_s"] = time.perf_counter() - start
