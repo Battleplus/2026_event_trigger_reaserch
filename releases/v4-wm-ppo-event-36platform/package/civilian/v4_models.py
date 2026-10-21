@@ -205,7 +205,7 @@ class V4DynamicWorldModel(nn.Module):
 
 def collate_v4_samples(samples: Sequence[dict]):
     if not samples: raise ValueError("V4_SAMPLES_REQUIRED")
-    graphs=[_graph(x) for x in samples]; max_nodes=max(len(x[1][-1]) for x in graphs)
+    graphs=[_graph(x) for x in samples]; max_nodes=max(len(frame) for graph in graphs for frame in graph[1])
     B=len(samples); T=em.HISTORY_LENGTH; N=max_nodes
     nf=torch.zeros(B,T,N,em.NODE_FEATURE_DIM); nt=torch.zeros(B,T,N,dtype=torch.long); nm=torch.zeros(B,T,N,dtype=torch.bool)
     adj=torch.zeros(B,T,em.RELATION_COUNT,N,N); af=torch.zeros(B,N,ACTION_DIM); action_adj=torch.zeros(B,ACTION_RELATIONS,N,N); lengths=torch.zeros(B,dtype=torch.long)
@@ -275,17 +275,20 @@ def _identity(samples):
 
 
 def _validation_loss(model, samples, device):
-    model.eval(); losses=[]
+    model.eval(); losses=[]; batch_size=8
     with torch.no_grad():
-        for sample in samples:
-            b,y=collate_v4_samples([sample]); b={k:v.to(device) for k,v in b.items()}; y={k:v.to(device) if isinstance(v,torch.Tensor) else v for k,v in y.items()}; pred=model(b)
-            terms=[]; valid=y["next_minute_valid"]
-            if valid.any(): terms.append(F.smooth_l1_loss(pred["next_minute"][valid],y["next_minute"][valid]))
-            for head in V4_HEADS:
-                mask=y[f"{head}_valid"]
-                if mask.any():
-                    terms.append(F.binary_cross_entropy_with_logits(pred[head][mask],y[head][mask].clamp(0,1)) if head in ("failure","communication_risk") else F.smooth_l1_loss(pred[head][mask],y[head][mask]))
-            if terms: losses.append(float(torch.stack(terms).mean().cpu()))
+        for start in range(0,len(samples),batch_size):
+            chunk=[samples[index] for index in range(start,min(len(samples),start+batch_size))]
+            b,y=collate_v4_samples(chunk); b={k:v.to(device) for k,v in b.items()}; y={k:v.to(device) if isinstance(v,torch.Tensor) else v for k,v in y.items()}; pred=model(b)
+            for sample_index in range(len(chunk)):
+                terms=[]; valid=y["next_minute_valid"][sample_index]
+                if valid.any(): terms.append(F.smooth_l1_loss(pred["next_minute"][sample_index][valid],y["next_minute"][sample_index][valid]))
+                for head in V4_HEADS:
+                    mask=y[f"{head}_valid"][sample_index]
+                    if mask.any():
+                        prediction=pred[head][sample_index]; target=y[head][sample_index]
+                        terms.append(F.binary_cross_entropy_with_logits(prediction,target.clamp(0,1)) if head in ("failure","communication_risk") else F.smooth_l1_loss(prediction,target))
+                if terms: losses.append(float(torch.stack(terms).mean().cpu()))
     if not losses: raise ValueError("V4_VALIDATION_WITHOUT_LABELS")
     return sum(losses)/len(losses)
 
@@ -449,12 +452,12 @@ def _public_kinematics_baseline(sample: dict, entity_ids: list[str]):
 
 
 def _metric_summary(accumulator: dict):
-    count=len(accumulator["absolute"])
+    count=accumulator["count"]
     return {"valid_count":count,
             "valid_sample_count":len(accumulator["samples"]),
-            "mae":sum(accumulator["absolute"])/count if count else None,
-            "rmse":math.sqrt(sum(accumulator["squared"])/count) if count else None,
-            "brier":sum(accumulator["brier"])/count if accumulator["brier"] else None}
+            "mae":accumulator["sum_absolute"]/count if count else None,
+            "rmse":math.sqrt(accumulator["sum_squared"]/count) if count else None,
+            "brier":accumulator["sum_brier"]/accumulator["brier_count"] if accumulator["brier_count"] else None}
 
 
 def evaluate_v4_predictions(models: Sequence[V4DynamicWorldModel], samples: Sequence[dict], *,
@@ -469,7 +472,21 @@ def evaluate_v4_predictions(models: Sequence[V4DynamicWorldModel], samples: Sequ
         raise ValueError("V4_PREDICTION_EVALUATION_INPUT")
     if any(row.get("split")!=split for row in samples): raise ValueError("V4_PREDICTION_EVALUATION_SPLIT")
     methods=("model","persistence","public_kinematics")
-    def new_accumulator(): return {method:{"absolute":[],"squared":[],"brier":[],"samples":set()} for method in methods}
+    def new_metric(): return {"sum_absolute":0.0,"sum_squared":0.0,"sum_brier":0.0,
+                              "count":0,"brier_count":0,"samples":set()}
+    def new_accumulator(): return {method:{**new_metric(),"by_sample_kind":{}} for method in methods}
+    def record(entry, sample_index, sample_kind, difference, *, brier=False):
+        values=difference.detach().double().reshape(-1)
+        count=values.numel(); sum_absolute=float(values.abs().sum()); sum_squared=float(values.square().sum())
+        entry["count"]+=count; entry["sum_absolute"]+=sum_absolute; entry["sum_squared"]+=sum_squared
+        if brier:
+            entry["sum_brier"]+=sum_squared; entry["brier_count"]+=count
+        entry["samples"].add(sample_index)
+        bucket=entry["by_sample_kind"].setdefault(sample_kind,new_metric())
+        bucket["count"]+=count; bucket["sum_absolute"]+=sum_absolute; bucket["sum_squared"]+=sum_squared
+        if brier:
+            bucket["sum_brier"]+=sum_squared; bucket["brier_count"]+=count
+        bucket["samples"].add(sample_index)
     target_specs={name:new_accumulator() for name in (*_NEXT_MINUTE_DIMENSIONS,*V4_HEADS)}
     eval_models=[model.to(device).eval() for model in models]
     for offset in range(0,len(samples),batch_size):
@@ -482,19 +499,22 @@ def evaluate_v4_predictions(models: Sequence[V4DynamicWorldModel], samples: Sequ
             members=torch.stack([row[head].detach().cpu() for row in outputs])
             scalar_prediction[head]=members.sigmoid().mean(0) if head in ("failure","communication_risk") else members.mean(0)
         for sample_index,sample in enumerate(chunk):
+            sample_kind=str(sample.get("sample_kind","unspecified"))
             ids=target["entity_ids"][sample_index]
-            public_baseline=_public_kinematics_baseline(sample,ids)
             valid=target["next_minute_valid"][sample_index]
             truth=target["next_minute"][sample_index]
+            baseline_values=_public_kinematics_baseline(sample,ids)
+            if baseline_values.shape[0]>truth.shape[0]:
+                raise ValueError("V4_BASELINE_ENTITY_ALIGNMENT")
+            public_baseline=torch.zeros_like(truth)
+            public_baseline[:baseline_values.shape[0]]=baseline_values
             for dim,name in enumerate(_NEXT_MINUTE_DIMENSIONS):
                 mask=valid[:,dim]
                 if not bool(mask.any()): continue
                 actual=truth[mask,dim].float(); model_values=node_prediction[sample_index,mask,dim]
                 persist=torch.zeros_like(actual); motion=public_baseline[mask,dim]
                 for label,prediction in (("model",model_values),("persistence",persist),("public_kinematics",motion)):
-                    delta=prediction-actual; entry=target_specs[name][label]
-                    entry["absolute"].extend(delta.abs().tolist()); entry["squared"].extend(delta.square().tolist())
-                    entry["samples"].add(offset+sample_index)
+                    record(target_specs[name][label],offset+sample_index,sample_kind,prediction-actual)
             for head in V4_HEADS:
                 mask=target[f"{head}_valid"][sample_index]
                 if not bool(mask): continue
@@ -502,14 +522,13 @@ def evaluate_v4_predictions(models: Sequence[V4DynamicWorldModel], samples: Sequ
                 model_value=scalar_prediction[head][sample_index].reshape(1)
                 zero=torch.zeros_like(actual)
                 for label,prediction in (("model",model_value),("persistence",zero),("public_kinematics",zero)):
-                    difference=(prediction-actual); entry=target_specs[head][label]
-                    entry["absolute"].extend(difference.abs().tolist())
-                    entry["squared"].extend(difference.square().tolist())
-                    if head in ("failure","communication_risk"):
-                        entry["brier"].extend(difference.square().tolist())
-                    entry["samples"].add(offset+sample_index)
+                    record(target_specs[head][label],offset+sample_index,sample_kind,
+                           prediction-actual,brier=head in ("failure","communication_risk"))
     result={"schema":"n02-v4-world-model-prediction-evaluation/1","status":"complete","split":split,
-            "sample_count":len(samples),"prediction_horizon_minutes":10,
+            "sample_count":len(samples),
+            "sample_kind_counts":{kind:sum(str(row.get("sample_kind","unspecified"))==kind for row in samples)
+                                  for kind in sorted({str(row.get("sample_kind","unspecified")) for row in samples})},
+            "prediction_horizon_minutes_by_sample_kind":{"trajectory_one_step":1,"ten_minute_branch":10},
             "baseline_contract":{"persistence":"predict zero change for every delta/outcome head",
                 "public_kinematics":"one-minute straight-line motion to the current public active/queue/action target, bounded by public speed and energy rate; static task positions and all other components use zero change",
                 "ten_minute_scalar_heuristic":"both baselines predict zero change for ten-minute aggregate heads; no future state or event tape is used"},"heads":{}}
@@ -520,6 +539,66 @@ def evaluate_v4_predictions(models: Sequence[V4DynamicWorldModel], samples: Sequ
               if head in _NEXT_MINUTE_DIMENSIONS else result["heads"].setdefault(head,{}))
         for method,accumulator in by_method.items():
             cell[method]=_metric_summary(accumulator)
+            cell[method]["by_sample_kind"]={kind:_metric_summary(values)
+                                             for kind,values in accumulator["by_sample_kind"].items()}
         if head in ("failure","communication_risk") and cell["model"]["valid_count"]:
             cell["metric_note"]="Brier score is reported for the probability-valued failure and communication-risk targets."
     return result
+
+
+def evaluate_v4_prediction_groups(models: Sequence[V4DynamicWorldModel], sample_groups, *,
+                                  split: str="validation", device: str|torch.device="cpu",
+                                  batch_size: int=16):
+    """Evaluate bounded sample groups and merge metric totals without retaining them."""
+    combined=None
+
+    def merge_metric(left, right):
+        count=left["valid_count"]+right["valid_count"]
+        sample_count=left["valid_sample_count"]+right["valid_sample_count"]
+        absolute=(left["mae"] or 0.0)*left["valid_count"]+(right["mae"] or 0.0)*right["valid_count"]
+        squared=(left["rmse"] or 0.0)**2*left["valid_count"]+(right["rmse"] or 0.0)**2*right["valid_count"]
+        brier_counts=[(row["brier"],row["valid_count"]) for row in (left,right) if row["brier"] is not None]
+        return {"valid_count":count,"valid_sample_count":sample_count,
+                "mae":absolute/count if count else None,
+                "rmse":math.sqrt(squared/count) if count else None,
+                "brier":(sum(value*n for value,n in brier_counts)/sum(n for _,n in brier_counts)
+                         if brier_counts else None)}
+
+    for samples in sample_groups:
+        if not samples:
+            continue
+        current=evaluate_v4_predictions(models,samples,split=split,device=device,batch_size=batch_size)
+        if combined is None:
+            combined=current
+            continue
+        combined["sample_count"]+=current["sample_count"]
+        for kind,count in current["sample_kind_counts"].items():
+            combined["sample_kind_counts"][kind]=combined["sample_kind_counts"].get(kind,0)+count
+        for head,current_cell in current["heads"].items():
+            target_cell=combined["heads"][head]
+            if "dimensions" in current_cell:
+                for dimension,current_dimension in current_cell["dimensions"].items():
+                    target_dimension=target_cell["dimensions"][dimension]
+                    for method,current_metric in current_dimension.items():
+                        target_metric=target_dimension[method]
+                        target_by_kind=target_metric.setdefault("by_sample_kind",{})
+                        for kind,current_kind in current_metric.get("by_sample_kind",{}).items():
+                            target_by_kind[kind]=merge_metric(target_by_kind[kind],current_kind) if kind in target_by_kind else current_kind
+                        merged=merge_metric(target_metric,current_metric)
+                        merged["by_sample_kind"]=target_by_kind
+                        target_dimension[method]=merged
+            else:
+                for method,current_metric in current_cell.items():
+                    if method not in ("model","persistence","public_kinematics"):
+                        target_cell[method]=current_metric
+                        continue
+                    target_metric=target_cell[method]
+                    target_by_kind=target_metric.setdefault("by_sample_kind",{})
+                    for kind,current_kind in current_metric.get("by_sample_kind",{}).items():
+                        target_by_kind[kind]=merge_metric(target_by_kind[kind],current_kind) if kind in target_by_kind else current_kind
+                    merged=merge_metric(target_metric,current_metric)
+                    merged["by_sample_kind"]=target_by_kind
+                    target_cell[method]=merged
+    if combined is None:
+        raise ValueError("V4_PREDICTION_EVALUATION_EMPTY_GROUPS")
+    return combined

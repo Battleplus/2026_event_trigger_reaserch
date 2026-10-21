@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "fixture_kind": "real_frozen_train_scenario_single_update_witness",
+  "parent_id": "v33-train-none_or_light-search_rescue-n3-000-00008201",
+  "variant": "Event-G-WM",
+  "device": "NVIDIA GeForce RTX 2080 Ti",
+  "actor_updates": 1,
+  "critic_updates": 1,
+  "actor_parameter_delta_l2": 0.07146543347411952,
+  "critic_parameter_delta_l2": 0.04925974298927967,
+  "optimizer_state_entries_restored": 60,
+  "fresh_process_prediction_match": true,
+  "world_model_state_unchanged": true,
+  "world_model_prediction_unchanged": true,
+  "world_model_source": "seeded_untrained_fixture",
+  "scope": "Engineering update and restore verification only; formal world-model and PPO training not run."
+}

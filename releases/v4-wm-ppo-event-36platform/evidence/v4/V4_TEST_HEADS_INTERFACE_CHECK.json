@@ -1,0 +1,45 @@
+{
+  "schema": "v4-test-heads-interface-check/1",
+  "source_shard": "runs/v4-formal-20261021-01/model_samples/train/v33-train-none_or_light-search_rescue-n3-000-00008201.json.gz",
+  "fixture": "Three untrained CPU V4DynamicWorldModel instances, seeded 8201, 8202, 8203.",
+  "split": "validation; two copied in-memory rows from the train shard",
+  "sample_kinds": {
+    "trajectory_one_step": 1,
+    "ten_minute_branch": 1
+  },
+  "comparison": "One batch of two samples versus two one-sample groups.",
+  "comparison_tolerance": 1e-6,
+  "all_heads_and_methods_match": true,
+  "max_absolute_metric_delta": 1.0244548320770264e-8,
+  "scalar_model_metrics": {
+    "progress": {"one_step_valid_count": 0, "branch_valid_count": 1, "branch_mae": 0.2219388782978058, "branch_rmse": 0.2219388782978058, "branch_brier": null},
+    "delay": {"one_step_valid_count": 0, "branch_valid_count": 1, "branch_mae": 0.004265195224434137, "branch_rmse": 0.004265195224434137, "branch_brier": null},
+    "energy": {"one_step_valid_count": 0, "branch_valid_count": 1, "branch_mae": 133.3297119140625, "branch_rmse": 133.3297119140625, "branch_brier": null},
+    "failure": {"one_step_valid_count": 0, "branch_valid_count": 1, "branch_mae": 0.5137864947319031, "branch_rmse": 0.5137864947319031, "branch_brier": 0.26397656216889587},
+    "communication_risk": {"one_step_valid_count": 0, "branch_valid_count": 1, "branch_mae": 0.5004571080207825, "branch_rmse": 0.5004571080207825, "branch_brier": 0.25045731696852513}
+  },
+  "next_minute_valid_counts_by_kind": {
+    "x_delta_km": {"trajectory_one_step": 54, "ten_minute_branch": 54, "grouped_total": 108},
+    "y_delta_km": {"trajectory_one_step": 54, "ten_minute_branch": 54, "grouped_total": 108},
+    "energy_delta": {"trajectory_one_step": 36, "ten_minute_branch": 36, "grouped_total": 72},
+    "progress_delta": {"trajectory_one_step": 18, "ten_minute_branch": 18, "grouped_total": 36}
+  },
+  "heterogeneous_batch_baseline_padding_check": {
+    "source_rows": "First trajectory_one_step and first ten_minute_branch rows from the same train shard.",
+    "node_count_by_sample": [97, 101],
+    "padded_node_dimension": 101,
+    "fixture": "Three untrained CPU V4DynamicWorldModel instances, seeded 8201, 8202, 8203.",
+    "prior_behavior": "The batch evaluator raised IndexError because the 97-node public baseline was indexed with a 101-node padded label mask.",
+    "post_fix_behavior": "Baseline is aligned to the padded target tensor; padding remains invalid and is never filled with labels.",
+    "padding_valid_mask_any_by_sample": [false, false],
+    "valid_counts": {
+      "trajectory_one_step": {"next_minute": 162, "progress": 0, "delay": 0, "energy": 0, "failure": 0, "communication_risk": 0},
+      "ten_minute_branch": {"next_minute": 174, "progress": 1, "delay": 1, "energy": 1, "failure": 1, "communication_risk": 1}
+    },
+    "single_batch_vs_two_single_sample_groups": {
+      "all_heads_and_methods_match": true,
+      "tolerance": 1e-6,
+      "max_absolute_metric_delta": 1.6347621561996206e-8
+    }
+  }
+}

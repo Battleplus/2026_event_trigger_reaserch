@@ -1,0 +1,827 @@
+{
+  "schema": "v4-execution-evidence-check/1",
+  "scenario_id": "v33-train-compound-search_rescue-n3-000-00014201",
+  "variant": "Event-G",
+  "source": "saved fixed-threshold compound actions replayed through EventReliefEnv; no PPO inference or calibration",
+  "replay": {
+    "expected_minutes": 90,
+    "completed_minutes": 90,
+    "complete": true,
+    "saved_compound_action_count": 17,
+    "safety_disposition_resolved_each_minute": true
+  },
+  "scope": "observed_public_task_queue_feasibility",
+  "causal_limit": "Entity overlap is associative evidence, not proof of causation; this does not assess complete physical or flight safety.",
+  "submitted_dispatch_execution_status_counts": {
+    "confirmed": 54,
+    "unconfirmed": 0,
+    "rejected": 16
+  },
+  "external_event_type_counts": {
+    "communication_changed": 1,
+    "energy_fraction_drop": 1,
+    "environment_changed": 1,
+    "platform_failed": 1,
+    "platform_failure": 1,
+    "priority_change": 1,
+    "task_arrived": 9
+  },
+  "rejection_reason_counts": {
+    "platform_busy": 15,
+    "task_unavailable": 1
+  },
+  "rejection_source_counts": {
+    "communication_pending": 16
+  },
+  "new_risk_attribution_counts": {
+    "controllable": 0,
+    "external": 0,
+    "unknown": 0
+  },
+  "unknown_status": "none_observed_in_this_replay",
+  "guardrail_interpretation": "No unknown attribution observed in this replay; conclusion is limited to the stated scope.",
+  "minutes": [
+    {
+      "time": 0,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 18
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 1,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 2,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 3,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 4,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 5,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 1,
+        "rejected": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 6,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 3,
+        "rejected": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 7,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 2,
+        "rejected": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 8,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 4,
+        "rejected": 2
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 9,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 1,
+        "rejected": 5
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 10,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 2,
+        "rejected": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 11,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 1,
+        "rejected": 2
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 12,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 13,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 14,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 15,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 3
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 16,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 17,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 18,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 19,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 20,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 21,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "task_arrived": 3
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 22,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "communication_changed": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 23,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 3
+      },
+      "external_event_type_counts": {
+        "task_arrived": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 24,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "task_arrived": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 25,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "task_arrived": 4
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 26,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 3
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 27,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 3,
+        "rejected": 2
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 28,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 29,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 30,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 2,
+        "rejected": 1
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 31,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 32,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 33,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 34,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 35,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 4
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 36,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 37,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {
+        "confirmed": 2
+      },
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 38,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 39,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "energy_fraction_drop": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 40,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 41,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 42,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 43,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 44,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 45,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 46,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 47,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 48,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 49,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 50,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 51,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 52,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 53,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 54,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 55,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 56,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "environment_changed": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 57,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 58,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 59,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 60,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 61,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 62,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 63,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 64,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 65,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 66,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 67,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 68,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 69,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 70,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "platform_failed": 1,
+        "platform_failure": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 71,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 72,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 73,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 74,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 75,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 76,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 77,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {
+        "priority_change": 1
+      },
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 78,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 79,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 80,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 81,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 82,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 83,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 84,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 85,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 86,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 87,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 88,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    },
+    {
+      "time": 89,
+      "pre_action_violation_count": 0,
+      "post_step_violation_count": 0,
+      "submitted_dispatch_status_counts": {},
+      "external_event_type_counts": {},
+      "new_risk_attribution_counts": {}
+    }
+  ]
+}
