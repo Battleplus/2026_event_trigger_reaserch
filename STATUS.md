@@ -52,3 +52,6 @@ GPU preflight found2 RTX2080Ti, but default PyTorch import fails on CUDA depende
 Exact runnable source: releases/gain-gate-v3-2-performance-light. Final93 source-file hashes and7 shard bindings match executed source. Public source/configuration, hashes, safe summaries, resource and review reports are archived; raw large traces are retained locally and excluded from public push.
 
 See reviews/V32_COORDINATOR_DECISION.md and reviews/V32_EXPERIMENT_AUDIT.md. This branch does not change the unrelated Isaac/full-world-model research. No successful stage tag is created.
+# V3.3 full collection conclusion (2026-10-21)
+
+The frozen 168-scenario collection is complete and independently analyzed. The result is `COMPLETE_168_GATE_NOT_MET`: 2,880 unique states yielded 417 evaluable ordinary states, only 3 positive gains and 414 negative gains, so the 30/30 training gate was not met. Cross-region actions were generated and executed, but the 12 ordinary selected cross-region states had descriptive global `J_total` replan-minus-keep of +0.184677; this is not a causal cross-region estimate and does not support a global effectiveness claim. Gain models, GPU MLP, world model, and PPO were not run. See `reports/v33-conclusion-final-168/FINAL_CONCLUSION.md`.

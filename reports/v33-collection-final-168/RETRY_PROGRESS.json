@@ -1,0 +1,99 @@
+{
+  "binding": {
+    "baseline_provenance_sha256": "ed9825f41c3ae7911e89ebaf91596e36b4c361bcdee9269273fda14335a84805",
+    "config_files": [
+      {
+        "path": "ENVIRONMENT_SPEC.json",
+        "sha256": "9412babf506df7a010eddd7703a5cedc8c362ae0b695b5626332ea7f01198ce0"
+      },
+      {
+        "path": "EVENT_TRIGGER_CONFIG.json",
+        "sha256": "45b20d8069c016888d91db740b39c982e1ca65cd72b50d928f12210b3c9b0009"
+      },
+      {
+        "path": "GAIN_GATE_CONFIG.json",
+        "sha256": "08c9c523f3301c1235cc35c7d87bcfb04b9afdda4d0578a6a06061960ed85859"
+      }
+    ],
+    "config_sha256": "dabe15ad5f5640859973e290e165ea528c2618a939a3f83791824a3235764404",
+    "evidence_sha256": "f4e8a54690838e5659534a39b9e514702100f314b445b7e83faad015ebda7fde",
+    "source_manifest_sha256": "63375d3ac2ac7d571e2a2994f464ab6a84667c2f81eab0485ccfe4a9e64d1dd9"
+  },
+  "completed": [
+    "v33-train-communication_degradation-search_rescue-n3-001-00012202",
+    "v33-train-communication_degradation-search_rescue-n3-010-00012211",
+    "v33-train-compound-search_rescue-n3-000-00014201",
+    "v33-train-compound-search_rescue-n3-001-00014202",
+    "v33-train-compound-search_rescue-n3-003-00014204",
+    "v33-train-compound-search_rescue-n3-005-00014206",
+    "v33-train-compound-search_rescue-n3-006-00014207",
+    "v33-train-compound-search_rescue-n3-007-00014208",
+    "v33-train-compound-search_rescue-n3-008-00014209",
+    "v33-train-compound-search_rescue-n3-009-00014210",
+    "v33-train-compound-search_rescue-n3-010-00014211",
+    "v33-train-compound-search_rescue-n3-011-00014212",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-000-00013201",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-001-00013202",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-003-00013204",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-004-00013205",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-005-00013206",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-006-00013207",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-008-00013209",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-009-00013210",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-010-00013211",
+    "v33-train-environment_or_obstacle_change-search_rescue-n3-011-00013212",
+    "v33-validation-communication_degradation-search_rescue-n3-010-00112211",
+    "v33-validation-compound-search_rescue-n3-000-00114201",
+    "v33-validation-compound-search_rescue-n3-001-00114202",
+    "v33-validation-compound-search_rescue-n3-002-00114203",
+    "v33-validation-compound-search_rescue-n3-003-00114204",
+    "v33-validation-compound-search_rescue-n3-004-00114205",
+    "v33-validation-compound-search_rescue-n3-005-00114206",
+    "v33-validation-compound-search_rescue-n3-006-00114207",
+    "v33-validation-compound-search_rescue-n3-007-00114208",
+    "v33-validation-compound-search_rescue-n3-008-00114209",
+    "v33-validation-compound-search_rescue-n3-009-00114210",
+    "v33-validation-compound-search_rescue-n3-010-00114211",
+    "v33-validation-compound-search_rescue-n3-011-00114212",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-000-00113201",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-001-00113202",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-002-00113203",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-003-00113204",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-004-00113205",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-005-00113206",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-006-00113207",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-007-00113208",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-008-00113209",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-009-00113210",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-010-00113211",
+    "v33-validation-environment_or_obstacle_change-search_rescue-n3-011-00113212"
+  ],
+  "failures": [
+    {
+      "ordinal": 146,
+      "returncode": 1,
+      "scenario_id": "v33-train-compound-search_rescue-n3-002-00014203",
+      "stderr_log": "runs-v33\\v33-collect-resume-20261020T075751Z-cf8baae09a4a\\jobs\\retry-146.stderr.log"
+    },
+    {
+      "ordinal": 148,
+      "returncode": 4294967295,
+      "scenario_id": "v33-train-compound-search_rescue-n3-004-00014205",
+      "stderr_log": "runs-v33\\v33-collect-resume-20261020T075751Z-cf8baae09a4a\\jobs\\retry-148.stderr.log"
+    },
+    {
+      "ordinal": 127,
+      "returncode": 4294967295,
+      "scenario_id": "v33-train-environment_or_obstacle_change-search_rescue-n3-007-00013208",
+      "stderr_log": "runs-v33\\v33-collect-resume-20261020T075751Z-cf8baae09a4a\\jobs\\retry-127.stderr.log"
+    }
+  ],
+  "finished_unix": 1792559787.1525266,
+  "pending_at_start": 24,
+  "remaining": 0,
+  "run_id": "v33-collect-resume-20261020T075751Z-cf8baae09a4a",
+  "schema": "gain-gate-v33-sequential-finish/1",
+  "started_unix": 1792520719.5303159,
+  "updated_unix": 1792559692.16706,
+  "verified_committed": 168
+}
