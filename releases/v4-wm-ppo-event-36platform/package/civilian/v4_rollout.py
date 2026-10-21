@@ -273,10 +273,12 @@ def _step_execution_evidence(observation: dict, repaired: dict, info: dict,
                 and platform_id in current_owners)
         )
         confirmed = pair in owner_pairs or state_confirmed
+        rejected = pair in rejected_pairs
         submitted_dispatches.append({**copy.deepcopy(row), "execution_status":
-                                     "rejected" if pair in rejected_pairs else "confirmed" if confirmed else "unconfirmed"})
+                                     "rejected" if rejected else "confirmed" if confirmed else "unconfirmed"})
         entities = {("platform", platform_id), ("task", task_id)}
-        (action_entities if confirmed else unconfirmed_action_entities).update(entities)
+        if not rejected:
+            (action_entities if confirmed else unconfirmed_action_entities).update(entities)
     queue_changes = []
     for receipt in info.get("operation_receipts", []):
         if not isinstance(receipt, dict):

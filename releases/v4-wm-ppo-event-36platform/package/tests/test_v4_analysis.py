@@ -145,3 +145,9 @@ def test_dispatch_execution_status_requires_public_state_change():
                                         {"violations": []}, risk, after)
     assert evidence["submitted_to_execution_dispatches"][0]["execution_status"] == "unconfirmed"
     assert evidence["new_risks"][0]["attribution"] == "unknown"
+
+    rejected = [{"type": "dispatch_rejected", "platform_id": "p1", "task_id": "t1"}]
+    evidence = _step_execution_evidence(before, {"dispatches": [dispatch]}, info, rejected,
+                                        {"violations": []}, risk, after)
+    assert evidence["submitted_to_execution_dispatches"][0]["execution_status"] == "rejected"
+    assert evidence["new_risks"][0]["attribution"] == "unknown"
