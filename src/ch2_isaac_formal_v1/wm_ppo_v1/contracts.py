@@ -32,6 +32,11 @@ class PublicHistoryFrame:
     tasks: Sequence[Mapping[str, Any]] = field(default_factory=tuple)
     observations: Sequence[Mapping[str, Any]] = field(default_factory=tuple)
     event: Mapping[str, Any] = field(default_factory=dict)
+    public_events: Sequence[Mapping[str, Any]] = field(default_factory=tuple)
+    action: Mapping[str, Any] | None = None
+    # Explicit public join keys; never copied to numeric features.
+    node_keys: Sequence[str | None] = field(default_factory=tuple, repr=False)
+    task_owners: Sequence[str | None] = field(default_factory=tuple, repr=False)
 
 
 @dataclass(frozen=True)
@@ -58,6 +63,11 @@ class DynamicGraphBatch:
     node_features: Any
     node_mask: Any
     sequence_mask: Any
+    edge_index: Any | None = None
+    edge_mask: Any | None = None
+    edge_type: Any | None = None
+    event_features: Any | None = None
+    action_features: Any | None = None
     dynamic_target: Any | None = None
     gain_target: Any | None = None
     dynamic_target_mask: Any | None = None

@@ -14,8 +14,11 @@ PUBLIC_FIELD_SOURCES = {
     "platform.velocity": "projection.aircraft[*].velocity_mps",
     "platform.energy": "projection.aircraft[*].available_energy_wh",
     "platform.status": "projection.aircraft[*].kind/home_zone/available/faulted/safety_paused/communication_held",
-    "task.assignment_and_queue": "projection.aircraft[*].active_task_ids/queue_task_ids (IDs used only for joins/count/order)",
+    "task.assignment_and_queue": "projection.public_tasks activated-task mapping; aircraft queues used for joins/order",
     "observation": "projection.public_observations[*], filtered by available_at_sim_time_s <= frame time",
+    "tasks": "projection.public_tasks[*], only tasks already activated; IDs used only for joins",
+    "events": "public events with sim_time_s <= frame time",
+    "action": "projection.applied_action when explicitly public; absent action is masked",
     "task_progress_target": "public search_cell_complete events in (t, t+1] when event logging is complete",
     "energy_delta_target": "difference of mean available_energy_wh across matching public aircraft keys",
     "delay_target": "public transmission_sent to command_applied elapsed time, joined by decision_id",
@@ -63,6 +66,7 @@ def public_projection_to_frame(projection: Mapping[str, Any]) -> PublicHistoryFr
         raise ValueError("projection must contain public aircraft and public_observations")
     platforms = []
     task_nodes = []
+    task_owners = []
     for _aircraft_id, row in sorted(aircraft.items(), key=lambda item: str(item[0])):
         if not isinstance(row, Mapping):
             raise ValueError("public aircraft entry must be an object")
@@ -101,12 +105,8 @@ def public_projection_to_frame(projection: Mapping[str, Any]) -> PublicHistoryFr
             "queue_length_norm": min(1.0, len(queue_ids) / 36.0),
             "active_task_count_norm": min(1.0, len(active_ids) / 4.0),
             "queue_data_known": queue_known,
+            "_public_zone": home_zone,
         })
-        for index, _task_id in enumerate(queue_ids):
-            task_nodes.append({"active": _task_id in active_ids,
-                               "queue_position_norm": index / max(1, len(queue_ids) - 1),
-                               "queue_length_norm": min(1.0, len(queue_ids) / 36.0)})
-
     observation_nodes = []
     for item in observations:
         if not isinstance(item, Mapping):
@@ -116,8 +116,9 @@ def public_projection_to_frame(projection: Mapping[str, Any]) -> PublicHistoryFr
             continue
         observed_at = _number(item.get("observed_at_sim_time_s"))
         xy = item.get("target_xy_km")
-        node: dict[str, float] = {"active": 1.0,
-                                  "age_norm": max(0.0, (time_s - available_at) / 5400.0)}
+        node: dict[str, Any] = {"active": 1.0,
+                                "age_norm": max(0.0, (time_s - available_at) / 5400.0),
+                                "_public_zone": _number(item.get("zone"))}
         if observed_at is not None:
             node["availability_delay_norm"] = max(0.0, (available_at - observed_at) / 5400.0)
         if isinstance(xy, Sequence) and len(xy) >= 2:
@@ -126,14 +127,73 @@ def public_projection_to_frame(projection: Mapping[str, Any]) -> PublicHistoryFr
                 node["x_norm"] = x / 300.0
                 node["y_norm"] = y / 300.0
         observation_nodes.append(node)
+    public_tasks = projection.get("public_tasks")
+    if isinstance(public_tasks, Mapping):
+        queue_positions = {}
+        for aid, row in aircraft.items():
+            for index, task_id in enumerate(row.get("queue_task_ids", ())):
+                queue_positions[str(task_id)] = (index, len(row.get("queue_task_ids", ())))
+        for task_id, record in sorted(public_tasks.items(), key=lambda item: str(item[0])):
+            if not isinstance(record, Mapping):
+                continue
+            task_id = str(task_id)
+            assignment = record.get("assignment")
+            owner = str(assignment) if assignment is not None else None
+            zone = _number(record.get("zone"))
+            node: dict[str, Any] = {"_public_id": task_id, "_owner_id": owner,
+                "_public_zone": zone, "task_public_data_known": True,
+                "active": bool(record.get("active", False)),
+                "completed": bool(record.get("completed", False))}
+            xy = record.get("public_xy_km")
+            if zone is not None:
+                node["home_zone_norm"] = zone / 8.0
+            if isinstance(xy, Sequence) and not isinstance(xy, (str, bytes)) and len(xy) >= 2:
+                x, y = _number(xy[0]), _number(xy[1])
+                if x is not None and y is not None:
+                    node["x_norm"] = x / 300.0
+                    node["y_norm"] = y / 300.0
+            queue_info = queue_positions.get(task_id)
+            position = record.get("queue_position")
+            if position is None and queue_info is not None:
+                position, queue_len = queue_info
+            else:
+                queue_len = max(1, len(aircraft.get(owner, {}).get("queue_task_ids", ())))
+            if position is not None:
+                node["queue_position_norm"] = float(position) / max(1, queue_len - 1)
+                node["queue_length_norm"] = min(1.0, queue_len / 36.0)
+            task_nodes.append(node)
+            task_owners.append(owner)
+    else:
+        # Legacy sparse projections retain queue nodes while marking task metadata unknown.
+        for aid, row in aircraft.items():
+            queue_ids = row.get("queue_task_ids", ())
+            active_ids = set(row.get("active_task_ids", ()))
+            for index, task_id in enumerate(queue_ids):
+                task_nodes.append({"_public_id": str(task_id), "_owner_id": str(aid),
+                    "task_public_data_known": False, "active": str(task_id) in active_ids,
+                    "queue_position_norm": index / max(1, len(queue_ids) - 1),
+                    "queue_length_norm": min(1.0, len(queue_ids) / 36.0)})
+                task_owners.append(str(aid))
+    node_keys = ([str(key) for key in sorted(aircraft, key=str)]
+                 + [str(node["_public_id"]) for node in task_nodes]
+                 + [None] * len(observation_nodes))
+    action = projection.get("applied_action")
+    if not isinstance(action, Mapping):
+        action = None
     return PublicHistoryFrame(time_s=float(time_s), platforms=tuple(platforms),
                               tasks=tuple(task_nodes), observations=tuple(observation_nodes),
-                              event={})
+                              event={}, action=action, node_keys=tuple(node_keys),
+                              task_owners=tuple([None] * len(platforms) + task_owners + [None] * len(observation_nodes)))
 
 
 def _event_time(event: Mapping[str, Any]) -> int | None:
     value = _number(event.get("sim_time_s"))
     return int(value) if value is not None and value.is_integer() else None
+
+
+def _event_available_time(event: Mapping[str, Any]) -> int | None:
+    value = _number(event.get("available_at_sim_time_s"))
+    return _event_time(event) if value is None else (int(value) if value.is_integer() else None)
 
 
 def build_public_one_step_example(
@@ -151,7 +211,17 @@ def build_public_one_step_example(
     if any(right - left != 1 for left, right in zip(times, times[1:])):
         raise ValueError("public one-step history must contain adjacent 1-second snapshots")
     start_time, target_time = times[-2], times[-1]
-    frames = [public_projection_to_frame(item) for item in projections]
+    frames = []
+    for projection, tick in zip(projections, times):
+        frame = public_projection_to_frame(projection)
+        visible_events = tuple(event for event in events if isinstance(event, Mapping)
+                               and _event_time(event) is not None and _event_time(event) <= tick
+                               and _event_available_time(event) is not None
+                               and _event_available_time(event) <= tick)
+        frames.append(PublicHistoryFrame(time_s=frame.time_s, platforms=frame.platforms,
+            tasks=frame.tasks, observations=frame.observations, event=frame.event,
+            public_events=visible_events, action=frame.action, node_keys=frame.node_keys,
+            task_owners=frame.task_owners))
     if gain_label is not None and (not gain_label_valid or _number(gain_label) is None):
         raise ValueError("gain label requires an independently validated finite paired label")
     if gain_label_valid and gain_label is None:
