@@ -54,6 +54,19 @@ The `g` and `g-wm` entry stages emit `NOT_RUN`; `ppo_entry.py` also remains
 The scope review in `collection/progress/WM_SUPERVISION_SCOPE_REVIEW_20261022.md`
 defines the limits of the available public targets.
 
+`ppo_core.py` now provides the masked-candidate graph actor/critic, variable-
+interval GAE and clipped PPO optimizer for a future rollout caller. It is not
+wired to Isaac. The G-WM critic-only auxiliary path distills frozen WM
+one-step outputs for an actually executed action with explicit per-dimension
+joint-support masks. Public candidate descriptors are separate from five-value
+WM action summaries. Current collected action support and train-split
+dynamic-target scale evidence are missing, so real G-WM auxiliary training
+remains unavailable until those inputs are recorded and validated. An update
+with no valid auxiliary elements reports `UNAVAILABLE_G_EQUIVALENT` and cannot
+be counted as G-WM. The WM gain adapter is wired to the local
+`closedloop_v1` catalogue gate, while real Isaac/PPO execution remains
+`NOT_RUN`. The focused CPU test is synthetic and does not change that status.
+
 Each completed world-model seed writes `gain_deployment.json` with validation
 selection/calibration roles, selection-only threshold, calibration-only lower
 residual bound, validation predictions and the checkpoint SHA-256. Validation
