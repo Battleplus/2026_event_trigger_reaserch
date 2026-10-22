@@ -60,4 +60,3 @@ def incremental_cost(ledger: CostLedger, actor_count: int = 36) -> float:
         + 0.01 * (ledger.changed_actors / actor_count)
         + 0.01 * ledger.planning_cpu_seconds_increment
     )
-
