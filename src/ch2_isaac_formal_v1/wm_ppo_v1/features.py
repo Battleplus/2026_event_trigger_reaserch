@@ -49,7 +49,9 @@ FEATURE_NAMES = (
 FEATURE_DIM = len(FEATURE_NAMES)
 EVENT_NAMES = ("search_cell_complete", "platform_fault", "communication_safety_hold",
                "energy_safety_hold", "safety_violation", "boundary_violation",
-               "constraint_violation", "transmission_sent", "command_applied")
+               "constraint_violation", "transmission_sent", "command_applied",
+               "task_activated", "public_observation", "energy_anomaly")
+EVENT_SCHEMA_VERSION = "public_events_v2"
 EVENT_DIM = len(EVENT_NAMES)
 ACTION_DIM = 5  # known, applied, normalized magnitude, normalized duration, held
 EDGE_PLATFORM_TASK = 1

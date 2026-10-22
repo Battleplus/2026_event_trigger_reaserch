@@ -188,7 +188,13 @@
     "formal_evidence_v1/aggregate.py": "c0af81cf216e5e516055137c26f134f38aba914aba4d75167acfcbc81f0c6149",
     "formal_evidence_v1/evaluate_suffix.py": "922115b741809349633a8d08b93b7b3fe1016d13b8b96d7dbd1076e40bbee181",
     "formal_evidence_v1/test_formal_evidence.py": "e62d23fa090f1272592ffe90c990786f5c214a38a2600d5f1e3fad14d4f5df37",
-    "protocols/FROZEN_SCALAR_PROTOCOL_V1.md": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec"
+    "protocols/FROZEN_SCALAR_PROTOCOL_V1.md": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec",
+    "protocols/CURRENT_OBJECTIVE.md": "f4408c4926a7a255105e1c6ba0828a45849df0bb8a58372bffd3673f20087cbe",
+    "wm_ppo_v1/decision_windows.py": "07df2864c47dac93a54498c31284b9ff7835c6aad667cceec20c11a4212be633",
+    "wm_ppo_v1/features.py": "e1e01a7e6e36f7eed5da7ef745993699e616caaf96ca6aed7b91f2aa5de1d1e0",
+    "wm_ppo_v1/world_model.py": "88e48dff9dc420876e7900448339056922736e3776945327a0ad00fb8b9ee0ab",
+    "wm_ppo_v1/tests/test_decision_windows.py": "7c39430cbe038e149c1c08ffaec9c93b8364091f7b8fff7c2780df0c9fd55950",
+    "wm_ppo_v1/DECISION_WINDOWS_SCOPE.md": "52638c307bb6b5969ab21fadd43234d1b2aa02c7d536771aaf53ef0c158ce9b6"
   },
   "pilot": "NOT_RUN",
   "prerequisite_representative_gate": false,

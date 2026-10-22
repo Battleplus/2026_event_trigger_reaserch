@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from .features import EVENT_DIM
+
 try:
     import torch
     from torch import Tensor, nn
@@ -23,7 +25,7 @@ if torch is not None:
         """Shared node encoder, masked graph pool, one-step GRU and heads."""
 
         def __init__(self, node_dim: int, hidden_dim: int = 64, dynamic_dim: int = 4,
-                     event_dim: int = 9, action_dim: int = 5) -> None:
+                     event_dim: int = EVENT_DIM, action_dim: int = 5) -> None:
             super().__init__()
             self.node_encoder = nn.Sequential(nn.Linear(node_dim, hidden_dim), nn.ReLU())
             self.message = nn.Linear(hidden_dim, hidden_dim, bias=False)
