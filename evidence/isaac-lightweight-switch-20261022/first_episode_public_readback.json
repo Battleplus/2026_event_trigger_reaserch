@@ -1,0 +1,11 @@
+{
+  "schema": "lightweight_first_episode_public_readback_v1",
+  "observed_at_utc": "2026-10-22T10:12:03.636519+00:00",
+  "simulated_seconds": 5400,
+  "last_time_s": 5400,
+  "future_public_observations": 0,
+  "ordinary_suppressed_decisions_recorded": 5,
+  "source_manifest_sha256": "4dd57d933374c7525cc6167ca06af3535cb9da1aa827b8196e8a4a392288ada3",
+  "representative_status": "complete",
+  "scope": "first new representative episode public state reconstruction only; paired suffixes still acquiring"
+}

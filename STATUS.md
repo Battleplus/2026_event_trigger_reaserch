@@ -1,3 +1,19 @@
+# Actual lightweight collection: 2026-10-22
+
+The Isaac acquisition has switched to the reviewed lightweight V2 source.
+92 old scenes are preserved; the remaining 76 registered scenes are being
+acquired with public 1-second deltas, static data once, immediate events and
+lossless private paired evidence. GPU1 only. Seven focused tests and one real
+suffix format/independent-scalar comparison passed. The first new 90-minute representative episode has completed, with
+5400 one-second records independently read back; its paired suffixes are running.
+Union reduction, 30/30,
+training and scientific conclusions are pending. See
+[evidence and limited review](evidence/isaac-lightweight-switch-20261022/REVIEW.md).
+
+Historical checkpoints below describe their observation times.
+
+---
+
 # Collection source preparation: 2026-10-20
 
 A separate local capture runner now selects up to eight ordinary states before candidate generation and separates trusted private snapshots from whitelisted public input. Three sampler tests and two service-safety tests passed; source review is provisional for integration. Isaac capture is NOT_RUN; two-suffix rollout and independent service trajectory reduction are NOT_IMPLEMENTED. attempt008 is unchanged and its remote deployment authorization remains pending. See [capture source](src/isaac_roi_capture_local_v1/) and [review](evidence/isaac-roi-capture-local-v1/REVIEW.md).
