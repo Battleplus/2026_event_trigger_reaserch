@@ -45,6 +45,202 @@ def _fail(reason: str, hashes: dict[str, str] | None = None) -> dict[str, Any]:
             "valid_mask": False, "reasons": [reason], "input_sha256": hashes or {}}
 
 
+def _finite_number(value: Any) -> float | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    result = float(value)
+    return result if math.isfinite(result) else None
+
+
+def _forced_safety_evidence(cfg: dict[str, Any], events: list[dict[str, Any]],
+                            states: dict[tuple[int, str], dict[str, Any]],
+                            duration: int, actor_by_id: dict[str, dict[str, Any]],
+                            energy_hold_expectations: list[tuple[int, str]]) -> dict[str, Any]:
+    """Cross-check forced-event records against persisted actor state and command effects."""
+    mechanisms = cfg.get("mechanisms")
+    schedule = cfg.get("evaluator_schedule", {}).get("disturbances", {})
+    specs: list[tuple[str, str, int, str]] = []
+    unknown_expectations = []
+
+    def enabled(name: str) -> bool | None:
+        item = mechanisms.get(name) if isinstance(mechanisms, dict) else None
+        value = item.get("enabled") if isinstance(item, dict) else None
+        return value if isinstance(value, bool) else None
+
+    platform_item = mechanisms.get("platform_fault") if isinstance(mechanisms, dict) else None
+    platform_enabled = (platform_item.get("enabled", True) if isinstance(platform_item, dict) else True)
+    if platform_enabled:
+        t_value = _finite_number(schedule.get("platform_fault_time_s", 900))
+        if t_value is None:
+            unknown_expectations.append("platform_fault_time")
+            t_value = None
+        t = int(t_value) if t_value is not None else 0
+        if 1 <= t <= duration:
+            specs.append(("platform_fault", "uav-0-0", t, "hold"))
+
+    comm_item = mechanisms.get("communication_outage") if isinstance(mechanisms, dict) else None
+    comm_enabled = (comm_item.get("enabled", True) if isinstance(comm_item, dict) else True)
+    if comm_enabled:
+        start_value = _finite_number(schedule.get("communication_outage_time_s", 1800))
+        duration_value = _finite_number(schedule.get("communication_outage_duration_s", 120))
+        if start_value is None or duration_value is None:
+            unknown_expectations.append("communication_outage_timing")
+            start_value = duration_value = None
+        start = int(start_value) if start_value is not None else 0
+        end = start + int(duration_value) if duration_value is not None else 0
+        actor = "uav-1-0"
+        if 1 <= start <= duration:
+            specs.append(("communication_safety_hold", actor, start, "hold"))
+        if 1 <= end <= duration:
+            specs.append(("communication_safety_resume", actor, end, "resume"))
+
+    capacities = cfg.get("energy_capacity_wh")
+    reserve = _finite_number(cfg.get("energy_reserve_fraction"))
+    if not isinstance(capacities, dict) or reserve is None:
+        unknown_expectations.append("energy_safety_threshold")
+    else:
+        for actor_id, actor in actor_by_id.items():
+            if _finite_number(capacities.get(str(actor.get("aircraft_type")))) is None:
+                unknown_expectations.append(f"energy_capacity:{actor_id}")
+
+    for t, actor in energy_hold_expectations:
+        specs.append(("energy_safety_hold", actor, t, "hold"))
+
+    observed_by_key: dict[tuple[str, str, int], list[dict[str, Any]]] = {}
+    for event in events:
+        event_time = _finite_number(event.get("sim_time_s"))
+        if event_time is None:
+            if event.get("event") in {"platform_fault", "communication_safety_hold", "communication_safety_resume",
+                                       "energy_safety_hold"}:
+                unknown_expectations.append(f"event_time:{event.get('event_id', 'unknown_id')}")
+            continue
+        key = (str(event.get("event", "")), str(event.get("aircraft_id", "")), int(event_time))
+        if key[0] in {"platform_fault", "communication_safety_hold", "communication_safety_resume",
+                      "energy_safety_hold"}:
+            observed_by_key.setdefault(key, []).append(event)
+
+    evidence_rows = []
+    applied_count = unknown_count = mismatch_count = 0
+    spec_keys = {(kind, actor, time_s) for kind, actor, time_s, _ in specs}
+    for kind, actor, time_s, action in specs:
+        event_key = (kind, actor, time_s)
+        matches = observed_by_key.get(event_key, [])
+        expected_id = f"representative:{time_s}:{kind}:{actor}:"
+        event_id = str(matches[0].get("event_id", expected_id)) if matches else expected_id
+        reasons = []
+        if len(matches) != 1:
+            reasons.append("event_missing" if not matches else "duplicate_event")
+        current = states.get((time_s, actor))
+        if current is None:
+            reasons.append("actor_state_missing")
+        elif action == "hold":
+            flag = {"platform_fault": "faulted", "communication_safety_hold": "communication_held",
+                    "energy_safety_hold": "energy_paused"}[kind]
+            if current.get(flag) is None:
+                reasons.append("hold_state_field_unknown")
+            elif current.get(flag) is not True:
+                reasons.append("hold_state_not_observed")
+            end = (int(schedule.get("communication_outage_time_s", 1800)) +
+                   int(schedule.get("communication_outage_duration_s", 120))
+                   if kind == "communication_safety_hold" else duration + 1)
+            for check_t in range(time_s, min(duration, end - 1) + 1):
+                state = states.get((check_t, actor))
+                if state is None:
+                    reasons.append(f"followup_state_missing@{check_t}")
+                    break
+                if state.get(flag) is None:
+                    reasons.append(f"followup_state_unknown@{check_t}")
+                    break
+                if state.get(flag) is not True:
+                    reasons.append(f"hold_state_released_early@{check_t}")
+                    break
+                if state.get("displacement_m", math.inf) > 0.02:
+                    reasons.append(f"actor_moved_while_held@{check_t}")
+                    break
+        else:
+            previous = states.get((time_s - 1, actor))
+            if previous is None or previous.get("communication_held") is None:
+                reasons.append("prior_hold_state_not_observed")
+            elif previous.get("communication_held") is not True:
+                reasons.append("prior_hold_state_mismatch")
+            if current is None or current.get("communication_held") is None:
+                reasons.append("resume_state_unknown")
+            elif current.get("communication_held") is not False:
+                reasons.append("resume_state_not_observed")
+
+        # Detect a previously sent command taking effect while the forced hold is active.
+        if action == "hold":
+            release_time = (int(schedule.get("communication_outage_time_s", 1800)) +
+                            int(schedule.get("communication_outage_duration_s", 120))
+                            if kind == "communication_safety_hold" else duration + 1)
+            pending_ids = set()
+            command_time_unknown = False
+            for sent in events:
+                if (sent.get("event") != "transmission_sent"
+                        or str(sent.get("aircraft_id", "")) != actor):
+                    continue
+                sent_time = _finite_number(sent.get("sim_time_s"))
+                effect_time = _finite_number(sent.get("command_effect_sim_time_s"))
+                if sent_time is None or effect_time is None:
+                    command_time_unknown = True
+                    continue
+                if sent_time < time_s and effect_time >= time_s:
+                    if sent.get("decision_id") is None:
+                        command_time_unknown = True
+                    else:
+                        pending_ids.add(str(sent["decision_id"]))
+            if command_time_unknown:
+                reasons.append("pending_command_identity_unknown")
+            else:
+                for event in events:
+                    applied_time = _finite_number(event.get("sim_time_s"))
+                    if (event.get("event") == "command_applied"
+                            and str(event.get("aircraft_id", "")) == actor
+                            and (applied_time is None or time_s <= int(applied_time) < release_time)):
+                        if applied_time is None or event.get("decision_id") is None:
+                            reasons.append("applied_command_identity_or_time_unknown")
+                            break
+                        if str(event["decision_id"]) in pending_ids:
+                            reasons.append("pre_hold_command_applied_during_hold")
+                            break
+
+        if reasons:
+            status = "mismatch" if any(reason in {"event_missing", "duplicate_event", "hold_state_not_observed",
+                "resume_state_not_observed", "prior_hold_state_mismatch"} or reason.startswith("hold_state_released_early") or reason.startswith("actor_moved")
+                or reason.startswith("pre_hold_command") for reason in reasons) else "unknown"
+        else:
+            status = "applied"
+        applied_count += status == "applied"
+        unknown_count += status == "unknown"
+        mismatch_count += status == "mismatch"
+        evidence_rows.append({"event_id": event_id, "event": kind, "aircraft_id": actor,
+                              "sim_time_s": time_s, "status": status, "reasons": reasons,
+                              "state_evidence": "trajectory flags, position displacement, and command_applied events"})
+
+    unexpected = []
+    for key, matches in observed_by_key.items():
+        if key in spec_keys:
+            continue
+        for event in matches:
+            unexpected.append(str(event.get("event_id", ":".join(map(str, key)))))
+            mismatch_count += 1
+    unknown_count += len(unknown_expectations)
+    pause_resume_actions_applied = (not unknown_expectations and not unexpected
+                   and all(row["status"] == "applied" for row in evidence_rows))
+    return {"all_forced_safety_actions_applied": None,
+            "pause_resume_actions_applied": pause_resume_actions_applied,
+            "forced_safety_action_counts": {"expected": len(specs), "applied": applied_count,
+                "unknown": unknown_count, "mismatch": mismatch_count},
+            "forced_safety_action_events": evidence_rows,
+            "unknown_expected_event_families": unknown_expectations,
+            "unexpected_event_ids": unexpected,
+            "evidence_scope": "observable actor pause/resume, stationary follow-up, and pre-hold command effects; fault task queue release is not observed",
+            "runtime_default_sources": {"platform_fault_time_s": "runtime.py default 900 s when absent",
+                "communication_outage_time_s": "runtime.py default 1800 s when absent",
+                "communication_outage_duration_s": "runtime.py default 120 s when absent",
+                "mechanism_enabled": "runtime.py mechanism_enabled defaults enabled=true when mechanism configuration is absent"}}
+
+
 def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
                    trajectory_rows: Iterable[dict[str, Any]],
                    event_rows: Iterable[dict[str, Any]],
@@ -102,6 +298,9 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
     energy_paused_actor_seconds = 0
     geometry_checks = 0
     energy_checks = 0
+    safety_states: dict[tuple[int, str], dict[str, Any]] = {}
+    energy_hold_expectations: list[tuple[int, str]] = []
+    energy_hold_expected_actors: set[str] = set()
     safety_position_checks = 0
     aircraft_constraint_checks = 0
     previous_energy_pause: dict[str, bool] = {}
@@ -142,6 +341,17 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
         for aid, row in rows.items():
             row_count += 1
             row_actor = actor_by_id[aid]
+            capacities = cfg.get("energy_capacity_wh", {})
+            reserve_fraction = _finite_number(cfg.get("energy_reserve_fraction"))
+            capacity = (_finite_number(capacities.get(str(row_actor.get("aircraft_type"))))
+                        if isinstance(capacities, dict) else None)
+            # Runtime checks reserve before this tick's backend step. Energy spent
+            # during the preceding tick can therefore trigger hold at this tick.
+            if (aid not in energy_hold_expected_actors and capacity is not None
+                    and reserve_fraction is not None
+                    and capacity - energy_by_actor[aid] <= capacity * reserve_fraction):
+                energy_hold_expectations.append((t, aid))
+                energy_hold_expected_actors.add(aid)
             if row.get("branch") != "representative":
                 return _fail("trajectory contains a non-representative branch")
             if row.get("aircraft_type") != row_actor.get("aircraft_type"):
@@ -161,6 +371,17 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
             displacement_km = math.dist(prior_m, point_m) / 1000.0
             displacement_m = math.dist(prior_m, point_m)
             comm_row = row.get("communication") or {}
+            energy_row = row.get("energy") or {}
+            safety_states[(t, aid)] = {
+                "position_m": point_m,
+                "displacement_m": displacement_m,
+                "faulted": row.get("faulted") if isinstance(row.get("faulted"), bool) else None,
+                "communication_held": (comm_row.get("safety_hold")
+                    if isinstance(comm_row.get("safety_hold"), bool) else None),
+                "energy_paused": (energy_row.get("safety_pause")
+                    if isinstance(energy_row.get("safety_pause"), bool) else None),
+                "task_id": str(row.get("task_id")) if row.get("task_id") is not None else None,
+            }
             if (bool(row.get("faulted", False)) or bool(comm_row.get("safety_hold", False))) and displacement_m > 0.02:
                 return _fail(f"fault/communication-held actor moved at {aid}@{t}")
             if previous_energy_pause.get(aid, False) and displacement_m > 0.02:
@@ -278,6 +499,9 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
                     finalizations[str(decision_id)] = event
     if current_group is not None:
         return _unknown("trajectory contains rows beyond configured representative duration")
+
+    forced_safety_evidence = _forced_safety_evidence(
+        cfg, events_list, safety_states, duration, actor_by_id, energy_hold_expectations)
 
     if cfg.get("mode") == "search_strike":
         q_terminal = "unknown"
@@ -493,11 +717,14 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
         reasons.append(timing_reason)
     if effect_delay_coverage["status"] != "complete":
         reasons.append("decision effect-delay finalization coverage is incomplete; local objective terms remain available")
+    if not forced_safety_evidence["pause_resume_actions_applied"]:
+        reasons.append("pause/resume action evidence is incomplete, unknown, or mismatched")
     if aircraft_constraint_checks < 0:
         reasons.append("helicopter home-zone bounds are absent; aircraft-zone constraint check is incomplete")
     reduction_valid = (j_exec != "unknown" and online_timing != "unknown"
                        and effect_delay_coverage["status"] == "complete"
-                       and safety_position_checks == row_count and aircraft_constraint_checks >= 0)
+                       and safety_position_checks == row_count and aircraft_constraint_checks >= 0
+                       and forced_safety_evidence["pause_resume_actions_applied"] is True)
     resource_usage = (runtime_receipt or {}).get("resource_usage", {})
     process_observation = ({
         "wall_duration_s": resource_usage.get("wall_duration_s", "unknown"),
@@ -521,6 +748,7 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
                    "energy_wh_by_actor": energy_by_actor if energy_checks == row_count else "unknown",
                    "position_rate_checks": energy_checks},
         "safety": {"controllable_violation_events": sum(event_counts.get(name, 0) for name in VIOLATION_EVENTS),
+                   **forced_safety_evidence,
                    "violation_event_counts": {name: event_counts.get(name, 0) for name in sorted(VIOLATION_EVENTS)},
                    "safety_event_counts": {name: event_counts.get(name, 0) for name in
                        ("platform_fault", "energy_safety_hold", "communication_safety_hold",
