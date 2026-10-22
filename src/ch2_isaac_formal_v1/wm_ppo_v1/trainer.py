@@ -324,6 +324,20 @@ def _evaluate(model, decisions, sources, center, scale, device, batch_size):
     }
 
 
+def _predict_gain(model, decisions, center, scale, device, batch_size):
+    import torch
+
+    prior_training = model.training
+    model.eval()
+    predictions = []
+    with torch.no_grad():
+        for samples in _batches(decisions, batch_size):
+            inputs, _, _ = _collate(samples, center, scale, device, dynamic=False)
+            predictions.extend(model(*inputs)["gain"].detach().cpu().tolist())
+    model.train(prior_training)
+    return predictions
+
+
 def run_training(
     batch_output: str | Path,
     output_dir: str | Path,
@@ -402,6 +416,26 @@ def run_training(
     receipt["scenario_split"] = {"train": sorted(train_scenarios),
                                  "validation": sorted(validation_scenarios),
                                  "disjoint": True}
+    validation_decisions = [row for row in decisions if row.split == "validation"]
+    try:
+        from ..light_models_v1.train_models import _scenario_validation_split
+    except ImportError:
+        from light_models_v1.train_models import _scenario_validation_split
+    role_rows = [{"scenario_id": row.scenario_id, "split": row.split, "state_id": row.state_id,
+                  "target": row.gain_target} for row in validation_decisions]
+    validation_roles = _scenario_validation_split(role_rows)
+    if not validation_roles["selection"] or not validation_roles["calibration"]:
+        receipt["reason"] = "VALIDATION_SELECTION_CALIBRATION_SCENARIO_SPLIT_UNAVAILABLE"
+        receipt["elapsed_s"] = time.perf_counter() - start
+        output.mkdir(parents=True, exist_ok=True)
+        (output / "training_receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True), encoding="utf-8")
+        return receipt
+    receipt["validation_roles"] = {
+        "selection_scenarios": sorted({row["scenario_id"] for row in validation_roles["selection"]}),
+        "calibration_scenarios": sorted({row["scenario_id"] for row in validation_roles["calibration"]}),
+        "disjoint": not bool({row["scenario_id"] for row in validation_roles["selection"]} &
+                              {row["scenario_id"] for row in validation_roles["calibration"]}),
+    }
 
     device, device_receipt = _device_or_reason()
     if device is None:
@@ -496,10 +530,38 @@ def run_training(
         checkpoint_hash = save_training_checkpoint(checkpoint_path, model, optimizer, metadata,
                                                     probe_inputs, device=str(device))
         restore = verify_training_checkpoint_in_fresh_process(checkpoint_path, device=str(device))
+        from .gain_deployment import build_gain_deployment_metadata
+        validation_predictions = _predict_gain(
+            model, validation_decisions, *normalization, device, batch_size)
+        validation_rows = [{"scenario_id": row.scenario_id, "split": row.split,
+                            "state_id": row.state_id, "target": row.gain_target}
+                           for row in validation_decisions]
+        deployment = build_gain_deployment_metadata(
+            validation_rows, validation_predictions, checkpoint_sha256=checkpoint_hash,
+            dataset_sha256=data_hash)
+        deployment["normalization"] = metadata["normalization"]
+        selection_ids = set(deployment["deployment"]["selection"]["selection_scenarios"])
+        validation_role_by_scenario = {
+            scenario: "selection" if scenario in selection_ids else "calibration"
+            for scenario in {row["scenario_id"] for row in validation_rows}
+        }
+        deployment["validation_predictions"] = [
+            {"state_id": row["state_id"], "scenario_id": row["scenario_id"],
+             "role": validation_role_by_scenario[row["scenario_id"]],
+             "target": row["target"], "prediction": float(prediction)}
+            for row, prediction in zip(validation_rows, validation_predictions)
+        ]
+        deployment_path = seed_dir / "gain_deployment.json"
+        deployment_path.write_text(json.dumps(deployment, indent=2, sort_keys=True), encoding="utf-8")
+        deployment_hash = _file_sha256(deployment_path)
         receipt["models"][str(seed)] = {"checkpoint": str(checkpoint_path),
             "checkpoint_sha256": checkpoint_hash, "training_updates": sum(
                 row["dynamic_updates"] + row["gain_updates"] for row in epoch_rows),
-            "epochs": epoch_rows, "validation": validation, "fresh_process_restore": restore}
+            "epochs": epoch_rows, "validation": validation, "fresh_process_restore": restore,
+            "gain_deployment": str(deployment_path), "gain_deployment_sha256": deployment_hash,
+            "gain_threshold": deployment["deployment"]["epsilon"],
+            "gain_lower_bound_calibration": deployment["deployment"]["lower_bound_calibration"],
+            "gain_integration_status": "NOT_INTEGRATED"}
         if restore.get("status") != "PASS":
             receipt["status"] = "FAILED_CHECKPOINT_RESTORE"
             receipt["reason"] = f"FRESH_PROCESS_RESTORE_FAILED_SEED_{seed}"

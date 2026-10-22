@@ -13,6 +13,7 @@ from .contracts import (
 )
 from .features import public_history_to_graph, collate_graph_sequences
 from .policies import CostLedger, method_specs, incremental_cost
+from .gain_deployment import GainDeploymentAdapter, GainInference, build_gain_deployment_metadata
 
 __all__ = [
     "CheckpointRestoreReceipt",
@@ -25,4 +26,7 @@ __all__ = [
     "CostLedger",
     "method_specs",
     "incremental_cost",
+    "GainDeploymentAdapter",
+    "GainInference",
+    "build_gain_deployment_metadata",
 ]

@@ -6,7 +6,7 @@ from unittest.mock import patch
 import numpy as np
 
 from wm_ppo_v1.contracts import OneStepTarget, PublicHistoryFrame
-from wm_ppo_v1.features import EVENT_DIM, FEATURE_DIM, collate_graph_sequences, public_history_to_graph
+from wm_ppo_v1.features import EVENT_DIM, FEATURE_DIM, FEATURE_NAMES, collate_graph_sequences, public_history_to_graph
 from wm_ppo_v1.policies import CostLedger, SixMethod, incremental_cost, method_specs
 from wm_ppo_v1.ppo_entry import not_run_receipt
 
@@ -124,6 +124,93 @@ class SyntheticInterfaceTests(unittest.TestCase):
         self.assertEqual(receipt["status"], "NOT_RUN")
         self.assertEqual(saved["reason"], "BATCH_NOT_TERMINAL")
         self.assertEqual(saved["updates"], 0)
+
+    def test_gain_selection_and_calibration_roles_are_isolated(self):
+        from wm_ppo_v1.gain_deployment import build_gain_deployment_metadata
+
+        rows = [
+            {"scenario_id": "a", "split": "validation", "state_id": "a::1", "target": 1.0},
+            {"scenario_id": "b", "split": "validation", "state_id": "b::1", "target": -1.0},
+            {"scenario_id": "c", "split": "validation", "state_id": "c::1", "target": -1.0},
+            {"scenario_id": "d", "split": "validation", "state_id": "d::1", "target": 1.0},
+        ]
+        first = build_gain_deployment_metadata(rows, [2.0, 0.0, -2.0, 0.0],
+                                               checkpoint_sha256="b" * 64, dataset_sha256="c" * 64,
+                                               alpha=0.5)
+        changed = [dict(row) for row in rows]
+        changed[1]["target"], changed[3]["target"] = 10.0, 10.0
+        second = build_gain_deployment_metadata(changed, [2.0, 0.0, -2.0, 0.0],
+                                                checkpoint_sha256="b" * 64, dataset_sha256="c" * 64,
+                                                alpha=0.5)
+        first_deployment, second_deployment = first["deployment"], second["deployment"]
+        self.assertTrue(first["selection_calibration_disjoint"])
+        self.assertEqual(first["validation_selection_scenarios"], ["a", "c"])
+        self.assertEqual(first["validation_calibration_scenarios"], ["b", "d"])
+        self.assertEqual(first_deployment["epsilon"], second_deployment["epsilon"])
+        self.assertNotEqual(first_deployment["lower_bound_calibration"]["q"],
+                            second_deployment["lower_bound_calibration"]["q"])
+        self.assertFalse(first["test_or_ood_used"])
+        with self.assertRaises(ValueError):
+            build_gain_deployment_metadata(
+                [dict(rows[0], split="test"), *rows[1:]], [2.0, 0.0, -2.0, 0.0],
+                checkpoint_sha256="b" * 64, dataset_sha256="c" * 64,
+            )
+        small = build_gain_deployment_metadata(rows[:2], [2.0, 0.0],
+                                               checkpoint_sha256="b" * 64, dataset_sha256="c" * 64)
+        self.assertEqual(small["deployment"]["lower_bound_calibration"]["status"],
+                         "NOT_RUN_INSUFFICIENT_CALIBRATION_SCENARIOS")
+        self.assertIn("mean", small["deployment"]["modes"])
+        self.assertNotIn("lower_bound", small["deployment"]["modes"])
+
+    def test_gain_inference_ignores_actions_and_requires_public_phase_history(self):
+        try:
+            import torch
+            from wm_ppo_v1.features import EVENT_DIM
+            from wm_ppo_v1.gain_deployment import (
+                EXPECTED_HISTORY_PHASE, GAIN_VERSION, GainDeploymentAdapter,
+            )
+            from wm_ppo_v1.world_model import EventAwareWorldModel
+        except ImportError:
+            self.skipTest("torch unavailable")
+        torch.manual_seed(19)
+        model = EventAwareWorldModel(FEATURE_DIM, hidden_dim=8, event_dim=EVENT_DIM)
+        deployment = {
+            "schema": GAIN_VERSION, "version": "fixture-v1",
+            "integration_status": "NOT_INTEGRATED", "checkpoint_sha256": "d" * 64,
+            "feature_names": list(FEATURE_NAMES),
+            "normalization": {"scope": "train_split_only"},
+            "deployment": {"lower_bound_calibration": {"status": "PASS", "q": -0.2},
+                           "modes": {
+                               "mean": {"epsilon": 0.1, "q": 0.0},
+                               "lower_bound": {"epsilon": 0.1, "q": -0.2},
+                           }},
+        }
+        adapter = GainDeploymentAdapter(model, np.zeros(FEATURE_DIM), np.ones(FEATURE_DIM),
+                                        deployment, device="cpu", checkpoint_sha256="d" * 64,
+                                        allow_cpu_fixture=True)
+        base = PublicHistoryFrame(time_s=1.0,
+            platforms=({"x_norm": 0.2, "energy_fraction": 0.8},), action=None)
+        acted = PublicHistoryFrame(time_s=1.0,
+            platforms=({"x_norm": 0.2, "energy_fraction": 0.8},),
+            action={"applied": True, "magnitude": 1.0, "duration_norm": 1.0})
+        current = PublicHistoryFrame(time_s=2.0,
+            platforms=({"x_norm": 0.3, "energy_fraction": 0.7},))
+        left = adapter.predict([base, current], history_phase=EXPECTED_HISTORY_PHASE)
+        right = adapter.predict([acted, current], history_phase=EXPECTED_HISTORY_PHASE)
+        self.assertEqual(left.gain_mean, right.gain_mean)
+        self.assertAlmostEqual(left.score, left.gain_mean - 0.2)
+        self.assertEqual(left.threshold, 0.1)
+        self.assertEqual(left.integration_status, "CPU_SYNTHETIC_ONLY_NOT_INTEGRATED")
+        self.assertIn("cpu_to_device_ms", left.timings_ms)
+        self.assertGreaterEqual(left.timings_ms["calling_thread_cpu_ms"], 0.0)
+        self.assertGreaterEqual(left.timings_ms["end_to_end_wall_ms"], 0.0)
+        with self.assertRaises(ValueError):
+            adapter.predict([base, current], history_phase="post_step_only")
+        with self.assertRaises(ValueError):
+            adapter.predict([], history_phase=EXPECTED_HISTORY_PHASE)
+        gap_frame = PublicHistoryFrame(time_s=3.0, platforms=current.platforms)
+        with self.assertRaises(ValueError):
+            adapter.predict([base, gap_frame], history_phase=EXPECTED_HISTORY_PHASE)
 
 
 if __name__ == "__main__":

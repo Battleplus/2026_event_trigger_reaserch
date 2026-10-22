@@ -54,6 +54,20 @@ The `g` and `g-wm` entry stages emit `NOT_RUN`; `ppo_entry.py` also remains
 The scope review in `collection/progress/WM_SUPERVISION_SCOPE_REVIEW_20261022.md`
 defines the limits of the available public targets.
 
+Each completed world-model seed writes `gain_deployment.json` with validation
+selection/calibration roles, selection-only threshold, calibration-only lower
+residual bound, validation predictions and the checkpoint SHA-256. Validation
+scenarios are assigned by `light_models_v1.train_models._scenario_validation_split`;
+test/OOD rows are not accepted. At alpha 0.1, fewer than nine calibration
+scenarios leave lower-bound mode `NOT_RUN` while mean mode remains available.
+`GainDeploymentAdapter` exposes public-history inference with explicit phase,
+checkpoint/schema checks, gain mean/lower bound/threshold/version/device, and
+2-8 contiguous one-second frames ending at the pre-candidate decision phase.
+Timing reports feature construction, CPU-to-device transfer, synchronized
+forward, device-to-CPU return, calling-thread CPU time and end-to-end wall time. It reports
+`NOT_INTEGRATED`; no method-E closed-loop run is claimed. CPU inference is
+available only through an explicitly marked synthetic fixture path.
+
 Synthetic interface checks only:
 
 ```powershell

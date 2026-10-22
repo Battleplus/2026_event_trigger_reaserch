@@ -82,3 +82,18 @@ No formal training was run for this implementation. G, G-WM and PPO remain
 `NOT_RUN`. Synthetic tests cover interface behavior, gate refusal,
 shape/masking, cost arithmetic and a CPU fresh-process checkpoint fixture;
 they do not establish a scientific result or verify CUDA recovery.
+
+The WM gain adapter is a separate, currently `NOT_INTEGRATED` API. Validation
+scenarios are split with `light_models_v1.train_models._scenario_validation_split`;
+only validation-selection scenarios choose epsilon, and only disjoint
+validation-calibration scenarios fit the one-sided lower residual quantile.
+Test and OOD rows are rejected. With alpha 0.1, fewer than nine calibration
+scenarios leave the lower-bound mode unavailable; the mean mode remains
+available. Inference requires an explicit non-empty `PublicHistoryFrame`
+history and the phase `post_step_through_t_minus_1_plus_pre_candidate_projection_t`.
+It enforces a maximum of eight contiguous one-second frames and strips actions.
+It computes feature, CPU-to-device, synchronized forward, device-to-CPU,
+calling-thread CPU time and end-to-end wall time, verifies the checkpoint and input schema identity, and reports
+the mean, optional lower bound, threshold, version, device and
+`NOT_INTEGRATED` status. It is not called by any closed-loop runtime and does
+not establish method-E results.
