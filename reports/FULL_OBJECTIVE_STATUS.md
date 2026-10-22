@@ -30,19 +30,19 @@ hidden-information isolation, safety, costs or the end-of-collection 30/30 gate.
   `d09eb7165511c34614219aa90c03cc9b0c14b13a766409d60bb7a82c76aabf70`.
 - Isaac 4.5 formal batch launched on physical GPU1 at 2026-10-21 00:07:55
   Asia/Shanghai. Process PID 2570396 was re-observed live this continuation.
-- Latest observation: 2026-10-22 04:49:23 UTC, 80 scene receipts record
-  execution=COMPLETE. Main PIDs 2570396/2570401 and active Isaac child 3599074
+- Latest observation: 2026-10-22 08:38:48 UTC, 89 scene receipts record
+  execution=COMPLETE. Main PIDs 2570396/2570401 and active Isaac child 3711319
   were observed live. Terminal batch_receipt.json and aggregate.json are absent;
   the end-of-batch 30/30 check has not run. This is execution evidence, not an
   independent PASS for all disturbances or the experiment matrix.
-- Remaining server storage at that observation: 30,961,643,520 bytes. Cache
+- Remaining server storage at that observation: 21,576,146,944 bytes. Cache
   deletion is not authorized; no cache or evidence has been removed.
 - First two suffix worker receipts recorded about 111.9/133.1 wall seconds and
   351.2/388.7 process CPU seconds. The one-thread numerical-library environment
   does not imply the Isaac engine used only one CPU core; report actual resources.
 - Frozen collector, reducer and incremental evidence are publicly archived on
   `archive/ch2-isaac-roi-simplified-v2`; latest confirmed remote commit is
-  `05da3dd4a45b26265f7b901f950eda98181f0e52` (push and independent remote-ref
+  `66d914f7eb5e48564627b5d0fc1ae17a3e77b37d` (push and independent remote-ref
   readback confirmed). Source increments include lightweight selection/calibration,
   compact partial reduction and repaired event-graph interfaces, not trained
   artifacts or a full runtime success release.
@@ -68,10 +68,17 @@ hidden-information isolation, safety, costs or the end-of-collection 30/30 gate.
 
 The repaired event graph interface has a scoped source acceptance, with focused
 structure/public-dynamics tests reported passing. A raw gzip public-window reader
-is under implementation/review so real one-second trajectories can be reused
+has scoped source acceptance so real one-second trajectories can be reused
 without copying the dataset. Shared pair-prefix public task-state inheritance
 is permitted at the branch snapshot, but branch trajectory histories remain
-separate. No actual WM fitting or new-process checkpoint restore has run.
+separate. The calibrated gain API and local runtime-history bridge, PPO optimiser
+core and public candidate feature encoder have also been source-reviewed with
+focused synthetic evidence. Real CUDA execution and full Isaac PPO integration
+are not established. Current physical-frame action vectors remain unknown;
+command lifecycle logs do not recover their missing values or define magnitude
+and duration semantics. Action-conditioned G-WM auxiliary learning therefore
+requires additional versioned public control inputs and training-only joint
+supervision evidence. No actual WM fitting or CUDA checkpoint restore has run.
 
 The formal collection currently uses search mode and three targets per region as
 fixed design settings. The code's support for one/five targets and abstract service

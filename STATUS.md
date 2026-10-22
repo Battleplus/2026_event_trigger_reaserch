@@ -1,7 +1,7 @@
 # Current Chapter 2 status: 2026-10-22
 
 The authoritative revised objective is [CURRENT_OBJECTIVE](protocols/CURRENT_OBJECTIVE.md).
-The latest verified server observation was 2026-10-22 04:49:23 UTC: 80 of the
+The latest verified server observation was 2026-10-22 08:38:48 UTC: 89 of the
 168 scene receipts were COMPLETE; collector and Isaac child processes were
 alive, with no terminal batch receipt or aggregate. This is acquisition progress,
 not scientific acceptance. The 30/30 gate, model training and closed-loop method
@@ -12,7 +12,11 @@ information. Existing raw data and the live collector are preserved. Compact
 partial reduction and repaired event-graph source are archived with scoped
 reviews; actual storage reduction, GPU training, world-model added value and
 PPO results remain unestablished. A streaming raw-trajectory adapter is being
-implemented locally. No cache cleanup, scene retry or favorable seed replacement
+implemented and source-reviewed locally. The WM gain-history runtime bridge,
+masked PPO update core and public candidate encoder have scoped source acceptance;
+real GPU inference, real Isaac PPO rollouts and action-conditioned WM supervision
+remain unverified. The candidate policy callback is being integrated and reviewed.
+No cache cleanup, scene retry or favorable seed replacement
 has been performed.
 
 The older dated entries below are preserved historical evidence, not the
