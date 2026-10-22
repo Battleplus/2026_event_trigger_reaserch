@@ -211,7 +211,10 @@
     "closedloop_v1/README.md": "88df1bfa1bf55a4ef351542b7f630b1afd1ce0b4801a94a95abc2cd112b27787",
     "wm_ppo_v1/closedloop_history.py": "fa1a3fcc96ab735c07fe55b678809de4d5efd95670803502267da7a0bee5bb2f",
     "wm_ppo_v1/ppo_core.py": "2bf0c81d808840d8d193dc43c0ba10b53d89ce1d0c89d9965c7c6e9f9693e637",
-    "wm_ppo_v1/tests/test_ppo_core_synthetic.py": "8a9f0e6e344ea6b8f3cce6ecbc93a17f3383994079b02eee436fbe15894e7437"
+    "wm_ppo_v1/tests/test_ppo_core_synthetic.py": "8a9f0e6e344ea6b8f3cce6ecbc93a17f3383994079b02eee436fbe15894e7437",
+    "wm_ppo_v1/candidate_features.py": "cd89c65e5faf75dcb4029cd1bb5cb7ca2e9768a15ca677c0e2c29fd81b9576b0",
+    "wm_ppo_v1/tests/test_candidate_features.py": "52d93e6d299871d3ba339601b20abc0828f23ddd9f460fe8a8eae3fe48f991ef",
+    "wm_ppo_v1/CANDIDATE_FEATURE_SCHEMA.md": "f652c3bf1d0cbed08072c5d6efdfd23b406056de2730bf2db6d012ec04048522"
   },
   "pilot": "NOT_RUN",
   "prerequisite_representative_gate": false,
