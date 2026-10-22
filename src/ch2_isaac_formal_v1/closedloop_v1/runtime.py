@@ -13,6 +13,8 @@ from formal_collection_v1.mission import (MissionState, abstract_strike, assign_
     restore_mission, roi_zones, task_sweep, task_activation_schedule, EventTriggerGate, spatial_speed_cap)
 from formal_collection_v1.state_sampling import public_projection
 from closedloop_v1.decision import DecisionAdapter
+from wm_ppo_v1.gain_deployment import EXPECTED_HISTORY_PHASE
+from wm_ppo_v1.closedloop_history import LivePublicHistory
 from closedloop_v1.compact_capture import (append_evaluation_audit, compact_tick,
     write_evaluation_context)
 from compact_collection_v1 import CompactCollectionWriter
@@ -111,7 +113,7 @@ def queue_replan_action(pending, decision_id, created_time_s, delay_s, selected_
 def run(config_path, source_root, output, phase="representative", resume_state=None, suffix_seed=None,
         suffix_meta=None, strategy_mode="existing_et", gain_predictor=None, checkpoint_path=None,
         checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None,
-        enable_compact_capture=False):
+        enable_compact_capture=False, wm_adapter=None, wm_mode="lower_bound", predictor_load_timing=None):
     if phase != "representative" or resume_state is not None:
         raise ValueError("closedloop_v1 supports one representative episode only")
     run_wall_start_ns=time.perf_counter_ns(); run_cpu_start_ns=time.process_time_ns()
@@ -121,9 +123,9 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
     if int(cfg.get("representative_duration_s", 0)) != 5400:
         raise ValueError("closedloop_v1 requires a 5400-second representative episode")
     output.mkdir(parents=True,exist_ok=True)
-    if checkpoint_model not in {"constant", "ridge", "mlp", "tree"}:
+    if checkpoint_model not in {"constant", "ridge", "mlp", "tree", "wm_gain"}:
         raise ValueError("checkpoint_model must be constant, ridge, mlp, or tree")
-    if strategy_mode.endswith("_gain_gate") and gain_predictor is None:
+    if strategy_mode.endswith("_gain_gate") and gain_predictor is None and wm_adapter is None:
         raise ValueError(f"strategy mode {strategy_mode} requires a trained {checkpoint_model} checkpoint")
     rec_path=output/"run_receipt.json"; manifest_path=output/"manifest.json"
     traj_path=output/TRAJECTORY_NAME; events_path=output/"events.jsonl"
@@ -138,7 +140,9 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         "checkpoint_sha256": sha(checkpoint_path) if checkpoint_path else None,
         "gain_threshold": float(gain_threshold),
         "deployment_metadata": copy.deepcopy(deployment_metadata),
-        "predictor_device": "cpu" if gain_predictor is not None else None,
+        "predictor_device": str(wm_adapter.device) if wm_adapter is not None else ("cpu" if gain_predictor is not None else None),
+        "integration_status": "WM gain gate + existing catalog adapter; method E/G-WM not executed" if wm_adapter is not None else None,
+        "predictor_load": copy.deepcopy(predictor_load_timing),
         "paired_evaluation": "not_performed", "source_runner": "formal_collection_v1/run_capture.py",
         "source_runner_sha256": "9329E4EB69652EC1F8278E8A7DE71953826261AE6C66EEB0601150FD52EA7693",
         "adapted_runtime_sha256": sha(Path(__file__)),
@@ -163,6 +167,7 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         assignment=initial_c1_greedy(public_mission)
         mission.assignments=dict(assignment)
         actors={a.aircraft_id:a for a in mission.aircraft}; tasks={t.task_id:t for t in mission.tasks}
+        wm_history = LivePublicHistory(list(actors)) if wm_adapter is not None else None
         compact_writer = None
         compact_capture_dir = None
         if enable_compact_capture:
@@ -607,6 +612,11 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                             eligible_task_ids=eligible_task_ids)
                         catalog_result["candidates"], catalog_result["selected"] = result
                         return result
+                    if wm_adapter is not None:
+                        decision_adapter.gain_predictor = lambda current_projection: wm_adapter.predict(
+                            wm_history.decision_history(current_projection, t, decision_events),
+                            history_phase=EXPECTED_HISTORY_PHASE,
+                            mode=wm_mode)
                     decision = decision_adapter.decide(
                         backend, t, projection, list(decision_events), invoke_catalog,
                         readback=current)
@@ -625,7 +635,9 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                         emit(ev, branch, t, "decision_gate", decision_id=decision_id,
                              mode=decision["mode"], trigger_reasons=decision["trigger_reasons"],
                              gate_suppressed=decision.get("gate_suppressed", False),
-                             predicted_gain=decision.get("predicted_gain"), timing=decision["timing"])
+                             gate_suppression_reason=decision.get("gate_suppression_reason"),
+                             predicted_gain=decision.get("predicted_gain"),
+                             prediction_metadata=decision.get("prediction_metadata"), timing=decision["timing"])
                     if decision["triggered"] and not decision.get("gate_suppressed"):
                         if decision["planner_called"]:
                             candidates = catalog_result["candidates"]
@@ -825,6 +837,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                     counter["command_attempts"]+=int(aid in attempts)
                     post_step_eval_wall_ns+=time.perf_counter_ns()-eval_row_wall_start
                     post_step_eval_cpu_ns+=time.process_time_ns()-eval_row_cpu_start
+                if wm_history is not None:
+                    wm_history.append_post_step(t, pending_trajectory_rows, pending_event_rows)
                 post_step_total_wall_ns=time.perf_counter_ns()-post_step_online_wall_start
                 post_step_total_cpu_ns=time.process_time_ns()-post_step_online_cpu_start
                 post_step_online_wall_ns=max(0,post_step_total_wall_ns-post_step_eval_wall_ns)
@@ -1153,6 +1167,8 @@ def main():
     p.add_argument("--source-root",type=Path,required=True); p.add_argument("--output",type=Path,required=True)
     p.add_argument("--mode",choices=sorted(DecisionAdapter.MODES),default="existing_et")
     p.add_argument("--checkpoint",type=Path)
+    p.add_argument("--wm-checkpoint",type=Path)
+    p.add_argument("--wm-deployment",type=Path)
     p.add_argument("--model",choices=("constant","ridge","mlp","tree"),default=None,
                    help="optional artifact type assertion; type is otherwise read from the artifact")
     p.add_argument("--deployment-mode", choices=("mean", "lower_bound"), default="mean")
@@ -1163,30 +1179,52 @@ def main():
     gain_threshold = 0.0
     deployment_metadata = None
     checkpoint_model = "mlp"
+    wm_adapter = None
+    predictor_load_timing = None
     if a.mode.endswith("_gain_gate"):
-        if a.checkpoint is None:
+        if a.wm_checkpoint is not None or a.wm_deployment is not None:
+            if a.checkpoint is not None:
+                p.error("--wm-checkpoint/--wm-deployment cannot be combined with --checkpoint")
+            if a.wm_checkpoint is None or a.wm_deployment is None:
+                p.error("WM gain gating requires both --wm-checkpoint and --wm-deployment")
+            if a.model is not None:
+                p.error("--model applies only to the legacy --checkpoint adapter")
+            try:
+                from wm_ppo_v1.gain_deployment import GainDeploymentAdapter
+                load_wall_start=time.perf_counter_ns(); load_cpu_start=time.process_time_ns()
+                wm_adapter = GainDeploymentAdapter.from_checkpoint(a.wm_checkpoint, a.wm_deployment, device="cuda:0")
+                predictor_load_timing={"wall_duration_ns":time.perf_counter_ns()-load_wall_start,
+                                       "cpu_duration_ns":time.process_time_ns()-load_cpu_start}
+            except (OSError, ValueError, RuntimeError, json.JSONDecodeError) as exc:
+                p.error(f"could not load WM deployment artifact: {exc}")
+            deployment_metadata = wm_adapter.artifact
+            gain_threshold = float(deployment_metadata["deployment"]["modes"][a.deployment_mode]["epsilon"])
+            checkpoint_model = "wm_gain"
+        elif a.checkpoint is None:
             p.error("gain-gated modes require --checkpoint pointing to a trained model checkpoint")
-        try:
-            from . import checkpoint as checkpoint_loader
-        except ImportError:
-            import checkpoint as checkpoint_loader
-        try:
-            predictor, deployment_metadata = checkpoint_loader.load_gain_artifact(
-                a.checkpoint, mode=a.deployment_mode)
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
-            p.error(f"could not load deployment artifact: {exc}")
-        checkpoint_model = str(deployment_metadata["model_kind"])
-        if a.model is not None and a.model != checkpoint_model:
-            p.error(f"--model={a.model} conflicts with artifact model type {checkpoint_model}")
-        gain_threshold = float(deployment_metadata["epsilon"])
-    elif a.checkpoint is not None:
+        else:
+            try:
+                from . import checkpoint as checkpoint_loader
+            except ImportError:
+                import checkpoint as checkpoint_loader
+            try:
+                predictor, deployment_metadata = checkpoint_loader.load_gain_artifact(
+                    a.checkpoint, mode=a.deployment_mode)
+            except (OSError, ValueError, json.JSONDecodeError) as exc:
+                p.error(f"could not load deployment artifact: {exc}")
+            checkpoint_model = str(deployment_metadata["model_kind"])
+            if a.model is not None and a.model != checkpoint_model:
+                p.error(f"--model={a.model} conflicts with artifact model type {checkpoint_model}")
+            gain_threshold = float(deployment_metadata["epsilon"])
+    elif a.checkpoint is not None or a.wm_checkpoint is not None or a.wm_deployment is not None:
         p.error("--checkpoint is only valid for a gain-gated mode")
     elif a.model is not None:
         p.error("--model is only valid with a gain-gated mode and --checkpoint")
     rc=run(a.config,a.source_root,a.output,strategy_mode=a.mode,
-           gain_predictor=predictor,checkpoint_path=a.checkpoint,checkpoint_model=checkpoint_model,
+           gain_predictor=predictor,checkpoint_path=a.wm_checkpoint or a.checkpoint,checkpoint_model=checkpoint_model,
            gain_threshold=gain_threshold,deployment_metadata=deployment_metadata,
-           enable_compact_capture=a.compact_capture)
+           enable_compact_capture=a.compact_capture,wm_adapter=wm_adapter,
+           wm_mode=a.deployment_mode,predictor_load_timing=predictor_load_timing)
     raise SystemExit(rc)
 
 if __name__=="__main__": main()

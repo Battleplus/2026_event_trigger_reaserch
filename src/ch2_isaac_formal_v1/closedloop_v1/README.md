@@ -24,6 +24,8 @@ python -B -m closedloop_v1.runtime --source-root <isaac-source-root> --output <o
 
 Use `--model tree --checkpoint <tree_seed_8201.pkl>` for ExtraTrees. Both loaders extract the same ordered public feature schema; the receipt records the selected model and checkpoint hash. MLP inference remains CPU based. No real trained checkpoint has been accepted or exercised by this implementation task.
 
+The WM gain gate uses a separate, paired CLI contract and keeps inference lazy inside the same event-trigger/catalog path. Provide `--wm-checkpoint <wm.pt> --wm-deployment <deployment.json>` with either gain-gated mode; do not combine these with legacy `--checkpoint`. The deployment mode selects its calibrated epsilon. Runtime loading enforces the recorded GPU1 UUID mapped to `cuda:0`; the receipt records that device and load timing. The live bridge retains at most seven public post-step frames and appends the current pre-candidate public projection, matching the trained history phase. Missing or discontinuous history suppresses the ordinary gate with `WM_HISTORY_UNAVAILABLE`; forced safety still bypasses inference. This is only a WM gain gate over the existing catalog adapter. Method E/G-WM, training, heldout evaluation, and live Isaac/GPU execution were not performed.
+
 ```powershell
 python -B -m closedloop_v1.runtime --source-root <isaac-source-root> --output <output-dir> --mode existing_et_gain_gate --model tree --checkpoint <tree_seed_8201.pkl>
 ```

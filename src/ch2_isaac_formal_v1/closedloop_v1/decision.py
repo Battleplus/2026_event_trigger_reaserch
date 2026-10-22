@@ -9,6 +9,10 @@ RISK_EVENTS = {"platform_fault", "communication_safety_hold", "energy_safety_hol
 ORDINARY_EVENTS = {"task_activated", "public_observation", "search_cell_complete", "energy_anomaly"}
 
 
+class WMHistoryUnavailable(RuntimeError):
+    """Raised when the live public history cannot form a trained WM input window."""
+
+
 class DecisionAdapter:
     """Gate planner invocation before candidate construction.
 
@@ -21,7 +25,7 @@ class DecisionAdapter:
 
     def __init__(self, mode: str = "existing_et", periodic_interval_s: int = 240, event_threshold: int = 1,
                  event_cooldown_s: float = 240.0, risk_energy_fraction: float = 0.1,
-                 gain_predictor: Callable[[dict[str, Any]], float] | None = None,
+                 gain_predictor: Callable[[dict[str, Any]], Any] | None = None,
                  gain_threshold: float = 0.0):
         if mode not in self.MODES:
             raise ValueError(f"mode must be one of {sorted(self.MODES)}")
@@ -97,10 +101,25 @@ class DecisionAdapter:
             if self.gain_predictor is None:
                 raise ValueError(f"mode {self.mode} requires gain_predictor")
             wall_start, cpu_start = time.perf_counter_ns(), time.process_time_ns()
-            predicted_gain = float(self.gain_predictor(projection))
+            try:
+                prediction = self.gain_predictor(projection)
+            except WMHistoryUnavailable:
+                result.update({"triggered": False, "gate_suppressed": True,
+                               "gate_suppression_reason": "WM_HISTORY_UNAVAILABLE",
+                               "predicted_gain": None})
+                result["timing"]["predictor_wall_duration_ns"] = time.perf_counter_ns() - wall_start
+                result["timing"]["predictor_cpu_duration_ns"] = time.process_time_ns() - cpu_start
+                return result
+            predicted_gain = float(getattr(prediction, "score", prediction))
             result["timing"]["predictor_wall_duration_ns"] = time.perf_counter_ns() - wall_start
             result["timing"]["predictor_cpu_duration_ns"] = time.process_time_ns() - cpu_start
             result["predicted_gain"] = predicted_gain
+            if hasattr(prediction, "score"):
+                result["prediction_metadata"] = {
+                    key: getattr(prediction, key) for key in (
+                        "gain_mean", "gain_lower_bound", "threshold", "score", "mode",
+                        "version", "device", "integration_status", "timings_ms")
+                    if hasattr(prediction, key)}
             if predicted_gain <= self.gain_threshold:
                 result["triggered"] = False
                 result["gate_suppressed"] = True

@@ -106,7 +106,8 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
                                   "decision_complete_sim_time_s", "decision_effect_sim_time_s",
                                   "selected_action", "reason", "timing", "from_aircraft_id",
                                   "to_aircraft_id", "chosen", "mode", "trigger_reasons",
-                                  "gate_suppressed", "predicted_gain", "candidate_count"}}
+                                  "gate_suppressed", "gate_suppression_reason",
+                                  "predicted_gain", "prediction_metadata", "candidate_count"}}
         if name == "replan_catalog_choice" and isinstance(event.get("details"), Mapping):
             public_event["chosen"] = event["details"].get("chosen")
         events.append(public_event)

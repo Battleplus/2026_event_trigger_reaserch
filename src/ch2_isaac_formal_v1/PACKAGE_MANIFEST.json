@@ -203,7 +203,13 @@
     "wm_ppo_v1/__init__.py": "5f7b729db14a621518dccb34cb9b5a3b968fe1bd419394132e202bf92a9aeb93",
     "wm_ppo_v1/tests/test_synthetic.py": "be6e58b8923de12c625ff63c4def5f3a50f94fa6d20d42163730f30819e53f4a",
     "wm_ppo_v1/README.md": "70bfd59c6602ba7ddece648970c7a16c8776ac8b714c18ad81e6fdf2d3e6a296",
-    "wm_ppo_v1/PROTOCOL.md": "6a3ea71553f09ec66d02103aca35d202ffc93dbb9636f1526df3371071b14d52"
+    "wm_ppo_v1/PROTOCOL.md": "6a3ea71553f09ec66d02103aca35d202ffc93dbb9636f1526df3371071b14d52",
+    "closedloop_v1/decision.py": "966e7d473afd5ebbb612933f204e7e32341a04ee4edb5e79f42a471ce928c55a",
+    "closedloop_v1/runtime.py": "bc9603e60d12bf4ca58d472d6e6a9072b2056907631a6903e69484471b0db94b",
+    "closedloop_v1/compact_capture.py": "93d23fc730dcac3304894fe0df45db4f0449413d902e0f626949bdac61b884db",
+    "closedloop_v1/test_wm_history.py": "44afdf5a50c6da0b6ddcc49839ad9968ddccd7c653bfe83b38410439270322f6",
+    "closedloop_v1/README.md": "88df1bfa1bf55a4ef351542b7f630b1afd1ce0b4801a94a95abc2cd112b27787",
+    "wm_ppo_v1/closedloop_history.py": "fa1a3fcc96ab735c07fe55b678809de4d5efd95670803502267da7a0bee5bb2f"
   },
   "pilot": "NOT_RUN",
   "prerequisite_representative_gate": false,
