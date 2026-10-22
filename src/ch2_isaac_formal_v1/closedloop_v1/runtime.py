@@ -12,7 +12,7 @@ from formal_collection_v1.mission import (MissionState, abstract_strike, assign_
     build_mission, build_public_replan_catalog, discover_at, initial_c1_greedy, mission_snapshot,
     restore_mission, roi_zones, task_sweep, task_activation_schedule, EventTriggerGate, spatial_speed_cap)
 from formal_collection_v1.state_sampling import public_projection
-from closedloop_v1.decision import DecisionAdapter
+from closedloop_v1.decision import DecisionAdapter, WMHistoryUnavailable
 from wm_ppo_v1.gain_deployment import EXPECTED_HISTORY_PHASE
 from wm_ppo_v1.closedloop_history import LivePublicHistory
 from closedloop_v1.compact_capture import (append_evaluation_audit, compact_tick,
@@ -28,6 +28,60 @@ ORDINARY_TRIGGER_EVENTS = {
     "platform_fault", "communication_safety_hold", "energy_safety_hold",
     "energy_anomaly",
 }
+
+
+def _select_catalogue_action(policy, projection, history, catalog, *, triggered,
+                             gate_suppressed=False, forced_safety=False):
+    """Call a configured actor only after a successful ordinary gate."""
+    if policy is None:
+        return {"status": "disabled", "source": "public_catalog_order"}
+    if forced_safety:
+        return {"status": "skipped", "source": "forced_safety_local", "reason": "FORCED_SAFETY"}
+    if gate_suppressed:
+        return {"status": "skipped", "source": "gate_suppressed", "reason": "GATE_SUPPRESSED"}
+    if not triggered:
+        return {"status": "skipped", "source": "gate_closed", "reason": "GATE_CLOSED"}
+    wall_start, cpu_start = time.perf_counter_ns(), time.process_time_ns()
+    from wm_ppo_v1.policy_choice import PolicyUnavailable
+    try:
+        result = policy(projection=projection, history=history, catalog=catalog)
+    except PolicyUnavailable as exc:
+        return {"status": "unavailable", "source": "candidate_policy",
+                "reason": str(exc) or type(exc).__name__,
+                "model_version": getattr(policy, "model_version", None),
+                "call_timing": {"wall_duration_ns": time.perf_counter_ns() - wall_start,
+                                "cpu_duration_ns": time.process_time_ns() - cpu_start}}
+    if not isinstance(result, dict) or result.get("status") != "selected":
+        raise ValueError("policy callback must return a selected candidate or raise PolicyUnavailable")
+    index = result.get("index")
+    mask = result.get("legal_mask")
+    if (not isinstance(index, int) or isinstance(index, bool) or index < 0 or index >= len(catalog)
+            or not isinstance(mask, list) or len(mask) != len(catalog) or not mask[index]):
+        raise ValueError("POLICY_RETURNED_ILLEGAL_CANDIDATE")
+    action = dict(catalog[index])
+    if result.get("action") != action:
+        raise ValueError("POLICY_ACTION_MAPPING_MISMATCH")
+    from wm_ppo_v1.candidate_features import _action_key
+    if tuple(result.get("key", ())) != _action_key(action):
+        raise ValueError("POLICY_ACTION_KEY_MISMATCH")
+    return {**result, "action": action, "source": "candidate_policy",
+            "call_timing": {"wall_duration_ns": time.perf_counter_ns() - wall_start,
+                            "cpu_duration_ns": time.process_time_ns() - cpu_start}}
+
+
+def _planning_timing(catalog_timing, policy_selection):
+    """Combine catalog and actor selection once for the planning diagnostic."""
+    policy_timing = (policy_selection or {}).get("call_timing", {})
+    catalog_wall = int(catalog_timing.get("planner_wall_duration_ns", 0))
+    catalog_cpu = int(catalog_timing.get("planner_cpu_duration_ns", 0))
+    policy_wall = int(policy_timing.get("wall_duration_ns", 0))
+    policy_cpu = int(policy_timing.get("cpu_duration_ns", 0))
+    return {"catalog_wall_duration_ns": catalog_wall,
+            "catalog_cpu_duration_ns": catalog_cpu,
+            "policy_selection_wall_duration_ns": policy_wall,
+            "policy_selection_cpu_duration_ns": policy_cpu,
+            "wall_duration_ns": catalog_wall + policy_wall,
+            "cpu_duration_ns": catalog_cpu + policy_cpu}
 
 try:
     import resource
@@ -113,7 +167,8 @@ def queue_replan_action(pending, decision_id, created_time_s, delay_s, selected_
 def run(config_path, source_root, output, phase="representative", resume_state=None, suffix_seed=None,
         suffix_meta=None, strategy_mode="existing_et", gain_predictor=None, checkpoint_path=None,
         checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None,
-        enable_compact_capture=False, wm_adapter=None, wm_mode="lower_bound", predictor_load_timing=None):
+        enable_compact_capture=False, wm_adapter=None, wm_mode="lower_bound", predictor_load_timing=None,
+        catalogue_policy=None):
     if phase != "representative" or resume_state is not None:
         raise ValueError("closedloop_v1 supports one representative episode only")
     run_wall_start_ns=time.perf_counter_ns(); run_cpu_start_ns=time.process_time_ns()
@@ -143,6 +198,11 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         "predictor_device": str(wm_adapter.device) if wm_adapter is not None else ("cpu" if gain_predictor is not None else None),
         "integration_status": "WM gain gate + existing catalog adapter; method E/G-WM not executed" if wm_adapter is not None else None,
         "predictor_load": copy.deepcopy(predictor_load_timing),
+        "candidate_policy": ({"status": "CALLBACK_CONFIGURED_NOT_TRAINED",
+                              "model_version": getattr(catalogue_policy, "model_version", None),
+                              "mode": getattr(catalogue_policy, "mode", None),
+                              "device": getattr(catalogue_policy, "device", None)}
+                             if catalogue_policy is not None else {"status": "DISABLED"}),
         "paired_evaluation": "not_performed", "source_runner": "formal_collection_v1/run_capture.py",
         "source_runner_sha256": "9329E4EB69652EC1F8278E8A7DE71953826261AE6C66EEB0601150FD52EA7693",
         "adapted_runtime_sha256": sha(Path(__file__)),
@@ -167,7 +227,7 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         assignment=initial_c1_greedy(public_mission)
         mission.assignments=dict(assignment)
         actors={a.aircraft_id:a for a in mission.aircraft}; tasks={t.task_id:t for t in mission.tasks}
-        wm_history = LivePublicHistory(list(actors)) if wm_adapter is not None else None
+        wm_history = LivePublicHistory(list(actors)) if wm_adapter is not None or catalogue_policy is not None else None
         compact_writer = None
         compact_capture_dir = None
         if enable_compact_capture:
@@ -620,6 +680,34 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                     decision = decision_adapter.decide(
                         backend, t, projection, list(decision_events), invoke_catalog,
                         readback=current)
+                    policy_selection = None
+                    if decision["planner_called"]:
+                        candidates = catalog_result["candidates"]
+                        if catalogue_policy is not None and not forced_now:
+                            policy_wall_start, policy_cpu_start = time.perf_counter_ns(), time.process_time_ns()
+                            try:
+                                policy_history = wm_history.decision_history(projection, t, decision_events)
+                                policy_selection = _select_catalogue_action(
+                                    catalogue_policy, projection, policy_history, candidates,
+                                    triggered=decision["triggered"],
+                                    gate_suppressed=decision.get("gate_suppressed", False),
+                                    forced_safety=forced_now)
+                            except WMHistoryUnavailable as exc:
+                                policy_selection = {"status": "unavailable", "source": "candidate_policy",
+                                                    "reason": str(exc) or type(exc).__name__,
+                                                    "model_version": getattr(catalogue_policy, "model_version", None),
+                                                    "call_timing": {"wall_duration_ns": time.perf_counter_ns() - policy_wall_start,
+                                                                    "cpu_duration_ns": time.process_time_ns() - policy_cpu_start}}
+                            if policy_selection is not None:
+                                policy_selection["call_timing"] = {
+                                    "wall_duration_ns": time.perf_counter_ns() - policy_wall_start,
+                                    "cpu_duration_ns": time.process_time_ns() - policy_cpu_start}
+                        elif catalogue_policy is not None:
+                            policy_selection = _select_catalogue_action(
+                                catalogue_policy, projection, (), candidates,
+                                triggered=decision["triggered"],
+                                gate_suppressed=decision.get("gate_suppressed", False),
+                                forced_safety=forced_now)
                     decision_wall_ns=time.perf_counter_ns()-decision_wall_start
                     decision_cpu_ns=time.process_time_ns()-decision_cpu_start
                     counters=branch_counters.setdefault("decision_timing",{"wall_duration_ns":0,"cpu_duration_ns":0,"decision_count":0})
@@ -642,22 +730,48 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                         if decision["planner_called"]:
                             candidates = catalog_result["candidates"]
                             selected = decision["selected_action"]
-                            planning_wall = int(decision["timing"]["planner_wall_duration_ns"])
-                            planning_cpu = int(decision["timing"]["planner_cpu_duration_ns"])
+                            if policy_selection is not None:
+                                if policy_selection["source"] == "candidate_policy":
+                                    if policy_selection["status"] == "selected":
+                                        selected = policy_selection["action"]
+                                    else:
+                                        selected = None
+                                elif policy_selection["source"] == "forced_safety_local":
+                                    selected = None
+                            planning_timing = _planning_timing(decision["timing"], policy_selection)
+                            planning_wall = planning_timing["wall_duration_ns"]
+                            planning_cpu = planning_timing["cpu_duration_ns"]
                             planning_delay_s = max(int(pilot_cfg.get("planning_delay_s", 1)),
                                                    int(math.ceil(decision_wall_ns / 1_000_000_000.0)))
                             emit(ev, branch, t, "candidate_generation", decision_id=decision_id,
                                  candidate_count=len(candidates), candidates=candidates,
-                                 timing={"wall_duration_ns": planning_wall,"cpu_duration_ns": planning_cpu})
-                            queue_replan_action(pending_replan_actions, decision_id, t, planning_delay_s, selected)
-                            emit(ev, branch, t, "decision_created", decision_id=decision_id,
-                                 decision_created_sim_time_s=t, decision_complete_sim_time_s=t+planning_delay_s,
-                                 decision_effect_sim_time_s=t+planning_delay_s, selected_action=selected,
-                                 timing={"planning":{"wall_duration_ns":planning_wall,
-                                     "cpu_duration_ns":planning_cpu,"status":"measured"},
-                                     "decision_wall_duration_ns":decision_wall_ns,
-                                     "decision_cpu_duration_ns":decision_cpu_ns,
-                                     "planning_delay_s":planning_delay_s,"gate_timing_scope":"partial_adapter"})
+                                 timing=planning_timing)
+                            if policy_selection is not None:
+                                emit(ev, branch, t, "candidate_policy_selection",
+                                     decision_id=decision_id, status=policy_selection["status"],
+                                     source=policy_selection["source"],
+                                     model_version=policy_selection.get("model_version"),
+                                     mode=policy_selection.get("mode"),
+                                     device=policy_selection.get("device"),
+                                     index=policy_selection.get("index"),
+                                     action_key=policy_selection.get("key"),
+                                     old_logprob=policy_selection.get("old_logprob"),
+                                     value=policy_selection.get("value"),
+                                     legal_mask=policy_selection.get("legal_mask"),
+                                     reason=policy_selection.get("reason"),
+                                     timing=policy_selection.get("call_timing"))
+                            if selected is not None:
+                                queue_replan_action(pending_replan_actions, decision_id, t, planning_delay_s, selected)
+                                emit(ev, branch, t, "decision_created", decision_id=decision_id,
+                                     decision_created_sim_time_s=t, decision_complete_sim_time_s=t+planning_delay_s,
+                                     decision_effect_sim_time_s=t+planning_delay_s, selected_action=selected,
+                                     selection_source=(policy_selection or {}).get("source", "public_catalog_order"),
+                                     policy_version=(policy_selection or {}).get("model_version"),
+                                     timing={"planning":{"wall_duration_ns":planning_wall,
+                                         "cpu_duration_ns":planning_cpu,"status":"measured"},
+                                         "decision_wall_duration_ns":decision_wall_ns,
+                                         "decision_cpu_duration_ns":decision_cpu_ns,
+                                         "planning_delay_s":planning_delay_s,"gate_timing_scope":"partial_adapter"})
                 if platform_fault_enabled and t==platform_fault_time:
                     fail_actor("uav-0-0",t,branch,ev)
                 command_prep_wall_start=time.perf_counter_ns(); command_prep_cpu_start=time.process_time_ns()

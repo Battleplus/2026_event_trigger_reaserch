@@ -13,14 +13,35 @@ def _row(time_s: int, energy: float):
     return {"aircraft_id": "a1", "aircraft_type": "uav", "zone": 0,
             "faulted": False, "usd_position_m": [time_s, 2.0, 3.0],
             "velocity_mps": [1.0, 0.0, 0.0],
+            "previous_usd_position_m": [time_s - 1, 2.0, 3.0],
+            "mission_xy_km": [time_s / 1000.0, 0.002],
+            "task_id": "task-1", "search_cell_visited": False, "task_completed": False,
             "energy": {"remaining_wh": energy, "incremental_wh": 2.0,
                        "safety_pause": False},
             "communication": {"safety_hold": False, "command_attempted": True,
-                              "command_delivered": time_s > 1},
+                              "command_attempt_accepted": True,
+                              "command_delivered": time_s > 1, "command_dropped": False,
+                              "forced_outage": False},
             "public_target_observations": []}
 
 
 class CompactCaptureTests(unittest.TestCase):
+    def test_policy_selection_evidence_survives_compact_projection(self):
+        event = {"event": "candidate_policy_selection", "sim_time_s": 1,
+                 "decision_id": "d1", "status": "selected", "source": "candidate_policy",
+                 "model_version": "synthetic:test", "mode": "evaluate", "device": "cpu",
+                 "index": 1, "action_key": ["noop"], "old_logprob": -0.4,
+                 "value": 0.2, "legal_mask": [True, True]}
+        state, events, decisions, _, complete = compact_tick(
+            [_row(1, 100.0)], {}, {"a1": []}, {"a1": [0, 0]}, {}, {"a1": {}},
+            set(), 1, [event],
+            {"a1": {"available": True, "safety_paused": False}}, {})
+        selection = next(row for row in events if row["event"] == "candidate_policy_selection")
+        self.assertEqual(selection["model_version"], "synthetic:test")
+        self.assertEqual(selection["action_key"], ["noop"])
+        self.assertIn(selection, decisions)
+        self.assertTrue(complete)
+
     def test_runtime_adapter_filters_future_and_hidden_events_and_keeps_tick_changes(self):
         tasks = {
             "now": SimpleNamespace(task_id="now", zone=0, cell=0, kind="search",

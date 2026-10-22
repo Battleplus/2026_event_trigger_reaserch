@@ -10,12 +10,13 @@ PUBLIC_EVENTS = {
     "task_activated", "public_observation", "search_cell_complete", "controller_switch",
     "platform_fault", "communication_safety_hold", "energy_safety_hold", "energy_anomaly",
     "fault_task_unrecovered", "communication_safety_resume", "command_dropped",
-    "decision_gate", "candidate_generation", "decision_created", "decision_timing_finalized",
+    "decision_gate", "candidate_generation", "candidate_policy_selection",
+    "decision_created", "decision_timing_finalized",
     "command_delivered", "command_applied", "transmission_sent", "donor_support_transfer",
     "replan_action_rejected", "replan_catalog_choice", "abstract_strike_complete",
     "online_timing_tick",
 }
-DECISION_EVENTS = {"decision_gate", "candidate_generation", "decision_created",
+DECISION_EVENTS = {"decision_gate", "candidate_generation", "candidate_policy_selection", "decision_created",
                    "decision_timing_finalized", "replan_action_rejected", "replan_catalog_choice"}
 
 
@@ -107,7 +108,9 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
                                   "selected_action", "reason", "timing", "from_aircraft_id",
                                   "to_aircraft_id", "chosen", "mode", "trigger_reasons",
                                   "gate_suppressed", "gate_suppression_reason",
-                                  "predicted_gain", "prediction_metadata", "candidate_count"}}
+                                  "predicted_gain", "prediction_metadata", "candidate_count",
+                                  "status", "source", "model_version", "mode", "device", "index",
+                                  "action_key", "old_logprob", "value", "legal_mask"}}
         if name == "replan_catalog_choice" and isinstance(event.get("details"), Mapping):
             public_event["chosen"] = event["details"].get("chosen")
         events.append(public_event)
