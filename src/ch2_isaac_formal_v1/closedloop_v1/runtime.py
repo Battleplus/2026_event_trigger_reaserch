@@ -168,7 +168,7 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         suffix_meta=None, strategy_mode="existing_et", gain_predictor=None, checkpoint_path=None,
         checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None,
         enable_compact_capture=False, wm_adapter=None, wm_mode="lower_bound", predictor_load_timing=None,
-        catalogue_policy=None):
+        catalogue_policy=None, rollout_callback=None):
     if phase != "representative" or resume_state is not None:
         raise ValueError("closedloop_v1 supports one representative episode only")
     run_wall_start_ns=time.perf_counter_ns(); run_cpu_start_ns=time.process_time_ns()
@@ -734,6 +734,20 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                                 if policy_selection["source"] == "candidate_policy":
                                     if policy_selection["status"] == "selected":
                                         selected = policy_selection["action"]
+                                        if rollout_callback is not None:
+                                            rollout_callback({
+                                                "decision_id": str(decision_id),
+                                                "decision_time_s": int(t),
+                                                "history": tuple(copy.deepcopy(policy_history)),
+                                                "catalog": tuple(copy.deepcopy(candidates)),
+                                                "candidate_features": copy.deepcopy(policy_selection["candidate_features"]),
+                                                "action": copy.deepcopy(policy_selection["action"]),
+                                                "action_index": int(policy_selection["index"]),
+                                                "legal_mask": list(policy_selection["legal_mask"]),
+                                                "noop_mask": list(policy_selection["noop_mask"]),
+                                                "old_logprob": float(policy_selection["old_logprob"]),
+                                                "value": float(policy_selection["value"]),
+                                            })
                                     else:
                                         selected = None
                                 elif policy_selection["source"] == "forced_safety_local":

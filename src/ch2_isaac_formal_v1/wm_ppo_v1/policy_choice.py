@@ -167,6 +167,7 @@ def select_public_candidate(
         "action": dict(candidate_batch.actions[index]), "old_logprob": log_probability,
         "value": value, "legal_mask": candidate_batch.candidate_mask.tolist(),
         "noop_mask": candidate_batch.noop_mask.tolist(), "model_version": model_version,
+        "candidate_features": candidate_batch.features.tolist(),
         "mode": mode, "device": str(selected_device),
         "timings": {"wall_duration_ns": time.perf_counter_ns() - wall_start,
                     "cpu_duration_ns": time.process_time_ns() - cpu_start},
