@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-10-22T01:45:14.430368+00:00",
+  "batch": "formal-168-v1",
+  "registered_scenes": 168,
+  "scene_execution_counts": {"COMPLETE": 74},
+  "batch_receipt_present": false,
+  "aggregate_present": false,
+  "main_pids": [2570396, 2570401],
+  "main_elapsed": "1-09:37:06 at preceding process observation",
+  "live_child": {"pid": 3512905, "parent_pid": 2570401, "elapsed": "01:30"},
+  "storage_free_bytes": 39837085696,
+  "cache_cleanup": "user declined; nothing deleted",
+  "transient_ssh_timeout": "reconnected to same live process; no restart",
+  "training": "NOT_RUN",
+  "scientific_result": "NOT_RUN",
+  "confirmed_archive_commit": "74e14b54c486da9aa877f70164ccc97faa076eff"
+}
