@@ -1,0 +1,55 @@
+{
+  "G": -0.0045143752,
+  "byte_reduction_fraction": 0.8981969259545897,
+  "compact_status": "PASS",
+  "comparison": {
+    "C_increment": true,
+    "G": true,
+    "J_exec_keep": true,
+    "J_exec_replan": true,
+    "branches": true,
+    "checks": true,
+    "reasons": true,
+    "status": true,
+    "valid_mask": true
+  },
+  "decoded_row_hash_equal": true,
+  "decoded_rows": 129600,
+  "deployment_archive_sha256": "2fed03a2a47a600951b63e5972f35a7057794a84b2e6fdb9ab32692480c82d5f",
+  "focused_tests": {
+    "command": "python -B -m pytest lightweight_capture_v2/tests/test_compact_trace.py -q -p no:cacheprovider",
+    "failed": 0,
+    "passed": 7
+  },
+  "implementation_model": "GPT-6 Luna",
+  "raw_status": "PASS",
+  "reviewer": "primary coordinator in this conversation; actual source review and remote readback",
+  "runtime_observation": {
+    "actor_count": 36,
+    "actual_isaac_run": true,
+    "end_reduction": "pending old/new union",
+    "gpu0_memory_mib": 9,
+    "gpu1_memory_mib": 1974,
+    "gpu_index": 1,
+    "last_sim_time_s": 2940,
+    "model_training": "NOT_RUN",
+    "new_collection_status": "running",
+    "new_selected_scenes": 76,
+    "old_complete_scenes": 92,
+    "public_observation_availability_valid": true,
+    "public_seconds_reconstructed": [
+      1,
+      2,
+      3
+    ],
+    "public_task_count": 81,
+    "responsibility_zone_count": 9,
+    "scientific_result": "NOT_ESTABLISHED",
+    "utc": "2026-10-22T10:08:30Z"
+  },
+  "scope": "format and independent scalar parity; no new Isaac acquisition",
+  "snapshot_io_adapter": "motion_model_state.state.position_to_position_v1",
+  "source_manifest_sha256": "4dd57d933374c7525cc6167ca06af3535cb9da1aa827b8196e8a4a392288ada3",
+  "source_state_id": "state_00_000001",
+  "wall_s": 30.523199577932246
+}

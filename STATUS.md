@@ -1,3 +1,19 @@
+# Actual lightweight collection: 2026-10-22
+
+The Isaac acquisition has switched to the reviewed lightweight V2 source.
+92 old scenes are preserved; the remaining 76 registered scenes are being
+acquired with public 1-second deltas, static data once, immediate events and
+lossless private paired evidence. GPU1 only. Seven focused tests and one real
+suffix format/independent-scalar comparison passed. The first new 90-minute representative episode has completed, with
+5400 one-second records independently read back; its paired suffixes are running.
+Union reduction, 30/30,
+training and scientific conclusions are pending. See
+[evidence and limited review](evidence/isaac-lightweight-switch-20261022/REVIEW.md).
+
+Historical checkpoints below describe their observation times.
+
+---
+
 # Current Chapter 2 status: 2026-10-22
 
 The authoritative revised objective is [CURRENT_OBJECTIVE](protocols/CURRENT_OBJECTIVE.md).
