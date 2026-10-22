@@ -1,0 +1,15 @@
+{
+  "observed_utc": "2026-10-21T14:07:49.883947+00:00",
+  "batch": "formal-168-v1",
+  "registered_scenes": 168,
+  "scene_execution_counts": {"COMPLETE": 49},
+  "batch_receipt_present": false,
+  "aggregate_present": false,
+  "main_pids": [2570396, 2570401],
+  "main_elapsed": "21:59:55",
+  "live_child": {"pid": 3199955, "parent_pid": 2570401, "elapsed": "02:33"},
+  "storage_free_bytes": 68809261056,
+  "cache_cleanup": "user declined; nothing deleted",
+  "training": "NOT_RUN",
+  "scientific_result": "NOT_RUN"
+}

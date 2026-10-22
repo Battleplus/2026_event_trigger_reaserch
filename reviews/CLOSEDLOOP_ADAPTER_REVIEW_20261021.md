@@ -93,3 +93,25 @@ Disposition: STATIC_EPISODE_REPAIR_ACCEPTED within the source-review scope.
 Runtime engineering validation, complete cost accounting, scalar evaluation,
 trained tree/MLP comparison, and independent test/OOD remain unproved. This
 does not pass the scientific or full closed-loop engineering milestone.
+
+## Timing repair readback, 2026-10-21
+
+Read-only source review verified the implementation agent's final identities:
+
+- runtime.py: `32a89467151f6fc5b2250a1f62f7b4c50226a5446900609e42451ae184b40f59`.
+- README.md: `3c4e250fcc6ae533ce3d32038affe84cd49e3ff7ccbebfbef0e41930542a01d19`.
+- PROVENANCE.json: `a9406051eb18d1ceb1b7d52ab4805f234e7796537aae3d39d29170274cf03421`.
+
+The per-tick timers now start before backend.positions(). The three online
+phases are sequential, and nested decision diagnostics are explicitly excluded
+from the sum. The sole episode's timing record is labelled representative.
+Post-step processing is accurately labelled as mixed state/evaluator/output
+work; it is not evidence of isolated I/O or complete task-public-update costs.
+The finalized action-delay event supersedes the provisional creation timestamp.
+Its delay includes projection/policy/planning and command-readiness, quantized
+to one second; earlier event/state/safety timing is separately reported.
+
+Disposition: STATIC_TIMING_REPAIR_ACCEPTED only. No real Isaac episode,
+checkpoint inference, complete scalar cost evaluation, test/OOD result, or
+scientific support is established by this review. The frozen live acquisition
+was not changed. No redundant tests or simulator runs were requested.
