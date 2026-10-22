@@ -44,6 +44,7 @@ FEATURE_NAMES = (
     "priority_known",
     "task_public_data_known",
     "completed",
+    "availability_known",
 )
 FEATURE_DIM = len(FEATURE_NAMES)
 EVENT_NAMES = ("search_cell_complete", "platform_fault", "communication_safety_hold",
@@ -81,7 +82,7 @@ def _node(kind: str, item: Mapping[str, Any]) -> np.ndarray:
     row[5] = np.clip(_number(item.get("z_norm", item.get("z"))), -1.0, 1.0)
     row[6] = max(0.0, _number(item.get("speed_norm", item.get("speed"))))
     row[7] = np.clip(_number(item.get("energy_fraction", item.get("energy", 0.0))), 0.0, 1.0)
-    row[8] = float(bool(item.get("available", True)))
+    row[8] = float(bool(item.get("available", False)))
     row[9] = float(bool(item.get("faulted", False)))
     row[10] = float(bool(item.get("communication_held", False)))
     row[11] = float(bool(item.get("active", True)))
@@ -100,6 +101,7 @@ def _node(kind: str, item: Mapping[str, Any]) -> np.ndarray:
     row[24] = float("priority_norm" in item or "priority" in item)
     row[25] = float(bool(item.get("task_public_data_known", False)))
     row[26] = float(bool(item.get("completed", False)))
+    row[27] = float(isinstance(item.get("available"), bool))
     return row
 
 
