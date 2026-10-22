@@ -17,6 +17,7 @@ from closedloop_v1.decision import DecisionAdapter
 PLANNER_CALL_EVENT = "candidate_generation"
 TRAJECTORY_NAME = "trajectory.jsonl.gz"
 PERIODIC_INTERVAL_S = 240
+RUNTIME_SEMANTICS_ID = "closedloop_v1_fault_release_accounting_v2"
 ORDINARY_TRIGGER_EVENTS = {
     "task_activated", "public_observation", "search_cell_complete",
     "platform_fault", "communication_safety_hold", "energy_safety_hold",
@@ -128,6 +129,7 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
              "communication_model":"time-addressed command delay/drop model; not radio physics",
              "hidden_truth_logged":False,"source_solver_reused":False,"stages":[],"donor_effects":[]}
     receipt["closedloop"] = {"mode": strategy_mode, "checkpoint_model": checkpoint_model,
+        "runtime_semantics_id": RUNTIME_SEMANTICS_ID,
         "checkpoint": str(checkpoint_path) if checkpoint_path else None,
         "checkpoint_sha256": sha(checkpoint_path) if checkpoint_path else None,
         "gain_threshold": float(gain_threshold),
@@ -313,11 +315,14 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
             if aid in failed:return
             failed.add(aid); actors[aid].available=False; pending[aid].clear()
             current=backend.positions()[aid]["position_m"]; active[aid]=[v/1000 for v in current]
+            pre_fault_queue=list(queues[aid]); pre_fault_cursor=list(cursor[aid])
             rest=queues[aid][cursor[aid][0]:]; queues[aid]=queues[aid][:cursor[aid][0]]
             for tid in rest:
                 choices=[]
                 for recipient,actor in actors.items():
-                    if actor.kind!=tasks[tid].allowed_kind or not actor.available:
+                    if (actor.kind!=tasks[tid].allowed_kind or not actor.available
+                            or recipient in failed or recipient in safety_paused
+                            or recipient in communication_held):
                         continue
                     current_energy=remaining_route_energy(recipient,queues[recipient],t)
                     endpoint=np.asarray(backend.positions()[recipient]["position_m"],float)[:2]/1000.0
@@ -348,7 +353,28 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                         receipt["donor_effects"].append(effect)
                         emit(ev,branch,t,"donor_support_transfer",from_aircraft_id=aid,to_aircraft_id=donor,
                              task_id=tid,support_kind=support_kind)
-            emit(ev,branch,t,"platform_fault",aircraft_id=aid,details={"action":"local_hold","unfinished_tasks_released":rest})
+                        continue
+                mission.assignments.pop(tid, None)
+                emit(ev,branch,t,"fault_task_unrecovered",aircraft_id=aid,task_id=tid,
+                     details={"failure_cost_unit":"one_unrecovered_public_task"})
+            release_state={
+                "schema":"fault_queue_release_state_v1",
+                "source":"executor_queues_cursor_and_mission_assignments_after_release",
+                "pre_fault":{"queue_task_ids":pre_fault_queue,"cursor":pre_fault_cursor,
+                             "unfinished_task_ids":list(rest)},
+                "post_fault":{"queues_by_aircraft":{key:list(value) for key,value in queues.items()},
+                              "cursors_by_aircraft":{key:list(value) for key,value in cursor.items()},
+                              "assignments_by_task":dict(mission.assignments),
+                              "completed_task_ids":sorted(mission.completed),
+                              "actor_state_by_id":{key:{"kind":actor.kind,"home_zone":int(actor.home_zone),
+                                  "available":bool(actor.available),"faulted":key in failed,
+                                  "safety_paused":key in safety_paused,
+                                  "communication_held":key in communication_held}
+                                  for key,actor in actors.items()}},
+            }
+            emit(ev,branch,t,"platform_fault",aircraft_id=aid,details={
+                "action":"local_hold","unfinished_tasks_released":rest,
+                "queue_release_state":release_state})
         def segment(branch,duration,ev,base_time=0,replan_candidates=None,replan_delay_s=1,
                     replan_selected_action=None,skip_prepublic_first_step=False):
             nonlocal ordinary_decision_sequence

@@ -55,7 +55,9 @@ def _finite_number(value: Any) -> float | None:
 def _forced_safety_evidence(cfg: dict[str, Any], events: list[dict[str, Any]],
                             states: dict[tuple[int, str], dict[str, Any]],
                             duration: int, actor_by_id: dict[str, dict[str, Any]],
-                            energy_hold_expectations: list[tuple[int, str]]) -> dict[str, Any]:
+                            energy_hold_expectations: list[tuple[int, str]],
+                            task_by_id: dict[str, dict[str, Any]] | None = None,
+                            runtime_semantics_id: str | None = None) -> dict[str, Any]:
     """Cross-check forced-event records against persisted actor state and command effects."""
     mechanisms = cfg.get("mechanisms")
     schedule = cfg.get("evaluator_schedule", {}).get("disturbances", {})
@@ -120,6 +122,8 @@ def _forced_safety_evidence(cfg: dict[str, Any], events: list[dict[str, Any]],
             observed_by_key.setdefault(key, []).append(event)
 
     evidence_rows = []
+    fault_release_rows = []
+    unrecovered_fault_task_ids: set[str] = set()
     applied_count = unknown_count = mismatch_count = 0
     spec_keys = {(kind, actor, time_s) for kind, actor, time_s, _ in specs}
     for kind, actor, time_s, action in specs:
@@ -204,17 +208,136 @@ def _forced_safety_evidence(cfg: dict[str, Any], events: list[dict[str, Any]],
                             reasons.append("pre_hold_command_applied_during_hold")
                             break
 
-        if reasons:
+        action_reasons = list(reasons)
+        unfinished: list[str] = []
+        expected_unfinished: list[str] = []
+        if kind == "platform_fault":
+            expected_lost: set[str] = set()
+            release_unknown = False
+            audit = (matches[0].get("details", {}).get("queue_release_state")
+                     if len(matches) == 1 and isinstance(matches[0].get("details"), dict) else None)
+            release_reasons = []
+            if (not isinstance(audit, dict)
+                    or audit.get("schema") != "fault_queue_release_state_v1"
+                    or audit.get("source") != "executor_queues_cursor_and_mission_assignments_after_release"):
+                release_reasons.append("executor_queue_release_evidence_missing")
+            else:
+                before = audit.get("pre_fault", {})
+                after = audit.get("post_fault", {})
+                old_queue = before.get("queue_task_ids") if isinstance(before, dict) else None
+                old_cursor = before.get("cursor") if isinstance(before, dict) else None
+                unfinished = before.get("unfinished_task_ids") if isinstance(before, dict) else None
+                queues_after = after.get("queues_by_aircraft") if isinstance(after, dict) else None
+                cursors_after = after.get("cursors_by_aircraft") if isinstance(after, dict) else None
+                assignments_after = after.get("assignments_by_task") if isinstance(after, dict) else None
+                completed_after = set(map(str, after.get("completed_task_ids", ()))) if isinstance(after, dict) else set()
+                actor_state = after.get("actor_state_by_id") if isinstance(after, dict) else None
+                if (isinstance(old_queue, list) and isinstance(old_cursor, list) and old_cursor
+                        and isinstance(old_cursor[0], int) and 0 <= old_cursor[0] <= len(old_queue)):
+                    expected_unfinished = list(map(str, old_queue[old_cursor[0]:]))
+                else:
+                    expected_unfinished = None
+                if expected_unfinished is None or list(map(str, unfinished or [])) != expected_unfinished:
+                    release_reasons.append("pre_fault_queue_cursor_disagreement")
+                if list(map(str, matches[0].get("details", {}).get("unfinished_tasks_released", []))) != list(map(str, unfinished or [])):
+                    release_reasons.append("released_task_event_disagreement")
+                required_maps = (queues_after, cursors_after, assignments_after, actor_state)
+                if any(not isinstance(value, dict) for value in required_maps):
+                    release_reasons.append("post_fault_executor_state_missing")
+                else:
+                    fault_queue = queues_after.get(actor, [])
+                    if not isinstance(fault_queue, list):
+                        release_reasons.append("fault_actor_queue_unknown")
+                        fault_queue = []
+                    if set(map(str, fault_queue)).intersection(expected_unfinished or []):
+                        release_reasons.append("released_task_retained_by_fault_actor")
+                    for task_id in expected_unfinished or []:
+                        owner_occurrences = [(owner, queued_task) for owner, queue in queues_after.items()
+                                             if isinstance(queue, list) for queued_task in map(str, queue)
+                                             if queued_task == task_id]
+                        owners = [owner for owner, _ in owner_occurrences]
+                        if task_id in completed_after:
+                            if task_id in assignments_after:
+                                release_reasons.append(f"completed_task_still_assigned:{task_id}")
+                            continue
+                        if len(owner_occurrences) > 1:
+                            release_reasons.append(f"released_task_has_duplicate_owners:{task_id}")
+                            continue
+                        if not owners:
+                            unrecovered_fault_task_ids.add(task_id)
+                            if task_id in assignments_after:
+                                release_reasons.append(f"unrecovered_task_has_stale_assignment:{task_id}")
+                            continue
+                        owner = owners[0]
+                        if str(assignments_after.get(task_id, "")) != str(owner):
+                            release_reasons.append(f"queue_assignment_disagreement:{task_id}")
+                        owner_state = actor_state.get(owner, {})
+                        if (not isinstance(owner_state, dict) or owner_state.get("available") is not True
+                                or owner_state.get("faulted") is True
+                                or owner_state.get("safety_paused") is True
+                                or owner_state.get("communication_held") is True):
+                            release_reasons.append(f"released_task_owner_not_available:{task_id}")
+                        spec = (task_by_id or {}).get(task_id)
+                        if not isinstance(spec, dict) or spec.get("allowed_kind") is None:
+                            release_reasons.append(f"reassigned_task_legality_unknown:{task_id}")
+                            release_unknown = True
+                        elif isinstance(owner_state, dict):
+                            if str(spec["allowed_kind"]) != str(owner_state.get("kind")):
+                                release_reasons.append(f"released_task_owner_kind_mismatch:{task_id}")
+                            if str(owner_state.get("kind")) == "helicopter":
+                                task_zone = _finite_number(spec.get("zone"))
+                                owner_zone = _finite_number(owner_state.get("home_zone"))
+                                if task_zone is None or owner_zone is None or int(task_zone) != int(owner_zone):
+                                    if task_zone is None or owner_zone is None:
+                                        release_reasons.append(f"reassigned_helicopter_task_legality_unknown:{task_id}")
+                                        release_unknown = True
+                                    else:
+                                        release_reasons.append(f"helicopter_released_task_outside_home_zone:{task_id}")
+                        queue = queues_after.get(owner, [])
+                        cursor = cursors_after.get(owner)
+                        if (not isinstance(queue, list) or not isinstance(cursor, list) or not cursor
+                                or not isinstance(cursor[0], int) or queue.index(task_id) < cursor[0]):
+                            release_reasons.append(f"released_task_cursor_inconsistent:{task_id}")
+                failure_events = [event for event in events
+                                  if event.get("event") == "fault_task_unrecovered"
+                                  and str(event.get("aircraft_id", "")) == actor
+                                  and _finite_number(event.get("sim_time_s")) == time_s]
+                expected_lost = {task_id for task_id in expected_unfinished or []
+                                 if isinstance(queues_after, dict)
+                                 and not any(isinstance(queue, list) and task_id in set(map(str, queue))
+                                             for queue in queues_after.values())
+                                 and task_id not in completed_after}
+                observed_lost = [str(event.get("task_id")) for event in failure_events]
+                if len(observed_lost) != len(set(observed_lost)) or set(observed_lost) != expected_lost:
+                    release_reasons.append("unrecovered_task_failure_event_disagreement")
+                if any(not isinstance(event.get("details"), dict)
+                       or event["details"].get("failure_cost_unit") != "one_unrecovered_public_task"
+                       for event in failure_events):
+                    release_reasons.append("unrecovered_task_failure_cost_missing")
+            release_status = "mismatch" if release_reasons else "applied"
+            if (release_unknown or "executor_queue_release_evidence_missing" in release_reasons
+                    or "post_fault_executor_state_missing" in release_reasons):
+                release_status = "unknown"
+            fault_release_rows.append({"event_id": event_id, "aircraft_id": actor,
+                "sim_time_s": time_s, "status": release_status,
+                "released_task_ids": (sorted(map(str, unfinished or []))
+                                      if isinstance(audit, dict) else None),
+                "unrecovered_task_ids": (sorted(expected_lost)
+                                         if release_status != "unknown" else None),
+                "reasons": release_reasons})
+            reasons.extend(release_reasons)
+
+        if action_reasons:
             status = "mismatch" if any(reason in {"event_missing", "duplicate_event", "hold_state_not_observed",
                 "resume_state_not_observed", "prior_hold_state_mismatch"} or reason.startswith("hold_state_released_early") or reason.startswith("actor_moved")
-                or reason.startswith("pre_hold_command") for reason in reasons) else "unknown"
+                or reason.startswith("pre_hold_command") for reason in action_reasons) else "unknown"
         else:
             status = "applied"
         applied_count += status == "applied"
         unknown_count += status == "unknown"
         mismatch_count += status == "mismatch"
         evidence_rows.append({"event_id": event_id, "event": kind, "aircraft_id": actor,
-                              "sim_time_s": time_s, "status": status, "reasons": reasons,
+                              "sim_time_s": time_s, "status": status, "reasons": action_reasons,
                               "state_evidence": "trajectory flags, position displacement, and command_applied events"})
 
     unexpected = []
@@ -227,14 +350,36 @@ def _forced_safety_evidence(cfg: dict[str, Any], events: list[dict[str, Any]],
     unknown_count += len(unknown_expectations)
     pause_resume_actions_applied = (not unknown_expectations and not unexpected
                    and all(row["status"] == "applied" for row in evidence_rows))
-    return {"all_forced_safety_actions_applied": None,
+    runtime_identity_valid = runtime_semantics_id == "closedloop_v1_fault_release_accounting_v2"
+    all_statuses = [row["status"] for row in evidence_rows]
+    release_statuses = [row["status"] for row in fault_release_rows]
+    if not runtime_identity_valid or unknown_expectations or "unknown" in all_statuses or "unknown" in release_statuses:
+        all_forced_applied = None
+    else:
+        all_forced_applied = (not unexpected and all(status == "applied" for status in all_statuses)
+                              and all(status == "applied" for status in release_statuses))
+    return {"all_forced_safety_actions_applied": all_forced_applied,
+            "runtime_semantics_id": runtime_semantics_id,
             "pause_resume_actions_applied": pause_resume_actions_applied,
+            "fault_task_release": {"status": ("not_applicable" if not specs or not any(
+                spec[0] == "platform_fault" for spec in specs) else
+                "unknown" if "unknown" in release_statuses else
+                "mismatch" if "mismatch" in release_statuses else "applied"),
+                "events": fault_release_rows,
+                "released_task_ids": (sorted({task_id for row in fault_release_rows
+                    for task_id in row.get("released_task_ids", []) or []})
+                    if "unknown" not in release_statuses else None),
+                "unrecovered_task_ids": (sorted(unrecovered_fault_task_ids)
+                                         if "unknown" not in release_statuses else None),
+                "unrecovered_task_failure_cost": (len(unrecovered_fault_task_ids)
+                                                  if "unknown" not in release_statuses else None),
+                "failure_cost_unit": "one_unrecovered_public_task; reported separately from frozen J_exec"},
             "forced_safety_action_counts": {"expected": len(specs), "applied": applied_count,
                 "unknown": unknown_count, "mismatch": mismatch_count},
             "forced_safety_action_events": evidence_rows,
             "unknown_expected_event_families": unknown_expectations,
             "unexpected_event_ids": unexpected,
-            "evidence_scope": "observable actor pause/resume, stationary follow-up, and pre-hold command effects; fault task queue release is not observed",
+            "evidence_scope": "observable actor pause/resume, stationary follow-up, pre-hold command effects, and executor queue/cursor/assignment release audit",
             "runtime_default_sources": {"platform_fault_time_s": "runtime.py default 900 s when absent",
                 "communication_outage_time_s": "runtime.py default 1800 s when absent",
                 "communication_outage_duration_s": "runtime.py default 120 s when absent",
@@ -501,7 +646,10 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
         return _unknown("trajectory contains rows beyond configured representative duration")
 
     forced_safety_evidence = _forced_safety_evidence(
-        cfg, events_list, safety_states, duration, actor_by_id, energy_hold_expectations)
+        cfg, events_list, safety_states, duration, actor_by_id, energy_hold_expectations,
+        task_by_id=task_by_id,
+        runtime_semantics_id=((runtime_receipt or {}).get("closedloop", {}).get("runtime_semantics_id")
+                              if isinstance((runtime_receipt or {}).get("closedloop"), dict) else None))
 
     if cfg.get("mode") == "search_strike":
         q_terminal = "unknown"
@@ -719,12 +867,15 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
         reasons.append("decision effect-delay finalization coverage is incomplete; local objective terms remain available")
     if not forced_safety_evidence["pause_resume_actions_applied"]:
         reasons.append("pause/resume action evidence is incomplete, unknown, or mismatched")
+    if forced_safety_evidence["all_forced_safety_actions_applied"] is not True:
+        reasons.append("full forced-safety evidence is incomplete, mismatched, or from an incompatible runtime identity")
     if aircraft_constraint_checks < 0:
         reasons.append("helicopter home-zone bounds are absent; aircraft-zone constraint check is incomplete")
     reduction_valid = (j_exec != "unknown" and online_timing != "unknown"
                        and effect_delay_coverage["status"] == "complete"
                        and safety_position_checks == row_count and aircraft_constraint_checks >= 0
-                       and forced_safety_evidence["pause_resume_actions_applied"] is True)
+                       and forced_safety_evidence["pause_resume_actions_applied"] is True
+                       and forced_safety_evidence["all_forced_safety_actions_applied"] is True)
     resource_usage = (runtime_receipt or {}).get("resource_usage", {})
     process_observation = ({
         "wall_duration_s": resource_usage.get("wall_duration_s", "unknown"),
@@ -740,6 +891,8 @@ def reduce_episode(manifest: dict[str, Any], truth_doc: dict[str, Any],
                   "trajectory_rows": row_count, "actor_seconds": actor_seconds},
         "tasks": {"catalog_count": len(task_by_id), "active_task_ids": sorted(task_activity),
                   "completed_task_ids": sorted(completed_tasks), "completed_count": len(completed_tasks),
+                  "failed_due_to_forced_fault": forced_safety_evidence["fault_task_release"]["unrecovered_task_ids"],
+                  "failed_due_to_forced_fault_count": forced_safety_evidence["fault_task_release"]["unrecovered_task_failure_cost"],
                   "waypoint_visits": waypoint_visits},
         "discovery": {"target_count": len(targets), "discovered_target_ids": sorted(discovered),
                       "discovered_count": len(discovered), "independent_geometry_checks": geometry_checks},
