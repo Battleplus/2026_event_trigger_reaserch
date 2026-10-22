@@ -1,16 +1,69 @@
-# Public one-step data interface only
+# Conditional world model and PPO interface v1
 
-This scoped archive contains public-projection conversion, masked one-second
-targets, variable-size node tensor collation and their supporting contracts.
-It does not contain a completed world model or PPO implementation. No real
-one-step dataset, GPU update, checkpoint or scientific benefit is established.
+This directory contains the post-collection model contract and a gated
+world-model training entry point. The entry reads only a terminal
+`light_models_v1` batch after its formal 168-scene receipt and aggregate gates
+pass, then recomputes feature coverage after extraction. No training was run
+for this implementation task. G, G-WM and PPO remain `NOT_RUN`.
 
-See reviews/PUBLIC_DYNAMICS_REVIEW_20261022.md for frozen source hashes,
-independently reviewed scope, synthetic-check evidence and remaining work.
+The world model consumes public history only. Each input is a sequence of
+variable-size platform/task/observation graphs. A masked node encoder pools each
+graph and a GRU predicts **one-step** dynamic targets (`task_progress`,
+`energy_delta`, `delay`, and `risk`). The optional gain head consumes an
+independently reduced paired gain label. A 30-minute endpoint is never renamed
+as a one-step target.
 
-From the parent directory, with NumPy installed:
+`public_dynamics.py` exposes `public_projection_to_frame` and
+`build_public_one_step_example` for public runtime projection snapshots. The
+input allowlist is limited to current aircraft position, velocity, type, home
+zone, availability/fault/hold flags, available energy, active task IDs and queue
+IDs, plus observations whose `available_at_sim_time_s` is no later than the
+snapshot time. Identifiers are used only to align public state or count/order
+queue nodes and are never encoded as feature values. Future/private keys are
+ignored. Home zones are normalized over the public 0-to-8 zone range. One-step
+examples require adjacent integer-second snapshots; only the
+history through `t` is encoded, while the `t+1` snapshot and events are used for
+targets. Per-target masks are carried into `DynamicGraphBatch`. Energy delta is
+the mean available-energy change across matching public platforms. Task progress
+is the count of public `search_cell_complete` events in the interval, not hidden
+geometric sweep progress. Delay is supervised only when an `(aircraft_id,
+decision_id)` has exactly one public `transmission_sent` and one
+`command_applied` event with a valid time order; repeated or otherwise ambiguous
+joins are masked. Right-censored or unjoined delay is also masked. Risk is a
+public safety/fault event label and is zero only when the
+caller attests complete interval event logging. Queue membership/order and
+observed public locations are features; queue task IDs are not. The current
+projection does not supply task route, priority, deadline, or geometric
+within-task progress, so these are not inferred. Optional gain labels require
+the caller to mark an independently validated paired label. No real one-step
+dataset is claimed by this interface.
 
-    python -B -m unittest discover -s wm_ppo_v1/tests -p test_public_dynamics.py -v
+`wm_entry.py --stage world-model --batch-output <terminal-batch> --output <receipt.json>`
+is the conditional training command. It additionally checks decision-gain
+coverage and disjoint scenario splits, fits normalization on train scenes only,
+and requires the configured GPU1 UUID to be the sole visible CUDA device mapped
+to `cuda:0`. There is no CPU training fallback. Dynamic one-step and paired
+gain losses run as separate phases. Seeds are 8201, 8202 and 8203. Checkpoints
+record model and optimizer state, normalization, dataset and schema identity,
+RNG state, architecture, device mapping and fixed-input predictions; a fresh
+process reloads each checkpoint on the same device and checks predictions and
+optimizer state.
 
-These are synthetic interface checks, not Isaac experiment results. Sparse
-decision snapshots cannot be relabelled as adjacent one-second histories.
+The `g` and `g-wm` entry stages emit `NOT_RUN`; `ppo_entry.py` also remains
+`NOT_RUN` until the replanner and real environment adapter are implemented.
+The scope review in `collection/progress/WM_SUPERVISION_SCOPE_REVIEW_20261022.md`
+defines the limits of the available public targets.
+
+Synthetic interface checks only:
+
+```powershell
+Push-Location development/ch2_isaac_roi_mission_v3_pilot
+python -B -m unittest discover -s wm_ppo_v1/tests -v
+$files = (Get-ChildItem wm_ppo_v1 -Recurse -Filter *.py).FullName
+python -B -m py_compile $files
+Pop-Location
+```
+
+These checks do not establish a scientific result. GPU training and PPO are
+conditional on the formal batch passing the 30/30 gate and the main coordinator
+reviewing its receipts.
