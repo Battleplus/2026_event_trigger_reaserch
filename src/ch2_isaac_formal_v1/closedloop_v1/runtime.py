@@ -13,6 +13,8 @@ from formal_collection_v1.mission import (MissionState, abstract_strike, assign_
     restore_mission, roi_zones, task_sweep, task_activation_schedule, EventTriggerGate, spatial_speed_cap)
 from formal_collection_v1.state_sampling import public_projection
 from closedloop_v1.decision import DecisionAdapter
+from closedloop_v1.compact_capture import compact_tick
+from compact_collection_v1 import CompactCollectionWriter
 
 PLANNER_CALL_EVENT = "candidate_generation"
 TRAJECTORY_NAME = "trajectory.jsonl.gz"
@@ -107,7 +109,8 @@ def queue_replan_action(pending, decision_id, created_time_s, delay_s, selected_
 
 def run(config_path, source_root, output, phase="representative", resume_state=None, suffix_seed=None,
         suffix_meta=None, strategy_mode="existing_et", gain_predictor=None, checkpoint_path=None,
-        checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None):
+        checkpoint_model="mlp", gain_threshold=0.0, deployment_metadata=None,
+        enable_compact_capture=False):
     if phase != "representative" or resume_state is not None:
         raise ValueError("closedloop_v1 supports one representative episode only")
     run_wall_start_ns=time.perf_counter_ns(); run_cpu_start_ns=time.process_time_ns()
@@ -159,6 +162,22 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         assignment=initial_c1_greedy(public_mission)
         mission.assignments=dict(assignment)
         actors={a.aircraft_id:a for a in mission.aircraft}; tasks={t.task_id:t for t in mission.tasks}
+        compact_writer = None
+        if enable_compact_capture:
+            scene = cfg.get("scene", {})
+            static_config = {
+                "map_size_km": float(cfg["map_size_km"]),
+                "meters_per_unit": float(cfg["meters_per_unit"]),
+                "roi_width_km": float(cfg["roi_width_km"]),
+                "sensor_radius_km": float(cfg["sensor_radius_km"]),
+                "sweep_lane_spacing_km": float(cfg["sweep_lane_spacing_km"]),
+                "waypoint_tolerance_km": float(cfg["waypoint_tolerance_km"]),
+                "terrain_grid": scene.get("terrain_grid"),
+                "forest_tree_count": scene.get("forest_tree_count"),
+                "aircraft": [{"aircraft_id": a.aircraft_id, "kind": a.kind,
+                              "home_zone": int(a.home_zone)} for a in mission.aircraft],
+            }
+            compact_writer = CompactCollectionWriter(output / "compact_capture", static_config)
         pilot_cfg = dict(cfg.get("pilot", {}))
         formal_cfg = dict(cfg.get("formal", {}))
         periodic_interval_s = PERIODIC_INTERVAL_S
@@ -779,6 +798,19 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                 post_step_total_cpu_ns=time.process_time_ns()-post_step_online_cpu_start
                 post_step_online_wall_ns=max(0,post_step_total_wall_ns-post_step_eval_wall_ns)
                 post_step_online_cpu_ns=max(0,post_step_total_cpu_ns-post_step_eval_cpu_ns)
+                if compact_writer is not None and branch == "representative":
+                    compact_state, compact_events, compact_decisions, compact_costs, compact_events_complete = compact_tick(
+                        pending_trajectory_rows, tasks, queues, cursor, activation, routes,
+                        mission.completed, t, pending_event_rows,
+                        {aid: {"available": actor.available, "safety_paused": aid in safety_paused}
+                         for aid, actor in actors.items()}, mission.assignments)
+                    compact_writer.append_tick(compact_state, events=compact_events,
+                        decisions=compact_decisions, costs=compact_costs,
+                        event_log_complete=compact_events_complete,
+                        hidden_truth=({"targets": [{"target_id": target_id, "zone": zone,
+                            "target_xy_km": list(xy), "kind": mission.truth_kind[target_id]}
+                            for target_id, (zone, xy) in sorted(mission.truth.items())]}
+                            if t == 1 else None))
                 raw_log_wall_start=time.perf_counter_ns(); raw_log_cpu_start=time.process_time_ns()
                 traj.writelines(json.dumps(row,separators=(",",":"))+"\n" for row in pending_trajectory_rows)
                 pending_trajectory_rows.clear()
@@ -1081,6 +1113,8 @@ def main():
     p.add_argument("--model",choices=("constant","ridge","mlp","tree"),default=None,
                    help="optional artifact type assertion; type is otherwise read from the artifact")
     p.add_argument("--deployment-mode", choices=("mean", "lower_bound"), default="mean")
+    p.add_argument("--compact-capture", action="store_true",
+                   help="write a separate compact public per-second capture")
     a=p.parse_args()
     predictor = None
     gain_threshold = 0.0
@@ -1108,7 +1142,8 @@ def main():
         p.error("--model is only valid with a gain-gated mode and --checkpoint")
     rc=run(a.config,a.source_root,a.output,strategy_mode=a.mode,
            gain_predictor=predictor,checkpoint_path=a.checkpoint,checkpoint_model=checkpoint_model,
-           gain_threshold=gain_threshold,deployment_metadata=deployment_metadata)
+           gain_threshold=gain_threshold,deployment_metadata=deployment_metadata,
+           enable_compact_capture=a.compact_capture)
     raise SystemExit(rc)
 
 if __name__=="__main__": main()
