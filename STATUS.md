@@ -1,3 +1,25 @@
+# Current Chapter 2 status: 2026-10-22
+
+The authoritative revised objective is [CURRENT_OBJECTIVE](protocols/CURRENT_OBJECTIVE.md).
+The latest verified server observation was 2026-10-22 04:49:23 UTC: 80 of the
+168 scene receipts were COMPLETE; collector and Isaac child processes were
+alive, with no terminal batch receipt or aggregate. This is acquisition progress,
+not scientific acceptance. The 30/30 gate, model training and closed-loop method
+evaluation have not run. Test/OOD remain sealed.
+
+Future collection is narrowed to assignment, gain and public one-step learning
+information. Existing raw data and the live collector are preserved. Compact
+partial reduction and repaired event-graph source are archived with scoped
+reviews; actual storage reduction, GPU training, world-model added value and
+PPO results remain unestablished. A streaming raw-trajectory adapter is being
+implemented locally. No cache cleanup, scene retry or favorable seed replacement
+has been performed.
+
+The older dated entries below are preserved historical evidence, not the
+current execution status.
+
+---
+
 # Collection source preparation: 2026-10-20
 
 A separate local capture runner now selects up to eight ordinary states before candidate generation and separates trusted private snapshots from whitelisted public input. Three sampler tests and two service-safety tests passed; source review is provisional for integration. Isaac capture is NOT_RUN; two-suffix rollout and independent service trajectory reduction are NOT_IMPLEMENTED. attempt008 is unchanged and its remote deployment authorization remains pending. See [capture source](src/isaac_roi_capture_local_v1/) and [review](evidence/isaac-roi-capture-local-v1/REVIEW.md).
