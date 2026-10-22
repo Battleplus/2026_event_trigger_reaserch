@@ -8,6 +8,7 @@ import itertools
 import json
 import math
 from pathlib import Path
+import sys
 from typing import Any, Iterable
 
 
@@ -1053,12 +1054,111 @@ def evaluate_run(run_dir: str | Path, output: str | Path | None = None) -> dict[
     return result
 
 
+def evaluate_compact_collection(collection_dir: str | Path) -> dict[str, Any]:
+    """Rebuild reducer inputs from public compact ticks and separate evaluator files."""
+    root = Path(collection_dir)
+    required = [root / name for name in ("evaluation_context.json", "evaluation_truth.jsonl",
+                                         "evaluation_audit.jsonl", "ticks.jsonl")]
+    missing = [path.name for path in required if not path.is_file()]
+    hashes = {path.name: _sha256(path) for path in required if path.is_file()}
+    if missing:
+        return _unknown(f"compact evaluation artifacts missing: {', '.join(missing)}", hashes)
+    try:
+        try:
+            from compact_collection_v1 import CompactPublicReader
+        except ModuleNotFoundError:
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            from compact_collection_v1 import CompactPublicReader
+
+        context = json.loads(required[0].read_text(encoding="utf-8"))
+        truth_records = list(_jsonl(required[1]))
+        audit_records = list(_jsonl(required[2]))
+        ticks = list(CompactPublicReader(root).iter_records())
+        if (not ticks or len(audit_records) != len(ticks)
+                or any(int(tick["projection"]["sim_time_s"]) != int(audit["sim_time_s"])
+                       for tick, audit in zip(ticks, audit_records))):
+            return _unknown("compact public ticks and evaluator audit are incomplete or misaligned", hashes)
+        if not truth_records or not isinstance(truth_records[0].get("truth"), dict):
+            return _unknown("separate compact evaluator truth is missing", hashes)
+        tasks_by_id: dict[str, dict[str, Any]] = {}
+        trajectory_rows = []
+        event_rows = []
+        for tick, audit in zip(ticks, audit_records):
+            projection = tick["projection"]
+            now = int(projection["sim_time_s"])
+            targets_by_actor = audit.get("target_discovered_ids_by_aircraft")
+            if not isinstance(targets_by_actor, dict):
+                return _unknown(f"compact evaluator discovery labels missing at t={now}", hashes)
+            for task_id, spec in projection.get("public_tasks", {}).items():
+                task = tasks_by_id.setdefault(str(task_id), {
+                    key: spec[key] for key in ("zone", "cell", "allowed_kind",
+                        "public_bounds_km", "sweep_waypoints_km") if key in spec})
+                task["task_id"] = str(task_id)
+                if not task.get("sweep_waypoints_km"):
+                    return _unknown(f"compact public sweep geometry missing for task {task_id}", hashes)
+            for aircraft_id, aircraft in projection.get("aircraft", {}).items():
+                transition = aircraft.get("transition")
+                transition_cost = aircraft.get("transition_cost")
+                if not isinstance(transition, dict) or not isinstance(transition_cost, dict):
+                    return _unknown(f"compact transition evidence missing at {aircraft_id}@{now}", hashes)
+                if str(aircraft_id) not in targets_by_actor:
+                    return _unknown(f"compact discovery labels missing for {aircraft_id}@{now}", hashes)
+                trajectory_rows.append({
+                    "sim_time_s": now, "branch": "representative", "aircraft_id": str(aircraft_id),
+                    "aircraft_type": aircraft.get("kind"), "zone": aircraft.get("home_zone"),
+                    "usd_position_m": aircraft.get("position_m"),
+                    "previous_usd_position_m": transition.get("previous_position_m"),
+                    "mission_xy_km": transition.get("mission_xy_km"),
+                    "faulted": aircraft.get("faulted"), "task_id": transition.get("task_id"),
+                    "search_cell_visited": transition.get("search_cell_visited"),
+                    "task_completed": transition.get("task_completed"),
+                    "target_discovered_ids": targets_by_actor[str(aircraft_id)],
+                    "energy": {"incremental_wh": transition_cost.get("energy_incremental_wh"),
+                               "safety_pause": transition_cost.get("energy_safety_pause")},
+                    "communication": {"safety_hold": aircraft.get("communication_held"),
+                        "command_attempted": transition_cost.get("command_attempted"),
+                        "command_attempt_accepted": transition_cost.get("command_attempt_accepted"),
+                        "command_delivered": transition_cost.get("command_delivered"),
+                        "command_dropped": transition_cost.get("command_dropped"),
+                        "forced_outage": transition_cost.get("forced_outage")},
+                })
+            events = audit.get("events")
+            if not isinstance(events, list):
+                return _unknown(f"compact evaluator events missing at t={now}", hashes)
+            event_rows.extend(events)
+        context_required = ("evaluation_config", "actor_manifest", "initial_positions_m", "zone_bounds_km")
+        if not all(key in context for key in context_required):
+            return _unknown("compact evaluation context is incomplete", hashes)
+        manifest = {"run_id": context.get("run_id"),
+                    "evaluation_config": context["evaluation_config"],
+                    "actor_manifest": context["actor_manifest"],
+                    "initial_positions_m": context["initial_positions_m"],
+                    "zone_bounds_km": context["zone_bounds_km"],
+                    "public_task_manifest": list(tasks_by_id.values()),
+                    "_input_sha256": hashes}
+        runtime_receipt = context.get("runtime_receipt")
+        if not isinstance(runtime_receipt, dict):
+            runtime_receipt = {"closedloop": {"runtime_semantics_id": context.get("runtime_semantics_id")}}
+        return reduce_episode(manifest, truth_records[0]["truth"], trajectory_rows, event_rows,
+                             runtime_receipt=runtime_receipt)
+    except (OSError, ValueError, KeyError, TypeError, IndexError, AttributeError,
+            OverflowError, json.JSONDecodeError) as exc:
+        return _unknown(f"compact_reducer_error:{type(exc).__name__}:{exc}", hashes)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Independently reduce one closedloop_v1 episode.")
-    parser.add_argument("--run-dir", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--run-dir", type=Path)
+    source.add_argument("--compact-dir", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = evaluate_run(args.run_dir, args.output)
+    result = (evaluate_run(args.run_dir, args.output) if args.run_dir is not None
+              else evaluate_compact_collection(args.compact_dir))
+    if args.output is not None:
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"status": result["status"], "reasons": result.get("reasons", [])}, sort_keys=True))
     return 0 if result["status"] == "PASS" else 2
 

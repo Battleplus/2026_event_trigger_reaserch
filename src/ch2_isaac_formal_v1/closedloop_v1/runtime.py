@@ -13,7 +13,8 @@ from formal_collection_v1.mission import (MissionState, abstract_strike, assign_
     restore_mission, roi_zones, task_sweep, task_activation_schedule, EventTriggerGate, spatial_speed_cap)
 from formal_collection_v1.state_sampling import public_projection
 from closedloop_v1.decision import DecisionAdapter
-from closedloop_v1.compact_capture import compact_tick
+from closedloop_v1.compact_capture import (append_evaluation_audit, compact_tick,
+    write_evaluation_context)
 from compact_collection_v1 import CompactCollectionWriter
 
 PLANNER_CALL_EVENT = "candidate_generation"
@@ -163,6 +164,7 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         mission.assignments=dict(assignment)
         actors={a.aircraft_id:a for a in mission.aircraft}; tasks={t.task_id:t for t in mission.tasks}
         compact_writer = None
+        compact_capture_dir = None
         if enable_compact_capture:
             scene = cfg.get("scene", {})
             static_config = {
@@ -177,7 +179,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                 "aircraft": [{"aircraft_id": a.aircraft_id, "kind": a.kind,
                               "home_zone": int(a.home_zone)} for a in mission.aircraft],
             }
-            compact_writer = CompactCollectionWriter(output / "compact_capture", static_config)
+            compact_capture_dir = output / "compact_capture"
+            compact_writer = CompactCollectionWriter(compact_capture_dir, static_config)
         pilot_cfg = dict(cfg.get("pilot", {}))
         formal_cfg = dict(cfg.get("formal", {}))
         periodic_interval_s = PERIODIC_INTERVAL_S
@@ -231,6 +234,34 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
         source_hashes={name:sha(source_root/name) for name in source_files}
         backend=IsaacBackend(source_root,records,runtime)
         rb0=backend.positions()
+        if compact_writer is not None:
+            disturbances = cfg.get("evaluator_schedule", {}).get("disturbances", {})
+            evaluation_config = {
+                "mode": cfg["mode"], "representative_duration_s": int(cfg["representative_duration_s"]),
+                "sensor_radius_km": float(cfg["sensor_radius_km"]),
+                "waypoint_tolerance_km": float(cfg["waypoint_tolerance_km"]),
+                "energy_wh_per_km": dict(cfg["energy_wh_per_km"]),
+                "energy_capacity_wh": dict(cfg["energy_capacity_wh"]),
+                "energy_reserve_fraction": float(cfg["energy_reserve_fraction"]),
+                "energy_anomaly": (copy.deepcopy(cfg.get("energy_anomaly"))
+                    if mechanism_enabled(cfg, "energy_anomaly") else None),
+                "mechanisms": {name: {"enabled": mechanism_enabled(cfg, name)}
+                    for name in ("platform_fault", "communication_outage")},
+                "evaluator_schedule": {"disturbances": {
+                    key: disturbances.get(key) for key in
+                    ("platform_fault_time_s", "communication_outage_time_s",
+                     "communication_outage_duration_s") if key in disturbances}},
+            }
+            write_evaluation_context(compact_capture_dir, {
+                "schema": "closedloop_compact_evaluation_context_v1",
+                "run_id": cfg["run_id"], "evaluation_config": evaluation_config,
+                "actor_manifest": [{"aircraft_id": a.aircraft_id,
+                    "aircraft_type": a.kind, "home_zone": int(a.home_zone)} for a in mission.aircraft],
+                "initial_positions_m": {aid: list(value["position_m"]) for aid, value in rb0.items()},
+                "zone_bounds_km": {str(z["zone"]): [z["xmin"], z["ymin"], z["xmax"], z["ymax"]]
+                                   for z in roi_zones(center, cfg["roi_width_km"])},
+                "runtime_semantics_id": RUNTIME_SEMANTICS_ID,
+            })
         max_speed_by_id={r["aircraft_id"]:r["max_speed_mps"] for r in records}
         receipt.update({"status":"scene_ready","actual_isaac_run":True,"map_size_km":300.0,"meters_per_unit":100.0,
                        "roi_center_km":list(center),"roi_width_km":cfg["roi_width_km"],"aircraft_count":36,
@@ -798,19 +829,8 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                 post_step_total_cpu_ns=time.process_time_ns()-post_step_online_cpu_start
                 post_step_online_wall_ns=max(0,post_step_total_wall_ns-post_step_eval_wall_ns)
                 post_step_online_cpu_ns=max(0,post_step_total_cpu_ns-post_step_eval_cpu_ns)
-                if compact_writer is not None and branch == "representative":
-                    compact_state, compact_events, compact_decisions, compact_costs, compact_events_complete = compact_tick(
-                        pending_trajectory_rows, tasks, queues, cursor, activation, routes,
-                        mission.completed, t, pending_event_rows,
-                        {aid: {"available": actor.available, "safety_paused": aid in safety_paused}
-                         for aid, actor in actors.items()}, mission.assignments)
-                    compact_writer.append_tick(compact_state, events=compact_events,
-                        decisions=compact_decisions, costs=compact_costs,
-                        event_log_complete=compact_events_complete,
-                        hidden_truth=({"targets": [{"target_id": target_id, "zone": zone,
-                            "target_xy_km": list(xy), "kind": mission.truth_kind[target_id]}
-                            for target_id, (zone, xy) in sorted(mission.truth.items())]}
-                            if t == 1 else None))
+                compact_rows = list(pending_trajectory_rows) if compact_writer is not None and branch == "representative" else None
+                compact_events_before_timing = list(pending_event_rows) if compact_rows is not None else None
                 raw_log_wall_start=time.perf_counter_ns(); raw_log_cpu_start=time.process_time_ns()
                 traj.writelines(json.dumps(row,separators=(",",":"))+"\n" for row in pending_trajectory_rows)
                 pending_trajectory_rows.clear()
@@ -839,6 +859,21 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
                 ev.write(json.dumps(timing_event_row,separators=(",",":"))+"\n")
                 timing_event_write_wall_ns=time.perf_counter_ns()-timing_event_wall_start
                 timing_event_write_cpu_ns=time.process_time_ns()-timing_event_cpu_start
+                if compact_rows is not None:
+                    compact_state, compact_events, compact_decisions, compact_costs, compact_events_complete = compact_tick(
+                        compact_rows, tasks, queues, cursor, activation, routes,
+                        mission.completed, t, compact_events_before_timing + [timing_event_row],
+                        {aid: {"available": actor.available, "safety_paused": aid in safety_paused}
+                         for aid, actor in actors.items()}, mission.assignments)
+                    compact_writer.append_tick(compact_state, events=compact_events,
+                        decisions=compact_decisions, costs=compact_costs,
+                        event_log_complete=compact_events_complete,
+                        hidden_truth=({"targets": [{"target_id": target_id, "zone": zone,
+                            "target_xy_km": list(xy), "kind": mission.truth_kind[target_id]}
+                            for target_id, (zone, xy) in sorted(mission.truth.items())]}
+                            if t == 1 else None))
+                    append_evaluation_audit(compact_capture_dir, t, compact_rows,
+                        compact_events_before_timing + [timing_event_row])
                 timing_counters=branch_counters[branch]["online_timing"]
                 timing_counters["post_step_online_state_wall_ns"]+=post_step_online_wall_ns
                 timing_counters["post_step_online_state_cpu_ns"]+=post_step_online_cpu_ns
@@ -1103,6 +1138,14 @@ def run(config_path, source_root, output, phase="representative", resume_state=N
             persist(rec_path,receipt)
         except OSError:
             print(f"could not finalize receipt because storage is unavailable: {rec_path}", file=sys.stderr)
+        if compact_writer is not None:
+            context_path = compact_capture_dir / "evaluation_context.json"
+            try:
+                context = json.loads(context_path.read_text(encoding="utf-8"))
+                context["runtime_receipt"] = copy.deepcopy(receipt)
+                write_evaluation_context(compact_capture_dir, context)
+            except OSError as exc:
+                print(f"could not finalize compact evaluation context: {exc}", file=sys.stderr)
 
 def main():
     p=argparse.ArgumentParser(description="Run one 90-minute closed-loop ROI Isaac episode.")

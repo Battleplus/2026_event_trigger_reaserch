@@ -1,7 +1,9 @@
 """Public compact capture adapters for the closed-loop runtime."""
 from __future__ import annotations
 
+import json
 from typing import Any, Mapping, Sequence
+from pathlib import Path
 
 
 PUBLIC_EVENTS = {
@@ -11,6 +13,7 @@ PUBLIC_EVENTS = {
     "decision_gate", "candidate_generation", "decision_created", "decision_timing_finalized",
     "command_delivered", "command_applied", "transmission_sent", "donor_support_transfer",
     "replan_action_rejected", "replan_catalog_choice", "abstract_strike_complete",
+    "online_timing_tick",
 }
 DECISION_EVENTS = {"decision_gate", "candidate_generation", "decision_created",
                    "decision_timing_finalized", "replan_action_rejected", "replan_catalog_choice"}
@@ -43,6 +46,22 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
             "available_energy_wh": float(row["energy"]["remaining_wh"]),
             "active_task_ids": [str(active_task)] if active_task is not None else [],
             "queue_task_ids": visible_queue,
+            "transition": {
+                "task_id": row.get("task_id"),
+                "search_cell_visited": bool(row.get("search_cell_visited", False)),
+                "task_completed": bool(row.get("task_completed", False)),
+                "mission_xy_km": [float(value) for value in row["mission_xy_km"]],
+                "previous_position_m": [float(value) for value in row["previous_usd_position_m"]],
+            },
+            "transition_cost": {
+                "energy_incremental_wh": float(row["energy"]["incremental_wh"]),
+                "energy_safety_pause": bool(row["energy"]["safety_pause"]),
+                "command_attempted": bool(row["communication"]["command_attempted"]),
+                "command_attempt_accepted": bool(row["communication"]["command_attempt_accepted"]),
+                "command_delivered": bool(row["communication"]["command_delivered"]),
+                "command_dropped": bool(row["communication"]["command_dropped"]),
+                "forced_outage": bool(row["communication"]["forced_outage"]),
+            },
         }
     public_tasks = {}
     for task_id, task in tasks.items():
@@ -50,6 +69,7 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
             continue
         aid = assignments.get(task_id)
         task_queue = queues.get(aid, ()) if aid is not None else ()
+        public_route = next((route[task_id] for route in routes.values() if task_id in route), ())
         task_index = task_queue.index(task_id) if task_id in task_queue else None
         waypoint_cursor = (int(cursor[aid][1]) if task_index is not None
                            and task_index == int(cursor[aid][0]) else 0)
@@ -63,7 +83,8 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
             "active": aid is not None and task_index == int(cursor[aid][0]) and task_id not in completed,
             "completed": task_id in completed,
             "route_waypoint_cursor": waypoint_cursor,
-            "route_waypoint_count": len(routes.get(aid, {}).get(task_id, ())) if aid else 0,
+            "route_waypoint_count": len(public_route),
+            "sweep_waypoints_km": [list(map(float, point)) for point in public_route],
             "priority": None, "deadline_sim_time_s": None,
         }
     observations = {}
@@ -96,19 +117,45 @@ def compact_tick(public_rows: Sequence[Mapping[str, Any]], tasks: Mapping[str, A
               "command_attempted": bool(row["communication"]["command_attempted"]),
               "command_delivered": bool(row["communication"]["command_delivered"])}
              for row in public_rows]
-    planner_cpu_ns = sum(int(event.get("timing", {}).get("cpu_duration_ns", 0))
-                         for event in events if event.get("event") == "candidate_generation")
-    decision_cpu_ns = sum(int(event.get("timing", {}).get("decision_cpu_duration_ns", 0))
-                          for event in events if event.get("event") == "decision_created")
-    costs.append({"sim_time_s": now, "planner_cpu_ns": planner_cpu_ns,
-                  "decision_cpu_ns": decision_cpu_ns,
-                  "task_switch_count": sum(event.get("event") == "controller_switch"
-                                            for event in events),
-                  "unrecovered_task_count": sum(event.get("event") == "fault_task_unrecovered"
-                                                 for event in events)})
     complete = all(event.get("event") in PUBLIC_EVENTS
                    for event in event_rows
                    if isinstance(event.get("sim_time_s"), (int, float))
                    and event["sim_time_s"] <= now)
+    planner_cpu_ns = (sum(int(event.get("timing", {}).get("cpu_duration_ns", 0))
+                          for event in events if event.get("event") == "candidate_generation")
+                      if complete else None)
+    decision_cpu_ns = (sum(int(event.get("timing", {}).get("decision_cpu_duration_ns", 0))
+                           for event in events if event.get("event") == "decision_created")
+                       if complete else None)
+    costs.append({"sim_time_s": now, "planner_cpu_ns": planner_cpu_ns,
+                  "decision_cpu_ns": decision_cpu_ns,
+                  "task_switch_count": (sum(event.get("event") == "controller_switch"
+                                             for event in events) if complete else None),
+                  "unrecovered_task_count": (sum(event.get("event") == "fault_task_unrecovered"
+                                                  for event in events) if complete else None)})
     return ({"sim_time_s": now, "aircraft": aircraft, "public_tasks": public_tasks,
              "public_observations": list(observations.values())}, events, decisions, costs, complete)
+
+
+def write_evaluation_context(capture_dir: str | Path, context: Mapping[str, Any]) -> None:
+    path = Path(capture_dir) / "evaluation_context.json"
+    path.write_text(json.dumps(context, sort_keys=True, separators=(",", ":")) + "\n",
+                    encoding="utf-8")
+
+
+def append_evaluation_audit(capture_dir: str | Path, sim_time_s: int,
+                           trajectory_rows: Sequence[Mapping[str, Any]],
+                           event_rows: Sequence[Mapping[str, Any]]) -> None:
+    """Persist evaluator-only event details and discovery labels outside public ticks."""
+    record = {
+        "sim_time_s": int(sim_time_s),
+        "target_discovered_ids_by_aircraft": {
+            str(row["aircraft_id"]): [str(value) for value in row.get("target_discovered_ids", ())]
+            for row in trajectory_rows
+        },
+        "events": [dict(event) for event in event_rows],
+    }
+    path = Path(capture_dir) / "evaluation_audit.jsonl"
+    with path.open("a", encoding="utf-8", newline="\n") as stream:
+        stream.write(json.dumps(record, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n")
+        stream.flush()
