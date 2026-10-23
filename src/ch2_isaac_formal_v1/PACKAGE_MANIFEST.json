@@ -189,7 +189,7 @@
     "formal_evidence_v1/evaluate_suffix.py": "922115b741809349633a8d08b93b7b3fe1016d13b8b96d7dbd1076e40bbee181",
     "formal_evidence_v1/test_formal_evidence.py": "e62d23fa090f1272592ffe90c990786f5c214a38a2600d5f1e3fad14d4f5df37",
     "protocols/FROZEN_SCALAR_PROTOCOL_V1.md": "f6c0d64b2580bb630f32a39dfed4df5d10f5413a15cc32fb447a4ef40e6801ec",
-    "protocols/CURRENT_OBJECTIVE.md": "c0c6b87b7084585b0f45d8ac2e14cc765f3673d1f6de9e380951d09b6fb98250",
+    "protocols/CURRENT_OBJECTIVE.md": "5eb707eda5a8fdacffed9fa774cd423c0832427165c7544de6fd533ca969fbe7",
     "wm_ppo_v1/decision_windows.py": "07df2864c47dac93a54498c31284b9ff7835c6aad667cceec20c11a4212be633",
     "wm_ppo_v1/features.py": "e1e01a7e6e36f7eed5da7ef745993699e616caaf96ca6aed7b91f2aa5de1d1e0",
     "wm_ppo_v1/world_model.py": "88e48dff9dc420876e7900448339056922736e3776945327a0ad00fb8b9ee0ab",
@@ -221,7 +221,9 @@
     "wm_ppo_v1/CANDIDATE_POLICY_INFERENCE.md": "a521450d3eb30f65dfe5d843d774342e5aadebd107a71266696b3af5c98e21d3",
     "protocols/COLLECTION_SCOPE_AMENDMENT_20261021.md": "def9f744e4a0ad0e9eb830838474f62245d372fb924a7f4df4d23884ea41e1bc",
     "wm_ppo_v1/isaac_policy_training.py": "f35a753d76866425dfea92d84e6794f70bdfcb77758467f4f22827d61629f4a1",
-    "wm_ppo_v1/tests/test_isaac_policy_training_synthetic.py": "9e035cb228d2f4b46509eb58b4cec1b3e51780e2a2ef87c31617c270447508cc"
+    "wm_ppo_v1/tests/test_isaac_policy_training_synthetic.py": "9e035cb228d2f4b46509eb58b4cec1b3e51780e2a2ef87c31617c270447508cc",
+    "protocols/SCENARIO_COUNT_STOP_RULE_20261023.md": "b2f04d4f56b43cdf01f10fb4ed6b0cdfbf723a05c4dffadf73f03117e89724cb",
+    "../../reports/SCENARIO_INVENTORY_PRELIMINARY_20261023.json": "97909a21d82d57ff4fab46e36b0eee309f9b3107758eec11e29ae01e252c4244"
   },
   "pilot": "NOT_RUN",
   "prerequisite_representative_gate": false,
