@@ -1,0 +1,36 @@
+{
+  "schema": "scenario_inventory_preliminary_v1",
+  "observed_date": "2026-10-23",
+  "source": "read-only SSH inventory; no union reduction yet",
+  "collection_stopped": true,
+  "old_complete_scenes": 92,
+  "lightweight_complete_scenes_observed": 2,
+  "union_scene_count_observed": 94,
+  "by_condition_split": {
+    "light_delay|train": 12,
+    "task_activation|train": 12,
+    "platform_fault|train": 12,
+    "energy_anomaly|train": 12,
+    "communication_outage|train": 12,
+    "environment_speed_block|train": 12,
+    "composite_all_enabled|train": 12,
+    "light_delay|validation": 10
+  },
+  "missing_cells": [
+    "task_activation|validation",
+    "platform_fault|validation",
+    "energy_anomaly|validation",
+    "communication_outage|validation",
+    "environment_speed_block|validation",
+    "composite_all_enabled|validation",
+    "light_delay|validation additional 2 scenes"
+  ],
+  "labels": {
+    "union_reduction": "NOT_RUN",
+    "positive": "NOT_AVAILABLE",
+    "nonpositive": "NOT_AVAILABLE",
+    "unknown": "NOT_AVAILABLE"
+  },
+  "training_status": "NOT_RUN",
+  "note": "Do not infer data sufficiency from scene count or time points; run old/new union reducer before any fitting."
+}
